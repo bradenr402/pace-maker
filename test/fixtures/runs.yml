@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  distance: 1.5
+  time: 2024-06-10 18:09:23
+  date: 2024-06-10
+  comments: MyText
+  user: one
+
+two:
+  distance: 1.5
+  time: 2024-06-10 18:09:23
+  date: 2024-06-10
+  comments: MyText
+  user: two
