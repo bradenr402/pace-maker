@@ -17,12 +17,15 @@ class User < ApplicationRecord
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
-    login = conditions.delete(:login)
-    where(conditions.to_o).where(
-      [
-        'lower(username) = :value OR lower(email) = :value',
-        { value: login.strip.downcase }
-      ]
-    ).first
+    if (login = conditions.delete(:login))
+      where(conditions.to_h).where(
+        [
+          'lower(username) = :value OR lower(email) = :value',
+          { value: login.strip.downcase }
+        ]
+      ).first
+    elsif conditions.key?(:username) || conditions.key?(:email)
+      where(conditions.to_h).first
+    end
   end
 end
