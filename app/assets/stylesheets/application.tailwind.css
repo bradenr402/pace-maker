@@ -1,13 +1,17 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
 
-/*
+/* Custom components */
+@import "custom/custom.css";
+
+@import "tailwindcss/utilities";
 
 @layer components {
-  .btn-primary {
-    @apply py-2 px-4 bg-blue-200;
+  .heading {
+    @apply text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight;
+  }
+
+  .subheading {
+    @apply text-2xl font-bold;
   }
 }
-
-*/
