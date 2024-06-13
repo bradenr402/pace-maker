@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class='dark'>
   <head>
     <title>TeamRunner</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -11,8 +11,8 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+  <body class='font-normal leading-normal text-slate-800 relative selection:bg-indigo-500/40 bg-white dark:bg-slate-900 dark:text-slate-100 antialiased'>
+    <main class="container mx-auto mt-28 px-5">
       <%= yield %>
     </main>
   </body>
