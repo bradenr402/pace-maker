@@ -15,6 +15,8 @@ class RunsController < ApplicationController
 
   def create
     @run = current_user.runs.build(run_params)
+    @run.duration = parse_duration(params[:run][:duration_input])
+
     if @run.save
       redirect_to @run, notice: 'Run was successfully logged.'
     else
@@ -26,6 +28,8 @@ class RunsController < ApplicationController
   end
 
   def update
+    @run.duration = parse_duration(params[:run][:duration_input])
+
     if @run.update(run_params)
       redirect_to @run, notice: 'Run was successfully updated.'
     else
@@ -41,10 +45,34 @@ class RunsController < ApplicationController
   private
 
   def set_run
-    @run = Runs.find(params[:id])
+    @run = Run.find(params[:id])
   end
 
   def run_params
-    params.require(:run).permit(:distance, :time, :date, :comments)
+    params.require(:run).permit(:distance, :duration, :date, :comments)
+  end
+
+  def parse_duration(input)
+    parts = input.split(':').map(&:to_i)
+    case parts.length
+    when 2
+      minutes, seconds = parts
+      ActiveRecord::Base
+        .connection
+        .execute("SELECT '#{minutes} minutes #{seconds} seconds'::interval")
+        .first['interval']
+    when 3
+      hours, minutes, seconds = parts
+      ActiveRecord::Base
+        .connection
+        .execute(
+          "SELECT '#{hours} hours #{minutes} minutes #{seconds} seconds'::interval"
+        )
+        .first[
+        'interval'
+      ]
+    else
+      nil
+    end
   end
 end
