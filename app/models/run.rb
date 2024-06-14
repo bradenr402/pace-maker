@@ -19,14 +19,6 @@ class Run < ApplicationRecord
     (distance * 1.609344).round(3)
   end
 
-  def average_speed_mph
-    ((distance / (duration.to_f / 3600))).round(2)
-  end
-
-  def average_speed_kph
-    ((distance_km / (duration.to_f / 3600))).round(2)
-  end
-
   def pace_per_mile
     (duration / distance).round
   end
