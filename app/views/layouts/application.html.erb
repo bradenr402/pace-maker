@@ -12,6 +12,11 @@
   </head>
 
   <body class='font-normal leading-normal text-slate-800 relative selection:bg-indigo-500/40 bg-white dark:bg-slate-900 dark:text-slate-100 antialiased'>
+    <% if content_for(:header).present? %>
+      <%= yield :header %>
+    <% else %>
+      <%= render "shared/nav" %>
+    <% end %>
     <main class="container mx-auto mt-28 px-5">
       <%= yield %>
     </main>
