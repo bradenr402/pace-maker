@@ -33,7 +33,7 @@
     </p>
   <% end %>
   <div class="flex divide-x divide-slate-400">
-    <time class="text-slate-600 dark:text-slate-400 text-xs mt-2 pe-3" datetime="<%= run.date.to_formatted_s(:long) %>">Ran <%= time_ago_in_words(run.date) + " ago" %></time>
+    <time class="text-slate-600 dark:text-slate-400 text-xs mt-2 pe-3" datetime="<%= run.date.to_formatted_s(:long) %>">Ran <%= days_ago(run.date) %></time>
     <time class="text-slate-600 dark:text-slate-400 text-xs mt-2 ps-3" datetime="<%= run.created_at.to_formatted_s(:long) %>">Posted <%= time_ago_in_words(run.created_at) + " ago" %></time>
   </div>
 </article>
