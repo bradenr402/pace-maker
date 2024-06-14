@@ -7,7 +7,8 @@ class User < ApplicationRecord
          :registerable,
          :recoverable,
          :rememberable,
-         :validatable
+         :validatable,
+         authentication_keys: [:login]
 
   attr_writer :login
 
