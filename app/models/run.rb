@@ -7,6 +7,12 @@ class Run < ApplicationRecord
 
   validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
+  validate :date_not_in_future
+
+  def date_not_in_future
+    errors.add(:date, 'cannot be in the future.') if date > Date.today
+  end
+
   def hours
     (duration / 3600).to_i
   end
