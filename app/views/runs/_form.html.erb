@@ -33,11 +33,11 @@
     </div>
 
     <% if form.object.new_record? %>
-      <%= link_to "Cancel", runs_path, class: "btn btn-light" %>
+      <%= link_to "Cancel", runs_path, class: "btn btn-white" %>
     <% else %>
       <div class="flex gap-6 items-center">
         <%= button_to "Delete", @run, method: :delete, class: "btn btn-destructive", data: { confirm: "Are you sure?" }  %>
-        <%= link_to "Cancel", @run, class: "btn btn-light" %>
+        <%= link_to "Cancel", @run, class: "btn btn-white" %>
       </div>
     <% end %>
   </div>
