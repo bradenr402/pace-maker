@@ -5,9 +5,18 @@ class Run < ApplicationRecord
 
   validates :distance, numericality: { greater_than_or_equal_to: 0 }
 
-  validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validate :validate_duration
 
   validate :date_not_in_future
+
+  attr_accessor :duration_input
+
+  def validate_duration
+    return unless duration
+
+    errors.add(:duration, 'Invalid interval format') unless duration.is_a?(ActiveSupport::Duration)
+    errors.add(:duration, 'Duration must be positive') if duration.negative?
+  end
 
   def date_not_in_future
     errors.add(:date, 'cannot be in the future.') if date > Date.today

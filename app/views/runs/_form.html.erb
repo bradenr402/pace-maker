@@ -10,12 +10,9 @@
   </div>
 
   <div class="form-group">
-    <%= form.label :duration, class: 'form-label' do %>
-      <p> How long did you run?
-        <span class="text-xs opacity-75 my-1">(hh:mm:ss OR mm:ss)</span>
-      </p>
-    <% end %>
-      <%= form.text_field :duration_input, required: true, placeholder: 'hh:mm:ss', value: form.object.new_record? ? '' : clock_time_display(@run.duration), class: 'form-input' %>
+    <%= form.label :duration_input, 'How long did you run?', class: 'form-label' %>
+    <%= form.text_field :duration_input, required: true, pattern: '^(2[0-3]|1\d|0?\d):([0-5]\d)(:([0-5]\d))?$', title: 'Enter time in MM:SS or HH:MM:SS format', value: form.object.new_record? ? '' : clock_time_display(@run.duration), class: 'form-input' %>
+    <p class="text-xs text-slate-700 my-1 dark:text-slate-400">Enter time in MM:SS or HH:MM:SS format.</p>
   </div>
 
   <div class="form-group">
