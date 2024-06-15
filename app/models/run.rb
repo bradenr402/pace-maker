@@ -5,6 +5,8 @@ class Run < ApplicationRecord
 
   validates :distance, numericality: { greater_than_or_equal_to: 0 }
 
+  validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
   def hours
     (duration / 3600).to_i
   end
