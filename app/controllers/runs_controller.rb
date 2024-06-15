@@ -18,7 +18,7 @@ class RunsController < ApplicationController
     @run.duration = parse_duration(params[:run][:duration_input])
 
     if @run.save
-      redirect_to @run, notice: 'Run was successfully logged.'
+      redirect_to @run, notice: 'Run was successfully created.'
     else
       render :new, status: :unprocessable_entity
     end
@@ -60,7 +60,9 @@ class RunsController < ApplicationController
       ActiveRecord::Base
         .connection
         .execute("SELECT '#{minutes} minutes #{seconds} seconds'::interval")
-        .first['interval']
+        .first[
+        'interval'
+      ]
     when 3
       hours, minutes, seconds = parts
       ActiveRecord::Base
