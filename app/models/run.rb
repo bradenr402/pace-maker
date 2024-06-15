@@ -19,7 +19,7 @@ class Run < ApplicationRecord
   end
 
   def date_not_in_future
-    errors.add(:date, 'cannot be in the future.') if date > Date.today
+    errors.add(:date, 'cannot be in the future.') if date.future?
   end
 
   def hours
