@@ -10,9 +10,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    super
+    flash.clear
+    set_flash_message! :success, :signed_up
+  end
 
   # GET /resource/edit
   # def edit
@@ -20,14 +22,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # PUT /resource
-  # def update
-  #   super
-  # end
+  def update
+    super
+    flash.clear
+    set_flash_message! :success, :updated
+  end
 
   # DELETE /resource
-  # def destroy
-  #   super
-  # end
+  def destroy
+    super
+    flash.clear
+    set_flash_message! :success, :destroyed
+  end
 
   # GET /resource/cancel
   # Forces the session data which is usually expired after sign
@@ -59,4 +65,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+
+  def after_update_path_for(resource)
+    user_path(current_user)
+  end
 end

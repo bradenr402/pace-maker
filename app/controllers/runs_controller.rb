@@ -18,7 +18,7 @@ class RunsController < ApplicationController
     @run.duration = parse_duration(params[:run][:duration_input])
 
     if @run.save
-      redirect_to @run, notice: 'Run was successfully created.'
+      redirect_to @run, success: 'Run was successfully created.'
     else
       render :new, status: :unprocessable_entity
     end
@@ -31,7 +31,7 @@ class RunsController < ApplicationController
     @run.duration = parse_duration(params[:run][:duration_input])
 
     if @run.update(run_params)
-      redirect_to @run, notice: 'Run was successfully updated.'
+      redirect_to @run, success: 'Run was successfully updated.'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -39,7 +39,7 @@ class RunsController < ApplicationController
 
   def destroy
     @run.destroy
-    redirect_to runs_url, notice: 'Run was successfully deleted.'
+    redirect_to runs_url, success: 'Run was successfully deleted.'
   end
 
   private

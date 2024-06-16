@@ -9,14 +9,18 @@ class Users::SessionsController < Devise::SessionsController
   # end
 
   # POST /resource/sign_in
-  # def create
-  #   super
-  # end
+  def create
+    super
+    flash.clear
+    set_flash_message! :success, :signed_in
+  end
 
   # DELETE /resource/sign_out
-  # def destroy
-  #   super
-  # end
+  def destroy
+    super
+    flash.clear
+    set_flash_message! :success, :signed_out
+  end
 
   # protected
 
@@ -24,4 +28,9 @@ class Users::SessionsController < Devise::SessionsController
   # def configure_sign_in_params
   #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
   # end
+
+
+  def after_sign_out_path_for(resource_or_scope)
+    new_user_session_path
+  end
 end
