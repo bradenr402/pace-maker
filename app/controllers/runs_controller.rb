@@ -49,7 +49,13 @@ class RunsController < ApplicationController
   end
 
   def run_params
-    params.require(:run).permit(:distance, :duration, :date, :comments, :duration_input)
+    params.require(:run).permit(
+      :distance,
+      :duration,
+      :date,
+      :comments,
+      :duration_input
+    )
   end
 
   def parse_duration(input)
