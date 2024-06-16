@@ -3,14 +3,14 @@
     <h1 class="heading">User's Name Here</h1>
     <h2 class="text-lg text-slate-700 my-1 dark:text-slate-400"><%= @user.username %></h2>
     <% if @user == current_user %>
-      <div class="flex items-center justify-end">
+      <div class="flex items-center justify-center sm:justify-end">
         <%= link_to 'Edit profile', edit_user_registration_path, class: 'btn btn-white' %>
       </div>
     <% end %>
   </div>
 
   <div class="flex flex-wrap gap-10 items-center justify-around pb-6 mt-10">
-    <div class='flex flex-col items-center justify-center'>
+    <div class='flex flex-col items-center justify-center text-center'>
       <p class='font-semibold text-xl'>Total Distance Run</p>
       <p class=''>
         <%= @user.total_miles %>
@@ -18,7 +18,7 @@
       </p>
       <%# <p>miles run</p> %>
     </div>
-    <div class='flex flex-col items-center justify-center'>
+    <div class='flex flex-col items-center justify-center text-center'>
       <p class='font-semibold text-xl'>Total Time Spent Running</p>
       <p class=''>
         <%= precise_distance_of_time_in_words(@user.total_duration) %>
@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  <div class="flex items-center justify-between mt-10 pb-6 border-b dark:border-slate-700">
+  <div class="flex flex-wrap gap-6 items-center justify-between mt-10 pb-6 border-b dark:border-slate-700">
     <h1 class="heading">Runs This Week</h1>
     <div class="flex items-center justify-end">
       <%= link_to "New Run", new_run_path, class: "btn btn-primary" %>

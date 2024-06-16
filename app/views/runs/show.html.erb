@@ -1,6 +1,6 @@
 <div class="max-w-3xl mx-auto px-4 my-16">
   <div class="pb-6 border-b">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-wrap gap-6 items-center justify-between">
       <h1 class="heading">
         <%= link_to @run.user.username.blank? ? @run.user.email : @run.user.username, @run.user %>
       </h1>
