@@ -2,7 +2,7 @@
   <div class="pb-6 border-b">
     <div class="flex items-center justify-between">
       <h1 class="heading">
-        <%= @run.user.username.blank? ? @run.user.email : @run.user.username %>
+        <%= link_to @run.user.username.blank? ? @run.user.email : @run.user.username, @run.user %>
       </h1>
       <div class="flex space-x-3">
         <%= link_to "Edit", edit_run_path(@run), class: "btn btn-white" %>
