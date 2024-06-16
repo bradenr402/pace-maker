@@ -11,11 +11,30 @@ module ApplicationHelper
     end
   end
 
+  def pretty_date(date)
+    today = Date.today
+    return 'Today' if date == today
+    return 'Yesterday' if date == today.yesterday
+
+    days_difference = (today - date).to_i
+
+    case days_difference
+    when 0..6
+      date.strftime('%A')
+    when 7..365
+      if date.year == today.year
+        date.strftime('%A, %B %e')
+      else
+        date.strftime('%A, %B %e, %Y')
+      end
+    else
+      date.strftime('%A, %B %e, %Y')
+    end
+  end
+
   def days_ago(date)
-    # Calculate the difference in days between the given date and today
     days_difference = (Date.today - date.to_date).to_i
 
-    # Return the appropriate string based on the difference
     case days_difference
     when 0
       'today'
