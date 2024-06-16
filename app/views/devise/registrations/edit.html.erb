@@ -52,7 +52,7 @@
 
     <div class="flex items-center space-x-4 pt-10 border-t mt-10 border-slate-200 dark:border-slate-700">
       <%= f.submit "Update", class: "btn btn-primary" %>
-      <%= link_to "Cancel", root_path, class: "btn btn-white", data: { turbo: false } %>
+      <%= link_to "Cancel", :back, class: "btn btn-white", data: { turbo: false } %>
     </div>
   <% end %>
 
