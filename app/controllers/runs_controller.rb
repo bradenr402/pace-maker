@@ -3,7 +3,7 @@ class RunsController < ApplicationController
   before_action :set_run, only: %i[show edit update destroy]
 
   def index
-    @runs = current_user.runs.order(created_at: :desc)
+    @runs = current_user.runs.order(date: :desc)
   end
 
   def show
