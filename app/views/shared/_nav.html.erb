@@ -2,7 +2,7 @@
   { name: 'Runs', path: runs_path, options: {} },
 ].tap do |links|
   if user_signed_in?
-    links.push({ name: 'Profile', path: edit_user_registration_path(current_user), options: {} })
+    links.push({ name: 'Profile', path: user_path(current_user), options: {} })
   end
 end %>
 
