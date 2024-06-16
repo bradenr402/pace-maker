@@ -5,9 +5,9 @@ module ApplicationHelper
     seconds = duration % 60
 
     if hours.positive?
-      "#{hours}:#{'%02d' % minutes}:#{'%02d' % seconds}"
+      format('%<hours>d:%<minutes>02d:%<seconds>02d', hours:, minutes:, seconds:)
     else
-      "#{minutes}:#{'%02d' % seconds}"
+      format('%<minutes>d:%<seconds>02d', minutes:, seconds:)
     end
   end
 
