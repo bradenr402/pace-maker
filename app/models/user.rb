@@ -31,4 +31,24 @@ class User < ApplicationRecord
       where(conditions.to_h).first
     end
   end
+
+  def total_miles
+    runs.sum(:distance)
+  end
+
+  def total_duration
+    runs.sum(:duration)
+  end
+
+  def total_km
+    (total_miles * 1.609344).round(3)
+  end
+
+  def runs_between(start_date, end_date)
+    runs.where(date: start_date..end_date).order(date: :desc)
+  end
+
+  def runs_in_range(range)
+    runs.where(date: range).order(date: :desc)
+  end
 end
