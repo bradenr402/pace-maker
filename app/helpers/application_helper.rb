@@ -4,7 +4,7 @@ module ApplicationHelper
     minutes = (duration % 3600) / 60
     seconds = duration % 60
 
-    if hours > 0
+    if hours.positive?
       "#{hours}:#{'%02d' % minutes}:#{'%02d' % seconds}"
     else
       "#{minutes}:#{'%02d' % seconds}"
