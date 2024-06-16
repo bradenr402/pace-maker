@@ -1,4 +1,6 @@
 <article id="<%= dom_id run %>" class="py-6 prose dark:prose-invert">
+  <h2 class="subheading"><%= pretty_date(run.date) %></h2>
+
   <table class="text-base my-0 table-auto">
     <tr>
       <th>Time:</th>
@@ -27,8 +29,5 @@
       <% end %>
     </p>
   <% end %>
-  <div class="flex divide-x divide-slate-400">
-    <time class="text-slate-600 dark:text-slate-400 text-xs mt-2 pe-3" datetime="<%= run.date.to_formatted_s(:long) %>">Ran <%= days_ago(run.date) %></time>
-    <time class="text-slate-600 dark:text-slate-400 text-xs mt-2 ps-3" datetime="<%= run.created_at.to_formatted_s(:long) %>">Posted <%= time_ago_in_words(run.created_at) + " ago" %></time>
-  </div>
+  <time class="text-slate-600 dark:text-slate-400 text-xs mt-2" datetime="<%= run.created_at.to_formatted_s(:long) %>">Posted <%= time_ago_in_words(run.created_at) + " ago" %></time>
 </article>
