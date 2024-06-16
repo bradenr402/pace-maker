@@ -79,8 +79,6 @@ class RunsController < ApplicationController
         .first[
         'interval'
       ]
-    else
-      nil
     end
   end
 end
