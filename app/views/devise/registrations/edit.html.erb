@@ -57,7 +57,17 @@
   <% end %>
 
   <div class="flex justify-end">
-    <%= button_to "Cancel account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "text-slate-400 hover:text-slate-600 font-semibold text-sm relative -top-8" %>
+    <%= button_to "Cancel Account", registration_path(resource_name),
+                  method: :delete,
+                  class: "text-slate-400 hover:text-slate-600 font-semibold text-sm relative -top-8",
+                  form: {
+                    data: {
+                      turbo: false,
+                      controller: 'confirmation',
+                      action: 'submit->confirmation#confirm',
+                      confirmation_message_value: "Are you sure you want to delete your account? This cannot be undone."
+                    }
+                  } %>
   </div>
 </div>
 
