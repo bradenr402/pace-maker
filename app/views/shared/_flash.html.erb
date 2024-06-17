@@ -1,6 +1,6 @@
 <% if notice %>
-  <div class="bg-indigo-600 text-white text-center p-4 absolute top-6 z-10 rounded-lg left-1/2 -translate-x-1/2" role="alert">
-    <p class='flex space-x-4'>
+  <div class="bg-indigo-600 text-white text-center text-sm sm:text-base p-4 absolute top-6 z-10 rounded-lg left-1/2 -translate-x-1/2" role="alert">
+    <p class='flex items-center space-x-4'>
       <span><%= sanitize notice %></span>
       <span class='font-bold float-right text-2xl leading-none hover:text-slate-600 dark:hover:text-slate-400 cursor-pointer transition duration-300 ease-in-out' onclick="this.parentElement.parentElement.style.display='none'">&times;</span>
     </p>
@@ -8,8 +8,8 @@
 <% end %>
 
 <% if flash[:error] %>
-  <div class="bg-rose-600 text-white text-center p-4 absolute top-6 z-10 rounded-lg left-1/2 -translate-x-1/2" role="alert">
-    <p class='flex space-x-4'>
+  <div class="bg-rose-600 text-white text-center text-sm sm:text-base p-4 absolute top-6 z-10 rounded-lg left-1/2 -translate-x-1/2" role="alert">
+    <p class='flex items-center space-x-4'>
       <span><%= sanitize flash[:error] %></span>
       <span class='font-bold float-right text-2xl leading-none hover:text-slate-600 dark:hover:text-slate-400 cursor-pointer transition duration-300 ease-in-out' onclick="this.parentElement.parentElement.style.display='none'">&times;</span>
     </p>
@@ -17,8 +17,8 @@
 <% end %>
 
 <% if alert %>
-  <div class="bg-rose-600 text-white text-center p-4 absolute top-6 z-10 rounded-lg left-1/2 -translate-x-1/2" role="alert">
-    <p class='flex space-x-4'>
+  <div class="bg-rose-600 text-white text-center text-sm sm:text-base p-4 absolute top-6 z-10 rounded-lg left-1/2 -translate-x-1/2" role="alert">
+    <p class='flex items-center space-x-4'>
       <span><%= sanitize alert %></span>
       <span class='font-bold float-right text-2xl leading-none hover:text-slate-600 dark:hover:text-slate-400 cursor-pointer transition duration-300 ease-in-out' onclick="this.parentElement.parentElement.style.display='none'">&times;</span>
     </p>
@@ -26,8 +26,8 @@
 <% end %>
 
 <% if success %>
-  <div class="bg-green-600 text-white text-center p-4 absolute top-6 z-10 rounded-lg left-1/2 -translate-x-1/2" role="alert">
-    <p class='flex space-x-4'>
+  <div class="bg-green-600 text-white text-center text-sm sm:text-base p-4 absolute top-6 z-10 rounded-lg left-1/2 -translate-x-1/2" role="alert">
+    <p class='flex items-center space-x-4'>
       <span><%= sanitize success %></span>
       <span class='font-bold float-right text-2xl leading-none hover:text-slate-600 dark:hover:text-slate-400 cursor-pointer transition duration-300 ease-in-out' onclick="this.parentElement.parentElement.style.display='none'">&times;</span>
     </p>
