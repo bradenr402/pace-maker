@@ -2,11 +2,8 @@ class Run < ApplicationRecord
   belongs_to :user
 
   validates :distance, :duration, :date, presence: true
-
   validates :distance, numericality: { greater_than_or_equal_to: 0 }
-
   validate :validate_duration
-
   validate :date_not_in_future
 
   attr_accessor :duration_input

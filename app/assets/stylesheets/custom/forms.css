@@ -88,6 +88,10 @@
     }
   }
 
+  .error-message {
+    @apply text-red-800 dark:text-red-300 text-xs;
+  }
+
   /* Use for select controls. */
   .form-select {
     @apply px-3 py-2 border border-slate-300 bg-white font-normal text-base placeholder:text-slate-500 rounded block w-full focus:outline-none focus:ring-4 focus:ring-indigo-50 focus:border-indigo-500 text-slate-900 dark:bg-slate-800 dark:border-slate-700 dark:focus:ring-indigo-500/30 dark:focus:border-slate-600 dark:text-white dark:placeholder:text-slate-400 shadow-sm;

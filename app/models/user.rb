@@ -12,7 +12,17 @@ class User < ApplicationRecord
 
   attr_writer :login
 
-  validates :username, presence: true, uniqueness: { case_sensitive: false }
+  validates :username, :email, presence: true
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :username,
+            uniqueness: {
+              case_sensitive: false
+            },
+            format: {
+              with: /\A[a-z0-9_.]{3,}\z/,
+              message:
+                'can only contain lowercase letters, numbers, underscores, and periods and must be at least 3 characters long'
+            }
 
   def login
     @login || username || email

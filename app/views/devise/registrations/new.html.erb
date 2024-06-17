@@ -9,22 +9,22 @@
 <% end %>
 
 <%= render 'auth_layout' do %>
-  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= form_for resource, as: resource_name, url: registration_path(resource_name), data: { controller: "form-validation" }, html: { novalidate: true } do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
 
     <div class="form-group">
       <%= f.label :email, class: 'form-label' %>
-      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-input', pattern: "[^@\s]+@[^@\s]+\.[^@\s]+", title: "Invalid email address" %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-input', data: { form_validation_target: "email", action: "blur->form-validation#validateEmail" } %>
     </div>
 
     <div class="form-group">
       <%= f.label :username, class: 'form-label' %>
-      <%= f.text_field :username, class: 'form-input' %>
+      <%= f.text_field :username, class: 'form-input', data: { form_validation_target: "username", action: "blur->form-validation#validateUsername" } %>
     </div>
 
     <div class="form-group">
       <%= f.label :password, class: 'form-label' %>
-      <%= f.password_field :password, autocomplete: "new-password", class: 'form-input' %>
+      <%= f.password_field :password, autocomplete: "new-password", class: 'form-input', data: { form_validation_target: "password", action: "blur->form-validation#validatePassword" } %>
       <% if @minimum_password_length %>
         <p class="text-xs text-slate-700 my-1 dark:text-slate-400"><%= @minimum_password_length %> characters minimum</p>
       <% end %>
@@ -32,11 +32,11 @@
 
     <div class="form-group">
       <%= f.label :password_confirmation, 'Password Confirmation', class: 'form-label' %>
-      <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-input' %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-input', data: { form_validation_target: "passwordConfirmation", action: "blur->form-validation#validatePasswordConfirmation" } %>
     </div>
 
     <%= f.submit "Sign up", class: 'btn btn-primary w-full' %>
   <% end %>
 
-  <%#= render "devise/shared/links" %>
+  <%= render "devise/shared/links" %>
 <% end %>
