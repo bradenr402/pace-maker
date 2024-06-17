@@ -10,7 +10,7 @@
 <%= render 'auth_layout' do %>
   <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
     <div class="form-group">
-      <%= f.label :login, 'Username or email', class: 'form-label' %>
+      <%= f.label :login, 'Username or Email', class: 'form-label' %>
       <%= f.text_field :login, autofocus: true, class: 'form-input' %>
     </div>
 
