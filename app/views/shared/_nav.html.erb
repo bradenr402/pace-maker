@@ -7,35 +7,37 @@
 end %>
 
 <header
-  class="container max-w-3xl mx-auto px-3 py-3 sm:flex sm:items-center <%= user_signed_in? ? 'sm:justify-between' : 'sm:justify-center pt-6' %>"
+  class="w-full px-4 fixed top-0 z-50 backdrop-blur-md bg-white/75 dark:bg-slate-900/75 border-b dark:border-slate-700"
   data-controller="navbar" data-navbar-state-value="false">
-  <div class="flex items-center justify-between px-4 py-1 sm:p-0">
-    <div class="font-bold text-xl">
-      <%= link_to root_path do %>
-        <span class="text-indigo-600">Team</span>Runner
+  <div class="max-w-3xl mx-auto sm:flex sm:items-center <%= user_signed_in? ? 'sm:justify-between' : 'sm:justify-center pt-6' %>">
+    <div class="flex items-center justify-between px-4 py-1 sm:p-0">
+      <div class="font-bold text-xl">
+        <%= link_to root_path do %>
+          <span class="text-indigo-600">Team</span>Runner
+        <% end %>
+      </div>
+      <% if user_signed_in? %>
+        <div class="sm:hidden">
+          <button class="text-indigo-600 focus:text-white focus:outline-none hover:text-white block"
+          type="button"
+          data-action="click->navbar#toggle" >
+            <span class="sr-only">Open main menu</span>
+            <svg class="h-8 w-8 fill-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path data-navbar-target="x"    stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" class="hidden" />
+              <path data-navbar-target="bars" stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+          </button>
+        </div>
       <% end %>
     </div>
     <% if user_signed_in? %>
-      <div class="sm:hidden">
-        <button class="text-indigo-600 focus:text-white focus:outline-none hover:text-white block"
-        type="button"
-        data-action="click->navbar#toggle" >
-          <span class="sr-only">Open main menu</span>
-          <svg class="h-8 w-8 fill-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path data-navbar-target="x"    stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" class="hidden" />
-            <path data-navbar-target="bars" stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-          </svg>
-        </button>
+      <div class="hidden sm:flex sm:gap-3 sm:items-center px-2 pt-2 pb-4 sm:pb-0 text-center" data-navbar-target="menu">
+        <% nav_links.each do |item| %>
+          <% link_options = { class: "nav-link #{'nav-link-active' if current_page?(item[:path]) }" }.merge(item[:options] || {}) %>
+          <%= link_to item[:name], item[:path], link_options %>
+        <% end %>
+        <%= button_to 'Sign Out', destroy_user_session_path, method: :delete, class: 'nav-link nav-link-destructive w-full' %>
       </div>
     <% end %>
   </div>
-  <% if user_signed_in? %>
-    <div class="hidden sm:flex sm:gap-3 sm:items-center px-2 pt-2 pb-4 sm:pb-2 text-center" data-navbar-target="menu">
-      <% nav_links.each do |item| %>
-        <% link_options = { class: "nav-link #{'nav-link-active' if current_page?(item[:path]) }" }.merge(item[:options] || {}) %>
-        <%= link_to item[:name], item[:path], link_options %>
-      <% end %>
-      <%= button_to 'Sign Out', destroy_user_session_path, method: :delete, class: 'nav-link nav-link-destructive w-full' %>
-    </div>
-  <% end %>
 </header>
