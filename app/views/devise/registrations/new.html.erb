@@ -24,7 +24,7 @@
 
     <div class="form-group">
       <%= f.label :password, class: 'form-label' %>
-      <%= f.password_field :password, autocomplete: "new-password", class: 'form-input', data: { form_validation_target: "password", action: "blur->form-validation#validatePassword" } %>
+      <%= f.password_field :password, autocomplete: "new-password", class: 'form-input', data: { form_validation_target: "password", action: "blur->form-validation#validatePassword blur->form-validation#validatePasswordConfirmation" } %>
       <% if @minimum_password_length %>
         <p class="text-xs text-slate-700 my-1 dark:text-slate-400"><%= @minimum_password_length %> characters minimum</p>
       <% end %>
