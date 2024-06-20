@@ -39,9 +39,10 @@
       <% end %>
     </div>
 
-    <div class='form-group hidden opacity-0 max-h-0 overflow-hidden transition-all duration-500 ease-in-out' id='password_confirmation_container' aria-live="polite" >
-      <%= f.label :password_confirmation, 'Confirm new password', class: "form-label" %>
-      <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-input", data: { form_validation_target: "passwordConfirmation", action: "blur->form-validation#validatePasswordConfirmation" } %>
+    <div class='form-group' >
+      <%= f.label :password_confirmation, 'Confirm new password', class: "form-label opacity-60 transition duration-300 ease-in-out", id: 'password_confirmation_label' %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", disabled: true, class: "form-input transition duration-300 ease-in-out", data: { form_validation_target: "newPasswordConfirmation", action: "blur->form-validation#validateNewPasswordConfirmation" } %>
+      <p class="text-xs text-slate-700 my-1 dark:text-slate-400 opacity-0 transition-opacity duration-300 ease-in-out" id="password_confirmation_hint">Enter your new password again to confirm it.</p>
     </div>
 
     <div class='form-group'>
@@ -74,25 +75,19 @@
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const newPasswordField = document.getElementById('user_password');
-    const passwordConfirmationContainer = document.getElementById('password_confirmation_container');
+    const passwordConfirmationField = document.getElementById('user_password_confirmation');
+    const passwordConfirmationLabel = document.getElementById('password_confirmation_label');
+    const passwordConfirmationHint = document.getElementById('password_confirmation_hint');
 
     newPasswordField.addEventListener('input', () => {
       if (newPasswordField.value) {
-        passwordConfirmationContainer.classList.remove('hidden', 'max-h-0');
-        setTimeout(() => {
-          passwordConfirmationContainer.classList.remove('opacity-0');
-          passwordConfirmationContainer.classList.add('opacity-100');
-        }, 10);
-        } else {
-        passwordConfirmationContainer.classList.add('opacity-0');
-        passwordConfirmationContainer.classList.remove('opacity-100');
-
-        passwordConfirmationContainer.addEventListener('transitionend', () => {
-          if (passwordConfirmationContainer.classList.contains('opacity-0')) {
-            passwordConfirmationContainer.classList.add('max-h-0');
-            passwordConfirmationContainer.classList.add('hidden');
-          }
-        }, { once: true });
+        passwordConfirmationField.disabled = false;
+        passwordConfirmationLabel.classList.remove('opacity-60');
+        passwordConfirmationHint.classList.remove('opacity-0');
+      } else {
+        passwordConfirmationField.disabled = true;
+        passwordConfirmationLabel.classList.add('opacity-60');
+        passwordConfirmationHint.classList.add('opacity-0');
       }
     })
   })

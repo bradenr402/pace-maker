@@ -74,6 +74,28 @@ export default class extends Controller {
     }
   }
 
+  validateNewPassword(event) {
+    const newPassword = this.newPasswordTarget.value;
+    if (newPassword && newPassword.length < 6) {
+      this.showError(
+        this.newPasswordTarget,
+        'Password must be at least 6 characters long'
+      );
+    } else {
+      this.clearError(this.newPasswordTarget);
+    }
+  }
+
+  validateNewPasswordConfirmation(event) {
+    const newPassword = this.newPasswordTarget.value;
+    const newPasswordConfirmation = this.newPasswordConfirmationTarget.value;
+    if (newPassword && newPassword !== newPasswordConfirmation && event.target !== this.newPasswordTarget) {
+      this.showError(this.newPasswordConfirmationTarget, 'Passwords do not match');
+    } else {
+      this.clearError(this.newPasswordConfirmationTarget);
+    }
+  }
+
   validateDate(event) {
     const date = this.dateTarget.value;
     if (!(Date.parse(date) <= new Date())) {
