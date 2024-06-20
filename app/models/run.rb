@@ -3,12 +3,12 @@ class Run < ApplicationRecord
 
   validates :distance, :duration, :date, presence: true
   validates :distance, numericality: { greater_than_or_equal_to: 0 }
-  validate :validate_duration
+  validate :duration_requirements
   validate :date_not_in_future
 
   attr_accessor :duration_input
 
-  def validate_duration
+  def duration_requirements
     return unless duration
 
     errors.add(:duration, 'Invalid interval format') unless duration.is_a?(ActiveSupport::Duration)
