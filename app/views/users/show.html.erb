@@ -9,21 +9,21 @@
     <% end %>
   </div>
 
-  <div class="flex flex-wrap gap-10 items-center justify-around pb-6 mt-10">
-    <div class='flex flex-col items-center justify-center text-center'>
-      <p class='font-semibold text-xl'>Total Distance Run</p>
-      <p class=''>
-        <%= @user.total_miles %>
-        <span class="">miles</span>
-      </p>
-      <%# <p>miles run</p> %>
-    </div>
-    <div class='flex flex-col items-center justify-center text-center'>
-      <p class='font-semibold text-xl'>Total Time Spent Running</p>
-      <p class=''>
-        <%= precise_distance_of_time_in_words(@user.total_duration) %>
-      </p>
-      <%# <p>spent running</p> %>
+  <div class="pb-3 mt-10">
+    <h1 class="heading pb-6">User Stats</h1>
+    <div class="block sm:flex space-y-8 sm:space-y-0 sm:items-center sm:justify-around">
+      <div class='flex flex-col items-center justify-center text-center'>
+        <p class='font-semibold text-2xl'>
+          <%= @user.total_miles %>
+        </p>
+        <p class='text-slate-700 dark:text-slate-400'>miles ran</p>
+      </div>
+      <div class='flex flex-col items-center justify-center text-center'>
+        <p class='font-semibold text-2xl'>
+          <%= clock_time_display(@user.total_duration) %>
+        </p>
+        <p class='text-slate-700 dark:text-slate-400'>spent running</p>
+      </div>
     </div>
   </div>
 
