@@ -12,9 +12,9 @@ class User < ApplicationRecord
 
   attr_writer :login
 
-  validates :username, :email, presence: true
-  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :username,
+            presence: true,
             uniqueness: {
               case_sensitive: false
             },
