@@ -26,7 +26,7 @@
       <%= f.password_field :password, autocomplete: "new-password", class: 'form-input', data: { form_validation_target: "password", action: "input->form-validation#validatePassword blur->form-validation#validatePasswordConfirmation input->form-validation#showPasswordRequirements" } %>
 
       <div class="hidden" data-form-validation-target="passwordRequirements">
-        <p class="help-text my-1">Password must contain:</p>
+        <p class="help-text mt-2 mb-1">Password must contain:</p>
         <div class="ml-3">
           <p class="help-text my-1" data-form-validation-target="passwordLength"><span class="hidden" data-form-validation-target="lengthCheck">&#10004;</span> <span class="hidden" data-form-validation-target="lengthCross">&times;</span> At least 6 characters</p>
           <p class="help-text my-1" data-form-validation-target="passwordUppercase"><span class="hidden" data-form-validation-target="uppercaseCheck">&#10004;</span> <span class="hidden" data-form-validation-target="uppercaseCross">&times;</span> At least 1 uppercase letter</p>
