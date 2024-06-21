@@ -10,7 +10,7 @@
         <span class="text-xs text-slate-700 dark:text-slate-400">(optional)</span>
       </p>
     <% end %>
-    <%= form.text_area :description, placeholder: 'Add a description...', class: 'form-input' %>
+    <%= form.text_area :description, placeholder: 'Add a description...', class: 'form-input', data: { controller: 'autogrow', action: 'input->autogrow#grow' } %>
   </div>
 
   <div class="flex items-center justify-between flex-wrap">
