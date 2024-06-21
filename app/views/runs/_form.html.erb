@@ -26,7 +26,11 @@
 
   <div class="flex items-center justify-between flex-wrap">
     <div class="sm:flex-1 sm:mb-0 mb-6">
-      <%= form.submit class: "btn btn-primary" %>
+      <% if form.object.new_record? %>
+        <%= form.submit 'Create run', class: 'btn btn-primary' %>
+      <% else %>
+        <%= form.submit 'Update run', class: 'btn btn-primary' %>
+      <% end %>
     </div>
 
     <div class="flex gap-6 items-center">
