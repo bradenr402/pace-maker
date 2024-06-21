@@ -44,9 +44,7 @@ class RunsController < ApplicationController
 
   private
 
-  def set_run
-    @run = Run.find(params[:id])
-  end
+  def set_run = @run = Run.find(params[:id])
 
   def run_params
     params.require(:run).permit(
