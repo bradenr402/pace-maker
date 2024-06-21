@@ -1,5 +1,9 @@
 class User < ApplicationRecord
   has_many :runs, dependent: :destroy
+  has_many :team_memberships
+  has_many :teams, through: :team_memberships
+  has_many :owned_teams, class_name: 'Team', foreign_key: 'owner_id'
+  has_many :team_join_requests
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -27,13 +31,15 @@ class User < ApplicationRecord
   validate :password_complexity
 
   def password_complexity
+    return if password.blank?
+
     password_regex = /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[#?!@$%^&*-])/
 
-    return if password.blank? || password =~ password_regex
-
-    errors.add :password,
-               'Complexity requirement not met. Password must include at least ' \
-                 '1 uppercase letter, 1 lowercase letter, 1 digit, and 1 special character (#?!@$%^&*-)'
+    unless password =~ password_regex
+      errors.add :password,
+                 'Complexity requirement not met. Password must include at least ' \
+                   '1 uppercase letter, 1 lowercase letter, 1 digit, and 1 special character (#?!@$%^&*-)'
+    end
   end
 
   def login
@@ -72,5 +78,9 @@ class User < ApplicationRecord
 
   def runs_in_range(range)
     runs.where(date: range).order(date: :desc)
+  end
+
+  def member_of?(team)
+    teams.include?(team)
   end
 end

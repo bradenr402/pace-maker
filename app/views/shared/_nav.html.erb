@@ -1,5 +1,6 @@
 <% nav_links = [
   { name: 'Runs', path: runs_path, options: {} },
+  { name: 'Teams', path: teams_path, options: {} },
 ].tap do |links|
   if user_signed_in?
     links.push({ name: 'Profile', path: user_path(current_user), options: {} })

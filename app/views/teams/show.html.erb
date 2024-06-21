@@ -1,0 +1,60 @@
+<div class="max-w-3xl mx-auto px-4 my-16">
+  <div class="pb-6 border-b dark:border-slate-700 text-center">
+    <h1 class="heading"><%= @team.name %></h1>
+    <h2 class="text-lg text-slate-700 my-1 dark:text-slate-400"><%= @team.owner.username %></h2>
+    <% unless @team.description.blank? %>
+      <p class="prose dark:prose-invert text-center mx-auto"><%= @team.description %></p>
+    <% end %>
+
+    <div class="flex items-center justify-center sm:justify-end">
+      <% if current_user == @team.owner %>
+        <%= link_to 'Edit team', edit_team_path(@team), class: 'btn btn-white' %>
+      <% else %>
+        <% if current_user.member_of?(@team) %>
+          <%= button_to 'Leave team', leave_team_path(@team), class: 'btn btn-destructive' %>
+        <% else %>
+          <% request = @team.team_join_requests.find_by(user_id: current_user.id) %>
+          <% if request.nil? %>
+            <%= button_to 'Join team', join_team_path(@team), class: 'btn btn-primary' %>
+          <% elsif request.pending? %>
+            <%= button_to 'Cancel request', cancel_request_path(request), method: :delete, class: 'btn btn-destructive' %>
+          <% elsif request.rejected? %>
+            <p>Sorry, <%= @team.owner.username %> rejected your join request.</p>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <% if current_user == @team.owner %>
+    <div class="mt-10 pb-6 border-b dark:border-slate-700">
+      <h1 class="heading">Join Requests</h1>
+    </div>
+    <% @join_requests.each do |request| %>
+      <div class="flex gap-3 items-center w-full">
+        <div class="mr-auto">
+          <p><%= request.user.username %></p>
+          <p class="help-text"><%= request.user.email %></p>
+        </div>
+
+        <%= button_to 'Approve', approve_request_path(request), method: :patch, class: 'btn btn-sm btn-primary' %>
+        <%= button_to 'Reject', reject_request_path(request), method: :patch, class: 'btn btn-sm btn-destructive btn-outline' %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <div class="flex flex-wrap gap-6 items-center mt-10 pb-6 border-b dark:border-slate-700">
+    <h1 class="heading">Team Members</h1>
+  </div>
+
+  <div class="divide-y dark:divide-slate-700 dark:text-slate-700 mb-10">
+    <% @members.each do |member| %>
+      <div class="py-3">
+        <h2 class='subheading'><%= member.username %></h2>
+        <p class='help-text'><%= member.email %></p>
+
+        <%= link_to 'View user', user_path(member), class: 'btn-link inline-block my-3' %>
+      </div>
+    <% end %>
+  </div>
+</div>

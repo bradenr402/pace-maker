@@ -7,6 +7,16 @@ Rails.application.routes.draw do
 
   resources :runs
   resources :users, only: %i[show]
+  resources :teams
+
+  post 'team_join_requests/:id/create', to: 'team_join_requests#create', as: 'create_request'
+  delete 'team_join_requests/:id/cancel', to: 'team_join_requests#destroy', as: 'cancel_request'
+  patch 'team_join_requests/:id/approve', to: 'team_join_requests#approve', as: 'approve_request'
+  patch 'team_join_requests/:id/reject', to: 'team_join_requests#reject', as: 'reject_request'
+
+  post 'teams/:id/join', to: 'teams#join', as: 'join_team'
+  post 'teams/:id/leave', to: 'teams#leave', as: 'leave_team'
+
   root 'runs#index'
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

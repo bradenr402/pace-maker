@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_10_225504) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_21_155047) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -23,6 +23,34 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_10_225504) do
     t.datetime "updated_at", null: false
     t.interval "duration", null: false
     t.index ["user_id"], name: "index_runs_on_user_id"
+  end
+
+  create_table "team_join_requests", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "team_id", null: false
+    t.integer "status", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["team_id"], name: "index_team_join_requests_on_team_id"
+    t.index ["user_id"], name: "index_team_join_requests_on_user_id"
+  end
+
+  create_table "team_memberships", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "team_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["team_id"], name: "index_team_memberships_on_team_id"
+    t.index ["user_id"], name: "index_team_memberships_on_user_id"
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.bigint "owner_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_id"], name: "index_teams_on_owner_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -40,4 +68,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_10_225504) do
   end
 
   add_foreign_key "runs", "users"
+  add_foreign_key "team_join_requests", "teams"
+  add_foreign_key "team_join_requests", "users"
+  add_foreign_key "team_memberships", "teams"
+  add_foreign_key "team_memberships", "users"
+  add_foreign_key "teams", "users", column: "owner_id"
 end
