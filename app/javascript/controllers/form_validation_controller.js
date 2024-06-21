@@ -89,8 +89,15 @@ export default class extends Controller {
   validateNewPasswordConfirmation(event) {
     const newPassword = this.newPasswordTarget.value;
     const newPasswordConfirmation = this.newPasswordConfirmationTarget.value;
-    if (newPassword && newPassword !== newPasswordConfirmation && event.target !== this.newPasswordTarget) {
-      this.showError(this.newPasswordConfirmationTarget, 'Passwords do not match');
+    if (
+      newPassword &&
+      newPassword !== newPasswordConfirmation &&
+      event.target !== this.newPasswordTarget
+    ) {
+      this.showError(
+        this.newPasswordConfirmationTarget,
+        'Passwords do not match'
+      );
     } else {
       this.clearError(this.newPasswordConfirmationTarget);
     }
