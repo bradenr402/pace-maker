@@ -26,7 +26,7 @@
     </div>
   </div>
 
-  <% if current_user == @team.owner %>
+  <% if current_user == @team.owner && @join_requests.present? %>
     <div class="mt-10 pb-6 border-b dark:border-slate-700">
       <h1 class="heading">Join Requests</h1>
     </div>
