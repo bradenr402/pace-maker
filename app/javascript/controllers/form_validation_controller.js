@@ -21,6 +21,8 @@ export default class extends Controller {
     'passwordDigit',
     'passwordSpecial',
     'passwordRequirements',
+    'passwordConfirmationError',
+    'newPasswordConfirmationError',
     'lengthCheck',
     'lengthCross',
     'uppercaseCheck',
@@ -164,9 +166,9 @@ export default class extends Controller {
     const password = this.passwordTarget.value;
     const passwordConfirmation = this.passwordConfirmationTarget.value;
     if (password !== passwordConfirmation) {
-      this.showError(this.passwordConfirmationTarget, 'Passwords do not match');
+      this.passwordConfirmationErrorTarget.classList.remove('hidden');
     } else {
-      this.clearError(this.passwordConfirmationTarget);
+      this.passwordConfirmationErrorTarget.classList.add('hidden');
     }
   }
 
@@ -192,12 +194,9 @@ export default class extends Controller {
       newPassword !== newPasswordConfirmation &&
       event.target !== this.newPasswordTarget
     ) {
-      this.showError(
-        this.newPasswordConfirmationTarget,
-        'Passwords do not match'
-      );
+      this.newPasswordConfirmationErrorTarget.classList.remove('hidden');
     } else {
-      this.clearError(this.newPasswordConfirmationTarget);
+      this.newPasswordConfirmationErrorTarget.classList.add('hidden');
     }
   }
 
@@ -240,13 +239,14 @@ export default class extends Controller {
       element.after(errorElement);
     }
     errorElement.textContent = message;
+    errorElement.classList.remove('hidden');
     element.classList.add('form-input-error');
   }
 
   clearError(element) {
     const errorElement = element.nextElementSibling;
     if (errorElement && errorElement.classList.contains('error-message')) {
-      errorElement.remove();
+      errorElement.classList.add('hidden');
     }
     element.classList.remove('form-input-error');
   }
