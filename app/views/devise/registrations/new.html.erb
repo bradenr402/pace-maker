@@ -23,15 +23,23 @@
 
     <div class="form-group">
       <%= f.label :password, class: 'form-label' %>
-      <%= f.password_field :password, autocomplete: "new-password", class: 'form-input', data: { form_validation_target: "password", action: "blur->form-validation#validatePassword blur->form-validation#validatePasswordConfirmation" } %>
-      <% if @minimum_password_length %>
-        <p class="text-xs text-slate-700 my-1 dark:text-slate-400"><%= @minimum_password_length %> characters minimum</p>
-      <% end %>
+      <%= f.password_field :password, autocomplete: "new-password", class: 'form-input', data: { form_validation_target: "password", action: "input->form-validation#validatePassword blur->form-validation#validatePasswordConfirmation input->form-validation#showPasswordRequirements" } %>
+
+      <div class="hidden" data-form-validation-target="passwordRequirements">
+        <p class="help-text my-1">Password must contain:</p>
+        <div class="ml-3">
+          <p class="help-text my-1" data-form-validation-target="passwordLength"><span class="hidden" data-form-validation-target="lengthCheck">&#10004;</span> <span class="hidden" data-form-validation-target="lengthCross">&times;</span> At least 6 characters</p>
+          <p class="help-text my-1" data-form-validation-target="passwordUppercase"><span class="hidden" data-form-validation-target="uppercaseCheck">&#10004;</span> <span class="hidden" data-form-validation-target="uppercaseCross">&times;</span> At least 1 uppercase letter</p>
+          <p class="help-text my-1" data-form-validation-target="passwordLowercase"><span class="hidden" data-form-validation-target="lowercaseCheck">&#10004;</span> <span class="hidden" data-form-validation-target="lowercaseCross">&times;</span> At least 1 lowercase letter</p>
+          <p class="help-text my-1" data-form-validation-target="passwordDigit"><span class="hidden" data-form-validation-target="digitCheck">&#10004;</span> <span class="hidden" data-form-validation-target="digitCross">&times;</span> At least 1 digit</p>
+          <p class="help-text my-1" data-form-validation-target="passwordSpecial"><span class="hidden" data-form-validation-target="specialCheck">&#10004;</span> <span class="hidden" data-form-validation-target="specialCross">&times;</span> At least 1 special character (#?!@$%^&*-)</p>
+        </div>
+      </div>
     </div>
 
     <div class="form-group">
       <%= f.label :password_confirmation, class: 'form-label' %>
-      <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-input', data: { form_validation_target: "passwordConfirmation", action: "blur->form-validation#validatePasswordConfirmation" } %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-input', data: { form_validation_target: "passwordConfirmation", action: "input->form-validation#validatePasswordConfirmation" } %>
     </div>
 
     <%= f.submit "Sign up", class: 'btn btn-primary w-full' %>

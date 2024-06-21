@@ -15,6 +15,22 @@ export default class extends Controller {
     'distance',
     'duration',
     'comments',
+    'passwordLength',
+    'passwordUppercase',
+    'passwordLowercase',
+    'passwordDigit',
+    'passwordSpecial',
+    'passwordRequirements',
+    'lengthCheck',
+    'lengthCross',
+    'uppercaseCheck',
+    'uppercaseCross',
+    'lowercaseCheck',
+    'lowercaseCross',
+    'digitCheck',
+    'digitCross',
+    'specialCheck',
+    'specialCross',
   ];
 
   validateEmail(event) {
@@ -52,15 +68,95 @@ export default class extends Controller {
     }
   }
 
+  showPasswordRequirements() {
+    this.passwordRequirementsTarget.classList.remove('hidden');
+  }
+
+  hidePasswordRequirements() {
+    this.passwordRequirementsTarget.classList.add('hidden');
+  }
+
   validatePassword(event) {
     const password = this.passwordTarget.value;
-    if (password.length < 6) {
-      this.showError(
-        this.passwordTarget,
-        'Password must be at least 6 characters long'
-      );
+    this.validatePasswordLength(password);
+    this.validatePasswordUppercase(password);
+    this.validatePasswordLowercase(password);
+    this.validatePasswordDigit(password);
+    this.validatePasswordSpecial(password);
+  }
+
+  validatePasswordLength(password) {
+    this.passwordLengthTarget.classList.remove('help-text');
+    if (password.length >= 6) {
+      this.passwordLengthTarget.classList.remove('error-message');
+      this.passwordLengthTarget.classList.add('valid-message');
+      this.lengthCheckTarget.classList.remove('hidden');
+      this.lengthCrossTarget.classList.add('hidden');
     } else {
-      this.clearError(this.passwordTarget);
+      this.passwordLengthTarget.classList.add('error-message');
+      this.passwordLengthTarget.classList.remove('valid-message');
+      this.lengthCheckTarget.classList.add('hidden');
+      this.lengthCrossTarget.classList.remove('hidden');
+    }
+  }
+
+  validatePasswordUppercase(password) {
+    this.passwordUppercaseTarget.classList.remove('help-text');
+    if (/[A-Z]/.test(password)) {
+      this.passwordUppercaseTarget.classList.remove('error-message');
+      this.passwordUppercaseTarget.classList.add('valid-message');
+      this.uppercaseCheckTarget.classList.remove('hidden');
+      this.uppercaseCrossTarget.classList.add('hidden');
+    } else {
+      this.passwordUppercaseTarget.classList.add('error-message');
+      this.passwordUppercaseTarget.classList.remove('valid-message');
+      this.uppercaseCheckTarget.classList.add('hidden');
+      this.uppercaseCrossTarget.classList.remove('hidden');
+    }
+  }
+
+  validatePasswordLowercase(password) {
+    this.passwordLowercaseTarget.classList.remove('help-text');
+    if (/[a-z]/.test(password)) {
+      this.passwordLowercaseTarget.classList.remove('error-message');
+      this.passwordLowercaseTarget.classList.add('valid-message');
+      this.lowercaseCheckTarget.classList.remove('hidden');
+      this.lowercaseCrossTarget.classList.add('hidden');
+    } else {
+      this.passwordLowercaseTarget.classList.add('error-message');
+      this.passwordLowercaseTarget.classList.remove('valid-message');
+      this.lowercaseCheckTarget.classList.add('hidden');
+      this.lowercaseCrossTarget.classList.remove('hidden');
+    }
+  }
+
+  validatePasswordDigit(password) {
+    this.passwordDigitTarget.classList.remove('help-text');
+    if (/\d/.test(password)) {
+      this.passwordDigitTarget.classList.remove('error-message');
+      this.passwordDigitTarget.classList.add('valid-message');
+      this.digitCheckTarget.classList.remove('hidden');
+      this.digitCrossTarget.classList.add('hidden');
+    } else {
+      this.passwordDigitTarget.classList.add('error-message');
+      this.passwordDigitTarget.classList.remove('valid-message');
+      this.digitCheckTarget.classList.add('hidden');
+      this.digitCrossTarget.classList.remove('hidden');
+    }
+  }
+
+  validatePasswordSpecial(password) {
+    this.passwordSpecialTarget.classList.remove('help-text');
+    if (/[#?!@$%^&*-]/.test(password)) {
+      this.passwordSpecialTarget.classList.remove('error-message');
+      this.passwordSpecialTarget.classList.add('valid-message');
+      this.specialCheckTarget.classList.remove('hidden');
+      this.specialCrossTarget.classList.add('hidden');
+    } else {
+      this.passwordSpecialTarget.classList.add('error-message');
+      this.passwordSpecialTarget.classList.remove('valid-message');
+      this.specialCheckTarget.classList.add('hidden');
+      this.specialCrossTarget.classList.remove('hidden');
     }
   }
 
@@ -76,13 +172,15 @@ export default class extends Controller {
 
   validateNewPassword(event) {
     const newPassword = this.newPasswordTarget.value;
-    if (newPassword && newPassword.length < 6) {
-      this.showError(
-        this.newPasswordTarget,
-        'Password must be at least 6 characters long'
-      );
+    if (newPassword) {
+      this.showPasswordRequirements();
+      this.validatePasswordLength(newPassword);
+      this.validatePasswordUppercase(newPassword);
+      this.validatePasswordLowercase(newPassword);
+      this.validatePasswordDigit(newPassword);
+      this.validatePasswordSpecial(newPassword);
     } else {
-      this.clearError(this.newPasswordTarget);
+      this.hidePasswordRequirements();
     }
   }
 

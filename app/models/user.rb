@@ -21,8 +21,20 @@ class User < ApplicationRecord
             format: {
               with: /\A[a-z0-9_.]{3,}\z/,
               message:
-                'can only contain lowercase letters, numbers, underscores, and periods and must be at least 3 characters long'
+                'can only contain lowercase letters, numbers, underscores, and periods' \
+                  'and must be at least 3 characters long'
             }
+  validate :password_complexity
+
+  def password_complexity
+    password_regex = /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[#?!@$%^&*-])/
+
+    return if password.blank? || password =~ password_regex
+
+    errors.add :password,
+               'Complexity requirement not met. Password must include at least ' \
+                 '1 uppercase letter, 1 lowercase letter, 1 digit, and 1 special character (#?!@$%^&*-)'
+  end
 
   def login
     @login || username || email
