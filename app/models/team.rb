@@ -6,4 +6,6 @@ class Team < ApplicationRecord
 
   validates :name, presence: true
   validates :owner, presence: true
+
+  def total_miles = Run.joins(user: :teams).where(teams: { id: }).sum(:distance)
 end
