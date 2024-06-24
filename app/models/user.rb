@@ -83,4 +83,12 @@ class User < ApplicationRecord
   def member_of?(team)
     teams.include?(team)
   end
+
+  def membered_teams
+    teams.where.not(owner_id: id)
+  end
+
+  def other_teams
+    Team.where.not(id: owned_team_ids + team_ids)
+  end
 end
