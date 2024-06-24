@@ -33,6 +33,8 @@ export default class extends Controller {
     'digitCross',
     'specialCheck',
     'specialCross',
+    'teamName',
+    'teamDescription',
   ];
 
   validateEmail(event) {
@@ -228,6 +230,27 @@ export default class extends Controller {
       );
     } else {
       this.clearError(this.durationTarget);
+    }
+  }
+
+  validateTeamName(event) {
+    const name = this.teamNameTarget.value;
+    if (!name) {
+      this.showError(this.teamNameTarget, 'Name cannot be blank.');
+    } else {
+      this.clearError(this.teamNameTarget);
+    }
+  }
+
+  validateTeamDescription(event) {
+    const description = this.teamDescriptionTarget.value;
+    if (description.length > 500) {
+      this.showError(
+        this.teamDescriptionTarget,
+        'Description must be 500 characters or less.'
+      );
+    } else {
+      this.clearError(this.teamDescriptionTarget);
     }
   }
 

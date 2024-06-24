@@ -1,16 +1,17 @@
-<%= form_with model: @team do |form| %>
+<%= form_with model: @team, data: { controller: "form-validation" }, html: { novalidate: true } do |form| %>
   <div class="form-group">
     <%= form.label :name, class: 'form-label' %>
-    <%= form.text_field :name, class: 'form-input' %>
+    <%= form.text_field :name, class: 'form-input', data: { form_validation_target: 'teamName', action: 'blur->form-validation#validateTeamName' } %>
   </div>
 
   <div class="form-group">
     <%= form.label :description, class: 'form-label' do %>
       <p> Description
-        <span class="text-xs text-slate-700 dark:text-slate-400">(optional)</span>
+        <span class="help-text">(optional)</span>
       </p>
     <% end %>
-    <%= form.text_area :description, placeholder: 'Add a description...', class: 'form-input', data: { controller: 'autogrow', action: 'input->autogrow#grow' } %>
+    <%= form.text_area :description, placeholder: 'Add a description...', class: 'form-input', data: { controller: 'autogrow', form_validation_target: 'teamDescription', action: 'input->autogrow#grow input->form-validation#validateTeamDescription' } %>
+    <p class="help-text my-1">Maximum 500 characters</p>
   </div>
 
   <div class="flex items-center justify-between flex-wrap">
