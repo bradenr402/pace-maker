@@ -2,6 +2,7 @@ class TeamJoinRequestsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_join_request, only: %i[create destroy approve reject]
   before_action :set_team, only: %i[destroy approve reject]
+  before_action :authorize_owner!, only: %i[approve reject]
 
   def create
     if @join_request.save
@@ -46,4 +47,10 @@ class TeamJoinRequestsController < ApplicationController
 
   def set_join_request = @join_request = TeamJoinRequest.find(params[:id])
   def set_team = @team = Team.find(@join_request.team_id)
+
+  def authorize_owner!
+    unless current_user == @team.owner
+      redirect_to @team, alert: 'You are not authorized to perform this action.'
+    end
+  end
 end
