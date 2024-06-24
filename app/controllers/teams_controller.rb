@@ -1,6 +1,8 @@
 class TeamsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_team, only: %i[show edit update destroy join leave]
+  before_action :set_team,
+                only: %i[show edit update destroy join leave]
+  before_action :authorize_owner!, only: %i[remove_member]
 
   def index
     @teams = Team.all
@@ -70,9 +72,38 @@ class TeamsController < ApplicationController
     end
   end
 
+  def remove_member
+    team = Team.find(params[:team_id])
+    member = team.members.find(params[:user_id])
+
+    if member == current_user
+      redirect_back fallback_location: team,
+                    alert: 'You cannot remove yourself from the team.'
+      return
+    end
+
+    join_request = TeamJoinRequest.find_by(user_id: member.id, team_id: team.id)
+    team_membership = team.team_memberships.find_by(user: member)
+
+    if join_request.rejected! && team_membership.destroy
+      redirect_back fallback_location: team,
+                    success:
+                      "#{member.username} was successfully removed from this team."
+    else
+      redirect_back fallback_location: team,
+                    alert: "Unable to remove #{member.username} from this team."
+    end
+  end
+
   private
 
   def set_team = @team = Team.find(params[:id])
-
   def team_params = params.require(:team).permit(:name, :description)
+
+  def authorize_owner!
+    team = Team.find(params[:team_id])
+    unless current_user == team.owner
+      redirect_to team, alert: 'You are not authorized to perform this action.'
+    end
+  end
 end

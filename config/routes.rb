@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :runs
   resources :users, only: %i[show]
   resources :teams
+  post 'remove_member', to: 'teams#remove_member'
 
   post 'team_join_requests/:id/create', to: 'team_join_requests#create', as: 'create_request'
   delete 'team_join_requests/:id/cancel', to: 'team_join_requests#destroy', as: 'cancel_request'

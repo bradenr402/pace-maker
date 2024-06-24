@@ -6,7 +6,7 @@
       <p class="prose dark:prose-invert text-center mx-auto"><%= @team.description %></p>
     <% end %>
 
-    <div class="flex items-center justify-center sm:justify-end">
+    <div class="flex items-center justify-center sm:justify-end mt-6">
       <% if current_user == @team.owner %>
         <%= link_to 'Edit team', edit_team_path(@team), class: 'btn btn-white' %>
       <% else %>
@@ -50,8 +50,16 @@
   <div class="divide-y dark:divide-slate-700 dark:text-slate-700 mb-10">
     <% @members.each do |member| %>
       <div class="py-3">
-        <h2 class='subheading'><%= member.username %></h2>
-        <p class='help-text'><%= member.email %></p>
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class='subheading'><%= member.username %></h2>
+            <p class='help-text'><%= member.email %></p>
+          </div>
+
+          <% if current_user == @team.owner && member != current_user %>
+            <%= button_to 'Remove', remove_member_path(team_id: @team.id, user_id: member.id), method: :post, class: 'btn btn-destructive btn-outline', data: { confirm: 'Are you sure you want to remove this member?' } %>
+          <% end %>
+        </div>
 
         <%= link_to 'View user', user_path(member), class: 'btn-link inline-block my-3' %>
       </div>
