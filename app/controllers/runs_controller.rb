@@ -39,7 +39,7 @@ class RunsController < ApplicationController
 
   def destroy
     @run.destroy
-    redirect_to runs_url, success: 'Run was successfully deleted.'
+    redirect_to runs_path, success: 'Run was successfully deleted.'
   end
 
   private
