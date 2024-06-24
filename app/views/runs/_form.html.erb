@@ -1,13 +1,15 @@
 <%= form_with model: @run, data: { controller: "form-validation" }, html: { novalidate: true } do |form| %>
   <div class="form-group">
     <%= form.label :date, 'What day did you run?', class: 'form-label' %>
-    <%= form.date_field :date, required: true, autofocus: true, max: Date.today, value: form.object.new_record? ? Date.today : @run.date, class: 'form-input', data: { form_validation_target: "date", action: "blur->form-validation#validateDate" } %>
+    <%= form.date_field :date, required: true, autofocus: true, max: Date.today, value: form.object.new_record? ? Date.today : @run.date, class: 'form-input', data: { form_validation_target: "date", action: "input->form-validation#validateDate" } %>
+      <span class="error-message hidden my-1" data-form-validation-target="dateError">Date must be today or earlier</span>
   </div>
 
   <div data-controller="distance-shortcuts">
     <div class="form-group">
       <%= form.label :distance, 'How many miles did you run?', class: 'form-label' %>
-      <%= form.number_field :distance, required: true, step: 0.1, min: 0, class: 'form-input', data: { form_validation_target: "distance", action: "blur->form-validation#validateDistance", distance_shortcuts_target: "distance" } %>
+      <%= form.number_field :distance, required: true, step: 0.1, min: 0, class: 'form-input', data: { form_validation_target: "distance", action: "input->form-validation#validateDistance", distance_shortcuts_target: "distance" } %>
+      <span class="error-message hidden my-1" data-form-validation-target="distanceError">Distance must be a positive number</span>
     </div>
 
     <div class="form-group flex flex-wrap gap-3 -mt-2">
@@ -24,6 +26,7 @@
   <div class="form-group">
     <%= form.label :duration_input, 'How much time did you run for?', class: 'form-label' %>
     <%= form.text_field :duration_input, required: true, value: form.object.new_record? ? '' : clock_time_display(@run.duration), class: 'form-input', data: { form_validation_target: "duration", action: "blur->form-validation#validateDuration" } %>
+    <span class="error-message hidden my-1" data-form-validation-target="durationError">Duration must be in MM:SS or HH:MM:SS format and must be less than 24 hours</span>
     <p class="text-xs text-slate-700 my-1 dark:text-slate-400">Enter time in MM:SS or HH:MM:SS format.</p>
   </div>
 

@@ -4,25 +4,34 @@ import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
   static targets = [
     'email',
+    'emailError',
     'username',
+    'usernameError',
     'login',
+    'loginError',
     'password',
     'passwordConfirmation',
+    'passwordConfirmationError',
     'newPassword',
     'newPasswordConfirmation',
+    'newPasswordConfirmationError',
     'currentPassword',
     'date',
+    'dateError',
     'distance',
+    'distanceError',
     'duration',
-    'comments',
+    'durationError',
+    'teamName',
+    'teamNameError',
+    'teamDescription',
+    'teamDescriptionError',
     'passwordLength',
     'passwordUppercase',
     'passwordLowercase',
     'passwordDigit',
     'passwordSpecial',
     'passwordRequirements',
-    'passwordConfirmationError',
-    'newPasswordConfirmationError',
     'lengthCheck',
     'lengthCross',
     'uppercaseCheck',
@@ -33,17 +42,17 @@ export default class extends Controller {
     'digitCross',
     'specialCheck',
     'specialCross',
-    'teamName',
-    'teamDescription',
   ];
 
   validateEmail(event) {
     const email = this.emailTarget.value;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      this.showError(this.emailTarget, 'Invalid email address');
+      this.emailTarget.classList.add('form-input-error');
+      this.emailErrorTarget.classList.remove('hidden');
     } else {
-      this.clearError(this.emailTarget);
+      this.emailTarget.classList.remove('form-input-error');
+      this.emailErrorTarget.classList.add('hidden');
     }
   }
 
@@ -51,12 +60,11 @@ export default class extends Controller {
     const username = this.usernameTarget.value;
     const usernameRegex = /^[a-z0-9_.]{3,}$/;
     if (!usernameRegex.test(username)) {
-      this.showError(
-        this.usernameTarget,
-        'Username can only contain lowercase letters, numbers, underscores, and periods and must be at least 3 characters long'
-      );
+      this.usernameTarget.classList.add('form-input-error');
+      this.usernameErrorTarget.classList.remove('hidden');
     } else {
-      this.clearError(this.usernameTarget);
+      this.usernameTarget.classList.remove('form-input-error');
+      this.usernameErrorTarget.classList.add('hidden');
     }
   }
 
@@ -66,9 +74,11 @@ export default class extends Controller {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!usernameRegex.test(input) && !emailRegex.test(input)) {
-      this.showError(this.loginTarget, 'Must be a valid email or username');
+      this.loginTarget.classList.add('form-input-error');
+      this.loginErrorTarget.classList.remove('hidden');
     } else {
-      this.clearError(this.loginTarget);
+      this.loginTarget.classList.remove('form-input-error');
+      this.loginErrorTarget.classList.add('hidden');
     }
   }
 
@@ -82,11 +92,22 @@ export default class extends Controller {
 
   validatePassword(event) {
     const password = this.passwordTarget.value;
-    this.validatePasswordLength(password);
-    this.validatePasswordUppercase(password);
-    this.validatePasswordLowercase(password);
-    this.validatePasswordDigit(password);
-    this.validatePasswordSpecial(password);
+    const lengthValid = this.validatePasswordLength(password);
+    const uppercaseValid = this.validatePasswordUppercase(password);
+    const lowercaseValid = this.validatePasswordLowercase(password);
+    const digitValid = this.validatePasswordDigit(password);
+    const specialValid = this.validatePasswordSpecial(password);
+    if (
+      lengthValid &&
+      uppercaseValid &&
+      lowercaseValid &&
+      digitValid &&
+      specialValid
+    ) {
+      this.passwordTarget.classList.remove('form-input-error');
+    } else {
+      this.passwordTarget.classList.add('form-input-error');
+    }
   }
 
   validatePasswordLength(password) {
@@ -96,11 +117,13 @@ export default class extends Controller {
       this.passwordLengthTarget.classList.add('valid-message');
       this.lengthCheckTarget.classList.remove('hidden');
       this.lengthCrossTarget.classList.add('hidden');
+      return true;
     } else {
       this.passwordLengthTarget.classList.add('error-message');
       this.passwordLengthTarget.classList.remove('valid-message');
       this.lengthCheckTarget.classList.add('hidden');
       this.lengthCrossTarget.classList.remove('hidden');
+      return false;
     }
   }
 
@@ -111,11 +134,13 @@ export default class extends Controller {
       this.passwordUppercaseTarget.classList.add('valid-message');
       this.uppercaseCheckTarget.classList.remove('hidden');
       this.uppercaseCrossTarget.classList.add('hidden');
+      return true;
     } else {
       this.passwordUppercaseTarget.classList.add('error-message');
       this.passwordUppercaseTarget.classList.remove('valid-message');
       this.uppercaseCheckTarget.classList.add('hidden');
       this.uppercaseCrossTarget.classList.remove('hidden');
+      return false;
     }
   }
 
@@ -126,11 +151,13 @@ export default class extends Controller {
       this.passwordLowercaseTarget.classList.add('valid-message');
       this.lowercaseCheckTarget.classList.remove('hidden');
       this.lowercaseCrossTarget.classList.add('hidden');
+      return true;
     } else {
       this.passwordLowercaseTarget.classList.add('error-message');
       this.passwordLowercaseTarget.classList.remove('valid-message');
       this.lowercaseCheckTarget.classList.add('hidden');
       this.lowercaseCrossTarget.classList.remove('hidden');
+      return false;
     }
   }
 
@@ -141,11 +168,13 @@ export default class extends Controller {
       this.passwordDigitTarget.classList.add('valid-message');
       this.digitCheckTarget.classList.remove('hidden');
       this.digitCrossTarget.classList.add('hidden');
+      return true;
     } else {
       this.passwordDigitTarget.classList.add('error-message');
       this.passwordDigitTarget.classList.remove('valid-message');
       this.digitCheckTarget.classList.add('hidden');
       this.digitCrossTarget.classList.remove('hidden');
+      return false;
     }
   }
 
@@ -156,11 +185,13 @@ export default class extends Controller {
       this.passwordSpecialTarget.classList.add('valid-message');
       this.specialCheckTarget.classList.remove('hidden');
       this.specialCrossTarget.classList.add('hidden');
+      return true;
     } else {
       this.passwordSpecialTarget.classList.add('error-message');
       this.passwordSpecialTarget.classList.remove('valid-message');
       this.specialCheckTarget.classList.add('hidden');
       this.specialCrossTarget.classList.remove('hidden');
+      return false;
     }
   }
 
@@ -178,11 +209,23 @@ export default class extends Controller {
     const newPassword = this.newPasswordTarget.value;
     if (newPassword) {
       this.showPasswordRequirements();
-      this.validatePasswordLength(newPassword);
-      this.validatePasswordUppercase(newPassword);
-      this.validatePasswordLowercase(newPassword);
-      this.validatePasswordDigit(newPassword);
-      this.validatePasswordSpecial(newPassword);
+      const lengthValid = this.validatePasswordLength(newPassword);
+      const uppercaseValid = this.validatePasswordUppercase(newPassword);
+      const lowercaseValid = this.validatePasswordLowercase(newPassword);
+      const digitValid = this.validatePasswordDigit(newPassword);
+      const specialValid = this.validatePasswordSpecial(newPassword);
+
+      if (
+        lengthValid &&
+        uppercaseValid &&
+        lowercaseValid &&
+        digitValid &&
+        specialValid
+      ) {
+        this.newPasswordTarget.classList.remove('form-input-error');
+      } else {
+        this.newPasswordTarget.classList.add('form-input-error');
+      }
     } else {
       this.hidePasswordRequirements();
     }
@@ -205,18 +248,22 @@ export default class extends Controller {
   validateDate(event) {
     const date = this.dateTarget.value;
     if (!(Date.parse(date) <= new Date())) {
-      this.showError(this.dateTarget, 'Date must be today or earlier');
+      this.dateTarget.classList.add('form-input-error');
+      this.dateErrorTarget.classList.remove('hidden');
     } else {
-      this.clearError(this.dateTarget);
+      this.dateTarget.classList.remove('form-input-error');
+      this.dateErrorTarget.classList.add('hidden');
     }
   }
 
   validateDistance(event) {
     const distance = parseFloat(this.distanceTarget.value);
     if (isNaN(distance) || distance < 0) {
-      this.showError(this.distanceTarget, 'Distance must be a positive number');
+      this.distanceTarget.classList.add('form-input-error');
+      this.distanceErrorTarget.classList.remove('hidden');
     } else {
-      this.clearError(this.distanceTarget);
+      this.distanceTarget.classList.remove('form-input-error');
+      this.distanceErrorTarget.classList.add('hidden');
     }
   }
 
@@ -224,53 +271,33 @@ export default class extends Controller {
     const time = this.durationTarget.value;
     const durationRegex = /^((2[0-3]|1\d|0?\d):)?([0-5]?\d):([0-5]\d)$/;
     if (!durationRegex.test(time)) {
-      this.showError(
-        this.durationTarget,
-        'Duration must be in MM:SS or HH:MM:SS format and must be less than 24 hours'
-      );
+      this.durationTarget.classList.add('form-input-error');
+      this.durationErrorTarget.classList.remove('hidden');
     } else {
-      this.clearError(this.durationTarget);
+      this.durationTarget.classList.remove('form-input-error');
+      this.durationErrorTarget.classList.add('hidden');
     }
   }
 
   validateTeamName(event) {
     const name = this.teamNameTarget.value;
     if (!name) {
-      this.showError(this.teamNameTarget, 'Name cannot be blank.');
+      this.teamNameTarget.classList.add('form-input-error');
+      this.teamNameErrorTarget.classList.remove('hidden');
     } else {
-      this.clearError(this.teamNameTarget);
+      this.teamNameTarget.classList.remove('form-input-error');
+      this.teamNameErrorTarget.classList.add('hidden');
     }
   }
 
   validateTeamDescription(event) {
     const description = this.teamDescriptionTarget.value;
     if (description.length > 500) {
-      this.showError(
-        this.teamDescriptionTarget,
-        'Description must be 500 characters or less.'
-      );
+      this.teamDescriptionTarget.classList.add('form-input-error');
+      this.teamDescriptionErrorTarget.classList.remove('hidden');
     } else {
-      this.clearError(this.teamDescriptionTarget);
+      this.teamDescriptionTarget.classList.remove('form-input-error');
+      this.teamDescriptionErrorTarget.classList.add('hidden');
     }
-  }
-
-  showError(element, message) {
-    let errorElement = element.nextElementSibling;
-    if (!errorElement || !errorElement.classList.contains('error-message')) {
-      errorElement = document.createElement('span');
-      errorElement.classList.add('error-message');
-      element.after(errorElement);
-    }
-    errorElement.textContent = message;
-    errorElement.classList.remove('hidden');
-    element.classList.add('form-input-error');
-  }
-
-  clearError(element) {
-    const errorElement = element.nextElementSibling;
-    if (errorElement && errorElement.classList.contains('error-message')) {
-      errorElement.classList.add('hidden');
-    }
-    element.classList.remove('form-input-error');
   }
 }
