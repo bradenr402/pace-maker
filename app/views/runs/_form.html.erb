@@ -22,7 +22,7 @@
   </div>
 
   <div class="form-group">
-    <%= form.label :duration_input, 'How long did you run?', class: 'form-label' %>
+    <%= form.label :duration_input, 'How much time did you run for?', class: 'form-label' %>
     <%= form.text_field :duration_input, required: true, value: form.object.new_record? ? '' : clock_time_display(@run.duration), class: 'form-input', data: { form_validation_target: "duration", action: "blur->form-validation#validateDuration" } %>
     <p class="text-xs text-slate-700 my-1 dark:text-slate-400">Enter time in MM:SS or HH:MM:SS format.</p>
   </div>
