@@ -41,7 +41,7 @@ class TeamsController < ApplicationController
 
   def destroy
     if @team.destroy
-      redirect_to teams_url, success: 'Team was successfully deleted.'
+      redirect_to teams_path, success: 'Team was successfully deleted.'
     else
       redirect_to @team, alert: 'Unable to delete team.'
     end
@@ -51,9 +51,11 @@ class TeamsController < ApplicationController
     join_request = @team.team_join_requests.new(user: current_user)
 
     if join_request.save
-      redirect_to @team, success: 'Join request successfully sent.'
+      redirect_back fallback_location: @team,
+                    success: 'Join request was successfully sent.'
     else
-      redirect_to @team, alert: 'Unable to send join request.'
+      redirect_back fallback_location: @team,
+                    alert: 'Unable to send join request.'
     end
   end
 
@@ -61,9 +63,10 @@ class TeamsController < ApplicationController
     team_membership = @team.team_memberships.find(user_id: current_user)
 
     if team_membership.destroy
-      redirect_to @team, success: 'You have successfully left this team.'
+      redirect_back fallback_location: @team,
+                    success: 'You have successfully left this team.'
     else
-      redirect_to @team, alert: 'Unable to leave team.'
+      redirect_back fallback_location: @team, alert: 'Unable to leave team.'
     end
   end
 
