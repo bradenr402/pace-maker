@@ -1,7 +1,23 @@
 <%= form_with model: @team, data: { controller: "form-validation" }, html: { novalidate: true } do |form| %>
+  <% if @team.errors.any? %>
+    <div id="error_explanation" data-turbo-cache="false">
+      <h2>
+        <%= I18n.t("errors.messages.not_saved",
+                  count: @team.errors.count,
+                  resource: @team.class.model_name.human.downcase)
+        %>
+      </h2>
+      <ul>
+        <% @team.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
   <div class="form-group">
     <%= form.label :name, class: 'form-label' %>
-    <%= form.text_field :name, class: 'form-input', data: { form_validation_target: 'teamName', action: 'blur->form-validation#validateTeamName' } %>
+    <%= form.text_field :name, autofocus: true, class: 'form-input', data: { form_validation_target: 'teamName', action: 'blur->form-validation#validateTeamName' } %>
     <span class="error-message hidden my-1" data-form-validation-target="teamNameError">Name cannot be blank</span>
   </div>
 
@@ -14,6 +30,35 @@
     <%= form.text_area :description, placeholder: 'Add a description...', class: 'form-input', data: { controller: 'autogrow', form_validation_target: 'teamDescription', action: 'input->autogrow#grow input->form-validation#validateTeamDescription' } %>
     <span class="error-message hidden my-1" data-form-validation-target="teamDescriptionError">Description must be 500 characters or less</span>
     <p class="help-text my-1">Maximum 500 characters</p>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :season_start_date, class: 'form-label' do %>
+      <p> Season start date
+        <span class="help-text">(optional)</span>
+      </p>
+    <% end %>
+    <%= form.date_field :season_start_date, value: form.object.new_record? ? nil : @team.season_start_date, class: 'form-input', data: { form_validation_target: "seasonStartDate", action: "input->form-validation#validateSeasonEndDate" } %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :season_end_date, class: 'form-label' do %>
+      <p> Season end date
+        <span class="help-text">(optional)</span>
+      </p>
+    <% end %>
+    <%= form.date_field :season_end_date, value: form.object.new_record? ? nil : @team.season_end_date, class: 'form-input', data: { form_validation_target: "seasonEndDate", action: "input->form-validation#validateSeasonEndDate" } %>
+    <span class="error-message hidden my-1" data-form-validation-target="seasonEndDateError">Season end date must be after season start date</span>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :mileage_goal, class: 'form-label' do %>
+      <p> Mileage goal
+        <span class="help-text">(optional)</span>
+      </p>
+    <% end %>
+    <%= form.number_field :mileage_goal, step: 1, min: 0, class: 'form-input', data: { form_validation_target: "mileageGoal", action: "input->form-validation#validateMileageGoal" } %>
+    <span class="error-message hidden my-1" data-form-validation-target="milageGoalError">Mileage goal must be a positive number</span>
   </div>
 
   <div class="flex items-center justify-between flex-wrap">

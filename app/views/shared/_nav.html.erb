@@ -37,7 +37,7 @@ end %>
           <% link_options = { class: "nav-link #{'nav-link-active' if current_page?(item[:path]) }" }.merge(item[:options] || {}) %>
           <%= link_to item[:name], item[:path], link_options %>
         <% end %>
-        <%= button_to 'Sign Out', destroy_user_session_path, method: :delete, class: 'nav-link nav-link-destructive w-full' %>
+        <%= button_to 'Sign out', destroy_user_session_path, method: :delete, class: 'nav-link nav-link-destructive w-full' %>
       </div>
     <% end %>
   </div>

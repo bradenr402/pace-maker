@@ -5,7 +5,12 @@ module ApplicationHelper
     seconds = duration % 60
 
     if hours.positive?
-      format('%<hours>d:%<minutes>02d:%<seconds>02d', hours:, minutes:, seconds:)
+      format(
+        '%<hours>d:%<minutes>02d:%<seconds>02d',
+        hours:,
+        minutes:,
+        seconds:
+      )
     else
       format('%<minutes>d:%<seconds>02d', minutes:, seconds:)
     end
@@ -62,6 +67,8 @@ module ApplicationHelper
       parts.join(', ')
     end
   end
+
+  def format_date(date) = date.strftime('%m/%d/%Y')
 
   private
 

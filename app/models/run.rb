@@ -13,19 +13,6 @@ class Run < ApplicationRecord
 
   attr_accessor :duration_input
 
-  def duration_requirements
-    return unless duration
-
-    unless duration.is_a?(ActiveSupport::Duration)
-      errors.add(:duration, 'Invalid interval format')
-    end
-    errors.add(:duration, 'Duration must be positive') if duration.negative?
-  end
-
-  def date_not_in_future
-    errors.add(:date, 'cannot be in the future.') if date.future?
-  end
-
   def hours
     (duration / 3600).to_i
   end
@@ -48,5 +35,20 @@ class Run < ApplicationRecord
 
   def pace_per_km
     (duration / distance_km).round
+  end
+
+  private
+
+  def duration_requirements
+    return unless duration
+
+    unless duration.is_a?(ActiveSupport::Duration)
+      errors.add(:duration, 'Invalid interval format')
+    end
+    errors.add(:duration, 'Duration must be positive') if duration.negative?
+  end
+
+  def date_not_in_future
+    errors.add(:date, 'cannot be in the future.') if date.future?
   end
 end

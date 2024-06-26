@@ -1,6 +1,6 @@
 <div class="flex items-center justify-between">
   <div>
-    <p class='prose dark:prose-invert'><%= team.name %></p>
+    <p class="subheading"><%= link_to team.name, team, class: 'hover:text-indigo-700 transition ease-in-out duration-300' %></p>
     <p class="help-text"><%= team.owner.username %></p>
   </div>
   <% if current_user == team.owner %>
