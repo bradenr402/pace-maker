@@ -1,7 +1,6 @@
 class TeamsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_team,
-                only: %i[show edit update destroy join leave]
+  before_action :set_team, only: %i[show edit update destroy join leave]
   before_action :authorize_owner!, only: %i[remove_member]
 
   def index
@@ -98,7 +97,16 @@ class TeamsController < ApplicationController
   private
 
   def set_team = @team = Team.find(params[:id])
-  def team_params = params.require(:team).permit(:name, :description)
+
+  def team_params
+    params.require(:team).permit(
+      :name,
+      :description,
+      :season_start_date,
+      :season_end_date,
+      :mileage_goal
+    )
+  end
 
   def authorize_owner!
     team = Team.find(params[:team_id])

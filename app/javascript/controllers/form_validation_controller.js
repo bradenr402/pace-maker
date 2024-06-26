@@ -252,7 +252,7 @@ export default class extends Controller {
 
   validateDate(event) {
     const date = this.dateTarget.value;
-    if (!(Date.parse(date) <= new Date())) {
+    if (Date.parse(date) >= new Date()) {
       this.dateTarget.classList.add('form-input-error');
       this.dateErrorTarget.classList.remove('hidden');
     } else {
