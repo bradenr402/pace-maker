@@ -26,6 +26,11 @@ export default class extends Controller {
     'teamNameError',
     'teamDescription',
     'teamDescriptionError',
+    'seasonStartDate',
+    'seasonEndDate',
+    'seasonEndDateError',
+    'milageGoal',
+    'milageGoalError',
     'passwordLength',
     'passwordUppercase',
     'passwordLowercase',
@@ -298,6 +303,33 @@ export default class extends Controller {
     } else {
       this.teamDescriptionTarget.classList.remove('form-input-error');
       this.teamDescriptionErrorTarget.classList.add('hidden');
+    }
+  }
+
+  validateSeasonEndDate(event) {
+    const startDate = this.seasonStartDateTarget.value;
+    const endDate = this.seasonEndDateTarget.value;
+    if (startDate) {
+      if (Date.parse(startDate) >= Date.parse(endDate)) {
+        this.seasonEndDateTarget.classList.add('form-input-error');
+        this.seasonEndDateErrorTarget.classList.remove('hidden');
+      } else {
+        this.seasonEndDateTarget.classList.remove('form-input-error');
+        this.seasonEndDateErrorTarget.classList.add('hidden');
+      }
+    }
+  }
+
+  validateMileageGoal(event) {
+    const mileageGoal = this.mileageGoalTarget.value;
+    if (mileageGoal) {
+      if (isNaN(mileageGoal) || mileageGoal < 0) {
+        this.mileageGoalTarget.classList.add('form-input-error');
+        this.mileageGoalErrorTarget.classList.remove('hidden');
+      } else {
+        this.mileageGoalTarget.classList.remove('form-input-error');
+        this.mileageGoalErrorTarget.classList.add('hidden');
+      }
     }
   }
 }

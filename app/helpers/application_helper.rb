@@ -63,6 +63,8 @@ module ApplicationHelper
     end
   end
 
+  def format_date(date) = date.strftime('%m/%d/%Y')
+
   private
 
   def calculate_time_parts(distance, options)

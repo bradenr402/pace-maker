@@ -89,6 +89,17 @@ class User < ApplicationRecord
   end
 
   def other_teams
+    owned_team_ids = owned_teams.pluck(:id)
+    team_ids = teams.pluck(:id)
     Team.where.not(id: owned_team_ids + team_ids)
+  end
+
+  def miles_this_season(team)
+    Run
+      .joins(user: :teams)
+      .where(user: { id: })
+      .where(teams: { id: team.id })
+      .where(date: team.season_start_date..team.season_end_date)
+      .sum(:distance)
   end
 end

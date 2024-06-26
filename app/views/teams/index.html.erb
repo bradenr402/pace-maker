@@ -9,10 +9,8 @@
 
     <div class="divide-y dark:divide-slate-700 dark:text-slate-700 mb-10">
       <% current_user.owned_teams.each do |team| %>
-        <div class="py-3">
+        <div class="py-6">
           <%= render team %>
-
-          <%= link_to "View team", team, class: "btn-link inline-block my-3" %>
         </div>
       <% end %>
     </div>
@@ -27,8 +25,6 @@
       <% current_user.membered_teams.each do |team| %>
         <div class="py-3">
           <%= render team %>
-
-          <%= link_to "View team", team, class: "btn-link inline-block my-3" %>
         </div>
       <% end %>
     </div>
@@ -41,15 +37,19 @@
   <% end %>
 
   <div class="flex flex-wrap gap-6 items-center justify-between pb-6 border-b dark:border-slate-700">
-    <h1 class="heading">All Teams</h1>
+    <h1 class="heading">Other Teams</h1>
   </div>
 
   <div class="divide-y dark:divide-slate-700 dark:text-slate-700 mb-10">
-    <% @teams.each do |team| %>
-      <div class="py-3">
-        <%= render team %>
-
-        <%= link_to "View team", team, class: "btn-link inline-block my-3" %>
+    <% if current_user.other_teams.any? %>
+      <% current_user.other_teams.each do |team| %>
+        <div class="py-6">
+          <%= render team %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="flex flex-col gap-6 items-center justify-center py-12">
+        <p class="prose dark:prose-invert text-slate-700 dark:text-slate-400">No other teams to show.</p>
       </div>
     <% end %>
   </div>
