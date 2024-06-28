@@ -2,6 +2,13 @@
   <div>
     <p class="subheading"><%= link_to team.name, team, class: 'hover:text-indigo-700 transition ease-in-out duration-300' %></p>
     <p class="help-text"><%= team.owner.username %></p>
+    <% if team.season_dates? %>
+      <% if team.season_start_date.after?(Date.today) %>
+        <p class="text-slate-700 dark:text-slate-400 text-sm mt-1">Season starts <%= pretty_date(team.season_start_date) %></p>
+      <% else %>
+        <p class="text-slate-700 dark:text-slate-400 text-sm mt-1">Season started <%= pretty_date(team.season_start_date) %></p>
+      <% end %>
+    <% end %>
   </div>
   <% if current_user == team.owner %>
     <%= link_to 'Edit team', edit_team_path(team), class: 'btn btn-white' %>
