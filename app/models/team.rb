@@ -24,7 +24,8 @@ class Team < ApplicationRecord
       .joins(user: :teams)
       .where(teams: { id: })
       .where(date: season_start_date..season_end_date)
-      .sum(:distance)
+      .pluck(:distance)
+      .sum
   end
 
   def season_progress

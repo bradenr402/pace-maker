@@ -38,11 +38,11 @@ class User < ApplicationRecord
   end
 
   def total_miles
-    runs.sum(:distance)
+    runs.pluck(:distance).sum
   end
 
   def total_duration
-    runs.sum(:duration)
+    runs.pluck(:duration).sum
   end
 
   def total_km
