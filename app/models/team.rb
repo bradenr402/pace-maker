@@ -2,7 +2,8 @@ class Team < ApplicationRecord
   belongs_to :owner, class_name: 'User'
   has_many :team_memberships, dependent: :destroy
   has_many :members, through: :team_memberships, source: :user
-  has_many :team_join_requests
+  # has_many :team_join_requests
+  has_many :join_requests, foreign_key: 'team_id', class_name: 'TeamJoinRequest'
 
   validates :name, presence: true
   validates :owner, presence: true
@@ -57,7 +58,7 @@ class Team < ApplicationRecord
 
   def season_dates? = season_start_date.present? && season_end_date.present?
 
-  def join_requests = team_join_requests
+  # def join_requests = team_join_requests
 
   private
 

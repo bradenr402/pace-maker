@@ -49,7 +49,7 @@ class TeamsController < ApplicationController
   end
 
   def join
-    join_request = @team.team_join_requests.new(user: current_user)
+    join_request = @team.join_requests.new(user: current_user)
 
     if join_request.save
       redirect_back fallback_location: @team,

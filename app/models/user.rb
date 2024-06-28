@@ -6,7 +6,8 @@ class User < ApplicationRecord
            class_name: 'Team',
            foreign_key: 'owner_id',
            dependent: :destroy
-  has_many :team_join_requests
+  # has_many :team_join_requests
+  has_many :join_requests, foreign_key: 'user_id', class_name: 'TeamJoinRequest'
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
