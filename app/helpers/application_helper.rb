@@ -18,8 +18,8 @@ module ApplicationHelper
 
   def pretty_date(date)
     today = Date.today
-    return 'Today' if date == today
-    return 'Yesterday' if date == today.yesterday
+    return 'today' if date == today
+    return 'yesterday' if date == today.yesterday
 
     days_difference = (today - date).to_i
 
