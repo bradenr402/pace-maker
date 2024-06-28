@@ -7,7 +7,7 @@
     <% end %>
 
     <div class="flex items-center justify-center sm:justify-end mt-6">
-      <% if current_user == @team.owner %>
+      <% if current_user.owns?(@team) %>
         <%= link_to 'Edit team', edit_team_path(@team), class: 'btn btn-white' %>
       <% else %>
         <% if current_user.member_of?(@team) %>
@@ -61,7 +61,7 @@
     </div>
   </div>
 
-  <% if current_user == @team.owner && @join_requests.present? %>
+  <% if current_user.owns?(@team) && @join_requests.present? %>
     <div class="mt-10 pb-6 border-b dark:border-slate-700">
       <h1 class="heading">Join Requests</h1>
     </div>
@@ -100,7 +100,7 @@
               </div>
             <% end %>
 
-            <% if current_user == @team.owner && member != current_user %>
+            <% if current_user.owns?(@team) && member != current_user %>
               <div class="text-right">
                 <%= button_to 'Remove from team', remove_member_path(team_id: @team.id, user_id: member.id), method: :post, class: 'text-xs text-rose-600 font-semibold hover:text-rose-700', data: { confirm: 'Are you sure you want to remove this member?' } %>
               </div>
