@@ -10,10 +10,18 @@ Rails.application.routes.draw do
   resources :teams
   post 'remove_member', to: 'teams#remove_member'
 
-  post 'team_join_requests/:id/create', to: 'team_join_requests#create', as: 'create_request'
-  delete 'team_join_requests/:id/cancel', to: 'team_join_requests#destroy', as: 'cancel_request'
-  patch 'team_join_requests/:id/approve', to: 'team_join_requests#approve', as: 'approve_request'
-  patch 'team_join_requests/:id/reject', to: 'team_join_requests#reject', as: 'reject_request'
+  post 'team_join_requests/:id/create',
+       to: 'team_join_requests#create',
+       as: 'create_request'
+  delete 'team_join_requests/:id/cancel',
+         to: 'team_join_requests#destroy',
+         as: 'cancel_request'
+  patch 'team_join_requests/:id/approve',
+        to: 'team_join_requests#approve',
+        as: 'approve_request'
+  patch 'team_join_requests/:id/reject',
+        to: 'team_join_requests#reject',
+        as: 'reject_request'
 
   post 'teams/:id/join', to: 'teams#join', as: 'join_team'
   post 'teams/:id/leave', to: 'teams#leave', as: 'leave_team'
