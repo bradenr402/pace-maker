@@ -48,6 +48,8 @@ class Team < ApplicationRecord
 
   def season_dates? = season_start_date.present? && season_end_date.present?
 
+  def join_requests = team_join_requests
+
   private
 
   def season_dates_presence

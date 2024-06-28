@@ -71,6 +71,8 @@ class User < ApplicationRecord
     Team.where.not(id: owned_team_ids + team_ids)
   end
 
+  def owns?(team) = self == team.owner
+
   def miles_this_season(team)
     Run
       .joins(user: :teams)

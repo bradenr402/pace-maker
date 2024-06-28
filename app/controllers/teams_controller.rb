@@ -4,14 +4,14 @@ class TeamsController < ApplicationController
   before_action :authorize_owner!, only: %i[remove_member]
 
   def index
-    @teams = Team.all
-    # @teams = current_user.teams + current_user.owned_teams
+    @owned_teams = current_user.owned_teams
+    @membered_teams = current_user.membered_teams
+    @other_teams = current_user.other_teams
   end
 
   def show
     @members = @team.members
-    @join_requests = @team.team_join_requests.pending if @team.owner ==
-      current_user
+    @join_requests = @team.join_requests.pending if current_user.owns?(@team)
   end
 
   def new
