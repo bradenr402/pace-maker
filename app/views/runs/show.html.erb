@@ -2,7 +2,7 @@
   <div class="pb-6 border-b">
     <div class="flex flex-wrap gap-6 items-center justify-between">
       <h1 class="heading">
-        <%= link_to @run.user.username.blank? ? @run.user.email : @run.user.username, @run.user %>
+        <%= link_to @run.user.username.blank? ? @run.user.email : @run.user.username, @run.user, class: 'hover:text-indigo-700 transition ease-in-out duration-300' %>
       </h1>
       <div class="flex space-x-3">
         <%= link_to "Edit run", edit_run_path(@run), class: "btn btn-white" %>
