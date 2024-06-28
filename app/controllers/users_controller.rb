@@ -23,6 +23,10 @@ class UsersController < ApplicationController
   def destroy
   end
 
+  def profile
+    redirect_to current_user
+  end
+
   private
 
   def set_user = @user = User.find(params[:id])
