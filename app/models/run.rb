@@ -15,29 +15,17 @@ class Run < ApplicationRecord
 
   scope :in_date_range, ->(range) { where(date: range).order(date: :desc) }
 
-  def hours
-    (duration / 3600).to_i
-  end
+  def hours = (duration / 3600).to_i
 
-  def minutes
-    ((duration % 3600) / 60).to_i
-  end
+  def minutes = ((duration % 3600) / 60).to_i
 
-  def seconds
-    (duration % 60).to_i
-  end
+  def seconds = (duration % 60).to_i
 
-  def distance_km
-    (distance * 1.609344).round(3)
-  end
+  def distance_km = (distance * 1.609344).round(3)
 
-  def pace_per_mile
-    (duration / distance).round
-  end
+  def pace_per_mile = (duration / distance).round
 
-  def pace_per_km
-    (duration / distance_km).round
-  end
+  def pace_per_km = (duration / distance_km).round
 
   private
 
@@ -47,10 +35,10 @@ class Run < ApplicationRecord
     unless duration.is_a?(ActiveSupport::Duration)
       errors.add(:duration, 'Invalid interval format')
     end
+
     errors.add(:duration, 'Duration must be positive') if duration.negative?
   end
 
-  def date_not_in_future
-    errors.add(:date, 'cannot be in the future.') if date.future?
-  end
+  def date_not_in_future =
+    (errors.add(:date, 'cannot be in the future.') if date.future?)
 end

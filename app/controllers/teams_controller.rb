@@ -98,7 +98,7 @@ class TeamsController < ApplicationController
 
   def set_team = @team = Team.find(params[:id])
 
-  def team_params
+  def team_params =
     params.require(:team).permit(
       :name,
       :description,
@@ -106,11 +106,10 @@ class TeamsController < ApplicationController
       :season_end_date,
       :mileage_goal
     )
-  end
 
   def authorize_owner!
     team = Team.find(params[:team_id])
-    unless current_user == team.owner
+    unless current_user.owns?(team)
       redirect_to team, alert: 'You are not authorized to perform this action.'
     end
   end

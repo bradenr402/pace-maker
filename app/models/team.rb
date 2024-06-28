@@ -21,14 +21,13 @@ class Team < ApplicationRecord
 
   scope :not_included_in, ->(team_ids) { where.not(id: team_ids) }
 
-  def total_miles
+  def total_miles =
     Run
       .joins(user: :teams)
       .where(teams: { id: })
       .where(date: season_start_date..season_end_date)
       .pluck(:distance)
       .sum
-  end
 
   def season_progress
     return nil unless season_start_date.present? && season_end_date.present?

@@ -49,7 +49,7 @@ class TeamJoinRequestsController < ApplicationController
   def set_team = @team = Team.find(@join_request.team_id)
 
   def authorize_owner!
-    unless current_user == @team.owner
+    unless current_user.owns?(@team)
       redirect_to @team, alert: 'You are not authorized to perform this action.'
     end
   end

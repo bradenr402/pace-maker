@@ -46,7 +46,7 @@ class RunsController < ApplicationController
 
   def set_run = @run = Run.find(params[:id])
 
-  def run_params
+  def run_params =
     params.require(:run).permit(
       :distance,
       :duration,
@@ -54,7 +54,6 @@ class RunsController < ApplicationController
       :comments,
       :duration_input
     )
-  end
 
   def parse_duration(input)
     parts = input.split(':').map(&:to_i)

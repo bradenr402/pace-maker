@@ -33,48 +33,32 @@ class User < ApplicationRecord
             }
   validate :password_complexity
 
-  def login
-    @login || username || email
-  end
+  def login = @login || username || email
 
-  def total_miles
-    runs.pluck(:distance).sum
-  end
+  def total_miles = runs.pluck(:distance).sum
 
-  def total_duration
-    runs.pluck(:duration).sum
-  end
+  def total_duration = runs.pluck(:duration).sum
 
-  def total_km
-    (total_miles * 1.609344).round(3)
-  end
+  def total_km = (total_miles * 1.609344).round(3)
 
-  def runs_in_date_range(range)
-    runs.in_date_range(range)
-  end
+  def runs_in_date_range(range) = runs.in_date_range(range)
 
-  def member_of?(team)
-    teams.include?(team)
-  end
+  def member_of?(team) = teams.include?(team)
 
-  def membered_teams
-    teams.where.not(owner_id: id)
-  end
+  def membered_teams = teams.where.not(owner_id: id)
 
-  def other_teams
+  def other_teams =
     Team.not_included_in(teams.pluck(:id) + owned_teams.pluck(:id))
-  end
 
   def owns?(team) = self == team.owner
 
-  def miles_this_season(team)
+  def miles_this_season(team) =
     Run
       .joins(user: :teams)
       .where(user: { id: })
       .where(teams: { id: team.id })
       .where(date: team.season_start_date..team.season_end_date)
       .sum(:distance)
-  end
 
   private
 
