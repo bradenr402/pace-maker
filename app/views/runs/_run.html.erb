@@ -10,7 +10,7 @@
     <tr>
       <th>Time:</th>
       <td><span class="text-base"><%= clock_time_display(run.duration) %></span></td>
-      <td class='hidden md:block'><span class="text-sm text-slate-600 dark:text-slate-400"><%= precise_distance_of_time_in_words(run.duration) %></span></td>
+      <td class='hidden md:block'><span class="text-sm text-slate-600 dark:text-slate-400"><%= precise_distance_of_time_in_words(run.duration, { format: :short }) %></span></td>
     </tr>
     <tr>
       <th>Pace:</th>
