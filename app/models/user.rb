@@ -52,13 +52,10 @@ class User < ApplicationRecord
 
   def owns?(team) = self == team.owner
 
-  def miles_this_season(team) =
-    Run
-      .joins(user: :teams)
-      .where(user: { id: })
-      .where(teams: { id: team.id })
-      .where(date: team.season_start_date..team.season_end_date)
-      .sum(:distance)
+  def runs_this_season(team) =
+    runs.in_date_range(team.season_start_date..team.season_end_date)
+
+  def miles_this_season(team) = runs_this_season(team).pluck(:distance).sum
 
   private
 

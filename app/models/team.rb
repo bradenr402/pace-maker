@@ -29,6 +29,13 @@ class Team < ApplicationRecord
       .pluck(:distance)
       .sum
 
+  def runs_in_season =
+    Run
+      .joins(:user)
+      .where(users: { id: members.pluck(:id) })
+      .where(date: season_start_date..season_end_date)
+      .order(date: :desc)
+
   def season_progress
     return nil unless season_start_date.present? && season_end_date.present?
 
