@@ -19,6 +19,8 @@ class Team < ApplicationRecord
             },
             if: -> { mileage_goal.present? }
 
+  scope :not_included_in, ->(team_ids) { where.not(id: team_ids) }
+
   def total_miles
     Run
       .joins(user: :teams)

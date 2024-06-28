@@ -49,12 +49,8 @@ class User < ApplicationRecord
     (total_miles * 1.609344).round(3)
   end
 
-  def runs_between(start_date, end_date)
-    runs.where(date: start_date..end_date).order(date: :desc)
-  end
-
-  def runs_in_range(range)
-    runs.where(date: range).order(date: :desc)
+  def runs_in_date_range(range)
+    runs.in_date_range(range)
   end
 
   def member_of?(team)
@@ -66,9 +62,7 @@ class User < ApplicationRecord
   end
 
   def other_teams
-    owned_team_ids = owned_teams.pluck(:id)
-    team_ids = teams.pluck(:id)
-    Team.where.not(id: owned_team_ids + team_ids)
+    Team.not_included_in(teams.pluck(:id) + owned_teams.pluck(:id))
   end
 
   def owns?(team) = self == team.owner
