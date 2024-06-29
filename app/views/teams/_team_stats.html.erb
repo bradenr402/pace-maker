@@ -1,0 +1,36 @@
+<% if team.season_dates? || team.mileage_goal.present? %>
+  <div class="pb-3 mt-10">
+    <h1 class="heading pb-6">Team Stats</h1>
+    <div class="block sm:flex sm:gap-6 space-y-8 sm:space-y-0 sm:items-center sm:justify-around">
+      <% if team.season_dates? %>
+        <div class='flex flex-col gap-0.5 items-center justify-center text-center'>
+          <p class="text-lg">Season Dates</p>
+          <p class='font-semibold text-2xl'>
+            <%= format_date(team.season_start_date) %> to <%= format_date(team.season_end_date) %>
+          </p>
+          <% if team.season_progress == 0.0 %>
+            <p class='text-slate-700 dark:text-slate-400'>Season hasn't started yet</p>
+          <% elsif team.season_progress == 100.0 %>
+            <p class='text-slate-700 dark:text-slate-400'>Season is over</p>
+          <% else %>
+            <p class='text-slate-700 dark:text-slate-400'><%= team.season_progress %>% through season</p>
+          <% end %>
+        </div>
+      <% end %>
+
+      <% if team.mileage_goal.present? %>
+        <div class='flex flex-col gap-0.5 items-center justify-center text-center'>
+          <p class="text-lg">Mileage Goal</p>
+          <p class='font-semibold text-2xl'>
+            <%= team.total_miles %> out of <%= team.mileage_goal %>
+          </p>
+          <% if team.season_progress == 0.0 %>
+            <p class='text-slate-700 dark:text-slate-400'>Season hasn't started yet</p>
+          <% else %>
+            <p class='text-slate-700 dark:text-slate-400'><%= team.mileage_goal_progress %>% of goal</p>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

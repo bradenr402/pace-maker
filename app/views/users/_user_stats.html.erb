@@ -1,0 +1,17 @@
+<div class="pb-3 mt-10">
+  <h1 class="heading pb-6">User Stats</h1>
+  <div class="block sm:flex space-y-8 sm:space-y-0 sm:items-center sm:justify-around">
+    <div class='flex flex-col items-center justify-center text-center'>
+      <p class='font-semibold text-2xl'>
+        <%= user.total_miles %>
+      </p>
+      <p class='text-slate-700 dark:text-slate-400'>miles ran</p>
+    </div>
+    <div class='flex flex-col items-center justify-center text-center'>
+      <p class='font-semibold text-2xl'>
+        <%= clock_time_display(user.total_duration) %>
+      </p>
+      <p class='text-slate-700 dark:text-slate-400'>spent running</p>
+    </div>
+  </div>
+</div>

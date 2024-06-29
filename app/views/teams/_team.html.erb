@@ -10,20 +10,5 @@
       <% end %>
     <% end %>
   </div>
-  <% if current_user.owns?(team) %>
-    <%= link_to 'Edit team', edit_team_path(team), class: 'btn btn-white' %>
-  <% else %>
-    <% if current_user.member_of?(team) %>
-      <%= button_to 'Leave team', leave_team_path(team), class: 'btn btn-destructive' %>
-    <% else %>
-      <% request = team.team_join_requests.find_by(user_id: current_user.id) %>
-      <% if request.nil? %>
-        <%= button_to 'Join team', join_team_path(team), class: 'btn btn-primary' %>
-      <% elsif request.pending? %>
-        <%= button_to 'Cancel request', cancel_request_path(request), method: :delete, class: 'btn btn-destructive' %>
-      <% elsif request.rejected? %>
-        <p>Sorry, <%= team.owner.username %> rejected your join request.</p>
-      <% end %>
-    <% end %>
-  <% end %>
+  <%= render 'team_buttons', team: team %>
 </div>

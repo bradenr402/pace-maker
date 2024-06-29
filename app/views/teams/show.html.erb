@@ -7,107 +7,15 @@
     <% end %>
 
     <div class="flex items-center justify-center sm:justify-end mt-6">
-      <% if current_user.owns?(@team) %>
-        <%= link_to 'Edit team', edit_team_path(@team), class: 'btn btn-white' %>
-      <% else %>
-        <% if current_user.member_of?(@team) %>
-          <%= button_to 'Leave team', leave_team_path(@team), class: 'btn btn-destructive' %>
-        <% else %>
-          <% request = @team.team_join_requests.find_by(user_id: current_user.id) %>
-          <% if request.nil? %>
-            <%= button_to 'Join team', join_team_path(@team), class: 'btn btn-primary' %>
-          <% elsif request.pending? %>
-            <%= button_to 'Cancel request', cancel_request_path(request), method: :delete, class: 'btn btn-destructive' %>
-          <% elsif request.rejected? %>
-            <p>Sorry, <%= @team.owner.username %> rejected your join request.</p>
-          <% end %>
-        <% end %>
-      <% end %>
+      <%= render 'team_buttons', team: @team %>
     </div>
   </div>
 
-  <div class="pb-3 mt-10">
-    <h1 class="heading pb-6">Team Stats</h1>
-    <div class="block sm:flex sm:gap-6 space-y-8 sm:space-y-0 sm:items-center sm:justify-around">
-      <% if @team.season_dates? %>
-        <div class='flex flex-col gap-0.5 items-center justify-center text-center'>
-          <p class="text-lg">Season Dates</p>
-          <p class='font-semibold text-2xl'>
-            <%= format_date(@team.season_start_date) %> to <%= format_date(@team.season_end_date) %>
-          </p>
-          <% if @team.season_progress == 0.0 %>
-            <p class='text-slate-700 dark:text-slate-400'>Season hasn't started yet</p>
-          <% elsif @team.season_progress == 100.0 %>
-            <p class='text-slate-700 dark:text-slate-400'>Season is over</p>
-          <% else %>
-            <p class='text-slate-700 dark:text-slate-400'><%= @team.season_progress %>% through season</p>
-          <% end %>
-        </div>
-      <% end %>
-
-      <% if @team.mileage_goal.present? %>
-        <div class='flex flex-col gap-0.5 items-center justify-center text-center'>
-          <p class="text-lg">Mileage Goal</p>
-          <p class='font-semibold text-2xl'>
-            <%= @team.total_miles %> out of <%= @team.mileage_goal %>
-          </p>
-          <% if @team.season_progress == 0.0 %>
-            <p class='text-slate-700 dark:text-slate-400'>Season hasn't started yet</p>
-          <% else %>
-            <p class='text-slate-700 dark:text-slate-400'><%= @team.mileage_goal_progress %>% of goal</p>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
-  </div>
+  <%= render 'team_stats', team: @team %>
 
   <% if current_user.owns?(@team) && @join_requests.present? %>
-    <div class="mt-10 pb-6 border-b dark:border-slate-700">
-      <h1 class="heading">Join Requests</h1>
-    </div>
-    <% @join_requests.each do |request| %>
-      <div class="flex gap-3 items-center w-full">
-        <div class="mr-auto">
-          <p><%= request.user.username %></p>
-          <p class="help-text"><%= request.user.email %></p>
-        </div>
-
-        <%= button_to 'Approve', approve_request_path(request), method: :patch, class: 'btn btn-sm btn-primary' %>
-        <%= button_to 'Reject', reject_request_path(request), method: :patch, class: 'btn btn-sm btn-destructive btn-outline' %>
-      </div>
-    <% end %>
+    <%= render 'join_requests', join_requests: @join_requests %>
   <% end %>
 
-  <div class="flex flex-wrap gap-6 items-center mt-10 pb-6 border-b dark:border-slate-700">
-    <h1 class="heading">Team Members</h1>
-  </div>
-
-  <div class="divide-y dark:divide-slate-700 dark:text-slate-700 mb-10">
-    <% @members.each do |member| %>
-      <div class="py-6">
-        <div class="flex gap-3 items-center justify-between">
-          <div>
-            <h2 class='subheading'><%= link_to member.username, member, class: 'hover:text-indigo-700 transition ease-in-out duration-300' %></h2>
-            <p class='help-text'><%= member.email %></p>
-          </div>
-
-          <div>
-            <% if @team.season_dates? %>
-              <div class="text-center">
-                <p class="font-semibold text-slate-800 dark:text-slate-100 leading-tight"><%= member.miles_this_season(@team) %>
-                  <span class="help-text font-normal">miles this season</span>
-                </p>
-              </div>
-            <% end %>
-
-            <% if current_user.owns?(@team) && member != current_user %>
-              <div class="text-right">
-                <%= button_to 'Remove from team', remove_member_path(team_id: @team.id, user_id: member.id), method: :post, class: 'text-xs text-rose-600 font-semibold hover:text-rose-700', data: { confirm: 'Are you sure you want to remove this member?' } %>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    <% end %>
-  </div>
+  <%= render 'members', members: @members %>
 </div>
