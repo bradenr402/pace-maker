@@ -44,6 +44,8 @@ class User < ApplicationRecord
 
   def runs_in_date_range(range) = runs.in_date_range(range)
 
+  def runs_today = runs.where(date: Date.today)
+
   def member_of?(team) = teams.include?(team)
 
   def membered_teams = teams.where.not(owner_id: id)

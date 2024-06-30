@@ -9,22 +9,47 @@
     <% end %>
   </div>
 
-  <%= render 'user_stats', user: @user %>
+  <div class="mb-24">
+    <%= render 'user_stats', user: @user %>
+  </div>
 
-  <div class="flex flex-wrap gap-6 items-center justify-between mt-10 pb-6 border-b dark:border-slate-700">
-    <h1 class="heading">Runs This Week</h1>
-    <div class="flex items-center justify-end">
-      <%= link_to "New run", new_run_path, class: "btn btn-primary" %>
+  <div class="mb-24">
+    <div class="flex flex-wrap gap-6 items-center justify-between mt-10 pb-6 border-b dark:border-slate-700">
+      <h1 class="heading">Today</h1>
+      <% if @user == current_user && @user.runs_today.any? %>
+        <div class="flex items-center justify-end">
+          <%= link_to "New run", new_run_path, class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+    <div class="divide-y dark:divide-slate-700 dark:text-slate-700 mb-10">
+      <% if @user.runs_today.any? %>
+        <% @user.runs_today.each do |run| %>
+          <div class="py-3">
+            <%= render run %>
+            <%= link_to "View run", run, class: "btn-link inline-block my-3" %>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="flex flex-col gap-6 items-center justify-center py-12">
+          <p class="prose dark:prose-invert text-slate-700 dark:text-slate-400">You haven't gone on any runs yet today.</p>
+          <%= link_to 'New run', new_run_path, class: 'btn btn-primary' %>
+        </div>
+      <% end %>
     </div>
   </div>
 
-  <div class="divide-y dark:divide-slate-700 dark:text-slate-700 mb-10">
-    <% @user.runs_in_date_range(Date.current.beginning_of_week..Date.current).each do |run| %>
-      <div class="py-3">
-        <%= render run %>
-
-        <%= link_to "View run", run, class: "btn-link inline-block my-3" %>
-      </div>
-    <% end %>
+  <div class="mb-24">
+    <div class="flex flex-wrap gap-6 items-center justify-between mt-10 pb-6 border-b dark:border-slate-700">
+      <h1 class="heading">Runs This Week</h1>
+    </div>
+    <div class="divide-y dark:divide-slate-700 dark:text-slate-700 mb-10">
+      <% @user.runs_in_date_range(Date.current.beginning_of_week..Date.current).each do |run| %>
+        <div class="py-3">
+          <%= render run %>
+          <%= link_to "View run", run, class: "btn-link inline-block my-3" %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
