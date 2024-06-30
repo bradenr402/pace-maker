@@ -50,7 +50,7 @@ module ApplicationHelper
     end
   end
 
-  def precise_distance_of_time_in_words(from_time, options = {})
+  def precise_distance_of_time(from_time, options = {})
     options = {
       include_seconds: true,
       highest_measure_only: false,
