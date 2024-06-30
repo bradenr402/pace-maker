@@ -9,7 +9,7 @@
     </div>
     <div class='flex flex-col items-center justify-center text-center'>
       <p class='font-semibold text-2xl'>
-        <%= precise_distance_of_time(user.total_duration, format: :short) %>
+        <%= precise_time_ago(user.total_duration, format: :short) %>
       </p>
       <p class='text-slate-700 dark:text-slate-400'>spent running</p>
     </div>
