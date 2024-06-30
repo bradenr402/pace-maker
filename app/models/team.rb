@@ -48,6 +48,8 @@ class Team < ApplicationRecord
     progress.clamp(0.0, 100.0).round(2) # Ensures progress stays between 0% and 100%
   end
 
+  def days_remaining_in_season = (season_end_date - Date.today).to_i
+
   def mileage_goal_progress
     return nil unless mileage_goal.present?
 
@@ -55,6 +57,8 @@ class Team < ApplicationRecord
 
     [progress, 0.0].max.round(2) # Ensures progess stays above 0%
   end
+
+  def miles_remaining_in_goal = (mileage_goal - total_miles).to_i
 
   def season_dates? = season_start_date.present? && season_end_date.present?
 

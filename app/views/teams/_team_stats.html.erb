@@ -13,7 +13,8 @@
           <% elsif team.season_progress == 100.0 %>
             <p class='text-slate-700 dark:text-slate-400'>Season is over</p>
           <% else %>
-            <p class='text-slate-700 dark:text-slate-400'><%= team.season_progress %>% through season</p>
+            <p class='text-slate-700 dark:text-slate-400 text-lg'><%= team.days_remaining_in_season %> days remaining</p>
+            <p class='text-slate-700 dark:text-slate-400 text-sm'><%= team.season_progress %>% through season</p>
           <% end %>
         </div>
       <% end %>
@@ -27,7 +28,8 @@
           <% if team.season_progress == 0.0 %>
             <p class='text-slate-700 dark:text-slate-400'>Season hasn't started yet</p>
           <% else %>
-            <p class='text-slate-700 dark:text-slate-400'><%= team.mileage_goal_progress %>% of goal</p>
+            <p class='text-slate-700 dark:text-slate-400 text-lg'><%= team.miles_remaining_in_goal %> miles remaining</p>
+            <p class='text-slate-700 dark:text-slate-400 text-sm'><%= team.mileage_goal_progress %>% of goal</p>
           <% end %>
         </div>
       <% end %>
