@@ -17,7 +17,7 @@
 
   <div class="form-group">
     <%= form.label :name, class: 'form-label' %>
-    <%= form.text_field :name, autofocus: true, class: 'form-input', data: { form_validation_target: 'teamName', action: 'blur->form-validation#validateTeamName' } %>
+    <%= form.text_field :name, autofocus: true, class: 'form-input', data: { form_validation_target: 'teamName', action: 'input->form-validation#validateTeamName' } %>
     <span class="error-message hidden my-1" data-form-validation-target="teamNameError">Name cannot be blank</span>
   </div>
 
