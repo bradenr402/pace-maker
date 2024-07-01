@@ -49,6 +49,12 @@ export default class extends Controller {
     'specialCross',
   ];
 
+  connect() {
+    this.seasonEndDateTarget.disabled = true;
+
+    console.log('connected')
+  }
+
   validateEmail(event) {
     const email = this.emailTarget.value;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -310,6 +316,7 @@ export default class extends Controller {
     const startDate = this.seasonStartDateTarget.value;
     const endDate = this.seasonEndDateTarget.value;
     if (startDate) {
+      this.seasonEndDateTarget.disabled = false;
       if (Date.parse(startDate) >= Date.parse(endDate)) {
         this.seasonEndDateTarget.classList.add('form-input-error');
         this.seasonEndDateErrorTarget.classList.remove('hidden');
@@ -317,6 +324,8 @@ export default class extends Controller {
         this.seasonEndDateTarget.classList.remove('form-input-error');
         this.seasonEndDateErrorTarget.classList.add('hidden');
       }
+    } else {
+      this.seasonEndDateTarget.disabled = true;
     }
   }
 
