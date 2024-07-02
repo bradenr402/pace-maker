@@ -1,8 +1,10 @@
-<div class="flex gap-3 items-center w-full py-3 text-slate-800 dark:text-slate-100">
+<div class="flex gap-3 items-center flex-wrap py-3 text-slate-800 dark:text-slate-100">
   <div class="mr-auto">
     <p><%= link_to request.user.username, request.user, class: 'hover:text-indigo-700 transition ease-in-out duration-300' %></p>
     <p class="help-text"><%= request.user.email %></p>
   </div>
-  <%= button_to 'Approve', approve_request_path(request), method: :patch, class: 'btn btn-sm btn-primary' %>
-  <%= button_to 'Reject', reject_request_path(request), method: :patch, class: 'btn btn-sm btn-destructive btn-outline' %>
+  <div class="flex items-center gap-3">
+    <%= button_to 'Approve', approve_request_path(request), method: :patch, class: 'btn btn-sm btn-primary' %>
+    <%= button_to 'Reject', reject_request_path(request), method: :patch, class: 'btn btn-sm btn-destructive btn-outline' %>
+  </div>
 </div>
