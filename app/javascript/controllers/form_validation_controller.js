@@ -30,6 +30,7 @@ export default class extends Controller {
     'teamDescriptionError',
     'seasonStartDate',
     'seasonEndDate',
+    'seasonEndDateLabel',
     'seasonEndDateError',
     'milageGoal',
     'milageGoalError',
@@ -52,6 +53,16 @@ export default class extends Controller {
   ];
 
   connect() {
+    if (this.hasSeasonEndDateTarget) {
+      if (this.seasonStartDateTarget.value) {
+        this.seasonEndDateTarget.disabled = false;
+        this.seasonEndDateLabelTarget.classList.remove('opacity-60');
+      } else {
+        this.seasonEndDateTarget.disabled = true;
+        this.seasonEndDateLabelTarget.classList.add('opacity-60');
+      }
+    }
+
     if (this.hasNewPasswordConfirmationTarget) {
       if (this.newPasswordTarget.value) {
         this.newPasswordConfirmationTarget.disabled = false;
@@ -336,6 +347,7 @@ export default class extends Controller {
     const endDate = this.seasonEndDateTarget.value;
     if (startDate) {
       this.seasonEndDateTarget.disabled = false;
+      this.seasonEndDateLabelTarget.classList.remove('opacity-60');
       if (Date.parse(startDate) >= Date.parse(endDate)) {
         this.seasonEndDateTarget.classList.add('form-input-error');
         this.seasonEndDateErrorTarget.classList.remove('hidden');
@@ -345,6 +357,7 @@ export default class extends Controller {
       }
     } else {
       this.seasonEndDateTarget.disabled = true;
+      this.seasonEndDateLabelTarget.classList.add('opacity-60');
     }
   }
 
