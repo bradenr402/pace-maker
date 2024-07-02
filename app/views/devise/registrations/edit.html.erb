@@ -61,9 +61,9 @@
     </div>
 
     <div class='form-group relative'>
-      <%= f.label :password_confirmation, 'Confirm new password', class: "form-label opacity-60 transition duration-300 ease-in-out", id: 'password_confirmation_label' %>
+      <%= f.label :password_confirmation, 'Confirm new password', class: "form-label transition duration-300 ease-in-out", data: { form_validation_target: 'newPasswordConfirmationLabel' } %>
       <div class="flex items-center" data-controller="password-visibility">
-        <%= f.password_field :password_confirmation, autocomplete: "new-password", disabled: true, class: "form-input transition duration-300 ease-in-out", data: { form_validation_target: "newPasswordConfirmation", action: "input->form-validation#validateNewPasswordConfirmation", password_visibility_target: "password" } %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-input transition duration-300 ease-in-out", data: { form_validation_target: "newPasswordConfirmation", action: "input->form-validation#validateNewPasswordConfirmation", password_visibility_target: "password" } %>
 
         <button type="button" class="-ml-9" data-action="password-visibility#toggle">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" data-password-visibility-target="visibleIcon">
@@ -77,7 +77,7 @@
       </div>
 
       <span class="error-message hidden my-1" data-form-validation-target="newPasswordConfirmationError">Passwords do not match</span>
-      <p class="text-xs text-slate-700 my-1 dark:text-slate-400 opacity-0 transition-opacity duration-300 ease-in-out" id="password_confirmation_hint">Enter your new password again to confirm it.</p>
+      <p class="text-xs text-slate-700 my-1 dark:text-slate-400 transition-opacity duration-300 ease-in-out" data-form-validation-target="newPasswordConfirmationHint">Enter your new password again to confirm it.</p>
     </div>
 
     <div class='form-group'>
@@ -119,24 +119,3 @@
                   } %>
   </div>
 </div>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const newPasswordField = document.getElementById('user_password');
-    const passwordConfirmationField = document.getElementById('user_password_confirmation');
-    const passwordConfirmationLabel = document.getElementById('password_confirmation_label');
-    const passwordConfirmationHint = document.getElementById('password_confirmation_hint');
-
-    newPasswordField.addEventListener('input', () => {
-      if (newPasswordField.value) {
-        passwordConfirmationField.disabled = false;
-        passwordConfirmationLabel.classList.remove('opacity-60');
-        passwordConfirmationHint.classList.remove('opacity-0');
-      } else {
-        passwordConfirmationField.disabled = true;
-        passwordConfirmationLabel.classList.add('opacity-60');
-        passwordConfirmationHint.classList.add('opacity-0');
-      }
-    })
-  })
-</script>

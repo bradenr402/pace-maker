@@ -14,6 +14,8 @@ export default class extends Controller {
     'passwordConfirmationError',
     'newPassword',
     'newPasswordConfirmation',
+    'newPasswordConfirmationHint',
+    'newPasswordConfirmationLabel',
     'newPasswordConfirmationError',
     'currentPassword',
     'date',
@@ -50,9 +52,17 @@ export default class extends Controller {
   ];
 
   connect() {
-    this.seasonEndDateTarget.disabled = true;
-
-    console.log('connected')
+    if (this.hasNewPasswordConfirmationTarget) {
+      if (this.newPasswordTarget.value) {
+        this.newPasswordConfirmationTarget.disabled = false;
+        this.newPasswordConfirmationLabelTarget.classList.remove('opacity-60');
+        this.newPasswordConfirmationHintTarget.classList.remove('opacity-0');
+      } else {
+        this.newPasswordConfirmationTarget.disabled = true;
+        this.newPasswordConfirmationLabelTarget.classList.add('opacity-60');
+        this.newPasswordConfirmationHintTarget.classList.add('opacity-0');
+      }
+    }
   }
 
   validateEmail(event) {
@@ -245,14 +255,23 @@ export default class extends Controller {
   validateNewPasswordConfirmation(event) {
     const newPassword = this.newPasswordTarget.value;
     const newPasswordConfirmation = this.newPasswordConfirmationTarget.value;
-    if (
-      newPassword &&
-      newPassword !== newPasswordConfirmation &&
-      event.target !== this.newPasswordTarget
-    ) {
-      this.newPasswordConfirmationErrorTarget.classList.remove('hidden');
+
+    if (newPassword) {
+      this.newPasswordConfirmationTarget.disabled = false;
+      this.newPasswordConfirmationLabelTarget.classList.remove('opacity-60');
+      this.newPasswordConfirmationHintTarget.classList.remove('opacity-0');
+      if (
+        newPassword !== newPasswordConfirmation &&
+        event.target !== this.newPasswordTarget
+      ) {
+        this.newPasswordConfirmationErrorTarget.classList.remove('hidden');
+      } else {
+        this.newPasswordConfirmationErrorTarget.classList.add('hidden');
+      }
     } else {
-      this.newPasswordConfirmationErrorTarget.classList.add('hidden');
+      this.newPasswordConfirmationTarget.disabled = true;
+      this.newPasswordConfirmationLabelTarget.classList.add('opacity-60');
+      this.newPasswordConfirmationHintTarget.classList.add('opacity-0');
     }
   }
 
