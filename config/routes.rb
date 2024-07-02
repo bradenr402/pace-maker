@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   resources :runs
   resources :users, only: %i[show]
   resources :teams
+  resources :team_join_requests, only: %i[update]
+
   post 'remove_member', to: 'teams#remove_member'
 
   post 'team_join_requests/:id/create',

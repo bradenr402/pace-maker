@@ -10,4 +10,6 @@ class TeamJoinRequest < ApplicationRecord
               scope: :team_id,
               message: 'has already sent a join request'
             }
+
+  def allowed? = request_number < 3
 end
