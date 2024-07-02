@@ -11,7 +11,9 @@ class TeamsController < ApplicationController
 
   def show
     @members = @team.members
-    @join_requests = @team.join_requests.pending if current_user.owns?(@team)
+    if current_user.owns?(@team)
+      @join_requests = @team.join_requests.pending.order(updated_at: :desc)
+    end
   end
 
   def new
