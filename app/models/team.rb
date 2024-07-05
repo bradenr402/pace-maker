@@ -2,7 +2,6 @@ class Team < ApplicationRecord
   belongs_to :owner, class_name: 'User'
   has_many :team_memberships, dependent: :destroy
   has_many :members, through: :team_memberships, source: :user
-  # has_many :team_join_requests
   has_many :join_requests, foreign_key: 'team_id', class_name: 'TeamJoinRequest'
 
   validates :name, presence: true
@@ -26,7 +25,7 @@ class Team < ApplicationRecord
     Run
       .joins(user: :teams)
       .where(teams: { id: })
-      .where(date: season_start_date..season_end_date)
+      .in_date_range(season_start_date..season_end_date)
       .pluck(:distance)
       .sum
 
@@ -34,11 +33,10 @@ class Team < ApplicationRecord
     Run
       .joins(:user)
       .where(users: { id: members.pluck(:id) })
-      .where(date: season_start_date..season_end_date)
-      .order(date: :desc)
+      .in_date_range(date: season_start_date..season_end_date)
 
   def season_progress
-    return nil unless season_start_date.present? && season_end_date.present?
+    return nil unless self.season_dates?
 
     season_duration = season_end_date - season_start_date
     days_since_start = Date.today - season_start_date
@@ -61,8 +59,6 @@ class Team < ApplicationRecord
   def miles_remaining_in_goal = (mileage_goal - total_miles).to_i
 
   def season_dates? = season_start_date.present? && season_end_date.present?
-
-  # def join_requests = team_join_requests
 
   private
 
