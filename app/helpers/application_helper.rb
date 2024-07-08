@@ -19,19 +19,14 @@ module ApplicationHelper
   def pretty_date(date)
     today = Date.today
     return 'today' if date == today
-    return 'yesterday' if date == today.yesterday
+    return 'yesterday' if date == Date.yesterday
 
     days_difference = (today - date).to_i
 
-    case days_difference
-    when 0..6
-      date.strftime('%A')
-    when 7..365
-      if date.year == today.year
-        date.strftime('%A, %B %e')
-      else
-        date.strftime('%A, %B %e, %Y')
-      end
+    if days_difference.between?(1, 6)
+      return date.strftime('%A')
+    elsif days_difference.between?(7, 365) && date.year == today.year
+      date.strftime('%A, %B %e')
     else
       date.strftime('%A, %B %e, %Y')
     end
