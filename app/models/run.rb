@@ -14,7 +14,7 @@ class Run < ApplicationRecord
   attr_accessor :duration_input
 
   scope :in_date_range, ->(range) { where(date: range).order(date: :desc) }
-  scope :today, -> { where(date: Date.today).order(date: :desc) }
+  scope :today, -> { where(date: Date.today.all_day).order(date: :desc) }
   scope :excluding_date, ->(date) { where.not(date: date) }
 
   def hours = (duration / 3600).to_i
