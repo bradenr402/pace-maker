@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  include UserCalculations
+  USERNAME_FORMAT = /\A[a-z0-9_.]{3,}\z/
+
   has_many :runs, dependent: :destroy
   has_many :team_memberships, dependent: :destroy
   has_many :teams, through: :team_memberships
@@ -27,7 +30,7 @@ class User < ApplicationRecord
               case_sensitive: false
             },
             format: {
-              with: /\A[a-z0-9_.]{3,}\z/,
+              with: USERNAME_FORMAT,
               message:
                 'can only contain lowercase letters, numbers, underscores, and periods' \
                   'and must be at least 3 characters long'
@@ -35,12 +38,6 @@ class User < ApplicationRecord
   validate :password_complexity
 
   def login = @login || username || email
-
-  def total_miles = runs.pluck(:distance).sum
-
-  def total_duration = runs.pluck(:duration).sum
-
-  def total_km = (total_miles * 1.609344).round(3)
 
   def runs_in_date_range(range) = runs.in_date_range(range)
 
@@ -54,11 +51,6 @@ class User < ApplicationRecord
     Team.not_included_in(teams.pluck(:id) + owned_teams.pluck(:id))
 
   def owns?(team) = self == team.owner
-
-  def runs_this_season(team) =
-    runs.in_date_range(team.season_start_date..team.season_end_date)
-
-  def miles_this_season(team) = runs_this_season(team).pluck(:distance).sum
 
   private
 
