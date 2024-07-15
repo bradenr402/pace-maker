@@ -34,8 +34,12 @@ class Run < ApplicationRecord
   def duration_requirements
     return unless duration
 
-    unless duration.is_a?(ActiveSupport::Duration)
-      errors.add(:duration, 'Invalid interval format')
+    begin
+      unless duration.is_a?(ActiveSupport::Duration)
+        errors.add(:duration, 'Invalid interval format')
+      end
+    rescue ArgumentError
+      errors.add(:duration, 'Invalid duration format')
     end
 
     errors.add(:duration, 'Duration must be positive') if duration.negative?
