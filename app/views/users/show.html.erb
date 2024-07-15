@@ -3,7 +3,7 @@
     <h1 class="heading">User's Name Here</h1>
     <h2 class="text-lg text-slate-700 my-1 dark:text-slate-400"><%= @user.username %></h2>
     <% if @user == current_user %>
-      <div class="flex items-center justify-center sm:justify-end">
+      <div class="flex items-center justify-center md:justify-end">
         <%= link_to 'Edit profile', edit_user_registration_path, class: 'btn btn-white' %>
       </div>
     <% end %>
