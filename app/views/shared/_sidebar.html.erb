@@ -1,0 +1,17 @@
+<div class="hidden h-full flex-[0.3] min-w-72 md:block">
+  <!-- left sidebar -->
+  <nav class="h-full flex flex-col py-8 px-6 gap-1 backdrop-blur-md bg-slate-50/75 dark:bg-slate-800/75 border-r dark:border-slate-700">
+    <div class="font-bold text-xl mb-4 px-3">
+      <span class="text-indigo-500">Team</span><span>Runner</span>
+    </div>
+
+    <% sidebar_links.each do |item| %>
+      <%= link_to item[:path], aria: { current: current_page?(item[:path]) ? 'page' : nil }, class: "sidebar-link #{current_page?(item[:path]) ? 'sidebar-link-active' : 'sidebar-link-inactive'}" do %>
+        <%= item[:icon].html_safe if item[:icon].present? %>
+        <span><%= item[:name] %></span>
+      <% end %>
+    <% end %>
+
+    <%= link_to 'New run', new_run_path, **{ aria: { current: current_page?(new_run_path) ? 'page' : nil } }, class: 'btn btn-primary mt-auto' %>
+  </nav>
+</div>

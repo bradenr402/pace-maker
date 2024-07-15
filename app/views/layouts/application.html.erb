@@ -13,13 +13,16 @@
 
   <body class='font-normal leading-normal text-slate-800 relative selection:bg-indigo-500/40 bg-white dark:bg-slate-900 dark:text-slate-100 antialiased'>
     <%= render "shared/flash" %>
-    <% if content_for(:header).present? %>
-      <%= yield :header %>
-    <% else %>
-      <%= render "shared/nav" %>
-    <% end %>
-    <main class="container mx-auto mt-48 px-5">
-      <%= yield %>
-    </main>
+    <div class="w-full flex h-svh max-h-svh">
+      <%= render "shared/sidebar" %>
+      <div class="flex h-full flex-1 flex-col">
+        <div class="flex h-full flex-col justify-between overflow-y-scroll">
+          <main class="container mx-auto mt-48 mb-24 px-5">
+            <%= yield %>
+          </main>
+        </div>
+        <%= render "shared/tab_bar" %>
+      </div>
+    </div>
   </body>
 </html>

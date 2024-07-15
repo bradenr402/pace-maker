@@ -1,0 +1,41 @@
+<div class="fixed inset-x-0 bottom-0 w-full block backdrop-blur-lg bg-slate-50/75 dark:bg-slate-800/75 border-t dark:border-slate-700 pb-1 px-4 md:hidden">
+  <nav class="grid grid-cols-5 place-items-center gap-y-4 w-full">
+  <% links = tab_links %>
+  <% first_two_links, last_two_links = links[0, 2], links[-2, 2] %>
+    <% first_two_links.each do |item| %>
+      <%= link_to item[:path], aria: { current: current_page?(item[:path]) ? 'page' : nil }, class: "tab-link #{current_page?(item[:path]) ? 'tab-link-active' : 'tab-link-inactive'}" do %>
+        <%= item[:icon].html_safe if item[:icon].present? %>
+        <span><%= item[:name] %></span>
+      <% end %>
+    <% end %>
+
+    <%= link_to new_run_path, aria: { current: current_page?(new_run_path) ? 'page' : nil }, class: 'relative flex flex-col items-center justify-center text-white text-sm px-6 flex-grow' do %>
+      <div class='relative bottom-10 p-4 rounded-full border-4 border-white dark:border-slate-900 bg-indigo-600 shadow-lg'>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          stroke-width="2.5"
+          stroke="currentColor"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="size-7"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M13 4m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+          <path d="M4 17l5 1l.75 -1.5" />
+          <path d="M15 21l0 -4l-4 -3l1 -6" />
+          <path d="M7 12l0 -3l5 -1l3 3l3 1" />
+        </svg>
+      </div>
+      <span class="sr-only">New Run</span>
+    <% end %>
+
+    <% last_two_links.each do |item| %>
+      <%= link_to item[:path], aria: { current: current_page?(item[:path]) ? 'page' : nil }, class: "tab-link #{current_page?(item[:path]) ? 'tab-link-active' : 'tab-link-inactive'}" do %>
+        <%= item[:icon].html_safe if item[:icon].present? %>
+        <span><%= item[:name] %></span>
+      <% end %>
+    <% end %>
+  </nav>
+</div>
