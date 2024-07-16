@@ -22,7 +22,7 @@
     <% end %>
   </table>
 
-  <% unless run.comments.blank? || !current_page?(run_path(run)) %>
+  <% if run.comments.present? && current_page?(run_path(run)) %>
     <p class="mb-0 font-semibold">Comments</p>
     <p class="my-0">
       <% if current_page? run_path(run) %>
