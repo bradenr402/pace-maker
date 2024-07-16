@@ -14,14 +14,14 @@
   <body class='font-normal leading-normal text-slate-800 relative selection:bg-indigo-500/40 bg-white dark:bg-slate-900 dark:text-slate-100 antialiased'>
     <%= render "shared/flash" %>
     <div class="w-full flex h-svh max-h-svh">
-      <%= render "shared/sidebar" %>
+      <%= render "shared/sidebar" if user_signed_in? %>
       <div class="flex h-full flex-1 flex-col">
         <div class="flex h-full flex-col justify-between overflow-y-scroll">
           <main class="container mx-auto my-24 px-5">
             <%= yield %>
           </main>
         </div>
-        <%= render "shared/tab_bar" %>
+        <%= render "shared/tab_bar" if user_signed_in? %>
       </div>
     </div>
   </body>
