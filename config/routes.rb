@@ -5,7 +5,7 @@ Rails.application.routes.draw do
                sessions: 'users/sessions'
              }
 
-  resources :runs
+  resources :runs, except: %i[index]
   resources :users, only: %i[show]
   resources :teams
   resources :team_join_requests, only: %i[update]
