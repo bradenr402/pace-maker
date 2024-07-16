@@ -9,7 +9,6 @@ class User < ApplicationRecord
            class_name: 'Team',
            foreign_key: 'owner_id',
            dependent: :destroy
-  # has_many :team_join_requests
   has_many :join_requests, foreign_key: 'user_id', class_name: 'TeamJoinRequest'
 
   # Include default devise modules. Others available are:
@@ -36,6 +35,7 @@ class User < ApplicationRecord
                   'and must be at least 3 characters long'
             }
   validate :password_complexity
+  validates :display_name, length: { maximum: 100 }, allow_blank: true
 
   def login = @login || username || email
 

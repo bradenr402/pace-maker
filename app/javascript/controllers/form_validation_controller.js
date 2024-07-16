@@ -5,6 +5,8 @@ export default class extends Controller {
   static targets = [
     'email',
     'emailError',
+    'displayName',
+    'displayNameError',
     'username',
     'usernameError',
     'login',
@@ -85,6 +87,17 @@ export default class extends Controller {
     } else {
       this.emailTarget.classList.remove('form-input-error');
       this.emailErrorTarget.classList.add('hidden');
+    }
+  }
+
+  validateDisplayName(event) {
+    const displayName = this.displayNameTarget.value;
+    if (displayName.length > 100) {
+      this.displayNameTarget.classList.add('form-input-error');
+      this.displayNameErrorTarget.classList.remove('hidden');
+    } else {
+      this.displayNameTarget.classList.remove('form-input-error');
+      this.displayNameErrorTarget.classList.add('hidden');
     }
   }
 
