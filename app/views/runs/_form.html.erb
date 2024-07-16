@@ -14,6 +14,7 @@
 
     <div class="form-group flex flex-wrap gap-3 -mt-2">
       <button type="button" data-action="click->distance-shortcuts#setDistance" data-distance-value="1" class="btn btn-sm btn-white">1 mile</button>
+      <button type="button" data-action="click->distance-shortcuts#setDistance" data-distance-value="2" class="btn btn-sm btn-white">2 miles</button>
       <button type="button" data-action="click->distance-shortcuts#setDistance" data-distance-value="5" class="btn btn-sm btn-white">5 miles</button>
       <button type="button" data-action="click->distance-shortcuts#setDistance" data-distance-value="10" class="btn btn-sm btn-white">10 miles</button>
       <button type="button" data-action="click->distance-shortcuts#setDistance" data-distance-value="<%= (3 / 1.609344).round(3) %>" class="btn btn-sm btn-white">3 km</button>
@@ -24,7 +25,11 @@
   </div>
 
   <div class="form-group">
-    <%= form.label :duration_input, 'How much time did you run for?', class: 'form-label' %>
+    <%= form.label :duration_input, class: 'form-label' do %>
+      <p> How much time did you run for?
+        <span class="text-xs text-slate-700 dark:text-slate-400">(optional)</span>
+      </p>
+    <% end %>
     <%= form.text_field :duration_input, value: form.object.new_record? ? '' : clock_time_display(@run.duration), class: 'form-input', data: { form_validation_target: "duration", action: "input->form-validation#validateDuration" } %>
     <span class="error-message hidden my-1" data-form-validation-target="durationError">Duration must be in MM:SS or HH:MM:SS format and must be less than 24 hours</span>
     <p class="text-xs text-slate-700 my-1 dark:text-slate-400">Enter time in MM:SS or HH:MM:SS format.</p>

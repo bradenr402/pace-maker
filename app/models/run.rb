@@ -9,7 +9,6 @@ class Run < ApplicationRecord
             numericality: {
               greater_than_or_equal_to: 0
             }
-  validates :duration, presence: true
   validate :date_not_in_future
   validate :duration_requirements
 
@@ -22,7 +21,7 @@ class Run < ApplicationRecord
   private
 
   def duration_requirements
-    return unless duration
+    return if duration.blank?
 
     begin
       unless duration.is_a?(ActiveSupport::Duration)

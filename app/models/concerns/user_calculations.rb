@@ -1,7 +1,8 @@
 module UserCalculations
   def total_miles = runs.pluck(:distance).sum
 
-  def total_duration = runs.pluck(:duration).sum
+  def total_duration = runs.where.not(duration: nil).pluck(:duration).sum
+
 
   def total_km = (total_miles * 1.609344).round(3)
 

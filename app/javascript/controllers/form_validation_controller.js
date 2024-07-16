@@ -309,9 +309,9 @@ export default class extends Controller {
   }
 
   validateDuration(event) {
-    const time = this.durationTarget.value;
+    const duration = this.durationTarget.value;
     const durationRegex = /^((2[0-3]|1\d|0?\d):)?([0-5]?\d):([0-5]\d)$/;
-    if (!durationRegex.test(time)) {
+    if (duration && !durationRegex.test(duration)) {
       this.durationTarget.classList.add('form-input-error');
       this.durationErrorTarget.classList.remove('hidden');
     } else {

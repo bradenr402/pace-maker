@@ -1,5 +1,5 @@
 module RunCalculations
-    def hours = (duration / 3600).to_i
+  def hours = (duration / 3600).to_i
 
   def minutes = ((duration % 3600) / 60).to_i
 
