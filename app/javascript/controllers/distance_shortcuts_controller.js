@@ -7,8 +7,30 @@ export default class extends Controller {
   setDistance(event) {
     const distance = event.currentTarget.dataset.distanceValue;
 
-    if (distance !== undefined) {
-      this.distanceTarget.value = parseFloat(distance);
+    this.distanceTarget.value = parseFloat(distance);
+  }
+
+  decrementDistance(event) {
+    const decrementValue = event.currentTarget.dataset.decrementValue;
+
+    if (this.distanceTarget.value === '') {
+      this.distanceTarget.value = 0;
     }
+
+    let currentValue = parseFloat(this.distanceTarget.value);
+    currentValue -= parseFloat(decrementValue);
+    this.distanceTarget.value = currentValue;
+  }
+
+  incrementDistance(event) {
+    const incrementValue = event.currentTarget.dataset.incrementValue;
+
+    if (this.distanceTarget.value === '') {
+      this.distanceTarget.value = 0;
+    }
+
+    let currentValue = parseFloat(this.distanceTarget.value);
+    currentValue += parseFloat(incrementValue);
+    this.distanceTarget.value = currentValue;
   }
 }

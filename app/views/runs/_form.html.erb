@@ -12,15 +12,16 @@
       <span class="error-message hidden my-1" data-form-validation-target="distanceError">Distance must be a positive number</span>
     </div>
 
-    <div class="form-group flex flex-wrap gap-3 -mt-2">
-      <button type="button" data-action="click->distance-shortcuts#setDistance" data-distance-value="1" class="btn btn-sm btn-white">1 mile</button>
-      <button type="button" data-action="click->distance-shortcuts#setDistance" data-distance-value="2" class="btn btn-sm btn-white">2 miles</button>
-      <button type="button" data-action="click->distance-shortcuts#setDistance" data-distance-value="5" class="btn btn-sm btn-white">5 miles</button>
-      <button type="button" data-action="click->distance-shortcuts#setDistance" data-distance-value="10" class="btn btn-sm btn-white">10 miles</button>
-      <button type="button" data-action="click->distance-shortcuts#setDistance" data-distance-value="<%= (3 / 1.609344).round(3) %>" class="btn btn-sm btn-white">3 km</button>
-      <button type="button" data-action="click->distance-shortcuts#setDistance" data-distance-value="<%= (5 / 1.609344).round(3) %>" class="btn btn-sm btn-white">5 km</button>
-      <button type="button" data-action="click->distance-shortcuts#setDistance" data-distance-value="<%= (8 / 1.609344).round(3) %>" class="btn btn-sm btn-white">8 km</button>
-      <button type="button" data-action="click->distance-shortcuts#setDistance" data-distance-value="<%= (10 / 1.609344).round(3) %>" class="btn btn-sm btn-white">10 km</button>
+    <div class="form-group flex flex-wrap items-center gap-3 -mt-2 select-none">
+      <button type="button" data-action="click->distance-shortcuts#decrementDistance click->form-validation#validateDistance" data-decrement-value="1" class="btn btn-sm btn-white">-</button>
+      <button type="button" data-action="click->distance-shortcuts#setDistance click->form-validation#validateDistance" data-distance-value="1" class="btn btn-sm btn-white">1 mile</button>
+      <button type="button" data-action="click->distance-shortcuts#incrementDistance click->form-validation#validateDistance" data-increment-value="1" class="btn btn-sm btn-white">+</button>
+    </div>
+
+    <div class="form-group flex flex-wrap items-center gap-3 -mt-2 select-none">
+      <button type="button" data-action="click->distance-shortcuts#decrementDistance click->form-validation#validateDistance" data-decrement-value="5" class="btn btn-sm btn-white">-</button>
+      <button type="button" data-action="click->distance-shortcuts#setDistance click->form-validation#validateDistance" data-distance-value="5" class="btn btn-sm btn-white">5 miles</button>
+      <button type="button" data-action="click->distance-shortcuts#incrementDistance click->form-validation#validateDistance" data-increment-value="5" class="btn btn-sm btn-white">+</button>
     </div>
   </div>
 
