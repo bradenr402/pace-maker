@@ -11,9 +11,10 @@ class TeamsController < ApplicationController
 
   def show
     @members = @team.members
-    if current_user.owns?(@team)
-      @join_requests = @team.join_requests.pending.order(updated_at: :desc)
-    end
+    @join_requests =
+      @team.join_requests.pending.order(
+        updated_at: :desc
+      ) if current_user.owns?(@team)
   end
 
   def new
@@ -92,7 +93,8 @@ class TeamsController < ApplicationController
                       "#{member.display_name.present? ? member.display_name : member.username} was successfully removed from this team."
     else
       redirect_back fallback_location: team,
-                    alert: "Unable to remove #{member.display_name.present? ? member.display_name : member.username} from this team."
+                    alert:
+                      "Unable to remove #{member.display_name.present? ? member.display_name : member.username} from this team."
     end
   end
 

@@ -3,7 +3,6 @@ module UserCalculations
 
   def total_duration = runs.where.not(duration: nil).pluck(:duration).sum
 
-
   def total_km = (total_miles * 1.609344).round(3)
 
   def runs_this_season(team) =

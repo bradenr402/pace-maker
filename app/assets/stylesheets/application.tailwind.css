@@ -1,10 +1,9 @@
 /* Custom components */
-@import "custom/custom.css";
+@import 'custom/custom.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 
 @layer components {
   .heading {
@@ -17,8 +16,8 @@
 }
 
 @layer base {
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }

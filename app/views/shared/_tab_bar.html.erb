@@ -1,7 +1,7 @@
 <div class="fixed inset-x-0 bottom-0 w-full block backdrop-blur-sm bg-slate-50/85 dark:bg-slate-800/85 border-t dark:border-slate-700 pb-1 md:hidden">
   <nav class="grid grid-cols-5 place-items-center gap-y-4 w-full">
-  <% links = tab_links %>
-  <% first_two_links, last_two_links = links[0, 2], links[-2, 2] %>
+    <% links = tab_links %>
+    <% first_two_links, last_two_links = links[0, 2], links[-2, 2] %>
     <% first_two_links.each do |item| %>
       <%= link_to item[:path], aria: { current: current_page?(item[:path]) ? 'page' : nil }, class: "tab-link #{current_page?(item[:path]) ? 'tab-link-active' : 'tab-link-inactive'}" do %>
         <%= item[:icon].html_safe if item[:icon].present? %>

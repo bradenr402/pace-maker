@@ -2,7 +2,7 @@
   <div class="form-group">
     <%= form.label :date, 'What day did you run?', class: 'form-label' %>
     <%= form.date_field :date, autofocus: true, max: Date.today, value: form.object.new_record? ? Date.today : @run.date, class: 'form-input', data: { form_validation_target: "date", action: "input->form-validation#validateDate" } %>
-      <span class="error-message hidden my-1" data-form-validation-target="dateError">Date must be today or earlier</span>
+    <span class="error-message hidden my-1" data-form-validation-target="dateError">Date must be today or earlier</span>
   </div>
 
   <div data-controller="distance-shortcuts">

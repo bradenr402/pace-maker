@@ -45,11 +45,14 @@ module NavigationHelper
     links = [
       { name: 'Teams', path: teams_path, icon: TEAM_ICON },
       { name: 'Placeholder', path: root_path, icon: PROFILE_ICON },
-      { name: 'Settings', path: root_path, icon: SETTINGS_ICON },
+      { name: 'Settings', path: root_path, icon: SETTINGS_ICON }
     ]
 
     if user_signed_in?
-      links.insert(0, { name: 'Profile', path: user_path(current_user), icon: PROFILE_ICON })
+      links.insert(
+        0,
+        { name: 'Profile', path: user_path(current_user), icon: PROFILE_ICON }
+      )
     end
 
     links
@@ -59,11 +62,14 @@ module NavigationHelper
     links = [
       { name: 'Teams', path: teams_path, icon: TEAM_ICON },
       { name: 'Placeholder', path: root_path, icon: PROFILE_ICON },
-      { name: 'Settings', path: root_path, icon: SETTINGS_ICON },
+      { name: 'Settings', path: root_path, icon: SETTINGS_ICON }
     ]
 
     if user_signed_in?
-      links.insert(0, { name: 'Profile', path: user_path(current_user), icon: PROFILE_ICON })
+      links.insert(
+        0,
+        { name: 'Profile', path: user_path(current_user), icon: PROFILE_ICON }
+      )
     end
 
     links
