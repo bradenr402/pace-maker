@@ -45,7 +45,7 @@
 }
 
 .tab-link {
-  @apply rounded-lg px-2 flex flex-col items-center gap-1 text-sm font-medium hover:transition hover:duration-300 hover:ease-in-out dark:focus:text-white;
+  @apply rounded-lg px-2 flex flex-col items-center gap-1 text-xs font-medium hover:transition hover:duration-300 hover:ease-in-out dark:focus:text-white;
 }
 
 .tab-link-active {
