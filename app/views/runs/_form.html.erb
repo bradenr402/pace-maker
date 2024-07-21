@@ -28,7 +28,7 @@
   <div class="form-group">
     <%= form.label :duration_input, class: 'form-label' do %>
       <p> How much time did you run for?
-        <span class="text-xs text-slate-700 dark:text-slate-400">(optional)</span>
+        <span class="help-text">(optional)</span>
       </p>
     <% end %>
     <%= form.text_field :duration_input, value: form.object.new_record? ? '' : clock_time_display(@run.duration), class: 'form-input', data: { form_validation_target: "duration", action: "input->form-validation#validateDuration" } %>
@@ -39,7 +39,7 @@
   <div class="form-group">
     <%= form.label :comments, class: 'form-label' do %>
       <p> Any additional comments?
-        <span class="text-xs text-slate-700 dark:text-slate-400">(optional)</span>
+        <span class="help-text">(optional)</span>
       </p>
     <% end %>
     <%= form.text_area :comments, placeholder: 'Add comments...', class: 'form-input', data: { controller: 'autogrow', action: 'input->autogrow#grow' } %>
