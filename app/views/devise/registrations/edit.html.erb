@@ -16,7 +16,11 @@
     <%= render "devise/shared/error_messages", resource: resource %>
 
     <div class="form-group">
-      <%= f.label :display_name, class: "form-label" %>
+      <%= f.label :display_name, class: "form-label" do %>
+        <p> Display name
+          <span class="help-text">(optional)</span>
+        </p>
+      <% end %>
       <%= f.text_field :display_name, class: "form-input", data: { form_validation_target: "displayName", action: "input->form-validation#validateDisplayName" } %>
       <span class="error-message hidden my-1" data-form-validation-target="displayNameError">Display name must be 100 characters or less</span>
     </div>
