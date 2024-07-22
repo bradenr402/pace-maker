@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
       display_name
       username
       email
+      phone_number
       password
       password_confirmation
       remember_me

@@ -5,6 +5,8 @@ export default class extends Controller {
   static targets = [
     'email',
     'emailError',
+    'phone',
+    'phoneError',
     'displayName',
     'displayNameError',
     'username',
@@ -88,6 +90,36 @@ export default class extends Controller {
       this.emailTarget.classList.remove('form-input-error');
       this.emailErrorTarget.classList.add('hidden');
     }
+  }
+
+  validatePhone(event) {
+    const phone = this.phoneTarget.value.trim();
+    const phoneRegex = /^\+?[\d\s\-\(\)]{10,15}$/;
+
+    if (phone && !phoneRegex.test(phone)) {
+      this.phoneTarget.classList.add('form-input-error');
+      this.phoneErrorTarget.classList.remove('hidden');
+    } else {
+      this.phoneTarget.classList.remove('form-input-error');
+      this.phoneErrorTarget.classList.add('hidden');
+    }
+  }
+
+  filterPhoneInput(event) {
+    let value = this.phoneTarget.value;
+    // Remove non-digits and non-leading + characters
+    value = value.replace(/[^\d\+]/g, '');
+
+    // Ensure leading + if present, followed by digits only
+    if (value.startsWith('+')) {
+      value = '+' + value.slice(1).replace(/\D/g, '');
+    } else {
+      value = value.replace(/\D/g, '');
+    }
+
+    this.phoneTarget.value = value;
+
+    this.validatePhone();
   }
 
   validateDisplayName(event) {

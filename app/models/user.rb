@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   include UserCalculations
   USERNAME_FORMAT = /\A[a-z0-9_.]{3,}\z/
+  PHONE_NUMBER_FORMAT = /\A\+?\d{10,15}\z/
 
   has_many :runs, dependent: :destroy
   has_many :team_memberships, dependent: :destroy
@@ -36,6 +37,13 @@ class User < ApplicationRecord
             }
   validate :password_complexity
   validates :display_name, length: { maximum: 100 }, allow_blank: true
+  validates :phone_number,
+            uniqueness: true,
+            allow_blank: true,
+            format: {
+              with: PHONE_NUMBER_FORMAT,
+              message: 'is not a valid phone number'
+            }
 
   def login = @login || username || email
 
