@@ -19,7 +19,7 @@
 
     <div class="form-group">
       <%= f.label :username, class: 'form-label' %>
-      <%= f.text_field :username, class: 'form-input', data: { form_validation_target: "username", action: "input->form-validation#validateUsername" } %>
+      <%= f.text_field :username, autocomplete: 'username', class: 'form-input', data: { form_validation_target: "username", action: "input->form-validation#validateUsername" } %>
       <span class="error-message hidden my-1" data-form-validation-target="usernameError">Username can only contain lowercase letters, numbers, underscores, and periods and must be at least 3 characters long</span>
     </div>
 
