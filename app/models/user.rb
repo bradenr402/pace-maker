@@ -45,6 +45,9 @@ class User < ApplicationRecord
               message: 'is not a valid phone number'
             }
 
+  enum gender: { male: 'male', female: 'female' }
+  validates :gender, inclusion: { in: genders.keys }, if: -> { gender.present? }
+
   def login = @login || username || email
 
   def runs_in_date_range(range) = runs.in_date_range(range)
