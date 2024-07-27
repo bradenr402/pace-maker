@@ -72,3 +72,5 @@ end
 gem 'devise'
 
 gem 'inline_svg'
+
+gem 'ledermann-rails-settings'
