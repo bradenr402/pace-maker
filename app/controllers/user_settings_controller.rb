@@ -11,9 +11,7 @@ class UserSettingsController < ApplicationController
 
     # convert string 'true' to true and string 'false' to false
     settings_params =
-      user_settings_params.transform_values do |value|
-        value == 'true'
-      end
+      user_settings_params.transform_values { |value| value == 'true' }
 
     if @user.settings(:privacy).update(settings_params)
       redirect_to current_user, success: 'Settings updated successfully'
