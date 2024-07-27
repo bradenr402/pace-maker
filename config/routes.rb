@@ -28,6 +28,8 @@ Rails.application.routes.draw do
   post 'teams/:id/join', to: 'teams#join', as: 'join_team'
   post 'teams/:id/leave', to: 'teams#leave', as: 'leave_team'
 
+  resource :user_settings, only: %i[edit update]
+
   root 'users#profile'
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

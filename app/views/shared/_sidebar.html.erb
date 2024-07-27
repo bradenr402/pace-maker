@@ -14,7 +14,7 @@
       <span>Teams</span>
     <% end %>
 
-    <%= link_to root_path, aria: { current: current_page?(root_path) ? 'page' : nil }, class: "sidebar-link #{current_page?(root_path) ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
+    <%= link_to edit_user_settings_path, aria: { current: current_page?(edit_user_settings_path) ? 'page' : nil }, class: "sidebar-link #{current_page?(edit_user_settings_path) ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
       <%= inline_svg_tag 'icons/settings.svg', class: 'size-6' %>
       <span>Settings</span>
     <% end %>

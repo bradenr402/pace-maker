@@ -36,16 +36,6 @@
       <p class="text-sm text-slate-600 dark:text-slate-400">This information will not be displayed publicly.</p>
     </div>
 
-    <div class="form-group">
-      <%= f.label :gender, class: 'form-label' do %>
-        <p> Gender
-          <span class="help-text">(optional)</span>
-        </p>
-      <% end %>
-      <%= f.select :gender, User.genders.keys.map { |gender| [gender.humanize, gender] }, { include_blank: true }, class: 'form-select' %>
-      <p class="help-text my-1">Make this blank if you don't want to specify your gender.</p>
-    </div>
-
     <div class='form-group'>
       <%= f.label :email, class: "form-label" %>
       <%= f.email_field :email, autocomplete: "email", class: "form-input", data: { form_validation_target: "email", action: "input->form-validation#validateEmail" } %>
@@ -62,8 +52,23 @@
       <span class="error-message hidden my-1" data-form-validation-target="phoneError">Invalid phone number</span>
     </div>
 
+    <div class="form-group">
+      <%= f.label :gender, class: 'form-label' do %>
+        <p> Gender
+          <span class="help-text">(optional)</span>
+        </p>
+      <% end %>
+      <%= f.select :gender, User.genders.keys.map { |gender| [gender.humanize, gender] }, { include_blank: true }, class: 'form-select' %>
+      <p class="help-text my-1">Leave this blank if you don't want to specify your gender.</p>
+    </div>
+
     <div class='form-group relative'>
-      <%= f.label :password, 'New password', class: "form-label" %>
+      <%= f.label :password, class: "form-label" do %>
+        <p> New password
+          <span class="help-text">(optional)</span>
+        </p>
+      <% end %>
+
       <div class="flex items-center" data-controller="password-visibility">
         <%= f.password_field :password, autocomplete: "new-password", class: 'form-input w-full', data: { form_validation_target: "newPassword", action: "input->form-validation#validateNewPassword input->form-validation#validateNewPasswordConfirmation", password_visibility_target: "password" } %>
         <button type="button" class="-ml-9" data-action="password-visibility#toggle">
@@ -72,7 +77,7 @@
         </button>
       </div>
 
-      <p class="help-text my-1">Leave this blank if you don't want to change it.</p>
+      <p class="help-text my-1">Leave this blank if you don't want to change your password.</p>
       <div class="hidden" data-form-validation-target="passwordRequirements">
         <p class="help-text my-1">Password must contain:</p>
         <div class="ml-3">

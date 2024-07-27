@@ -1,5 +1,7 @@
 class User < ApplicationRecord
   include UserCalculations
+  include UserSettings
+
   USERNAME_FORMAT = /\A[a-z0-9_.]{3,}\z/
   PHONE_NUMBER_FORMAT = /\A\+?\d{10,15}\z/
 

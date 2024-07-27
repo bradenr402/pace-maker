@@ -1,5 +1,5 @@
 <div class="max-w-3xl mx-auto px-4 my-16">
-  <div class="pb-6 border-b">
+  <div class="pb-6 border-b border-slate-200 dark:border-slate-700">
     <div class="flex flex-wrap gap-6 items-center justify-between">
       <h1 class="heading">
         <%= link_to @run.user.display_name.present? ? @run.user.display_name : @run.user.username, @run.user, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %>

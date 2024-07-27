@@ -1,0 +1,32 @@
+<div class="max-w-3xl mx-auto px-4 my-10">
+  <div class="mb-4 pb-6 border-b border-slate-200 dark:border-slate-700">
+    <div class="flex items-center justify-between">
+      <h1 class="heading">Settings</h1>
+    </div>
+  </div>
+
+  <%= form_with model: @user, url: user_settings_path, local: true do |form| %>
+    <!-- Hidden fields to ensure that unchecked checkboxes submit 'false' -->
+    <%= hidden_field_tag 'user[settings][email_visible]', 'false' %>
+    <%= hidden_field_tag 'user[settings][phone_visible]', 'false' %>
+
+    <%= form.fields_for :settings do |settings_form| %>
+      <div class="form-group space-y-2">
+        <p class="form-label">Display contact information</p>
+        <div class="flex items-center gap-2">
+          <%= settings_form.check_box :email_visible, { checked: @user.settings(:privacy).email_visible, class: 'form-input-checkbox' }, true, false %>
+          <%= settings_form.label :email_visible, 'Show email', class: 'select-none text-sm' %>
+        </div>
+        <div class="flex items-center gap-2">
+          <%= settings_form.check_box :phone_visible, { checked: @user.settings(:privacy).phone_visible, class: 'form-input-checkbox' }, true, false %>
+          <%= settings_form.label :phone_visible, 'Show phone number', class: 'select-none text-sm' %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="flex items-center gap-6 mt-10">
+      <%= form.submit "Save settings", class: "btn btn-primary mr-auto" %>
+      <%= link_to "Cancel", :back, class: "btn btn-white", data: { turbo: false } %>
+    </div>
+  <% end %>
+</div>
