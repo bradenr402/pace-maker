@@ -18,10 +18,7 @@
             <p class="text-sm text-slate-700 dark:text-slate-400 mb-1"><%= @user.email %></p>
             <div class="flex items-center justify-center gap-3">
               <%= mail_to @user.email, class: 'btn btn-sm btn-white' do %>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
-                  <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
-                  <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
-                </svg>
+                <%= inline_svg_tag 'icons/envelope.svg', class: 'size-4' %>
               <% end %>
             </div>
           </div>
@@ -32,16 +29,11 @@
             <p class="text-sm text-slate-700 dark:text-slate-400 mb-1"><%= number_to_phone(@user.phone_number, area_code: true) %></p>
             <div class="flex items-center justify-center gap-3">
               <%= sms_to @user.phone_number, class: 'btn btn-sm btn-white' do %>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
-                  <path fill-rule="evenodd" d="M1 8c0-3.43 3.262-6 7-6s7 2.57 7 6-3.262 6-7 6c-.423 0-.838-.032-1.241-.094-.9.574-1.941.948-3.06 1.06a.75.75 0 0 1-.713-1.14c.232-.378.395-.804.469-1.26C1.979 11.486 1 9.86 1 8Z" clip-rule="evenodd" />
-                </svg>
+                <%= inline_svg_tag 'icons/message-bubble.svg', class: 'size-4' %>
               <% end %>
 
               <%= phone_to @user.phone_number, class: 'btn btn-sm btn-white' do %>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
-                  <path d="m4.922 6.752-1.067.534a7.52 7.52 0 0 0 4.859 4.86l.534-1.068a1 1 0 0 1 1.046-.542l2.858.44a1 1 0 0 1 .848.988V13a1 1 0 0 1-1 1h-2c-.709 0-1.4-.082-2.062-.238a9.012 9.012 0 0 1-6.7-6.7A9.024 9.024 0 0 1 2 5V3a1 1 0 0 1 1-1h1.036a1 1 0 0 1 .988.848l.44 2.858a1 1 0 0 1-.542 1.046Z" />
-                  <path d="M9.22 5.72a.75.75 0 0 0 1.06 1.06l2.22-2.22v1.69a.75.75 0 0 0 1.5 0v-3.5a.75.75 0 0 0-.75-.75h-3.5a.75.75 0 0 0 0 1.5h1.69L9.22 5.72Z" />
-                </svg>
+                <%= inline_svg_tag 'icons/phone.svg', class: 'size-4' %>
               <% end %>
             </div>
           </div>
