@@ -11,15 +11,19 @@
     <%= hidden_field_tag 'user[settings][phone_visible]', 'false' %>
 
     <%= form.fields_for :settings do |settings_form| %>
+      <div class="my-6">
+        <h2 class="font-normal text-lg text-slate-700 dark:text-slate-200 mb-2">Contact information</h2>
+        <p class="text-sm text-slate-600 dark:text-slate-400">Display your contact information to other users on your profile.</p>
+      </div>
+
       <div class="form-group space-y-2">
-        <p class="form-label">Display contact information</p>
         <div class="flex items-center gap-2">
           <%= settings_form.check_box :email_visible, { checked: @user.settings(:privacy).email_visible, class: 'form-input-checkbox' }, true, false %>
-          <%= settings_form.label :email_visible, 'Display email to other users', class: 'select-none text-sm' %>
+          <%= settings_form.label :email_visible, 'Show email', class: 'select-none text-sm text-slate-700 dark:text-slate-300' %>
         </div>
         <div class="flex items-center gap-2">
           <%= settings_form.check_box :phone_visible, { checked: @user.settings(:privacy).phone_visible, class: 'form-input-checkbox' }, true, false %>
-          <%= settings_form.label :phone_visible, 'Display phone number to other users', class: 'select-none text-sm' %>
+          <%= settings_form.label :phone_visible, 'Show phone number', class: 'select-none text-sm text-slate-700 dark:text-slate-300' %>
         </div>
       </div>
     <% end %>
