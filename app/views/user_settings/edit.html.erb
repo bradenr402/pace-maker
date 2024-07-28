@@ -32,7 +32,7 @@
         <p class="text-sm text-slate-600 dark:text-slate-400">Choose your preferred theme.</p>
       </div>
 
-      <div data-controller="theme" class="form-group">
+      <div class="form-group">
         <%= settings_form.label :theme, 'Theme', class: 'form-label' %>
         <%= settings_form.select :theme, options_for_select([['System default', 'system'], ['Light', 'light'], ['Dark', 'dark']], @user.settings(:appearance).theme), {}, data: { theme_target: 'themeSelect', action: 'theme#change' }, class: 'form-select' %>
       </div>

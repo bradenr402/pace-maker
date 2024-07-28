@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-controller="theme" data-theme-user-theme-value="<%= current_user.settings(:appearance).theme %>">
   <head>
     <title>TeamRunner</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -9,6 +9,12 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <script>
+      if ('<%= current_user.settings(:appearance).theme %>' === 'dark' || ('<%= current_user.settings(:appearance).theme %>' === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark')
+      }
+    </script>
   </head>
 
     <body class='font-normal leading-normal text-slate-800 relative selection:bg-indigo-500/40 bg-white dark:bg-slate-900 dark:text-slate-100 antialiased'>

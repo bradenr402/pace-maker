@@ -4,9 +4,22 @@ import { Controller } from '@hotwired/stimulus';
 // Connects to data-controller="theme"
 export default class extends Controller {
   static targets = ['themeSelect'];
+  static values = { userTheme: String };
+
+  connect() {
+    console.log(this.userThemeValue);
+
+    this.setTheme(this.userThemeValue);
+  }
 
   applyTheme() {
-    const theme = this.themeSelectTarget.value || 'system';
+    let theme;
+    if (this.hasThemeSelectTarget) {
+      theme = this.themeSelectTarget.value;
+    } else {
+      theme = this.userThemeValue;
+    }
+
     this.setTheme(theme);
   }
 
@@ -18,16 +31,10 @@ export default class extends Controller {
   setTheme(theme) {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
     } else if (theme === 'light') {
-      document.documentElement.classList.add('light');
       document.documentElement.classList.remove('dark');
-    } else {
-      // Remove both to fall back to system preference
-      document.documentElement.classList.remove('dark', 'light');
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.documentElement.classList.add('dark');
-      }
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
     }
   }
 }
