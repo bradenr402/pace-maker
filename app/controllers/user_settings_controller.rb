@@ -16,6 +16,7 @@ class UserSettingsController < ApplicationController
       user_settings_params.transform_values do |value|
         value == 'true' if %w[true false].include?(value)
       end
+
     settings_params[:theme] = user_settings_params[:theme] if %w[
       light
       dark
@@ -23,7 +24,8 @@ class UserSettingsController < ApplicationController
     ].include?(user_settings_params[:theme])
 
     if @user.settings(:privacy).update(settings_params) &&
-         @user.settings(:appearance).update(theme: settings_params[:theme])
+         @user.settings(:appearance).update(theme: settings_params[:theme]) &&
+         @user.settings(:notifications).update(settings_params)
       redirect_to current_user, success: 'Settings updated successfully'
     else
       render :edit, alert: 'Unable to update settings'
@@ -36,5 +38,5 @@ class UserSettingsController < ApplicationController
     params
       .require(:user)
       .require(:settings)
-      .permit(:email_visible, :phone_visible, :theme)
+      .permit(:email_visible, :phone_visible, :theme, :in_app)
 end
