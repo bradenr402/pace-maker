@@ -6,7 +6,7 @@
 
   /* Default label styles. */
   .form-label {
-    @apply block mb-2 select-none;
+    @apply block mb-2 select-none text-slate-700 dark:text-slate-300;
   }
 
   /* Default input styles. */
