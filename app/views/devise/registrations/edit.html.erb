@@ -1,5 +1,9 @@
 <div class="max-w-3xl mx-auto px-4 my-10">
-  <h1 class="heading">Account</h1>
+  <div class="mb-4 pb-6 border-b border-slate-200 dark:border-slate-700">
+    <div class="flex items-center justify-between">
+      <h1 class="heading">Account</h1>
+    </div>
+  </div>
 
   <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
     <div class="bg-blue-50/90 text-blue-700 border-l-4 border-blue-700 py-4 pr-4 pl-6 text-sm dark:bg-blue-50/10 dark:text-blue-50 dark:border-blue-400 mt-6">
@@ -40,6 +44,13 @@
       <%= f.label :email, class: "form-label" %>
       <%= f.email_field :email, autocomplete: "email", class: "form-input", data: { form_validation_target: "email", action: "input->form-validation#validateEmail" } %>
       <span class="error-message hidden my-1" data-form-validation-target="emailError">Invalid email address</span>
+      <div class="flex items-center gap-2 mt-2">
+        <%= hidden_field_tag 'user[settings][email_visible]', 'false' %>
+        <%= f.fields_for :settings do |settings_form| %>
+          <%= settings_form.check_box :email_visible, { checked: @user.settings(:privacy).email_visible, class: 'form-input-checkbox' }, true, false %>
+          <%= settings_form.label :email_visible, 'Display email to other users', class: 'select-none text-sm' %>
+        <% end %>
+      </div>
     </div>
 
     <div class="form-group">
@@ -50,6 +61,13 @@
       <% end %>
       <%= f.telephone_field :phone_number, autocomplete: 'tel', class: 'form-input', data: { form_validation_target: "phone", action: "input->form-validation#validatePhone input->form-validation#filterPhoneInput" } %>
       <span class="error-message hidden my-1" data-form-validation-target="phoneError">Invalid phone number</span>
+      <div class="flex items-center gap-2 mt-2">
+        <%= hidden_field_tag 'user[settings][phone_visible]', 'false' %>
+        <%= f.fields_for :settings do |settings_form| %>
+          <%= settings_form.check_box :phone_visible, { checked: @user.settings(:privacy).phone_visible, class: 'form-input-checkbox' }, true, false %>
+          <%= settings_form.label :phone_visible, 'Display phone number to other users', class: 'select-none text-sm' %>
+        <% end %>
+      </div>
     </div>
 
     <div class="form-group">

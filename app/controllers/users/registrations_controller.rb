@@ -22,8 +22,37 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # PUT /resource
+  # def update
+  #   super
+  #   flash.clear
+  #   set_flash_message! :success, :updated
+  # end
+
   def update
-    super
+    self.resource =
+      resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
+    prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(
+      :unconfirmed_email
+    )
+
+    # Update user attributes including settings
+    resource_updated =
+      update_resource(resource, account_update_params.except(:current_password))
+    yield resource if block_given?
+
+    if resource_updated
+      set_flash_message_for_update(resource, prev_unconfirmed_email)
+      if sign_in_after_change_password?
+        bypass_sign_in resource, scope: resource_name
+      end
+
+      redirect_to after_update_path_for(resource)
+    else
+      clean_up_passwords resource
+      set_minimum_password_length
+      respond_with resource
+    end
+
     flash.clear
     set_flash_message! :success, :updated
   end
@@ -52,10 +81,27 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   # If you have extra params to permit, append them to the sanitizer.
+  # def configure_account_update_params
+  #   devise_parameter_sanitizer.permit(
+  #     :account_update,
+  #     keys: %i[display_name username email phone_number gender]
+  #   )
+  # end
+
   def configure_account_update_params
     devise_parameter_sanitizer.permit(
       :account_update,
-      keys: %i[display_name username email phone_number gender]
+      keys: [
+        :display_name,
+        :username,
+        :email,
+        :phone_number,
+        :gender,
+        :current_password,
+        :password,
+        :password_confirmation,
+        { settings: %i[email_visible phone_visible] }
+      ]
     )
   end
 
@@ -71,5 +117,20 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def after_update_path_for(resource)
     user_path(current_user)
+  end
+
+  protected
+
+  def update_resource(resource, params)
+    settings_params = params.delete(:settings) || {}
+    resource.settings(:privacy).update(
+      settings_params.transform_values { |value| value == 'true' }
+    )
+
+    if params[:password].present?
+      resource.update_with_password(params)
+    else
+      resource.update_without_password(params)
+    end
   end
 end
