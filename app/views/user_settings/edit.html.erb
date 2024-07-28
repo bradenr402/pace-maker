@@ -26,6 +26,16 @@
           <%= settings_form.label :phone_visible, 'Show phone number', class: 'select-none text-sm text-slate-700 dark:text-slate-300' %>
         </div>
       </div>
+
+      <div class="py-10 mt-6 border-t border-slate-200 dark:border-slate-700">
+        <h2 class="font-normal text-lg text-slate-700 dark:text-slate-200 mb-2">Appearance</h2>
+        <p class="text-sm text-slate-600 dark:text-slate-400">Choose your preferred theme.</p>
+      </div>
+
+      <div data-controller="theme" class="form-group">
+        <%= settings_form.label :theme, 'Theme', class: 'form-label' %>
+        <%= settings_form.select :theme, options_for_select([['System default', 'system'], ['Light', 'light'], ['Dark', 'dark']], @user.settings(:appearance).theme), {}, data: { theme_target: 'themeSelect', action: 'theme#change' }, class: 'form-select' %>
+      </div>
     <% end %>
 
     <div class="flex items-center gap-6 mt-10">

@@ -3,17 +3,27 @@ class UserSettingsController < ApplicationController
 
   def edit
     @user = current_user
-    @user.settings(:privacy) # Ensure settings are loaded
+
+    # Ensure settings are loaded
+    @user.settings(:privacy)
+    @user.settings(:appearance)
   end
 
   def update
     @user = current_user
 
-    # convert string 'true' to true and string 'false' to false
     settings_params =
-      user_settings_params.transform_values { |value| value == 'true' }
+      user_settings_params.transform_values do |value|
+        value == 'true' if %w[true false].include?(value)
+      end
+    settings_params[:theme] = user_settings_params[:theme] if %w[
+      light
+      dark
+      system
+    ].include?(user_settings_params[:theme])
 
-    if @user.settings(:privacy).update(settings_params)
+    if @user.settings(:privacy).update(settings_params) &&
+         @user.settings(:appearance).update(theme: settings_params[:theme])
       redirect_to current_user, success: 'Settings updated successfully'
     else
       render :edit, alert: 'Unable to update settings'
@@ -23,9 +33,8 @@ class UserSettingsController < ApplicationController
   private
 
   def user_settings_params =
-    # params.require(:settings).permit(:email_visible, :phone_visible)
     params
       .require(:user)
       .require(:settings)
-      .permit(:email_visible, :phone_visible)
+      .permit(:email_visible, :phone_visible, :theme)
 end
