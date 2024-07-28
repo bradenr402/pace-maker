@@ -28,7 +28,7 @@ class UserSettingsController < ApplicationController
          @user.settings(:notifications).update(settings_params)
       redirect_to current_user, success: 'Settings updated successfully'
     else
-      render :edit, alert: 'Unable to update settings'
+      redirect_to edit_user_registration_path, alert: 'Unable to update settings'
     end
   end
 
