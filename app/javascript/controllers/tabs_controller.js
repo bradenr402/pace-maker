@@ -28,16 +28,39 @@ export default class extends Controller {
     let selectedTab = this.tabTargets.find(
       (element) => element.id === event.currentTarget.id
     );
+
     if (selectedTab.hidden) {
       this.tabTargets.map((x) => {
         x.hidden = true;
         x.classList.add('hidden');
       });
+
       this.btnTargets.map((x) => x.classList.remove(...this.activeClasses));
 
       selectedTab.hidden = false;
       selectedTab.classList.remove('hidden');
       event.currentTarget.classList.add(...this.activeClasses);
+    }
+  }
+
+  otherTeamsTab() {
+    let selectedTab = this.tabTargets.find(
+      (element) => element.id === 'otherTeamsTab'
+    );
+
+    if (selectedTab.hidden) {
+      this.tabTargets.map((x) => {
+        x.hidden = true;
+        x.classList.add('hidden');
+      });
+
+      this.btnTargets.map((x) => x.classList.remove(...this.activeClasses));
+
+      selectedTab.hidden = false;
+      selectedTab.classList.remove('hidden');
+      document
+        .getElementById('otherTeamsTab')
+        .classList.add(...this.activeClasses);
     }
   }
 }

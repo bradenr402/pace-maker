@@ -1,7 +1,30 @@
-<div class="max-w-3xl mx-auto px-4 my-16">
-  <%= render 'owned_teams', owned_teams: @owned_teams %>
+<div data-controller="tabs" data-tabs-active-class="text-slate-900 dark:text-slate-200 bg-slate-200 dark:bg-slate-700/70" data-tabs-default-tab-value="ownedTeamsTab" class="max-w-3xl mx-auto px-4 my-16">
+  <div class="flex flex-wrap items-center gap-1.5 bg-slate-50/85 dark:bg-slate-800/85 p-1.5 rounded-md mb-6 border dark:border-slate-700 overflow-x-auto">
+    <button type="button" id="ownedTeamsTab" data-tabs-target="btn" data-action="click->tabs#select" class="rounded-lg py-2 px-4 flex items-center gap-3 hover:bg-slate-200 dark:hover:bg-slate-700/70">
+      <%= inline_svg_tag 'icons/team.svg', class: 'size-6' %>
+      <span>My Teams</span>
+    </button>
 
-  <%= render 'membered_teams', membered_teams: @membered_teams %>
+    <button type="button" id="teamMembershipsTab" data-tabs-target="btn" data-action="click->tabs#select" class="rounded-lg py-2 px-4 flex items-center gap-3 hover:bg-slate-200 dark:hover:bg-slate-700/70">
+      <%= inline_svg_tag 'icons/id-card.svg', class: 'size-6' %>
+      <span>My Team Memberships</span>
+    </button>
 
-  <%= render 'other_teams', other_teams: @other_teams %>
+    <button type="button" id="otherTeamsTab" data-tabs-target="btn" data-action="click->tabs#select" class="rounded-lg py-2 px-4 flex items-center gap-3 hover:bg-slate-200 dark:hover:bg-slate-700/70">
+      <%= inline_svg_tag 'icons/search.svg', class: 'size-6' %>
+      <span>Find Teams</span>
+    </button>
+  </div>
+
+  <div id="ownedTeamsTab" data-tabs-target="tab">
+    <%= render 'owned_teams', owned_teams: @owned_teams %>
+  </div>
+
+  <div id="teamMembershipsTab" data-tabs-target="tab" class="hidden">
+    <%= render 'membered_teams', membered_teams: @membered_teams %>
+  </div>
+
+  <div id="otherTeamsTab" data-tabs-target="tab" class="hidden">
+    <%= render 'other_teams', other_teams: @other_teams %>
+  </div>
 </div>
