@@ -26,9 +26,11 @@ class UserSettingsController < ApplicationController
     if @user.settings(:privacy).update(settings_params) &&
          @user.settings(:appearance).update(theme: settings_params[:theme]) &&
          @user.settings(:notifications).update(settings_params)
-      redirect_to current_user, success: 'Settings updated successfully'
+      redirect_to edit_user_registration_path,
+                  success: 'Settings updated successfully'
     else
-      redirect_to edit_user_registration_path, alert: 'Unable to update settings'
+      redirect_to edit_user_registration_path,
+                  alert: 'Unable to update settings'
     end
   end
 
