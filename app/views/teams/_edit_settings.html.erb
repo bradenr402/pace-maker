@@ -5,9 +5,6 @@
 </div>
 
 <%= form_with model: @team, url: team_settings_path(@team), local: true do |form| %>
-  <!-- Hidden field to send team id -->
-  <%#= hidden_field_tag 'team_id', @team.id %>
-
   <!-- Hidden fields to ensure that unchecked checkboxes submit 'false' -->
   <%= hidden_field_tag 'team[settings][require_gender]', 'false' %>
 
