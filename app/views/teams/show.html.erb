@@ -14,11 +14,17 @@
     </div>
   </div>
 
-  <%= render 'team_stats', team: @team %>
+  <div class="mb-24">
+    <%= render 'team_stats', team: @team %>
+  </div>
 
-  <% if current_user.owns?(@team) && @join_requests.present? %>
-    <%= render 'join_requests', join_requests: @join_requests %>
-  <% end %>
+  <div class="mb-24">
+    <% if current_user.owns?(@team) && @join_requests.present? %>
+      <%= render 'join_requests', join_requests: @join_requests %>
+    <% end %>
+  </div>
 
-  <%= render 'members', members: @members %>
+  <div class="mb-24">
+    <%= render 'members', members: @members %>
+  </div>
 </div>
