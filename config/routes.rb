@@ -7,7 +7,12 @@ Rails.application.routes.draw do
 
   resources :runs, except: %i[index]
   resources :users, only: %i[show]
-  resources :teams
+  resources :teams do
+    resource :team_settings,
+             only: %i[update],
+             path: 'settings',
+             as: :settings
+  end
   resources :team_join_requests, only: %i[update]
 
   post 'remove_member', to: 'teams#remove_member'

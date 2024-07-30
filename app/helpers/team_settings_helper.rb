@@ -1,0 +1,2 @@
+module TeamSettingsHelper
+end
