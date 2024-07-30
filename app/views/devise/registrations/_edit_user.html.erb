@@ -25,12 +25,14 @@
       </p>
     <% end %>
     <%= f.text_field :display_name, class: "form-input", data: { form_validation_target: "displayName", action: "input->form-validation#validateDisplayName" } %>
+    <p class="help-text my-1">Your display name is not unique and can be added to help other users recognize you.</p>
     <span class="error-message hidden my-1" data-form-validation-target="displayNameError">Display name must be 100 characters or less</span>
   </div>
 
   <div class='form-group'>
     <%= f.label :username, class: "form-label" %>
     <%= f.text_field :username, autocomplete: 'username', class: "form-input", data: { form_validation_target: "username", action: "input->form-validation#validateUsername" } %>
+    <p class="help-text my-1">Your username is unique to you.</p>
     <span class="error-message hidden my-1" data-form-validation-target="usernameError">Username can only contain lowercase letters, numbers, underscores, and periods and must be at least 3 characters long</span>
   </div>
 
