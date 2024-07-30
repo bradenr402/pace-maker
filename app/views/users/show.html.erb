@@ -38,12 +38,6 @@
         <% end %>
       </div>
     <% end %>
-
-    <% if @user == current_user %>
-      <div class="flex items-center justify-center md:justify-end mt-4">
-        <%= link_to 'Edit profile', edit_user_registration_path, class: 'btn btn-white' %>
-      </div>
-    <% end %>
   </div>
 
   <div class="mb-24">
