@@ -1,14 +1,6 @@
 class UserSettingsController < ApplicationController
   before_action :authenticate_user!
 
-  def edit
-    @user = current_user
-
-    # Ensure settings are loaded
-    @user.settings(:privacy)
-    @user.settings(:appearance)
-  end
-
   def update
     @user = current_user
 

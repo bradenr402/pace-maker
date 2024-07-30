@@ -28,7 +28,7 @@ Rails.application.routes.draw do
   post 'teams/:id/join', to: 'teams#join', as: 'join_team'
   post 'teams/:id/leave', to: 'teams#leave', as: 'leave_team'
 
-  resource :user_settings, only: %i[edit update]
+  resource :user_settings, only: %i[update]
 
   root 'users#profile'
 
