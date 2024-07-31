@@ -1,11 +1,21 @@
-<div class="max-w-3xl mx-auto px-4 my-16">
-  <div class="mb-4 pb-6 border-b border-slate-200 dark:border-slate-700">
-    <div class="flex items-center justify-between">
-      <h1 class="heading">Edit Team</h1>
-    </div>
+<div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="editTab" class="max-w-3xl mx-auto px-4 my-16">
+  <div class="tab-container">
+    <button type="button" id="editTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+      <%= inline_svg_tag 'icons/team.svg', class: 'size-5' %>
+      <span>Team</span>
+    </button>
+
+    <button type="button" id="settingsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+      <%= inline_svg_tag 'icons/settings.svg', class: 'size-5' %>
+      <span>Settings</span>
+    </button>
   </div>
 
-  <div>
-    <%= render "form", team: @team %>
+  <div id="settingsTab" data-tabs-target="tab">
+    <%= render 'edit_settings' %>
+  </div>
+
+  <div id="editTab" data-tabs-target="tab" class="hidden">
+    <%= render 'edit_team' %>
   </div>
 </div>

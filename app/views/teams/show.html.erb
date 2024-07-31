@@ -30,11 +30,6 @@
         <%= inline_svg_tag 'icons/user-plus.svg', class: 'size-5' %>
         <span>Join Requests</span>
       </button>
-
-      <button type="button" id="settingsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
-        <%= inline_svg_tag 'icons/settings.svg', class: 'size-5' %>
-        <span>Team Settings</span>
-      </button>
     <% end %>
   </div>
 
@@ -49,10 +44,6 @@
   <% if current_user.owns?(@team) %>
     <div id="joinRequestsTab" data-tabs-target="tab" class="mb-24 hidden">
       <%= render 'join_requests', join_requests: @join_requests %>
-    </div>
-
-    <div id="settingsTab" data-tabs-target="tab" class="mb-24 hidden">
-      <%= render 'edit_settings', team: @team %>
     </div>
   <% end %>
 </div>
