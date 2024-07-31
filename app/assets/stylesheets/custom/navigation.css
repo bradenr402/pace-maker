@@ -56,6 +56,14 @@
   @apply text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-500;
 }
 
+.btn-tab {
+  @apply rounded-lg py-2 px-4 flex items-center gap-3 text-sm hover:bg-slate-200 dark:hover:bg-slate-700/70;
+}
+
+.btn-tab-active {
+  @apply text-slate-900 dark:text-slate-200 bg-slate-200 dark:bg-slate-700/70;
+}
+
 .tab-container {
   @apply flex items-center gap-1.5 bg-slate-50/85 dark:bg-slate-800/85 p-1.5 rounded-md mb-6 border dark:border-slate-700 overflow-x-auto whitespace-nowrap max-w-max mx-auto;
 }
