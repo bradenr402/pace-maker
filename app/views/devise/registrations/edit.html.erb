@@ -1,12 +1,12 @@
-<div data-controller="tabs" data-tabs-active-class="text-slate-900 dark:text-slate-200 bg-slate-200 dark:bg-slate-700/70" data-tabs-default-tab-value="accountTab" class="max-w-3xl mx-auto px-4 my-16">
+<div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="accountTab" class="max-w-3xl mx-auto px-4 my-16">
   <div class="flex flex-wrap items-center gap-1.5 bg-slate-50/85 dark:bg-slate-800/85 p-1.5 rounded-md mb-6 border dark:border-slate-700 overflow-x-auto">
-    <button type="button" id="accountTab" data-tabs-target="btn" data-action="click->tabs#select" class="rounded-lg py-2 px-4 flex items-center gap-3 hover:bg-slate-200 dark:hover:bg-slate-700/70">
-      <%= inline_svg_tag 'icons/profile.svg', class: 'size-6' %>
+    <button type="button" id="accountTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+      <%= inline_svg_tag 'icons/profile.svg', class: 'size-5' %>
       <span>Account</span>
     </button>
 
-    <button type="button" id="settingsTab" data-tabs-target="btn" data-action="click->tabs#select" class="rounded-lg py-2 px-4 flex items-center gap-3 hover:bg-slate-200 dark:hover:bg-slate-700/70">
-      <%= inline_svg_tag 'icons/settings.svg', class: 'size-6' %>
+    <button type="button" id="settingsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+      <%= inline_svg_tag 'icons/settings.svg', class: 'size-5' %>
       <span>Settings</span>
     </button>
   </div>

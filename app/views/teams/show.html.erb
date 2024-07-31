@@ -1,4 +1,4 @@
-<div data-controller="tabs" data-tabs-active-class="text-slate-900 dark:text-slate-200 bg-slate-200 dark:bg-slate-700/70" data-tabs-default-tab-value="infoTab"  class="max-w-3xl mx-auto px-4 my-16">
+<div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="infoTab"  class="max-w-3xl mx-auto px-4 my-16">
   <div class="pb-6 border-slate-200 dark:border-slate-700 text-center">
     <h1 class="heading"><%= @team.name %></h1>
     <h2 class="text-lg text-slate-700 my-1 dark:text-slate-400">
@@ -15,20 +15,20 @@
   </div>
 
   <div class="flex flex-wrap items-center gap-1.5 bg-slate-50/85 dark:bg-slate-800/85 p-1.5 rounded-md mb-6 border dark:border-slate-700 overflow-x-auto">
-    <button type="button" id="infoTab" data-tabs-target="btn" data-action="click->tabs#select" class="rounded-lg py-2 px-4 flex items-center gap-3 hover:bg-slate-200 dark:hover:bg-slate-700/70">
+    <button type="button" id="infoTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
       <span>Team Info</span>
     </button>
 
-    <button type="button" id="membersTab" data-tabs-target="btn" data-action="click->tabs#select" class="rounded-lg py-2 px-4 flex items-center gap-3 hover:bg-slate-200 dark:hover:bg-slate-700/70">
+    <button type="button" id="membersTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
       <span>Team Members</span>
     </button>
 
     <% if current_user.owns?(@team) %>
-      <button type="button" id="joinRequestsTab" data-tabs-target="btn" data-action="click->tabs#select" class="rounded-lg py-2 px-4 flex items-center gap-3 hover:bg-slate-200 dark:hover:bg-slate-700/70">
+      <button type="button" id="joinRequestsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
         <span>Join Requests</span>
       </button>
 
-      <button type="button" id="settingsTab" data-tabs-target="btn" data-action="click->tabs#select" class="rounded-lg py-2 px-4 flex items-center gap-3 hover:bg-slate-200 dark:hover:bg-slate-700/70">
+      <button type="button" id="settingsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
         <span>Team Settings</span>
       </button>
     <% end %>
