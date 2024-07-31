@@ -82,7 +82,7 @@
         <span class="help-text">(optional)</span>
       </p>
     <% end %>
-    <%= f.select :gender, User.genders.keys.map { |gender| [gender.humanize, gender] }, { include_blank: true }, class: 'form-select' %>
+    <%= f.select :gender, [['Prefer not to answer', '']].concat(User.genders.keys.map { |gender| [gender.humanize, gender] }), {}, class: 'form-select' %>
     <p class="help-text my-1">Leave this blank if you don't want to specify your gender.</p>
   </div>
 
