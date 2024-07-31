@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-controller="theme" data-theme-user-theme-value="<%= current_user.settings(:appearance).theme %>">
+<html data-controller="theme" data-theme-user-theme-value="<%= user_signed_in? ? current_user.settings(:appearance).theme : 'system' %>">
   <head>
     <title>TeamRunner</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -11,14 +11,14 @@
     <%= javascript_importmap_tags %>
 
     <script>
-      if ('<%= current_user.settings(:appearance).theme %>' === 'dark' || ('<%= current_user.settings(:appearance).theme %>' === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      if ('<%= user_signed_in? ? current_user.settings(:appearance).theme : 'system' %>' === 'dark' || ('<%= user_signed_in? ? current_user.settings(:appearance).theme : 'system' %>' === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.classList.add('dark')
       }
     </script>
   </head>
 
   <body class='font-normal leading-normal text-slate-800 relative selection:bg-indigo-500/40 bg-white dark:bg-slate-900 dark:text-slate-100 antialiased'>
-    <%= render "shared/flash" if current_user.settings(:notifications).in_app %>
+    <%= render "shared/flash" if user_signed_in? ? current_user.settings(:notifications).in_app : true %>
     <div class="w-full flex h-svh max-h-svh">
       <%= render "shared/sidebar" if user_signed_in? %>
       <div class="flex h-full flex-1 flex-col min-w-0">
