@@ -124,13 +124,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def update_resource(resource, params)
     settings_params = params.delete(:settings) || {}
     resource.settings(:privacy).update(
-      settings_params.transform_values { |value| value == 'true' }
+      settings_params.transform_values do |value|
+        value == 'true' if %w[true false].include?(value)
+      end
     )
 
-    if params[:password].present?
-      resource.update_with_password(params)
-    else
-      resource.update_without_password(params)
-    end
+    # Require current password if user is trying to change password.
+    resource.update_with_password(params) if params['password']&.present?
+
+    # Allows user to update registration information without password.
+    resource.update_without_password(params.except('current_password'))
   end
 end
