@@ -1,4 +1,4 @@
-<div class="z-50 fixed inset-x-0 bottom-0 w-full block bg-slate-50 dark:bg-slate-800 border-t dark:border-slate-700 pb-1 md:hidden">
+<div class="z-50 fixed inset-x-0 bottom-0 w-full block bg-slate-50 dark:bg-slate-800 border-t dark:border-slate-700 pb-1 lg:hidden">
   <nav class="grid grid-cols-5 place-items-center gap-y-4 w-full">
     <%= link_to profile_path, aria: { current: current_page?(profile_path) ? 'page' : nil }, class: "tab-link #{current_page?(profile_path) ? 'tab-link-active' : 'tab-link-inactive'}" do %>
       <%= inline_svg_tag 'icons/profile.svg', class: 'size-6' %>

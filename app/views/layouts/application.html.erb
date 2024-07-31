@@ -21,8 +21,8 @@
     <%= render "shared/flash" if current_user.settings(:notifications).in_app %>
     <div class="w-full flex h-svh max-h-svh">
       <%= render "shared/sidebar" if user_signed_in? %>
-      <div class="flex h-full flex-1 flex-col">
-        <div class="flex h-full flex-col justify-between overflow-y-scroll">
+      <div class="flex h-full flex-1 flex-col min-w-0">
+        <div class="flex h-full flex-col justify-between overflow-y-scroll min-w-0">
           <main class="container mx-auto my-24 px-5">
             <%= yield %>
           </main>
