@@ -83,25 +83,20 @@
     <span class="error-message hidden my-1" data-form-validation-target="milageGoalError">Mileage goal must be a positive number</span>
   </div>
 
-  <div class="flex items-center justify-between flex-wrap">
-    <div class="sm:flex-1">
-      <% if form.object.new_record? %>
-        <%= form.submit 'Create team', class: 'btn btn-primary' %>
-      <% else %>
-        <%= form.submit 'Update team', class: 'btn btn-primary' %>
-      <% end %>
-    </div>
+  <div class="flex items-center justify-start flex-wrap gap-6">
+    <% if form.object.new_record? %>
+      <%= form.submit 'Create team', class: 'btn btn-primary' %>
+    <% else %>
+      <%= form.submit 'Update team', class: 'btn btn-primary' %>
 
-    <div class="flex gap-6 items-center">
-      <% unless form.object.new_record? %>
-        <%= link_to 'Delete', @team,
-                      class: 'btn btn-destructive btn-outline',
+      <%= link_to 'Delete team', @team,
+                      class: 'btn btn-destructive btn-outline mr-auto',
                       data: {
                         turbo_method: :delete,
-                        turbo_confirm: 'Are you sure you want to delete this team? This action cannot be undone.'
+                        turbo_confirm: 'Are you sure you want to delete this team?'
                       } %>
-      <% end %>
-      <%= link_to 'Cancel', :back, class: 'btn btn-white' %>
-    </div>
+    <% end %>
+
+    <%= link_to 'Cancel', :back, class: 'btn btn-white' %>
   </div>
 <% end %>
