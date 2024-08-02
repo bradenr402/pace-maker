@@ -36,6 +36,26 @@
     <span class="error-message hidden my-1" data-form-validation-target="usernameError">Username can only contain lowercase letters, numbers, underscores, and periods and must be at least 3 characters long</span>
   </div>
 
+  <div data-controller="image-preview" class="form-group">
+    <%= f.label :avatar, class: 'form-label' do %>
+      <p> Profile photo
+        <span class="help-text">(optional)</span>
+      </p>
+    <% end %>
+    <%= image_tag(resource.avatar.attached? ? resource.avatar : '', data: { image_preview_target: 'output' }, class: "size-24 rounded-md drop-shadow-lg dark:drop-shadow-none #{resource.avatar.blank? ? 'hidden' : ''}") %>
+
+    <%= f.file_field :avatar, accept: 'image/png, image/jpeg', class: 'form-file my-2', data: { image_preview_target: 'input', action: 'image-preview#readURL' } %>
+
+    <button type="button" class="btn btn-white" data-image-preview-target="clearBtn" data-action="image-preview#clearUpload">Clear upload</button>
+
+    <% if resource.avatar.attached? %>
+      <div class="flex items-center gap-2 mt-2">
+        <%= f.check_box :remove_avatar, class: 'form-input-checkbox', data: { image_preview_target: 'removeAvatarCheckbox', action: 'image-preview#selectCheckbox' } %>
+        <%= f.label :remove_avatar, 'Remove profile photo', class: 'select-none text-sm' %>
+      </div>
+    <% end %>
+  </div>
+
   <div class="py-10 mt-6 border-t border-slate-200 dark:border-slate-700">
     <h2 class="font-normal text-lg text-slate-700 dark:text-slate-200 mb-2">Contact inforamtion</h2>
     <p class="text-sm text-slate-600 dark:text-slate-400">This information will only be displayed publicly if you choose.</p>

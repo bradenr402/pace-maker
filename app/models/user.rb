@@ -13,6 +13,11 @@ class User < ApplicationRecord
            foreign_key: 'owner_id',
            dependent: :destroy
   has_many :join_requests, foreign_key: 'user_id', class_name: 'TeamJoinRequest'
+  has_one_attached :avatar
+
+  attr_accessor :remove_avatar
+
+  before_save :purge_avatar, if: -> { remove_avatar == '1' }
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -78,6 +83,8 @@ class User < ApplicationRecord
                    '1 uppercase letter, 1 lowercase letter, 1 digit, and 1 special character (#?!@$%^&*-)'
     end
   end
+
+  def purge_avatar = avatar.purge_later
 
   class << self
     def find_for_database_authentication(warden_conditions)

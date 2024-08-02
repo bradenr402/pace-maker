@@ -97,9 +97,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
         :email,
         :phone_number,
         :gender,
-        :current_password,
-        :password,
-        :password_confirmation,
+        :avatar,
+        :remove_avatar,
         { settings: %i[email_visible phone_visible] }
       ]
     )
