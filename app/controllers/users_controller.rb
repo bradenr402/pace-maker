@@ -6,6 +6,51 @@ class UsersController < ApplicationController
   end
 
   def show
+    @user = User.find(params[:id])
+    today = Date.today
+
+    @runs, @title =
+      if params[:run_date_range].present?
+        case params[:run_date_range]
+        when 'This week'
+          [
+            @user.runs_in_date_range(
+              today.beginning_of_week..today
+            ),
+            'Runs This Week'
+          ]
+        when 'Last week'
+          one_week_ago = today - 1.week
+          [
+            @user.runs_in_date_range(
+              one_week_ago.beginning_of_week..one_week_ago.end_of_week
+            ),
+            'Runs Last Week'
+          ]
+        when 'This month'
+          [
+            @user.runs_in_date_range(
+              today.beginning_of_month..today
+            ),
+            'Runs This Month'
+          ]
+        when 'Last month'
+          one_month_ago = today - 1.month
+          [
+            @user.runs_in_date_range(
+              one_month_ago.beginning_of_month..one_month_ago.end_of_month
+            ),
+            'Runs Last Month'
+          ]
+        end
+      else
+        [
+          @user.runs_in_date_range(
+            today.beginning_of_week..today
+          ),
+          'Runs This Week'
+        ]
+      end
   end
 
   def new
