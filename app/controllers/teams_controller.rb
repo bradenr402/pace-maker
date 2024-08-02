@@ -36,6 +36,7 @@ class TeamsController < ApplicationController
   end
 
   def update
+    @team.photo.attach(params[:photo])
     if @team.update(team_params)
       redirect_to @team, success: 'Team was successfully updated.'
     else
@@ -108,7 +109,8 @@ class TeamsController < ApplicationController
       :description,
       :season_start_date,
       :season_end_date,
-      :mileage_goal
+      :mileage_goal,
+      :photo
     )
 
   def authorize_owner!
