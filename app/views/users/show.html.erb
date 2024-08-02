@@ -1,7 +1,7 @@
 <div class="max-w-3xl mx-auto px-4 my-16">
   <div class="pb-6 border-b dark:border-slate-700 text-center">
 
-    <%= image_tag @user.avatar, class: 'size-28 sm:size-32 md:size-36 rounded-md drop-shadow-lg dark:drop-shadow-none mx-auto mb-4' if @user.avatar.attached? %>
+    <%= image_tag @user.avatar, class: 'size-28 sm:size-32 md:size-36 rounded-lg drop-shadow-lg dark:drop-shadow-none mx-auto mb-4' if @user.avatar.attached? %>
 
     <h1 class="heading"><%= @user.display_name.present? ? @user.display_name : @user.username %></h1>
     <% if @user.display_name.present? %>
