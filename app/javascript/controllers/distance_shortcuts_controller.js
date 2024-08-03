@@ -5,18 +5,19 @@ export default class extends Controller {
   static targets = ['distance'];
 
   setDistance(event) {
-    const distance = event.currentTarget.dataset.setDistanceValue;
-
-    this.distanceTarget.value = parseFloat(distance);
+    const distance = parseFloat(event.currentTarget.dataset.setDistanceValue);
+    this.distanceTarget.value = distance.toFixed(1);
   }
 
   updateDistance(event) {
-    const updateDistanceValue = event.currentTarget.dataset.updateDistanceValue;
+    const updateDistanceValue = parseFloat(
+      event.currentTarget.dataset.updateDistanceValue
+    );
 
     if (this.distanceTarget.value === '') this.distanceTarget.value = 0;
 
     let currentValue = parseFloat(this.distanceTarget.value);
-    currentValue += parseFloat(updateDistanceValue);
-    this.distanceTarget.value = currentValue;
+    currentValue += updateDistanceValue;
+    this.distanceTarget.value = currentValue.toFixed(1);
   }
 }
