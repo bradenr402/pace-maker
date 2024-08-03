@@ -8,13 +8,13 @@
   <% else %>
     <% if request.nil? %>
       <% if team.settings(:join_requirements).require_gender && current_user.gender.blank? %>
-        <p class="error-message text-base">You must specify your gender in order to join this team.</p>
+        <p class="error-message text-base">You must specify your gender to join this team.</p>
       <% else %>
         <%= button_to 'Join team', join_team_path(team), class: 'btn btn-primary' %>
       <% end %>
     <% elsif request.rejected? && request.allowed? %>
       <% if team.settings(:join_requirements).require_gender && current_user.gender.blank? %>
-        <p class="error-message text-base">You must specify your gender in order to join this team.</p>
+        <p class="error-message text-base">You must specify your gender to join this team.</p>
       <% else %>
         <%= button_to 'Join team', team_join_request_path(request), method: :patch, class: 'btn btn-primary' %>
       <% end %>
