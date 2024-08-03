@@ -14,9 +14,7 @@ class UsersController < ApplicationController
         case params[:run_date_range]
         when 'This week'
           [
-            @user.runs_in_date_range(
-              today.beginning_of_week..today
-            ),
+            @user.runs_in_date_range(today.beginning_of_week..today),
             'Runs This Week'
           ]
         when 'Last week'
@@ -29,9 +27,7 @@ class UsersController < ApplicationController
           ]
         when 'This month'
           [
-            @user.runs_in_date_range(
-              today.beginning_of_month..today
-            ),
+            @user.runs_in_date_range(today.beginning_of_month..today),
             'Runs This Month'
           ]
         when 'Last month'
@@ -45,9 +41,7 @@ class UsersController < ApplicationController
         end
       else
         [
-          @user.runs_in_date_range(
-            today.beginning_of_week..today
-          ),
+          @user.runs_in_date_range(today.beginning_of_week..today),
           'Runs This Week'
         ]
       end
