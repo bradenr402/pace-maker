@@ -54,6 +54,9 @@ export default class extends Controller {
     'digitCross',
     'specialCheck',
     'specialCross',
+    'runStartDate',
+    'runEndDate',
+    'runEndDateError',
   ];
 
   connect() {
@@ -416,6 +419,20 @@ export default class extends Controller {
         this.mileageGoalTarget.classList.remove('form-input-error');
         this.mileageGoalErrorTarget.classList.add('hidden');
       }
+    }
+  }
+
+  validateRunEndDate(event) {
+    const startDate = Date.parse(this.runStartDateTarget.value);
+    const endDate = Date.parse(this.runEndDateTarget.value);
+    const today = new Date();
+
+    if (startDate >= endDate || endDate >= today) {
+      this.runEndDateTarget.classList.add('form-input-error');
+      this.runEndDateErrorTarget.classList.remove('hidden');
+    } else {
+      this.runEndDateTarget.classList.remove('form-input-error');
+      this.runEndDateErrorTarget.classList.add('hidden');
     }
   }
 }
