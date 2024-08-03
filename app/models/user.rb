@@ -70,6 +70,21 @@ class User < ApplicationRecord
 
   def owns?(team) = self == team.owner
 
+  def meets_requirements?(team)
+    return { allowed?: false, message: 'Team not found.' } if team.nil?
+
+    if team.settings(:join_requirements).require_gender && gender.blank?
+      return(
+        {
+          allowed?: false,
+          message: 'You must specify your gender to join this team.'
+        }
+      )
+    end
+
+    { allowed?: true, message: 'You meet the requirements to join this team.' }
+  end
+
   private
 
   def password_complexity
