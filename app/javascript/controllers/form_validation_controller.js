@@ -335,8 +335,10 @@ export default class extends Controller {
   }
 
   validateDate(event) {
-    const date = this.dateTarget.value;
-    if (Date.parse(date) >= new Date()) {
+    const date = Date.parse(this.dateTarget.value);
+    const today = new Date();
+
+    if (date >= today) {
       this.dateTarget.classList.add('form-input-error');
       this.dateErrorTarget.classList.remove('hidden');
     } else {
@@ -391,21 +393,24 @@ export default class extends Controller {
   }
 
   validateSeasonEndDate(event) {
-    const startDate = this.seasonStartDateTarget.value;
-    const endDate = this.seasonEndDateTarget.value;
-    if (startDate) {
-      this.seasonEndDateTarget.disabled = false;
-      this.seasonEndDateLabelTarget.classList.remove('opacity-60');
-      if (Date.parse(startDate) >= Date.parse(endDate)) {
-        this.seasonEndDateTarget.classList.add('form-input-error');
-        this.seasonEndDateErrorTarget.classList.remove('hidden');
-      } else {
-        this.seasonEndDateTarget.classList.remove('form-input-error');
-        this.seasonEndDateErrorTarget.classList.add('hidden');
-      }
-    } else {
+    const startDate = Date.parse(this.seasonStartDateTarget.value);
+    const endDate = Date.parse(this.seasonEndDateTarget.value);
+
+    if (!startDate) {
       this.seasonEndDateTarget.disabled = true;
       this.seasonEndDateLabelTarget.classList.add('opacity-60');
+      return;
+    } else {
+      this.seasonEndDateTarget.disabled = false;
+      this.seasonEndDateLabelTarget.classList.remove('opacity-60');
+    }
+
+    if (startDate >= endDate) {
+      this.seasonEndDateTarget.classList.add('form-input-error');
+      this.seasonEndDateErrorTarget.classList.remove('hidden');
+    } else {
+      this.seasonEndDateTarget.classList.remove('form-input-error');
+      this.seasonEndDateErrorTarget.classList.add('hidden');
     }
   }
 
