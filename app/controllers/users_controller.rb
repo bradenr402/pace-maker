@@ -45,6 +45,11 @@ class UsersController < ApplicationController
           'Runs This Week'
         ]
       end
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def new
