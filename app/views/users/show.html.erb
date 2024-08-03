@@ -82,15 +82,23 @@
       <h1 id="runs_title" class="heading">Filter Runs By Date</h1>
     </div>
 
-    <%= form_with url: user_path(@user), method: :get, local: true, data: { turbo_frame: 'runs' } do %>
+    <%= form_with url: user_path(@user), method: :get, local: true, data: { turbo_frame: 'runs', controller: 'custom-date-range' } do %>
       <div class="form-group">
         <%= label_tag :run_date_range, 'Select date range', class: 'form-label' %>
-
-        <div class="flex items-center gap-6">
-          <%= select_tag :run_date_range, options_for_select(['This week', 'Last week', 'This month', 'Last month'], params[:run_date_range]), class: 'pl-3 pr-8 py-2 border border-slate-300 bg-white font-normal text-base placeholder:text-slate-500 rounded-md block focus:outline-none focus:ring-4 focus:ring-indigo-50 focus:border-indigo-500 text-slate-900 dark:bg-slate-800 dark:border-slate-700 dark:focus:ring-indigo-500/30 dark:focus:border-slate-600 dark:text-white dark:placeholder:text-slate-400 shadow-sm' %>
-          <%= submit_tag 'Apply', class: 'btn btn-primary' %>
-        </div>
+        <%= select_tag :run_date_range, options_for_select(['This week', 'Last week', 'This month', 'Last month', 'Custom range'], params[:run_date_range]), data: { custom_date_range_target: 'select', action: 'custom-date-range#update' }, class: 'form-select' %>
       </div>
+
+      <div class="form-group hidden" data-custom-date-range-target="startDate">
+        <%= label_tag :run_start_date, 'Start date', class: 'form-label' %>
+        <%= date_field_tag :run_start_date, nil, max: Date.today, class: 'form-input' %>
+      </div>
+
+      <div class="form-group hidden" data-custom-date-range-target="endDate">
+        <%= label_tag :run_end_date, 'End date', class: 'form-label' %>
+        <%= date_field_tag :run_end_date, nil, max: Date.today, class: 'form-input' %>
+      </div>
+
+      <%= submit_tag 'Apply', class: 'btn btn-primary' %>
     <% end %>
   </div>
 

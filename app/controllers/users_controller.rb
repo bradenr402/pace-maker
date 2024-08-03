@@ -38,6 +38,13 @@ class UsersController < ApplicationController
             ),
             'Runs Last Month'
           ]
+        when 'Custom range'
+          start_date = params[:run_start_date].to_date
+          end_date = params[:run_end_date].to_date
+          [
+            @user.runs_in_date_range(start_date..end_date),
+            "Runs between #{start_date.strftime('%m/%d/%Y')} and #{end_date.strftime('%m/%d/%Y')}"
+          ]
         end
       else
         [
