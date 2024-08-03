@@ -53,13 +53,22 @@ class TeamsController < ApplicationController
   end
 
   def join
+    requirement_check = current_user.meets_requirements?(@team)
+
+    unless requirement_check[:allowed?]
+      return(
+        redirect_back fallback_location: teams_path,
+                      alert: requirement_check[:message]
+      )
+    end
+
     join_request = @team.join_requests.new(user: current_user)
 
     if join_request.save
-      redirect_back fallback_location: @team,
+      redirect_back fallback_location: teams_path,
                     success: 'Join request was successfully sent.'
     else
-      redirect_back fallback_location: @team,
+      redirect_back fallback_location: teams_path,
                     alert: 'Unable to send join request.'
     end
   end
