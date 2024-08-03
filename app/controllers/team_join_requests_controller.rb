@@ -1,34 +1,37 @@
 class TeamJoinRequestsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_join_request,
-                only: %i[create update destroy approve reject]
+                only: %i[update destroy approve reject]
   before_action :set_team, only: %i[destroy approve reject]
   before_action :authorize_owner!, only: %i[approve reject]
 
-  def create
+  def update
+    requirement_check = current_user.meets_requirements?(@team)
+
+    unless requirement_check[:allowed?]
+      return(
+        redirect_back fallback_location: teams_path,
+                      alert: requirement_check[:message]
+      )
+    end
+
+    unless @join_request.allowed?
+      return(
+        redirect_back fallback_location: teams_path,
+                      error:
+                        'Sorry, you cannot request to join this team again.'
+      )
+    end
+
+    @join_request.pending!
+    @join_request.request_number += 1
+
     if @join_request.save
       redirect_back fallback_location: teams_path,
                     success: 'Join request was successfully sent.'
     else
       redirect_back fallback_location: teams_path,
-                    alert: 'Unable to send join request.'
-    end
-  end
-
-  def update
-    if @join_request.allowed?
-      @join_request.pending!
-      @join_request.request_number += 1
-      if @join_request.save
-        redirect_back fallback_location: teams_path,
-                      success: 'Join request was successfully sent.'
-      else
-        redirect_back fallback_location: teams_path,
-                      error: 'Unable to send join request.'
-      end
-    else
-      redirect_back fallback_location: teams_path,
-                    error: 'Sorry, you cannot request to join this team again.'
+                    error: 'Unable to send join request.'
     end
   end
 
