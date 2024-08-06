@@ -3,7 +3,7 @@
 
     <%= image_tag @user.avatar, class: 'size-28 sm:size-32 md:size-36 rounded-lg drop-shadow-lg dark:drop-shadow-none mx-auto mb-4' if @user.avatar.attached? %>
 
-    <h1 class="heading"><%= @user.display_name.present? ? @user.display_name : @user.username %></h1>
+    <h1 class="heading"><%= @user.default_name %></h1>
     <% if @user.display_name.present? %>
       <h2 class="text-lg my-1 text-slate-700 dark:text-slate-400"><%= @user.username %></h2>
     <% elsif @user == current_user %>
@@ -73,7 +73,7 @@
             <p class="prose dark:prose-invert text-slate-700 dark:text-slate-400">You haven't gone on any runs yet today.</p>
             <%= link_to 'New run', new_run_path, class: 'btn btn-primary' %>
           <% else %>
-            <p class="prose dark:prose-invert text-slate-700 dark:text-slate-400"><%= @user.display_name.present? ? @user.display_name : @user.username %> hasn't gone on any runs yet today.</p>
+            <p class="prose dark:prose-invert text-slate-700 dark:text-slate-400"><%= @user.default_name %> hasn't gone on any runs yet today.</p>
           <% end %>
         </div>
       <% end %>

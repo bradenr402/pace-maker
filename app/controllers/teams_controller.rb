@@ -100,11 +100,11 @@ class TeamsController < ApplicationController
     if join_request.rejected! && team_membership.destroy
       redirect_back fallback_location: team,
                     success:
-                      "#{member.display_name.present? ? member.display_name : member.username} was successfully removed from this team."
+                      "#{member.default_name} was successfully removed from this team."
     else
       redirect_back fallback_location: team,
                     alert:
-                      "Unable to remove #{member.display_name.present? ? member.display_name : member.username} from this team."
+                      "Unable to remove #{member.default_name} from this team."
     end
   end
 
