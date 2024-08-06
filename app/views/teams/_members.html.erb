@@ -5,8 +5,10 @@
 <div class="divide-y dark:divide-slate-700 dark:text-slate-700 mb-10">
   <% members.each do |member| %>
     <div class="py-6">
-      <div class="flex gap-3 items-center justify-between">
-        <div>
+      <div class="flex gap-4 items-center">
+        <%= image_tag member.avatar, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none' if member.avatar.attached? %>
+
+        <div class="mr-auto">
           <h2 class='subheading'><%= link_to member.display_name.present? ? member.display_name : member.username, member, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %></h2>
           <% if member.display_name.present? %>
             <p class="help-text"><%= member.username %></p>
