@@ -11,5 +11,5 @@ class TeamJoinRequest < ApplicationRecord
               message: 'has already sent a join request'
             }
 
-  def allowed? = request_number < 3
+  def allowed? = request_number < team.settings(:join_requirements).max_allowed_requests
 end

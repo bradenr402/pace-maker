@@ -5,13 +5,9 @@ class TeamSettingsController < ApplicationController
   def update
     @team = Team.find(params[:team_id])
 
-    Rails.logger.info(
-      "____________________________________________________Params: #{params.inspect}"
-    )
-
     settings_params =
       team_settings_params.transform_values do |value|
-        value == 'true' if %w[true false].include?(value)
+        %w[true false].include?(value) ? value == 'true' : value
       end
 
     if @team.settings(:join_requirements).update(settings_params)
@@ -24,7 +20,10 @@ class TeamSettingsController < ApplicationController
   private
 
   def team_settings_params =
-    params.require(:team).require(:settings).permit(:require_gender)
+    params
+      .require(:team)
+      .require(:settings)
+      .permit(:require_gender, :max_allowed_requests)
 
   def authorize_owner!
     team = Team.find(params[:team_id])
