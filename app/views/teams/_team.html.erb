@@ -1,5 +1,9 @@
 <div class="flex items-center flex-wrap gap-4">
-  <%= image_tag team.photo, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none' if team.photo.attached? %>
+  <% if team.photo.attached? %>
+    <%= link_to team do %>
+      <%= image_tag team.photo, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none' %>
+    <% end %>
+  <% end %>
 
   <div class="mr-auto">
     <p class="subheading mb-0.5"><%= link_to team.name, team, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %></p>
