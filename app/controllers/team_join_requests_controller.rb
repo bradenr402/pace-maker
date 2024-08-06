@@ -1,8 +1,7 @@
 class TeamJoinRequestsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_join_request,
-                only: %i[update destroy approve reject]
-  before_action :set_team, only: %i[destroy approve reject]
+  before_action :set_join_request, only: %i[update cancel approve reject]
+  before_action :set_team, only: %i[cancel approve reject]
   before_action :authorize_owner!, only: %i[approve reject]
 
   def update
@@ -61,6 +60,16 @@ class TeamJoinRequestsController < ApplicationController
     else
       redirect_back fallback_location: @team,
                     alert: 'Unable to reject join request.'
+    end
+  end
+
+  def cancel
+    if @join_request.canceled!
+      redirect_back fallback_location: @team,
+                    success: 'Join request was successfully canceled.'
+    else
+      redirect_back fallback_location: @team,
+                    error: 'Unable to cancel join request.'
     end
   end
 

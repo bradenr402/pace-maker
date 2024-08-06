@@ -2,7 +2,7 @@ class TeamJoinRequest < ApplicationRecord
   belongs_to :user
   belongs_to :team
 
-  enum :status, %i[pending approved rejected]
+  enum :status, %i[pending approved rejected canceled]
 
   validates :status, inclusion: { in: TeamJoinRequest.statuses.keys }
   validates :user_id,
