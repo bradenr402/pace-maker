@@ -1,16 +1,14 @@
-<div class="mb-24">
-  <div class="flex flex-wrap gap-6 items-center justify-between pb-6 border-b dark:border-slate-700">
-    <h1 class="heading">My Team Memberships</h1>
-    <% if membered_teams.any? %>
-      <%= link_to 'Find a team', teams_path, class: 'btn btn-primary' %>
-    <% end %>
-  </div>
+<div class="flex flex-wrap gap-6 items-center justify-between pb-6 border-b dark:border-slate-700">
+  <h1 class="heading">My Team Memberships</h1>
   <% if membered_teams.any? %>
-    <%= render 'team_list', teams: membered_teams %>
-  <% else %>
-    <div class="flex flex-col gap-6 items-center justify-center py-12">
-      <p class="prose dark:prose-invert text-slate-700 dark:text-slate-400">You're not a member of any teams yet.</p>
-      <button type="button" data-action="click->tabs#otherTeamsTab" class="btn btn-white">Find a team</button>
-    </div>
+    <%= link_to 'Find a team', teams_path, class: 'btn btn-primary' %>
   <% end %>
 </div>
+<% if membered_teams.any? %>
+  <%= render 'team_list', teams: membered_teams %>
+<% else %>
+  <div class="flex flex-col gap-6 items-center justify-center py-12">
+    <p class="prose dark:prose-invert text-slate-700 dark:text-slate-400">You're not a member of any teams yet.</p>
+    <button type="button" data-action="click->tabs#otherTeamsTab" class="btn btn-white">Find a team</button>
+  </div>
+<% end %>

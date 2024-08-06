@@ -16,15 +16,15 @@
     </button>
   </div>
 
-  <div id="ownedTeamsTab" data-tabs-target="tab">
+  <div id="ownedTeamsTab" data-tabs-target="tab" class="mb-24">
     <%= render 'owned_teams', owned_teams: @owned_teams %>
   </div>
 
-  <div id="teamMembershipsTab" data-tabs-target="tab" class="hidden">
+  <div id="teamMembershipsTab" data-tabs-target="tab" class="mb-24">
     <%= render 'membered_teams', membered_teams: @membered_teams %>
   </div>
 
-  <div id="otherTeamsTab" data-tabs-target="tab" class="hidden">
+  <div id="otherTeamsTab" data-tabs-target="tab" class="mb-24">
     <%= render 'other_teams', other_teams: @other_teams %>
   </div>
 </div>

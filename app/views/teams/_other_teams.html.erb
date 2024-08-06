@@ -1,12 +1,10 @@
-<div class="mb-24">
-  <div class="flex flex-wrap gap-6 items-center justify-between pb-6 border-b dark:border-slate-700">
-    <h1 class="heading">Find Teams</h1>
-  </div>
-  <% if other_teams.any? %>
-    <%= render 'team_list', teams: other_teams %>
-  <% else %>
-    <div class="flex flex-col gap-6 items-center justify-center py-12">
-      <p class="prose dark:prose-invert text-slate-700 dark:text-slate-400">No other teams to show.</p>
-    </div>
-  <% end %>
+<div class="flex flex-wrap gap-6 items-center justify-between pb-6 border-b dark:border-slate-700">
+  <h1 class="heading">Find Teams</h1>
 </div>
+<% if other_teams.any? %>
+  <%= render 'team_list', teams: other_teams %>
+<% else %>
+  <div class="flex flex-col gap-6 items-center justify-center py-12">
+    <p class="prose dark:prose-invert text-slate-700 dark:text-slate-400">No other teams to show.</p>
+  </div>
+<% end %>
