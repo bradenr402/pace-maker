@@ -4,11 +4,13 @@
   </div>
 </div>
 
-<%= form_with model: @team, url: team_settings_path(@team), local: true do |form| %>
+<%= form_with model: @team, url: team_settings_path(@team), local: true, data: { controller: 'restore-defaults' } do |form| %>
   <!-- Hidden fields to ensure that unchecked checkboxes submit 'false' -->
   <%= hidden_field_tag 'team[settings][require_gender]', 'false' %>
 
   <%= form.fields_for :settings do |settings_form| %>
+    <button type="button" data-action="restore-defaults#restore" class="btn btn-sm btn-white">Restore defaults</button>
+
     <div class="my-6">
       <h2 class="font-normal text-lg text-slate-700 dark:text-slate-200 mb-2">Join Requirements</h2>
       <p class="text-sm text-slate-600 dark:text-slate-400">Set the requirements for users to request to join this team.</p>
@@ -16,7 +18,7 @@
 
     <div class="form-group">
       <div class="flex items-center gap-2">
-        <%= settings_form.check_box :require_gender, { checked: @team.settings(:join_requirements).require_gender, class: 'form-input-checkbox' }, true, false %>
+        <%= settings_form.check_box :require_gender, { checked: @team.settings(:join_requirements).require_gender, class: 'form-input-checkbox', data: { restore_defaults_target: 'requireGender' } }, true, false %>
         <%= settings_form.label :require_gender, 'Require gender', class: 'select-none text-sm text-slate-700 dark:text-slate-300' %>
       </div>
       <p class="help-text my-1">Require users to specify their gender in order to join this team.</p>
@@ -24,7 +26,7 @@
 
     <div class="form-group">
       <%= settings_form.label :max_allowed_requests, 'Maximum allowed requests', class: 'form-label' %>
-      <%= settings_form.number_field :max_allowed_requests, step: 1, min: 1, value: @team.settings(:join_requirements).max_allowed_requests, class: 'form-input' %>
+      <%= settings_form.number_field :max_allowed_requests, step: 1, min: 1, value: @team.settings(:join_requirements).max_allowed_requests, class: 'form-input', data: { restore_defaults_target: 'maxAllowedRequests' } %>
       <p class="help-text my-1">Choose how many times a user can request to join your team before being blocked.</p>
     </div>
   <% end %>

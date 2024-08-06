@@ -4,13 +4,15 @@
   </div>
 </div>
 
-<%= form_with model: @user, url: user_settings_path, local: true do |form| %>
+<%= form_with model: @user, url: user_settings_path, local: true, data: { controller: 'restore-defaults' } do |form| %>
   <!-- Hidden fields to ensure that unchecked checkboxes submit 'false' -->
   <%= hidden_field_tag 'user[settings][email_visible]', 'false' %>
   <%= hidden_field_tag 'user[settings][phone_visible]', 'false' %>
   <%= hidden_field_tag 'user[settings][in_app]', 'false' %>
 
   <%= form.fields_for :settings do |settings_form| %>
+    <button type="button" data-action="restore-defaults#restore" class="btn btn-sm btn-white">Restore defaults</button>
+
     <div class="my-6">
       <h2 class="font-normal text-lg text-slate-700 dark:text-slate-200 mb-2">Contact information</h2>
       <p class="text-sm text-slate-600 dark:text-slate-400">Display your contact information to other users on your profile.</p>
@@ -18,11 +20,11 @@
 
     <div class="form-group space-y-2">
       <div class="flex items-center gap-2">
-        <%= settings_form.check_box :email_visible, { checked: @user.settings(:privacy).email_visible, class: 'form-input-checkbox' }, true, false %>
+        <%= settings_form.check_box :email_visible, { checked: @user.settings(:privacy).email_visible, class: 'form-input-checkbox', data: { restore_defaults_target: 'emailVisible' } }, true, false %>
         <%= settings_form.label :email_visible, 'Show email', class: 'select-none text-sm text-slate-700 dark:text-slate-300' %>
       </div>
       <div class="flex items-center gap-2">
-        <%= settings_form.check_box :phone_visible, { checked: @user.settings(:privacy).phone_visible, class: 'form-input-checkbox' }, true, false %>
+        <%= settings_form.check_box :phone_visible, { checked: @user.settings(:privacy).phone_visible, class: 'form-input-checkbox', data: { restore_defaults_target: 'phoneVisible' } }, true, false %>
         <%= settings_form.label :phone_visible, 'Show phone number', class: 'select-none text-sm text-slate-700 dark:text-slate-300' %>
       </div>
     </div>
@@ -34,7 +36,7 @@
 
     <div class="form-group">
       <%= settings_form.label :theme, 'Theme preference', class: 'form-label' %>
-      <%= settings_form.select :theme, options_for_select([['System default', 'system'], ['Light', 'light'], ['Dark', 'dark']], @user.settings(:appearance).theme), {}, data: { theme_target: 'themeSelect', action: 'theme#change' }, class: 'form-select' %>
+      <%= settings_form.select :theme, options_for_select([['System default', 'system'], ['Light', 'light'], ['Dark', 'dark']], @user.settings(:appearance).theme), {}, data: { theme_target: 'input', action: 'theme#change', restore_defaults_target: 'theme' }, class: 'form-select' %>
     </div>
 
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
@@ -44,7 +46,7 @@
 
     <div class="form-group">
       <div class="flex items-center gap-2">
-        <%= settings_form.check_box :in_app, { checked: @user.settings(:notifications).in_app, class: 'form-input-checkbox' }, true, false %>
+        <%= settings_form.check_box :in_app, { checked: @user.settings(:notifications).in_app, class: 'form-input-checkbox', data: { restore_defaults_target: 'inApp' } }, true, false %>
         <%= settings_form.label :in_app, 'In app notifications', class: 'select-none text-sm text-slate-700 dark:text-slate-300' %>
       </div>
     </div>
