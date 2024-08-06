@@ -2,7 +2,7 @@
   <div class="flex flex-wrap gap-6 items-center justify-between mt-10 mb-4 pb-6 border-b border-slate-200 dark:border-slate-700">
     <h1 id="runs_title" class="heading">Filter Runs By Date</h1>
   </div>
-  <%= form_with url: user_path(@user), method: :get, local: true, html: { novalidate: true }, data: { turbo_frame: 'runs', controller: 'custom-date-range form-validation' } do %>
+  <%= form_with url: user_path(user), method: :get, local: true, html: { novalidate: true }, data: { turbo_frame: 'runs', controller: 'custom-date-range form-validation' } do %>
     <div class="form-group">
       <%= label_tag :run_date_range, 'Select date range', class: 'form-label' %>
       <%= select_tag :run_date_range, options_for_select(['This week', 'Last week', 'This month', 'Last month', 'Custom range'], params[:run_date_range]), data: { custom_date_range_target: 'select', action: 'custom-date-range#update' }, class: 'form-select' %>
@@ -32,7 +32,7 @@
             <%= render run %>
             <div class="flex items-center gap-2">
               <%= link_to 'View comments', run, class: 'btn btn-white btn-sm' if run.comments? %>
-              <%= link_to 'Edit run', edit_run_path(run), class: 'btn btn-primary btn-sm' if @user == current_user %>
+              <%= link_to 'Edit run', edit_run_path(run), class: 'btn btn-primary btn-sm' if user == current_user %>
             </div>
           </div>
         <% end %>
