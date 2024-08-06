@@ -162,14 +162,16 @@
     <p class="text-xs text-slate-700 my-1 dark:text-slate-400">Your current password is required to change your password.</p>
   </div>
 
-  <div class="flex items-center space-x-4 pt-10 border-t mt-10 border-slate-200 dark:border-slate-700">
-    <%= f.submit "Update", class: "btn btn-primary" %>
-    <%= link_to "Cancel", :back, class: "btn btn-white", data: { turbo: false } %>
+  <div class="flex items-center gap-4 pt-10 border-t mt-10 border-slate-200 dark:border-slate-700">
+    <%= f.submit "Save", class: "btn btn-primary" %>
+    <%= link_to "Cancel", :back, class: "btn btn-white mr-auto", data: { turbo: false } %>
+    <%= button_to 'Sign out', destroy_user_session_path, method: :delete, class: 'btn btn-destructive' %>
   </div>
 <% end %>
 
-<div class="flex justify-end mt-3">
-  <%= button_to "Cancel account", registration_path(resource_name),
+<div class="pt-10 border-t my-10 border-slate-200 dark:border-slate-700 text-center">
+  <p>Not happy with your experience?</p>
+  <%= button_to "Cancel your account", registration_path(resource_name),
               method: :delete,
               class: "text-slate-400 hover:text-slate-600 font-semibold text-sm",
               form: {

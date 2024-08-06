@@ -20,7 +20,5 @@
     <% end %>
 
     <%= link_to 'New run', new_run_path, aria: { current: current_page?(new_run_path) ? 'page' : nil }, class: 'btn btn-primary mt-auto' %>
-
-    <%= button_to 'Sign out', destroy_user_session_path, method: :delete, class: 'btn btn-destructive btn-outline w-full mt-2' %>
   </nav>
 </div>
