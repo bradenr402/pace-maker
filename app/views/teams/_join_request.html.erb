@@ -1,4 +1,6 @@
 <div class="flex gap-3 items-center flex-wrap py-3 text-slate-800 dark:text-slate-100">
+  <%= image_tag request.user.avatar, class: 'size-12 rounded-lg drop-shadow-lg dark:drop-shadow-none' if request.user.avatar.attached? %>
+
   <div class="mr-auto">
     <p><%= link_to request.user.display_name.present? ? request.user.display_name : request.user.username, request.user, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %></p>
     <% if request.user.display_name.present? %>
