@@ -1,7 +1,7 @@
 <article id="<%= dom_id run %>" class="py-6 prose dark:prose-invert">
   <p class="font-bold text-lg"><%= pretty_date(run.date).titlecase %></p>
 
-  <table class="text-base my-0 table-auto">
+  <table class="text-base my-0 table-auto border-y border-slate-200 dark:border-slate-700">
     <tr>
       <th>Distance:</th>
       <td><span class="text-base"><%= run.distance %> <span class="text-sm text-slate-600 dark:text-slate-400">mi</span></span></td>
@@ -25,11 +25,7 @@
   <% if run.comments.present? && current_page?(run_path(run)) %>
     <p class="mb-0 font-semibold">Comments</p>
     <p class="my-0">
-      <% if current_page? run_path(run) %>
-        <%= simple_format run.comments, class: 'my-0' %>
-      <% else %>
-        <%= truncate(run.comments, length: 400, omission: ' ...') %>
-      <% end %>
+      <%= simple_format run.comments, class: 'my-0' %>
     </p>
   <% end %>
   <div class="flex">
