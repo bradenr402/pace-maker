@@ -27,6 +27,14 @@ class Team < ApplicationRecord
 
   def season_dates? = season_start_date.present? && season_end_date.present?
 
+  def gender_requirement_met?(user)
+    return true unless settings(:join_requirements).require_gender
+
+    return true unless user.gender.blank?
+
+    false
+  end
+
   private
 
   def season_dates_presence

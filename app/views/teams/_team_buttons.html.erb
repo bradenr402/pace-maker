@@ -2,26 +2,18 @@
 
 <% if current_user.owns?(team) %>
   <%= link_to 'Edit team', edit_team_path(team), class: 'btn btn-white' %>
+<% elsif current_user.member_of?(team) %>
+  <%= button_to 'Leave team', leave_team_path(team), class: 'btn btn-destructive' %>
 <% else %>
-  <% if current_user.member_of?(team) %>
-    <%= button_to 'Leave team', leave_team_path(team), class: 'btn btn-destructive' %>
-  <% else %>
-    <% if request.nil? %>
-      <% if team.settings(:join_requirements).require_gender && current_user.gender.blank? %>
-        <p class="error-message text-base">You must specify your gender to join this team.</p>
-      <% else %>
-        <%= button_to 'Join team', join_team_path(team), class: 'btn btn-primary' %>
-      <% end %>
-    <% elsif request.rejected? && request.allowed? %>
-      <% if team.settings(:join_requirements).require_gender && current_user.gender.blank? %>
-        <p class="error-message text-base">You must specify your gender to join this team.</p>
-      <% else %>
-        <%= button_to 'Join team', team_join_request_path(request), method: :patch, class: 'btn btn-primary' %>
-      <% end %>
-    <% elsif request.pending? %>
-      <%= button_to 'Cancel request', cancel_request_path(request), method: :delete, class: 'btn btn-destructive' %>
-    <% else %>
-      <p class="error-message text-base">You have been blocked from this team.</p>
+  <% if request.nil? || ((request.rejected? || request.canceled?) && request.allowed?) %>
+    <% if team.gender_requirement_met?(current_user) %>
+      <%= button_to 'Join team', request.nil? ? join_team_path(team) : team_join_request_path(request), method: request.nil? ? :post : :patch, class: 'btn btn-primary' %>
+    <% elsif current_page?(team_path(team)) %>
+      <p class="error-message text-base w-full text-center">You must specify your gender to join this team.</p>
     <% end %>
+  <% elsif request.pending? %>
+    <%= button_to 'Cancel request', cancel_request_path(request), method: :delete, class: 'btn btn-destructive' %>
+  <% elsif current_page?(team_path(team)) %>
+    <p class="error-message text-base">You have been blocked from this team.</p>
   <% end %>
 <% end %>
