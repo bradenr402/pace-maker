@@ -1,5 +1,5 @@
-<div class="max-w-3xl mx-auto px-4 my-16">
-  <div class="pb-6 border-b dark:border-slate-700 text-center">
+<div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="infoTab" class="max-w-3xl mx-auto px-4 my-16">
+  <div class="pb-6 text-center">
 
     <%= image_tag @user.avatar, class: 'size-28 sm:size-32 md:size-36 rounded-lg drop-shadow-lg dark:drop-shadow-none mx-auto mb-4' if @user.avatar.attached? %>
 
@@ -43,16 +43,38 @@
     <% end %>
   </div>
 
-  <div class="mb-24">
+  <div class="tab-container">
+    <button type="button" id="infoTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+      <%= inline_svg_tag 'icons/info.svg', class: 'size-5' %>
+      <span>User Info</span>
+    </button>
+
+    <button type="button" id="teamsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+      <%= inline_svg_tag 'icons/team.svg', class: 'size-5' %>
+      <span>Teams</span>
+    </button>
+
+    <button type="button" id="runsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+      <%= inline_svg_tag 'icons/runner.svg', class: 'size-5' %>
+      <span>Runs</span>
+    </button>
+  </div>
+
+  <div id="infoTab" data-tabs-target="tab" class="mb-24">
     <%= render 'user_stats', user: @user %>
   </div>
 
-  <div class="mb-24">
-    <%= render 'runs_today', user: @user %>
+  <div id="teamsTab" data-tabs-target="tab" class="mb-24">
+    <%= render 'teams', user: @user, owned_teams: @user.owned_teams, membered_teams: @user.membered_teams %>
   </div>
 
-  <div class="mb-24 space-y-24">
-    <%= render 'runs_filter', user: @user %>
+  <div id="runsTab" data-tabs-target="tab">
+    <div class="mb-24">
+      <%= render 'runs_today', user: @user %>
+    </div>
+    <div class="mb-24 space-y-24">
+      <%= render 'runs_filter', user: @user %>
+    </div>
   </div>
 </div>
 
