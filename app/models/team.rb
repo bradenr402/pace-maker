@@ -35,6 +35,14 @@ class Team < ApplicationRecord
     false
   end
 
+  def recent_runs =
+    Run
+      .joins(:user)
+      .where(users: { id: members.pluck(:id) })
+      .where('date >= ?', 7.days.ago)
+      .order(date: :desc)
+      .first(10)
+
   private
 
   def season_dates_presence

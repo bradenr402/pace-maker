@@ -34,19 +34,28 @@
         <span>Join Requests</span>
       </button>
     <% end %>
+
+    <button type="button" id="recentActivityTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+      <%= inline_svg_tag 'icons/clock.svg', class: 'size-5' %>
+      <span>Recent Activity</span>
+    </button>
   </div>
 
   <div id="infoTab" data-tabs-target="tab" class="mb-24">
     <%= render 'team_stats', team: @team %>
   </div>
 
-  <div id="membersTab" data-tabs-target="tab" class="mb-24 hidden">
+  <div id="membersTab" data-tabs-target="tab" class="mb-24">
     <%= render 'members', members: @members %>
   </div>
 
   <% if current_user.owns?(@team) %>
-    <div id="joinRequestsTab" data-tabs-target="tab" class="mb-24 hidden">
+    <div id="joinRequestsTab" data-tabs-target="tab" class="mb-24">
       <%= render 'join_requests', join_requests: @join_requests %>
     </div>
   <% end %>
+
+  <div id="recentActivityTab" data-tabs-target="tab" class="mb-24">
+    <%= render 'recent_activity', team: @team %>
+  </div>
 </div>
