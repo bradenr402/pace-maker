@@ -60,6 +60,6 @@
       <span class="error-message hidden my-1" data-form-validation-target="passwordConfirmationError">Passwords do not match</span>
     </div>
 
-    <%= f.submit "Sign up", class: 'btn btn-primary w-full' %>
+    <%= f.submit "Sign up", data: { turbo: false }, class: 'btn btn-primary w-full' %>
   <% end %>
 <% end %>
