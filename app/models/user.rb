@@ -65,6 +65,8 @@ class User < ApplicationRecord
 
   def membered_teams = teams.where.not(owner_id: id)
 
+  def default_name = display_name.present? ? display_name : username
+
   def other_teams =
     Team.not_included_in(teams.pluck(:id) + owned_teams.pluck(:id))
 
