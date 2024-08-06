@@ -1,6 +1,6 @@
 <div class="flex flex-wrap gap-6 items-center justify-between pb-6 border-b dark:border-slate-700">
   <h1 class="heading"><%= user.default_name %>'s Teams</h1>
-  <% if owned_teams.any? %>
+  <% if user == current_user && owned_teams.any? %>
     <%= link_to 'New team', new_team_path, class: 'btn btn-primary' %>
   <% end %>
 </div>
