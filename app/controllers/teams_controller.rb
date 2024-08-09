@@ -24,11 +24,24 @@ class TeamsController < ApplicationController
   end
 
   def show
-    @members = @team.members
-    @join_requests =
-      @team.join_requests.pending.order(
-        updated_at: :desc
-      ) if current_user.owns?(@team)
+    @members =
+      if params[:query].present?
+        @team.members.where(
+          'LOWER(users.username) LIKE LOWER(:query) OR LOWER(users.display_name) LIKE LOWER(:query)',
+          query: "%#{params[:query]}%"
+        )
+      else
+        @members = @team.members
+      end
+
+    if current_user.owns?(@team)
+      @join_requests = @team.join_requests.pending.order(updated_at: :desc)
+    end
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def new
