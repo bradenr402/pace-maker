@@ -43,6 +43,35 @@ class Team < ApplicationRecord
       .order(date: :desc)
       .first(10)
 
+  def recent_long_runs
+    runs =
+      Run
+        .joins(:user)
+        .where(users: { id: members.pluck(:id) })
+        .where('date >= ?', 7.days.ago)
+        .order(date: :desc)
+
+    # Filter runs based on user-specific distance requirements
+    runs.select do |run|
+      required_distance = get_long_run_distance_for_user(run.user)
+      run.distance >= required_distance
+    end
+  end
+
+  def long_runs_in_date_range(range)
+    runs =
+      Run
+        .joins(:user)
+        .where(users: { id: members.pluck(:id) })
+        .in_date_range(range)
+
+    # Filter runs based on user-specific distance requirements
+    runs.select do |run|
+      required_distance = get_long_run_distance_for_user(run.user)
+      run.distance >= required_distance
+    end
+  end
+
   private
 
   def season_dates_presence
@@ -52,6 +81,18 @@ class Team < ApplicationRecord
         :base,
         'Season start date and season end date must both be present or both be absent'
       )
+    end
+  end
+
+  def get_long_run_distance_for_user(user)
+    unless settings(:join_requirements).require_gender
+      return settings(:runs).long_run_distance_neutral.to_i
+    end
+
+    if user.gender == 'male'
+      settings(:runs).long_run_distance_male.to_i
+    else
+      settings(:runs).long_run_distance_female.to_i
     end
   end
 end
