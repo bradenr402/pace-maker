@@ -53,7 +53,9 @@ class TeamJoinRequestsController < ApplicationController
   end
 
   def cancel
-    if @join_request.canceled!
+    if @join_request.transaction {
+         @join_request.canceled! && @join_request.decrement!(:request_number)
+       }
       redirect_back fallback_location: @team,
                     success: 'Join request was successfully canceled.'
     else
