@@ -6,7 +6,13 @@ class TeamsController < ApplicationController
   def index
     @owned_teams = current_user.owned_teams
     @membered_teams = current_user.membered_teams
-    @other_teams = current_user.other_teams
+
+    @other_teams =
+      if params[:query].present?
+        Team.where('LOWER(name) LIKE LOWER(?)', "%#{params[:query]}%")
+      else
+        current_user.other_teams
+      end
   end
 
   def show
