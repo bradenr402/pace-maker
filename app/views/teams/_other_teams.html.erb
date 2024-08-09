@@ -1,16 +1,18 @@
-<div class="flex flex-wrap gap-6 items-center justify-between pb-6 mb-6 border-b dark:border-slate-700">
+<div class="flex flex-wrap gap-6 items-center justify-between mb-6">
   <h1 class="heading">Find Teams</h1>
 </div>
 
-<%= form_with url: teams_path, method: :get, html: { novalidate: true }, data: { turbo_frame: 'otherTeams', turbo_action: 'advance', controller: 'search-form' } do |form| %>
-  <%= form.label :query, 'Find a team by name:', class: 'sr-only' %>
+<div class="border-b border-slate-200 dark:border-slate-700">
+  <%= form_with url: teams_path, method: :get, html: { novalidate: true }, data: { turbo_frame: 'otherTeams', turbo_action: 'advance', controller: 'search-form' } do |form| %>
+    <%= form.label :query, 'Find a team by name:', class: 'sr-only' %>
 
-  <div class="form-group flex items-center gap-6 relative">
-    <%= inline_svg_tag 'icons/search.svg', class: 'size-5 absolute left-3 text-slate-500' %>
-    <%= form.search_field :query, placeholder: 'Team name', data: { action: 'input->search-form#search' }, class: 'form-input pl-9' %>
-    <%= form.submit 'Search', class: 'btn btn-primary' %>
-  </div>
-<% end %>
+    <div class="form-group flex items-center gap-6 relative">
+      <%= inline_svg_tag 'icons/search.svg', class: 'size-5 absolute left-3 text-slate-500' %>
+      <%= form.search_field :query, placeholder: 'Team name', data: { action: 'input->search-form#search' }, class: 'form-input pl-10' %>
+      <%= form.submit 'Search', class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>
 
 <%= turbo_frame_tag 'otherTeams' do %>
   <% if other_teams.any? %>
