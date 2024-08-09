@@ -12,7 +12,7 @@
       <p class="error-message text-base w-full text-center">You must specify your gender to join this team.</p>
     <% end %>
   <% elsif request.pending? %>
-    <%= button_to 'Cancel request', cancel_request_path(request), method: :delete, class: 'btn btn-destructive' %>
+    <%= button_to 'Cancel request', cancel_request_path(request), method: :patch, class: 'btn btn-destructive' %>
   <% elsif current_page?(team_path(team)) %>
     <p class="error-message text-base">You have been blocked from this team.</p>
   <% end %>

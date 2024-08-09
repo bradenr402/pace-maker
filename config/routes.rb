@@ -17,9 +17,9 @@ Rails.application.routes.draw do
 
   post 'remove_member', to: 'teams#remove_member'
 
-  delete 'team_join_requests/:id/cancel',
-         to: 'team_join_requests#cancel',
-         as: 'cancel_request'
+  patch 'team_join_requests/:id/cancel',
+        to: 'team_join_requests#cancel',
+        as: 'cancel_request'
   patch 'team_join_requests/:id/approve',
         to: 'team_join_requests#approve',
         as: 'approve_request'
