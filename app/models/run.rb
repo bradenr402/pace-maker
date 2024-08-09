@@ -16,7 +16,7 @@ class Run < ApplicationRecord
 
   scope :in_date_range, ->(range) { where(date: range).order(date: :desc) }
   scope :today, -> { where(date: Date.today.all_day).order(date: :desc) }
-  scope :excluding_date, ->(date) { where.not(date: date) }
+  scope :excluding_date, ->(date) { where.not(date:) }
 
   def long_run_for?(team)
     return false unless team.present?
