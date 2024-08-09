@@ -8,7 +8,7 @@
         </h1>
       <% end %>
 
-      <%= link_to "Edit run", edit_run_path(@run), class: "btn btn-white" %>
+      <%= link_to "Edit run", edit_run_path(@run), class: "btn btn-primary" if @run.user == current_user %>
     </div>
   </div>
   <%= render @run %>
