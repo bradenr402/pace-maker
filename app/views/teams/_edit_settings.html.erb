@@ -52,7 +52,7 @@
   <% end %>
 
   <div class="flex items-center gap-6 mt-10">
-    <%= form.submit "Save settings", class: "btn btn-primary mr-auto" %>
+    <%= form.submit "Save settings", data: { turbo: false }, class: "btn btn-primary mr-auto" %>
     <%= link_to "Cancel", :back, class: "btn btn-white", data: { turbo: false } %>
   </div>
 <% end %>

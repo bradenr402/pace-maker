@@ -85,9 +85,9 @@
 
   <div class="flex items-center justify-start flex-wrap gap-6">
     <% if form.object.new_record? %>
-      <%= form.submit 'Create team', class: 'btn btn-primary' %>
+      <%= form.submit 'Create team', data: { turbo: false }, class: 'btn btn-primary' %>
     <% else %>
-      <%= form.submit 'Update team', class: 'btn btn-primary' %>
+      <%= form.submit 'Update team', data: { turbo: false }, class: 'btn btn-primary' %>
 
       <%= link_to 'Delete team', @team,
                       class: 'btn btn-destructive btn-outline mr-auto',
@@ -97,6 +97,6 @@
                       } %>
     <% end %>
 
-    <%= link_to 'Cancel', :back, class: 'btn btn-white' %>
+    <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-white' %>
   </div>
 <% end %>
