@@ -40,6 +40,11 @@
         <%= inline_svg_tag 'icons/clock.svg', class: 'size-5' %>
         <span>Recent Activity</span>
       </button>
+
+      <button type="button" id="featuredTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+        <%= inline_svg_tag 'icons/star.svg', class: 'size-5' %>
+        <span>Featured</span>
+      </button>
     <% end %>
   </div>
 
@@ -60,6 +65,10 @@
   <% if current_user.member_of?(@team) %>
     <div id="recentActivityTab" data-tabs-target="tab" class="mb-24 hidden">
       <%= render 'recent_activity', team: @team %>
+    </div>
+
+    <div id="featuredTab" data-tabs-target="tab" class="mb-24 hidden">
+      <%= render 'featured', team: @team %>
     </div>
   <% end %>
 </div>
