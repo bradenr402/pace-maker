@@ -34,16 +34,6 @@ class TeamJoinRequestsController < ApplicationController
     end
   end
 
-  def destroy
-    if @join_request.destroy
-      redirect_back fallback_location: @team,
-                    success: 'Join request was successfully canceled.'
-    else
-      redirect_back fallback_location: @team,
-                    error: 'Unable to cancel join request.'
-    end
-  end
-
   def approve
     if @join_request.approved!
       @team.team_memberships.create(user: @join_request.user)
