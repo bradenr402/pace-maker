@@ -2,20 +2,22 @@
   <h1 class="heading">Find Teams</h1>
 </div>
 
-<%= form_with url: teams_path, method: :get, html: { novalidate: true }, data: { turbo_frame: 'otherTeams' } do |form| %>
+<%= form_with url: teams_path, method: :get, html: { novalidate: true }, data: { turbo_frame: 'otherTeams', turbo_action: 'advance', controller: 'search-form' } do |form| %>
   <%= form.label :query, 'Find a team by name:', class: 'sr-only' %>
 
   <div class="form-group flex items-center gap-6 relative">
     <%= inline_svg_tag 'icons/search.svg', class: 'size-5 absolute left-3 text-slate-500' %>
-    <%= form.text_field :query, placeholder: 'Team name', class: 'form-input pl-9' %>
+    <%= form.text_field :query, placeholder: 'Team name', data: { action: 'input->search-form#search' }, class: 'form-input pl-9' %>
     <%= form.submit 'Search', class: 'btn btn-primary' %>
   </div>
 <% end %>
 
-<% if other_teams.any? %>
-  <%= render 'team_list', teams: other_teams %>
-<% else %>
-  <div class="flex flex-col gap-6 items-center justify-center py-12">
-    <p class="prose dark:prose-invert text-slate-700 dark:text-slate-400">No other teams to show.</p>
-  </div>
+<%= turbo_frame_tag 'otherTeams' do %>
+  <% if other_teams.any? %>
+    <%= render 'team_list', teams: other_teams %>
+  <% else %>
+    <div class="flex flex-col gap-6 items-center justify-center py-12">
+      <p class="prose dark:prose-invert text-slate-700 dark:text-slate-400">No teams found.</p>
+    </div>
+  <% end %>
 <% end %>
