@@ -9,7 +9,10 @@ class TeamsController < ApplicationController
 
     @other_teams =
       if params[:query].present?
-        Team.where('LOWER(name) LIKE LOWER(?)', "%#{params[:query]}%")
+        Team.joins(:owner).where(
+          'LOWER(teams.name) LIKE LOWER(:query) OR LOWER(users.username) LIKE LOWER(:query) OR LOWER(users.display_name) LIKE LOWER(:query)',
+          query: "%#{params[:query]}%"
+        )
       else
         current_user.other_teams
       end
