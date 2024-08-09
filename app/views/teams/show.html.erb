@@ -35,10 +35,12 @@
       </button>
     <% end %>
 
-    <button type="button" id="recentActivityTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
-      <%= inline_svg_tag 'icons/clock.svg', class: 'size-5' %>
-      <span>Recent Activity</span>
-    </button>
+    <% if current_user.member_of?(@team) %>
+      <button type="button" id="recentActivityTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+        <%= inline_svg_tag 'icons/clock.svg', class: 'size-5' %>
+        <span>Recent Activity</span>
+      </button>
+    <% end %>
   </div>
 
   <div id="infoTab" data-tabs-target="tab" class="mb-24">
@@ -55,7 +57,9 @@
     </div>
   <% end %>
 
-  <div id="recentActivityTab" data-tabs-target="tab" class="mb-24">
-    <%= render 'recent_activity', team: @team %>
-  </div>
+  <% if current_user.member_of?(@team) %>
+    <div id="recentActivityTab" data-tabs-target="tab" class="mb-24">
+      <%= render 'recent_activity', team: @team %>
+    </div>
+  <% end %>
 </div>
