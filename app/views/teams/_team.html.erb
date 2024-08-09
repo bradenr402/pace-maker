@@ -1,13 +1,13 @@
 <div class="flex items-center flex-wrap gap-4">
   <% if team.photo.attached? %>
-    <%= link_to team do %>
+    <%= link_to team, data: { turbo: false } do %>
       <%= image_tag team.photo, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none' %>
     <% end %>
   <% end %>
 
   <div class="mr-auto">
-    <p class="subheading mb-0.5"><%= link_to team.name, team, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %></p>
-    <p class="help-text"><%= link_to team.owner.default_name, team.owner, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %></p>
+    <p class="subheading mb-0.5"><%= link_to team.name, team, data: { turbo: false }, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %></p>
+    <p class="help-text"><%= link_to team.owner.default_name, team.owner, data: { turbo: false }, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %></p>
     <% if team.season_dates? %>
       <% if team.season_start_date.after?(Date.today) %>
         <p class="text-slate-700 dark:text-slate-400 text-sm mt-1">Season starts <%= pretty_date(team.season_start_date) %></p>
