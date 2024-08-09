@@ -37,5 +37,8 @@ application.register("search-form", SearchFormController)
 import TabsController from "./tabs_controller"
 application.register("tabs", TabsController)
 
+import TeamGenderFieldsController from "./team_gender_fields_controller"
+application.register("team-gender-fields", TeamGenderFieldsController)
+
 import ThemeController from "./theme_controller"
 application.register("theme", ThemeController)

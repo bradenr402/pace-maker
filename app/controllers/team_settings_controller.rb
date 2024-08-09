@@ -10,7 +10,8 @@ class TeamSettingsController < ApplicationController
         %w[true false].include?(value) ? value == 'true' : value
       end
 
-    if @team.settings(:join_requirements).update(settings_params)
+    if @team.settings(:join_requirements).update(settings_params) &&
+         @team.settings(:runs).update(settings_params)
       redirect_to @team, success: 'Team settings updated successfully'
     else
       redirect_to @team, alert: 'Unable to update team settings'
@@ -23,7 +24,13 @@ class TeamSettingsController < ApplicationController
     params
       .require(:team)
       .require(:settings)
-      .permit(:require_gender, :max_allowed_requests)
+      .permit(
+        :require_gender,
+        :max_allowed_requests,
+        :long_run_distance_male,
+        :long_run_distance_female,
+        :long_run_distance_neutral
+      )
 
   def authorize_owner!
     team = Team.find(params[:team_id])
