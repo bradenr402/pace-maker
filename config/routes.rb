@@ -8,10 +8,7 @@ Rails.application.routes.draw do
   resources :runs, except: %i[index]
   resources :users, only: %i[show]
   resources :teams do
-    resource :team_settings,
-             only: %i[update],
-             path: 'settings',
-             as: :settings
+    resource :team_settings, only: %i[update], path: 'settings', as: :settings
   end
   resources :team_join_requests, only: %i[update]
 
