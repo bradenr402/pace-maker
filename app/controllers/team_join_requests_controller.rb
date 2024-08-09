@@ -22,10 +22,9 @@ class TeamJoinRequestsController < ApplicationController
       )
     end
 
-    @join_request.pending!
-    @join_request.request_number += 1
-
-    if @join_request.save
+    if @join_request.transaction {
+         @join_request.pending! && @join_request.increment!(:request_number)
+       }
       redirect_back fallback_location: teams_path,
                     success: 'Join request was successfully sent.'
     else
