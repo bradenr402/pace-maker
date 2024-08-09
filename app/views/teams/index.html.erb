@@ -20,11 +20,11 @@
     <%= render 'owned_teams', owned_teams: @owned_teams %>
   </div>
 
-  <div id="teamMembershipsTab" data-tabs-target="tab" class="mb-24">
+  <div id="teamMembershipsTab" data-tabs-target="tab" class="mb-24 hidden">
     <%= render 'membered_teams', membered_teams: @membered_teams %>
   </div>
 
-  <div id="otherTeamsTab" data-tabs-target="tab" class="mb-24">
+  <div id="otherTeamsTab" data-tabs-target="tab" class="mb-24 hidden">
     <%= render 'other_teams', other_teams: @other_teams %>
   </div>
 </div>

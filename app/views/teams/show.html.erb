@@ -47,18 +47,18 @@
     <%= render 'team_stats', team: @team %>
   </div>
 
-  <div id="membersTab" data-tabs-target="tab" class="mb-24">
+  <div id="membersTab" data-tabs-target="tab" class="mb-24 hidden">
     <%= render 'members', members: @members %>
   </div>
 
   <% if current_user.owns?(@team) %>
-    <div id="joinRequestsTab" data-tabs-target="tab" class="mb-24">
+    <div id="joinRequestsTab" data-tabs-target="tab" class="mb-24 hidden">
       <%= render 'join_requests', join_requests: @join_requests %>
     </div>
   <% end %>
 
   <% if current_user.member_of?(@team) %>
-    <div id="recentActivityTab" data-tabs-target="tab" class="mb-24">
+    <div id="recentActivityTab" data-tabs-target="tab" class="mb-24 hidden">
       <%= render 'recent_activity', team: @team %>
     </div>
   <% end %>

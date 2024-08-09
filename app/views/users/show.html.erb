@@ -64,11 +64,11 @@
     <%= render 'user_stats', user: @user %>
   </div>
 
-  <div id="teamsTab" data-tabs-target="tab" class="mb-24">
+  <div id="teamsTab" data-tabs-target="tab" class="mb-24 hidden">
     <%= render 'teams', user: @user, owned_teams: @user.owned_teams, membered_teams: @user.membered_teams %>
   </div>
 
-  <div id="runsTab" data-tabs-target="tab">
+  <div id="runsTab" data-tabs-target="tab" class="hidden">
     <div class="mb-24">
       <%= render 'runs_today', user: @user %>
     </div>
