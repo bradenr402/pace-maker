@@ -1,6 +1,6 @@
 <div class="mt-10 pb-6 border-b dark:border-slate-700 space-y-2">
   <h1 class="heading">Join Requests</h1>
-  <p class="text-slate-700 dark:text-slate-400"><%= pluralize(join_requests.count, 'request') %></p>
+  <p class="text-slate-700 dark:text-slate-400"><%= join_requests.count < 1 ? 'No requests' : pluralize(join_requests.count, 'request') %></p>
 </div>
 
 <% if join_requests.any? %>
