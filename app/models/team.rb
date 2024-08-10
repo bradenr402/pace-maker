@@ -39,9 +39,8 @@ class Team < ApplicationRecord
     Run
       .joins(:user)
       .where(users: { id: members.pluck(:id) })
-      .where('date >= ?', 7.days.ago)
       .order(date: :desc)
-      .first(10)
+      .first(15)
 
   def recent_long_runs
     runs =
