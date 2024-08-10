@@ -1,9 +1,14 @@
 <div class="flex flex-wrap gap-6 items-center justify-between mt-10 pb-6 border-b border-slate-200 dark:border-slate-700">
-  <h1 class="heading"><%= user.default_name %>'s Teams</h1>
+  <div class="space-y-2">
+    <h1 class="heading"><%= user.default_name %>'s Teams</h1>
+    <p class="text-slate-700 dark:text-slate-400">Teams <%= user == current_user ? 'you are' : 'this user is' %> the coach of.</p>
+  </div>
+
   <% if user == current_user && owned_teams.any? %>
     <%= link_to 'New team', new_team_path, class: 'btn btn-primary' %>
   <% end %>
 </div>
+
 <% if owned_teams.any? %>
   <%= render 'teams/team_list', teams: owned_teams %>
 <% else %>
@@ -12,14 +17,16 @@
       <p class="prose dark:prose-invert text-slate-700 dark:text-slate-400">You don't have any teams yet.</p>
       <%= link_to 'New run', new_run_path, class: 'btn btn-primary' %>
     <% else %>
-    <p class="prose dark:prose-invert text-slate-700 dark:text-slate-400"><%= user.default_name %> doesn't have any teams yet.</p>
+      <p class="prose dark:prose-invert text-slate-700 dark:text-slate-400"><%= user.default_name %> doesn't have any teams yet.</p>
     <% end %>
   </div>
 <% end %>
 
-<div class="flex flex-wrap gap-6 items-center justify-between pb-6 border-b dark:border-slate-700">
+<div class="mt-10 mb-6 pb-6 border-b dark:border-slate-700 space-y-2">
   <h1 class="heading"><%= user.default_name %>'s Team Memberships</h1>
+  <p class="text-slate-700 dark:text-slate-400">Teams <%= user == current_user ? 'you are' : 'this user is' %> a member of.</p>
 </div>
+
 <% if membered_teams.any? %>
   <%= render 'teams/team_list', teams: membered_teams %>
 <% else %>
