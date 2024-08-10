@@ -1,11 +1,6 @@
-<div class="max-w-3xl mx-auto px-4 my-16">
-  <div class="mb-4 pb-6 border-b border-slate-200 dark:border-slate-700">
-    <div class="flex items-center justify-between">
-      <h1 class="heading">Edit Team</h1>
-    </div>
-  </div>
-
-  <div>
-    <%= render "form", team: @team %>
-  </div>
+<div class="mt-10 mb-6 pb-6 border-b dark:border-slate-700 space-y-2">
+  <h1 class="heading">Edit Team</h1>
+  <p class="text-slate-700 dark:text-slate-400">Edit your team's details.</p>
 </div>
+
+<%= render "form", team: @team %>
