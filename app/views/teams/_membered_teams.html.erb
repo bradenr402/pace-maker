@@ -1,6 +1,7 @@
-<div class="flex flex-wrap gap-6 items-center justify-between pb-6 border-b dark:border-slate-700">
+<div class="mt-10 pb-6 border-b dark:border-slate-700">
   <h1 class="heading">My Team Memberships</h1>
 </div>
+
 <% if membered_teams.any? %>
   <%= render 'team_list', teams: membered_teams %>
 <% else %>
