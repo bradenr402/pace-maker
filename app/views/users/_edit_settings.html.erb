@@ -10,8 +10,6 @@
   <%= hidden_field_tag 'user[settings][in_app]', 'false' %>
 
   <%= form.fields_for :settings do |settings_form| %>
-    <button type="button" data-action="restore-defaults#restore" class="btn btn-sm btn-white">Restore defaults</button>
-
     <div class="my-6">
       <h2 class="font-normal text-lg text-slate-700 dark:text-slate-200 mb-2">Contact information</h2>
       <p class="text-sm text-slate-600 dark:text-slate-400">Display your contact information to other users on your profile.</p>
@@ -50,6 +48,11 @@
       </div>
     </div>
   <% end %>
+
+  <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
+    <button type="button" data-action="restore-defaults#restore" class="btn btn-sm btn-white">Restore defaults</button>
+    <p class="help-text my-1">Reset all settings to their defaults for a fresh start.</p>
+  </div>
 
   <div class="flex items-center gap-6 mt-10">
     <%= form.submit "Save settings", class: "btn btn-primary mr-auto" %>

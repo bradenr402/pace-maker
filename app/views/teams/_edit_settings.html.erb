@@ -8,8 +8,6 @@
   <%= hidden_field_tag 'team[settings][require_gender]', 'false' %>
 
   <%= form.fields_for :settings do |settings_form| %>
-    <button type="button" data-action="restore-defaults#restore" class="btn btn-sm btn-white">Restore defaults</button>
-
     <div class="my-6">
       <h2 class="font-normal text-lg text-slate-700 dark:text-slate-200 mb-2">Join Requirements</h2>
       <p class="text-sm text-slate-600 dark:text-slate-400">Set the requirements for users to request to join this team.</p>
@@ -49,6 +47,11 @@
       <%= settings_form.number_field :long_run_distance_neutral, step: 0.1, min: 0.1, value: @team.settings(:runs).long_run_distance_neutral, class: 'form-input', data: { restore_defaults_target: 'longRunDistanceNeutral' } %>
     </div>
   <% end %>
+
+  <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
+    <button type="button" data-action="restore-defaults#restore" class="btn btn-sm btn-white">Restore defaults</button>
+    <p class="help-text my-1">Reset all settings to their defaults for a fresh start.</p>
+  </div>
 
   <div class="flex items-center gap-6 mt-10">
     <%= form.submit "Save settings", data: { turbo: false }, class: "btn btn-primary mr-auto" %>
