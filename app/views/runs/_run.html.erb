@@ -1,7 +1,7 @@
 <div class="py-6">
   <div class="flex flex-wrap-reverse gap-4 items-center">
     <% unless current_page?(run_path(run)) %>
-      <%= link_to run.user, class: 'group flex gap-4 items-center mr-auto' do %>
+      <%= link_to run.user, data: { turbo: false }, class: 'group flex gap-4 items-center mr-auto' do %>
         <%= image_tag run.user.avatar, class: 'size-12 rounded-lg drop-shadow-lg dark:drop-shadow-none' if run.user.avatar.attached? %>
         <p class="subheading group-hover:text-indigo-600 dark:group-hover:text-indigo-500 transition ease-in-out duration-300">
           <%= run.user.default_name %>
@@ -12,8 +12,8 @@
     <%= render 'runs/long_run_badge' if local_assigns[:team] && run.long_run_for?(team) %>
   </div>
 
-  <%= link_to run do %>
-    <article id="<%= dom_id run %>" class="py-6 prose dark:prose-invert">
+  <%= link_to run, data: { turbo: false } do %>
+    <article id="<%= dom_id run %>" class="prose dark:prose-invert">
       <div class="flex items-center gap-3">
         <%= inline_svg_tag 'icons/calendar.svg', class: 'size-5' %>
         <p class="font-bold text-lg"><%= pretty_date(run.date).titlecase %></p>
