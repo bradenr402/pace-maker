@@ -1,7 +1,6 @@
-<div class="mb-4 pb-6 border-b border-slate-200 dark:border-slate-700">
-  <div class="flex items-center justify-between">
-    <h1 class="heading">Settings</h1>
-  </div>
+<div class="mt-10 mb-6 pb-6 border-b dark:border-slate-700 space-y-2">
+  <h1 class="heading">Settings</h1>
+  <p class="text-slate-700 dark:text-slate-400">Set your preferences to optimize your experience.</p>
 </div>
 
 <%= form_with model: @user, url: user_settings_path, local: true, data: { controller: 'restore-defaults' } do |form| %>
