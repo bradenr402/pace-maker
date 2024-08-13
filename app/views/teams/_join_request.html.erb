@@ -4,9 +4,7 @@
 
     <div>
       <p class="group-hover:text-indigo-600 dark:group-hover:text-indigo-500 transition ease-in-out duration-300"><%= request.user.default_name %></p>
-      <% if request.user.display_name.present? %>
-        <p class="help-text"><%= request.user.username %></p>
-      <% end %>
+        <%= content_tag(:p, request.user.username, class: 'help-text') if request.user.display_name.present? %>
     </div>
   <% end %>
 
