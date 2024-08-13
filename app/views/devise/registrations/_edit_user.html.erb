@@ -101,7 +101,19 @@
         <span class="help-text">(optional)</span>
       </p>
     <% end %>
-    <%= f.select :gender, [['Prefer not to answer', '']].concat(User.genders.keys.map { |gender| [gender.humanize, gender] }), {}, class: 'form-select' %>
+
+    <% if resource.any_teams_require_gender? %>
+      <%= f.select :gender, User.genders.keys.map { |gender| [gender.humanize, gender] }, {}, class: 'form-select' %>
+      <p class="help-text my-1">The following teams require you to specify your gender:</p>
+
+      <ul class="list-disc pl-4 help-text my-1">
+        <%= resource.teams_requiring_gender.map { |team| content_tag(:li, link_to(team.name, team, class: 'btn-link')) }.join.html_safe %>
+      </ul>
+
+      <p class="help-text my-1">You must leave these teams to remove your gender.</p>
+    <% else %>
+      <%= f.select :gender, [['Prefer not to answer', '']].concat(User.genders.keys.map { |gender| [gender.humanize, gender] }), {}, class: 'form-select' %>
+    <% end %>
   </div>
 
   <div class='form-group relative'>

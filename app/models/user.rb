@@ -87,6 +87,12 @@ class User < ApplicationRecord
     { allowed?: true, message: 'You meet the requirements to join this team.' }
   end
 
+  def any_teams_require_gender? =
+    teams.any? { |team| team.settings(:join_requirements).require_gender }
+
+  def teams_requiring_gender =
+    teams.select { |team| team.settings(:join_requirements).require_gender }
+
   private
 
   def password_complexity
