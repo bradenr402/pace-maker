@@ -6,10 +6,9 @@
   <%= form_with url: teams_path, method: :get, html: { novalidate: true }, data: { turbo_frame: 'otherTeams', turbo_action: 'advance', controller: 'search-form' } do |form| %>
     <%= form.label :query, 'Find a team by name:', class: 'sr-only' %>
 
-    <div class="form-group flex items-center gap-6 relative">
-      <%= inline_svg_tag 'icons/search.svg', class: 'size-5 absolute left-3 text-slate-500' %>
+    <div class="form-group relative">
+      <%= inline_svg_tag 'icons/search.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
       <%= form.search_field :query, placeholder: 'Team name', data: { action: 'input->search-form#search' }, class: 'form-input pl-10' %>
-      <%= form.submit 'Search', class: 'btn btn-primary' %>
     </div>
   <% end %>
 </div>
