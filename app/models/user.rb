@@ -93,6 +93,20 @@ class User < ApplicationRecord
   def teams_requiring_gender =
     teams.select { |team| team.settings(:join_requirements).require_gender }
 
+  def owned_teams_list(separator: '&') =
+    Team.list(teams: owned_teams, separator:)
+
+  def teams_in_common(other_user) =
+    teams.select { |team| other_user.teams.include?(team) }
+
+  def teams_in_common_list(other_user, separator: '&') =
+    Team.list(teams: teams_in_common(other_user), separator:)
+
+  def any_teams_in_common?(user:, excluded_teams: []) =
+    teams
+      .reject { |team| excluded_teams.include?(team) }
+      .any? { |team| user.teams.include?(team) }
+
   private
 
   def password_complexity

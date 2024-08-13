@@ -30,4 +30,11 @@
       <% end %>
     </div>
   </div>
+
+  <% if member.any_teams_in_common?(user: current_user, excluded_teams: [@team] ) %>
+    <p class="help-text mt-1">
+      <span>Also a member of:</span>
+      <%= member.teams_in_common(current_user).reject { |team| team == @team }.map { |team| link_to(team.name, team, class: 'btn-link') }.join(', ').html_safe %>
+    </p>
+  <% end %>
 </div>
