@@ -1,5 +1,6 @@
-<div class="mt-10 pb-6">
+<div class="mt-10 pb-6 space-y-2">
   <h1 class="heading">Team Members</h1>
+  <p class="text-slate-700 dark:text-slate-400">Find team members by name.</p>
 </div>
 
 <div class="border-b border-slate-200 dark:border-slate-700">
@@ -8,7 +9,7 @@
 
     <div class="form-group relative">
       <%= inline_svg_tag 'icons/search.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= form.search_field :query, placeholder: 'Team member name', data: { action: 'input->search-form#search' }, class: 'form-input pl-10' %>
+      <%= form.search_field :query, placeholder: 'Search...', data: { action: 'input->search-form#search' }, class: 'form-input pl-10' %>
     </div>
   <% end %>
 </div>
