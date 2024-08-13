@@ -7,21 +7,19 @@
   <%= form_with url: user_path(user), method: :get, local: true, html: { novalidate: true }, data: { turbo_frame: 'runs', controller: 'custom-date-range form-validation' } do %>
     <div class="form-group">
       <%= label_tag :run_date_range, 'Select date range', class: 'form-label' %>
-      <%= select_tag :run_date_range, options_for_select(['This week', 'Last week', 'This month', 'Last month', 'Custom range'], params[:run_date_range]), data: { custom_date_range_target: 'select', action: 'custom-date-range#update' }, class: 'form-select' %>
+      <%= select_tag :run_date_range, options_for_select(['This week', 'Last week', 'This month', 'Last month', 'Custom range'], params[:run_date_range]), data: { custom_date_range_target: 'select', action: 'custom-date-range#update custom-date-range#search' }, class: 'form-select' %>
     </div>
 
     <div class="form-group hidden" data-custom-date-range-target="startDate">
       <%= label_tag :run_start_date, 'Start date', class: 'form-label' %>
-      <%= date_field_tag :run_start_date, nil, max: Date.yesterday, class: 'form-input', data: { form_validation_target: "runStartDate", action: "input->form-validation#validateRunEndDate" } %>
+      <%= date_field_tag :run_start_date, nil, max: Date.yesterday, class: 'form-input', data: { form_validation_target: 'runStartDate', custom_date_range_target: 'startDateField', action: 'input->form-validation#validateRunEndDate custom-date-range#search' } %>
     </div>
 
     <div class="form-group hidden" data-custom-date-range-target="endDate">
       <%= label_tag :run_end_date, 'End date', class: 'form-label' %>
-      <%= date_field_tag :run_end_date, nil, max: Date.today, class: 'form-input', data: { form_validation_target: "runEndDate", action: "input->form-validation#validateRunEndDate" } %>
+      <%= date_field_tag :run_end_date, nil, max: Date.today, class: 'form-input', data: { form_validation_target: 'runEndDate', custom_date_range_target: 'endDateField', action: 'input->form-validation#validateRunEndDate custom-date-range#search' } %>
       <span class="error-message hidden my-1" data-form-validation-target="runEndDateError">End date must be today or earlier and must be after start date</span>
     </div>
-
-    <%= submit_tag 'Apply', class: 'btn btn-primary' %>
   <% end %>
 </div>
 
