@@ -4,13 +4,9 @@
       <%= image_tag member.avatar, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none' if member.avatar.attached? %>
 
       <div>
-        <% if member.owns?(@team) %>
-          <p class="text-slate-800 dark:text-slate-100 text-sm">Coach</p>
-        <% end %>
+        <%= content_tag(:p, 'Coach', class: 'text-slate-800 dark:text-slate-100 text-sm') if member.owns?(@team) %>
         <h2 class='subheading group-hover:text-indigo-600 dark:group-hover:text-indigo-500 transition ease-in-out duration-300'><%= member.default_name %></h2>
-        <% if member.display_name.present? %>
-          <p class="help-text"><%= member.username %></p>
-        <% end %>
+        <%= content_tag(:p, member.username, class: 'help-text') if member.display_name.present? %>
       </div>
     <% end %>
 
