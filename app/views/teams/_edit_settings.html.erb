@@ -15,10 +15,10 @@
 
     <div class="form-group">
       <div class="flex items-center gap-2">
-        <%= settings_form.check_box :require_gender, { checked: @team.settings(:join_requirements).require_gender, class: 'form-input-checkbox', data: { restore_defaults_target: 'requireGender', team_gender_fields_target: 'requireGender', action: 'change->team-gender-fields#toggleFields' } }, true, false %>
-        <%= settings_form.label :require_gender, 'Require gender', class: 'select-none text-sm text-slate-700 dark:text-slate-300' %>
+        <%= settings_form.check_box :require_gender, { checked: @team.settings(:join_requirements).require_gender, disabled: @team.owner.gender.blank?, class: "form-input-checkbox", data: { restore_defaults_target: 'requireGender', team_gender_fields_target: 'requireGender', action: 'change->team-gender-fields#toggleFields' } }, true, false %>
+        <%= settings_form.label :require_gender, 'Require gender', class: "select-none text-sm text-slate-700 dark:text-slate-300" %>
       </div>
-      <p class="help-text my-1">Require users to specify their gender in order to join this team.</p>
+      <p class="help-text my-1"><%= @team.owner.gender.blank? ? 'You cannot require gender for your team if your own gender is not specified.' : 'Require users to specify their gender in order to join this team.' %></p>
     </div>
 
     <div class="form-group">

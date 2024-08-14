@@ -10,6 +10,8 @@ class TeamSettingsController < ApplicationController
         %w[true false].include?(value) ? value == 'true' : value
       end
 
+    settings_params[:require_gender] = false if @team.owner.gender.blank?
+
     if @team.settings(:join_requirements).update(settings_params) &&
          @team.settings(:runs).update(settings_params)
       redirect_to @team, success: 'Team settings updated successfully'

@@ -112,6 +112,14 @@
   /* Use for all checkbox controls. */
   .form-input-checkbox {
     @apply rounded-sm border border-slate-400   checked:border-indigo-500 checked:accent-indigo-500 text-indigo-600 dark:bg-slate-700 dark:border-slate-600 focus:ring-indigo-500/30 dark:checked:border-indigo-400 dark:checked:accent-indigo-400;
+
+    &[disabled] {
+      @apply opacity-60;
+    }
+
+    &[disabled] + label {
+      @apply opacity-60;
+    }
   }
 
   /* Use for all radio inputs. */
