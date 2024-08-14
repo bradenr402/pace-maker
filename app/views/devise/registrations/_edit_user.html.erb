@@ -3,12 +3,6 @@
   <p class="text-slate-700 dark:text-slate-400">Edit your account details.</p>
 </div>
 
-<% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-  <div class="bg-blue-50/90 text-blue-700 border-l-4 border-blue-700 py-4 pr-4 pl-6 text-sm dark:bg-blue-50/10 dark:text-blue-50 dark:border-blue-400 mt-6">
-    <p class="text-blue-800 dark:text-blue-400 ">Currently waiting on confirmation for: <span class="font-semibold"><%= resource.unconfirmed_email %></span></p>
-  </div>
-<% end %>
-
 <div class="my-6">
   <h2 class="font-normal text-lg text-slate-700 dark:text-slate-200 mb-2">Profile</h2>
   <p class="text-sm text-slate-600 dark:text-slate-400">This information will be displayed publicly.</p>
