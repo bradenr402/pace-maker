@@ -104,13 +104,13 @@
 
     <% if resource.any_teams_require_gender? %>
       <%= f.select :gender, User.genders.keys.map { |gender| [gender.humanize, gender] }, {}, class: 'form-select' %>
-      <p class="help-text my-1">The following teams require you to specify your gender:</p>
+      <p class="help-text my-1">You are a member of <%= pluralize(resource.teams_requiring_gender.count, 'team that requires its members', 'teams that require their members') %> to specify their gender.</p>
 
       <ul class="list-disc pl-4 help-text my-1">
         <%= resource.teams_requiring_gender.map { |team| content_tag(:li, link_to(team.name, team, class: 'btn-link')) }.join.html_safe %>
       </ul>
 
-      <p class="help-text my-1">You must leave these teams to remove your gender.</p>
+      <p class="help-text my-1">You must leave <%= resource.teams_requiring_gender.count == 1 ? 'this team' : 'these teams' %> to remove your gender.</p>
     <% else %>
       <%= f.select :gender, [['Prefer not to answer', '']].concat(User.genders.keys.map { |gender| [gender.humanize, gender] }), {}, class: 'form-select' %>
     <% end %>
