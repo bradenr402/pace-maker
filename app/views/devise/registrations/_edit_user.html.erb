@@ -173,8 +173,8 @@
   </div>
 
   <div class="flex items-center gap-4 pt-10 border-t mt-10 border-slate-200 dark:border-slate-700">
-    <%= f.submit "Save", data: { turbo: false }, class: "btn btn-primary" %>
-    <%= link_to "Cancel", :back, class: "btn btn-white mr-auto", data: { turbo: false } %>
+    <%= f.submit 'Save', data: { turbo: false }, class: 'btn btn-primary' %>
+    <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-white mr-auto' %>
     <%= button_to 'Sign out', destroy_user_session_path, method: :delete, class: 'btn btn-destructive' %>
   </div>
 <% end %>
