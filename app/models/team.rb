@@ -71,23 +71,6 @@ class Team < ApplicationRecord
     end
   end
 
-  class << self
-    def list(teams: Team.all, separator: '&')
-      names = teams.map(&:name)
-
-      case names.size
-      when 0
-        ''
-      when 1
-        names.first
-      when 2
-        names.join(" #{separator} ")
-      else
-        "#{names[0...-1].join(', ')}, #{separator} #{names.last}"
-      end
-    end
-  end
-
   private
 
   def season_dates_presence
