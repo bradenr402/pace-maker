@@ -14,7 +14,10 @@ class User < ApplicationRecord
            class_name: 'Team',
            foreign_key: 'owner_id',
            dependent: :destroy
-  has_many :join_requests, foreign_key: 'user_id', class_name: 'TeamJoinRequest', dependent: :destroy
+  has_many :join_requests,
+           foreign_key: 'user_id',
+           class_name: 'TeamJoinRequest',
+           dependent: :destroy
   has_one_attached :avatar
 
   attr_accessor :remove_avatar
@@ -56,8 +59,11 @@ class User < ApplicationRecord
             if: -> { phone_number.present? }
 
   enum gender: { male: 'male', female: 'female' }
-  validates :gender, inclusion: { in: genders.keys + [''] }, if: -> { gender.present? }
-
+  validates :gender,
+            inclusion: {
+              in: genders.keys + ['']
+            },
+            if: -> { gender.present? }
 
   def login = @login || username || email
 

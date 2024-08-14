@@ -22,11 +22,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # PUT /resource
-  # def update
-  #   super
-  #   flash.clear
-  #   set_flash_message! :success, :updated
-  # end
 
   def update
     self.resource =
@@ -73,7 +68,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
+  protected
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
@@ -110,8 +105,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def after_update_path_for(resource)
     user_path(current_user)
   end
-
-  protected
 
   def update_resource(resource, params)
     settings_params = params.delete(:settings) || {}

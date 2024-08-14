@@ -181,15 +181,15 @@
 
 <div class="pt-10 border-t my-10 border-slate-200 dark:border-slate-700 text-center">
   <p>Not happy with your experience?</p>
-  <%= button_to "Cancel your account", registration_path(resource_name),
+  <%= button_to 'Cancel your account', registration_path(resource_name),
               method: :delete,
-              class: "text-slate-400 hover:text-slate-600 font-semibold text-sm",
+              class: 'text-slate-400 hover:text-slate-600 font-semibold text-sm',
               form: {
                 data: {
                   turbo: false,
                   controller: 'confirmation',
                   action: 'submit->confirmation#confirm',
-                  confirmation_message_value: "Are you sure you want to delete your account? This action cannot be undone."
+                  confirmation_message_value: 'Are you sure you want to delete your account? This action cannot be undone.'
                 }
               } %>
 </div>

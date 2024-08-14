@@ -47,10 +47,7 @@ class UsersController < ApplicationController
           ]
         end
       else
-        [
-          @user.runs_in_date_range(today.beginning_of_week..today),
-          'this week'
-        ]
+        [@user.runs_in_date_range(today.beginning_of_week..today), 'this week']
       end
 
     respond_to do |format|
