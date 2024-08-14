@@ -5,6 +5,8 @@ class User < ApplicationRecord
   USERNAME_FORMAT = /\A[a-z0-9_.]{3,}\z/
   PHONE_NUMBER_FORMAT = /\A\+?\d{10,15}\z/
 
+  before_validation :convert_empty_string_phone_number_to_nil
+
   has_many :runs, dependent: :destroy
   has_many :team_memberships, dependent: :destroy
   has_many :teams, through: :team_memberships
@@ -50,7 +52,8 @@ class User < ApplicationRecord
             format: {
               with: PHONE_NUMBER_FORMAT,
               message: 'is not a valid phone number'
-            }
+            },
+            if: -> { phone_number.present? }
 
   enum gender: { male: 'male', female: 'female' }
   validates :gender, inclusion: { in: genders.keys + [''] }, if: -> { gender.present? }
@@ -115,6 +118,9 @@ class User < ApplicationRecord
                    '1 uppercase letter, 1 lowercase letter, 1 digit, and 1 special character (#?!@$%^&*-)'
     end
   end
+
+  def convert_empty_string_phone_number_to_nil =
+    (self.phone_number = nil if phone_number.blank?)
 
   def purge_avatar = avatar.purge_later
 
