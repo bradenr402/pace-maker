@@ -16,7 +16,7 @@
       <span class="sr-only">New Run</span>
     <% end %>
 
-    <%= link_to root_path, aria: { current: current_page?(root_path) ? 'page' : nil }, class: "tab-link #{current_page?(root_path) ? 'tab-link-active' : 'tab-link-inactive'}" do %>
+    <%= link_to search_path, aria: { current: current_page?(search_path) ? 'page' : nil }, class: "tab-link #{current_page?(search_path) ? 'tab-link-active' : 'tab-link-inactive'}" do %>
       <%= inline_svg_tag 'icons/search.svg', class: 'size-6' %>
       <span>Search</span>
     <% end %>
