@@ -7,8 +7,6 @@ export default class extends Controller {
   static values = { userTheme: String };
 
   connect() {
-    console.log(this.userThemeValue);
-
     this.setTheme(this.userThemeValue);
   }
 

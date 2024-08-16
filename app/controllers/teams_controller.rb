@@ -14,11 +14,11 @@ class TeamsController < ApplicationController
           .joins(:owner)
           .where(
             'LOWER(teams.name) LIKE LOWER(:query) OR
-         LOWER(users.username) LIKE LOWER(:query) OR
-         LOWER(users.display_name) LIKE LOWER(:query) OR
-         similarity(teams.name, :query) > 0.3 OR
-         similarity(users.username, :query) > 0.3 OR
-         similarity(users.display_name, :query) > 0.3',
+            LOWER(users.username) LIKE LOWER(:query) OR
+            LOWER(users.display_name) LIKE LOWER(:query) OR
+            similarity(teams.name, :query) > 0.3 OR
+            similarity(users.username, :query) > 0.3 OR
+            similarity(users.display_name, :query) > 0.3',
             query: "%#{params[:query]}%"
           )
           .order(
@@ -51,9 +51,9 @@ class TeamsController < ApplicationController
           .members
           .where(
             'LOWER(users.username) LIKE LOWER(:query) OR
-         LOWER(users.display_name) LIKE LOWER(:query) OR
-         similarity(users.username, :query) > 0.3 OR
-         similarity(users.display_name, :query) > 0.3',
+            LOWER(users.display_name) LIKE LOWER(:query) OR
+            similarity(users.username, :query) > 0.3 OR
+            similarity(users.display_name, :query) > 0.3',
             query: "%#{params[:query]}%"
           )
           .order(
