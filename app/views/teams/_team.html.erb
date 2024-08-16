@@ -1,4 +1,9 @@
-<%= content_tag(:p, 'Team', class: 'text-slate-800 dark:text-slate-100 text-sm') if current_page?(search_path) %>
+<% if current_page?(search_path) %>
+<div class="flex items-center gap-1.5 text-slate-800 dark:text-slate-100 mb-1">
+  <%= inline_svg_tag 'icons/team.svg', class: 'size-4' %>
+  <p class="text-slate-800 dark:text-slate-100 text-sm mt-0.5">Team</p>
+</div>
+<% end %>
 
 <div class="flex items-center flex-wrap gap-4">
   <% if team.photo.attached? %>

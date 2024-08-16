@@ -1,4 +1,9 @@
-<%= content_tag(:p, 'User', class: 'text-slate-800 dark:text-slate-100 text-sm') if current_page?(search_path) %>
+<% if current_page?(search_path) %>
+  <div class="flex items-center gap-1 text-slate-800 dark:text-slate-100 mb-1">
+    <%= inline_svg_tag 'icons/user.svg', class: 'size-4' %>
+    <p class="text-slate-800 dark:text-slate-100 text-sm mt-0.5">User</p>
+  </div>
+<% end %>
 
 <div class="flex gap-4 items-center">
   <%= link_to user, data: { turbo: false }, class: 'group flex gap-4 items-center mr-auto' do %>
