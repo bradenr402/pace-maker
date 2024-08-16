@@ -107,6 +107,18 @@ class User < ApplicationRecord
 
   def any_teams_in_common?(other_user) = teams_in_common(other_user).any?
 
+  def owned_teams_in_common(other_user) =
+    owned_teams.select { |team| other_user.teams.include?(team) }
+
+  def any_owned_teams_in_common?(other_user) =
+    owned_teams_in_common(other_user).any?
+
+  def membered_teams_in_common(other_user) =
+    membered_teams.select { |team| other_user.teams.include?(team) }
+
+  def any_membered_teams_in_common?(other_user) =
+    membered_teams_in_common(other_user).any?
+
   private
 
   def password_complexity
