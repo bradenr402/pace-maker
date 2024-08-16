@@ -74,6 +74,11 @@ class Team < ApplicationRecord
     end
   end
 
+  def members_in_common(user) =
+    members.select { |member| member != user && (member.teams & user.teams).any? }
+
+  def any_members_in_common?(user) = members_in_common(user).any?
+
   private
 
   def season_dates_presence

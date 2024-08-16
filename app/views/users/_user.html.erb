@@ -11,9 +11,9 @@
   <% end %>
 </div>
 
-<% if user.any_teams_in_common?(user: current_user) %>
+<% if user.any_teams_in_common?(current_user) %>
   <p class="help-text mt-1">
-    <span>Also a user of:</span>
+    <span>Member of:</span>
     <%= list(items: user.teams_in_common(current_user).map { |team| link_to(team.name, team, data: { turbo: false }, class: 'btn-link') }).html_safe %>
   </p>
 <% end %>
