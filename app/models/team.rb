@@ -5,7 +5,10 @@ class Team < ApplicationRecord
   belongs_to :owner, class_name: 'User'
   has_many :team_memberships, dependent: :destroy
   has_many :members, through: :team_memberships, source: :user
-  has_many :join_requests, foreign_key: 'team_id', class_name: 'TeamJoinRequest', dependent: :destroy
+  has_many :join_requests,
+           foreign_key: 'team_id',
+           class_name: 'TeamJoinRequest',
+           dependent: :destroy
   has_one_attached :photo
 
   validates :name, presence: true
