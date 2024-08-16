@@ -75,7 +75,9 @@ class Team < ApplicationRecord
   end
 
   def members_in_common(user) =
-    members.select { |member| member != user && (member.teams & user.teams).any? }
+    members.select do |member|
+      member != user && member != owner && (member.teams & user.teams).any?
+    end
 
   def any_members_in_common?(user) = members_in_common(user).any?
 
