@@ -1,19 +1,19 @@
-<div class="py-6">
-  <div class="flex gap-4 items-center">
-    <%= link_to member, data: { turbo: false }, class: 'group flex gap-4 items-center mr-auto' do %>
-      <%= image_tag member.avatar, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none' if member.avatar.attached? %>
+<%= content_tag(:p, 'User', class: 'text-slate-800 dark:text-slate-100 text-sm') if current_page?(search_path) %>
 
-      <div>
-        <h2 class='subheading group-hover:text-indigo-600 dark:group-hover:text-indigo-500 transition ease-in-out duration-300'><%= member.default_name %></h2>
-        <%= content_tag(:p, member.username, class: 'help-text') if member.display_name.present? %>
-      </div>
-    <% end %>
-  </div>
+<div class="flex gap-4 items-center">
+  <%= link_to user, data: { turbo: false }, class: 'group flex gap-4 items-center mr-auto' do %>
+    <%= image_tag user.avatar, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none' if user.avatar.attached? %>
 
-  <% if member.any_teams_in_common?(user: current_user) %>
-    <p class="help-text mt-1">
-      <span>Also a member of:</span>
-      <%= list(items: member.teams_in_common(current_user).map { |team| link_to(team.name, team, data: { turbo: false }, class: 'btn-link') }).html_safe %>
-    </p>
+    <div>
+      <h2 class='subheading group-hover:text-indigo-600 dark:group-hover:text-indigo-500 transition ease-in-out duration-300'><%= user.default_name %></h2>
+      <%= content_tag(:p, user.username, class: 'help-text') if user.display_name.present? %>
+    </div>
   <% end %>
 </div>
+
+<% if user.any_teams_in_common?(user: current_user) %>
+  <p class="help-text mt-1">
+    <span>Also a user of:</span>
+    <%= list(items: user.teams_in_common(current_user).map { |team| link_to(team.name, team, data: { turbo: false }, class: 'btn-link') }).html_safe %>
+  </p>
+<% end %>

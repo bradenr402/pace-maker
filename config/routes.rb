@@ -29,6 +29,8 @@ Rails.application.routes.draw do
 
   resource :user_settings, only: %i[update]
 
+  get 'search', to: 'search#index', as: :search
+
   root 'users#profile'
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
