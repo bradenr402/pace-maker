@@ -7,6 +7,6 @@
 <% else %>
   <div class="flex flex-col gap-6 items-center justify-center py-12">
     <p class="prose dark:prose-invert text-slate-700 dark:text-slate-400">You're not a member of any teams yet.</p>
-    <button type="button" data-action="click->tabs#otherTeamsTab" class="btn btn-white">Find a team</button>
+    <%= link_to 'Find a team', teams_path(tab: 'otherTeamsTab'), class: 'btn btn-white' %>
   </div>
 <% end %>

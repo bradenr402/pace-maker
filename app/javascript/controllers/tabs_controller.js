@@ -7,60 +7,67 @@ export default class extends Controller {
   static values = { defaultTab: String };
 
   connect() {
-    this.tabTargets.map((x) => {
-      x.hidden = true;
-      x.classList.add('hidden');
+    // Get the initial tab from the URL tab parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+
+    const initialTab = tabParam || this.defaultTabValue;
+
+    this.tabTargets.forEach((tab) => {
+      tab.hidden = true;
+      tab.classList.add('hidden');
     });
 
-    let selectedTab = this.tabTargets.find(
-      (element) => element.id === this.defaultTabValue
-    );
-    selectedTab.hidden = false;
-    selectedTab.classList.remove('hidden');
+    const selectedTab = this.tabTargets.find((tab) => tab.id === initialTab);
 
-    let selectedBtn = this.btnTargets.find(
-      (element) => element.id === this.defaultTabValue
-    );
-    selectedBtn.classList.add(...this.activeClasses);
+    if (selectedTab) {
+      selectedTab.hidden = false;
+      selectedTab.classList.remove('hidden');
+    }
+
+    const selectedBtn = this.btnTargets.find((btn) => btn.id === initialTab);
+
+    if (selectedBtn) {
+      selectedBtn.classList.add(...this.activeClasses);
+
+      this.scrollToTab(selectedTab);
+    }
   }
 
   select(event) {
-    let selectedTab = this.tabTargets.find(
-      (element) => element.id === event.currentTarget.id
+    const selectedTab = this.tabTargets.find(
+      (tab) => tab.id === event.currentTarget.id
     );
 
     if (selectedTab.hidden) {
-      this.tabTargets.map((x) => {
-        x.hidden = true;
-        x.classList.add('hidden');
+      this.tabTargets.forEach((tab) => {
+        tab.hidden = true;
+        tab.classList.add('hidden');
       });
 
-      this.btnTargets.map((x) => x.classList.remove(...this.activeClasses));
+      this.btnTargets.forEach((btn) =>
+        btn.classList.remove(...this.activeClasses)
+      );
 
       selectedTab.hidden = false;
       selectedTab.classList.remove('hidden');
       event.currentTarget.classList.add(...this.activeClasses);
+
+      // Update URL with the selected tab parameter
+      const url = new URL(window.location);
+      url.searchParams.set('tab', event.currentTarget.id);
+      window.history.replaceState({}, '', url);
+
+      this.scrollToTab(event.currentTarget);
     }
   }
 
-  otherTeamsTab() {
-    let selectedTab = this.tabTargets.find(
-      (element) => element.id === 'otherTeamsTab'
-    );
-
-    if (selectedTab.hidden) {
-      this.tabTargets.map((x) => {
-        x.hidden = true;
-        x.classList.add('hidden');
-      });
-
-      this.btnTargets.map((x) => x.classList.remove(...this.activeClasses));
-
-      selectedTab.hidden = false;
-      selectedTab.classList.remove('hidden');
-      document
-        .getElementById('otherTeamsTab')
-        .classList.add(...this.activeClasses);
-    }
+  scrollToTab(tab) {
+    // Scroll the selected tab button into view
+    tab.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'center',
+    });
   }
 }
