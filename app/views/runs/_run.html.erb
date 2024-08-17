@@ -12,52 +12,5 @@
     <%= render 'runs/long_run_badge' if local_assigns[:team] && run.long_run_for?(team) %>
   </div>
 
-  <%= link_to run, data: { turbo: false } do %>
-    <article id="<%= dom_id run %>" class="prose dark:prose-invert">
-      <div class="flex items-center gap-3">
-        <%= inline_svg_tag 'icons/calendar.svg', class: 'size-5' %>
-        <p class="font-bold text-lg"><%= pretty_date(run.date).titlecase %></p>
-      </div>
-
-      <table class="text-base my-0 table-auto border-y border-slate-200 dark:border-slate-700">
-        <tr>
-          <th>Distance:</th>
-          <td><span class="text-base"><%= run.distance %> <span class="text-sm text-slate-600 dark:text-slate-400">mi</span></span></td>
-          <td class='hidden md:block'><span class="text-sm text-slate-600 dark:text-slate-400"><%= run.distance_km %> km</span></td>
-        </tr>
-        <% if run.duration.present? %>
-          <tr>
-            <th>Time:</th>
-            <td><span class="text-base"><%= clock_time_display(run.duration) %></span></td>
-            <td class='hidden md:block'><span class="text-sm text-slate-600 dark:text-slate-400"><%= precise_time_ago(run.duration, { format: :short }) %></span></td>
-          </tr>
-          <tr>
-            <th>Pace:</th>
-            <td><span class="text-base"><%= clock_time_display(run.pace_per_mile) %> <span class="text-sm text-slate-600 dark:text-slate-400">/ mi</span></span></td>
-            <td class='hidden md:block'><span class="text-sm text-slate-600 dark:text-slate-400"><%= clock_time_display(run.pace_per_km) %> / km</span></td>
-          </tr>
-        <% end %>
-      </table>
-
-      <% if run.comments.present? %>
-        <% if current_page?(run_path(run)) %>
-          <p class="font-semibold mb-0">Comments</p>
-          <%= simple_format run.comments, class: 'mt-0 text-sm' %>
-        <% else %>
-          <div class="flex items-center gap-2 my-3">
-            <%= inline_svg_tag 'icons/comment.svg', class: 'size-5' %>
-            <p class="my-0 text-sm">Comments</p>
-          </div>
-        <% end %>
-      <% end %>
-
-      <div class="flex items-center mt-2">
-        <%= inline_svg_tag 'icons/clock.svg', class: 'size-4 mr-2' %>
-        <time class="text-slate-600 dark:text-slate-400 text-xs pr-3" datetime="<%= run.created_at.to_formatted_s(:long) %>">Posted <%= time_ago_in_words(run.created_at) + " ago" %></time>
-        <%- if run.edited? %>
-          <time class="text-slate-600 dark:text-slate-400 text-xs pl-3 border-l dark:border-slate-700" datetime="<%= run.updated_at.to_formatted_s(:long) %>">Edited <%= time_ago_in_words(run.updated_at) + " ago" %></time>
-        <%- end %>
-      </div>
-    </article>
-  <% end %>
+  <%= current_page?(run) ? render('runs/run_content', run: run) : link_to(run, data: { turbo: false }) { render 'runs/run_content', run: run } %>
 </div>
