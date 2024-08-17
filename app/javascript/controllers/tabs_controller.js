@@ -63,11 +63,27 @@ export default class extends Controller {
   }
 
   scrollToTab(tab) {
-    // Scroll the selected tab button into view
-    tab.scrollIntoView({
+    // Get the container element that holds the tabs (assuming it has a horizontal overflow)
+    const container = document.querySelector('.tab-container');
+
+    if (!container || !tab) return;
+
+    // Calculate the position of the tab within the container
+    const tabRect = tab.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+
+    // Calculate the horizontal scroll position needed to center the tab
+    const scrollLeft =
+      tabRect.left -
+      containerRect.left +
+      container.scrollLeft -
+      containerRect.width / 2 +
+      tabRect.width / 2;
+
+    // Smoothly scroll horizontally to the calculated position
+    container.scrollTo({
+      left: scrollLeft,
       behavior: 'smooth',
-      block: 'nearest',
-      inline: 'center',
     });
   }
 }
