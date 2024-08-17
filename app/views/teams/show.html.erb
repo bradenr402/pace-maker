@@ -45,6 +45,11 @@
         <%= inline_svg_tag 'icons/star.svg', class: 'size-5' %>
         <span>Featured</span>
       </button>
+
+      <button type="button" id="rankingsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'rankingsTab' ? 'btn-tab-active' : '' %>">
+        <%= inline_svg_tag 'icons/chart-bar.svg', class: 'size-5' %>
+        <span>Rankings</span>
+      </button>
     <% end %>
   </div>
 
@@ -69,6 +74,10 @@
 
     <div id="featuredTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'featuredTab' ? '' : 'hidden' %>">
       <%= render 'featured', team: @team %>
+    </div>
+
+    <div id="rankingsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'rankingsTab' ? '' : 'hidden' %>">
+      <%= render 'rankings', team: @team %>
     </div>
   <% end %>
 </div>

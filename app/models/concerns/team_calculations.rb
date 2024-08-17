@@ -13,6 +13,9 @@ module TeamCalculations
       .where(users: { id: members.pluck(:id) })
       .in_date_range(date: season_start_date..season_end_date)
 
+  def total_long_runs_in_season =
+    members.sum { |member| member.count_long_runs_this_season(self) }
+
   def season_progress
     return nil unless self.season_dates?
 

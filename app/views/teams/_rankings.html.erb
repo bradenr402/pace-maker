@@ -1,0 +1,75 @@
+<div class="mt-10 pb-6 space-y-2">
+  <h1 class="heading">Team Rankings</h1>
+  <p class="text-slate-700 dark:text-slate-400"><%= current_user.owns?(@team) ? "View your team's rankings to see how your athletes stack up against each other." : 'View the rankings for this team to see how you stack up against the other members.' %></p>
+</div>
+
+<div class="relative overflow-x-auto shadow-md dark:shadow-none rounded-lg border border-slate-200 dark:border-slate-700">
+  <table class="w-full table-auto overflow-x-auto text-sm text-left rtl:text-right text-soft row-numbers">
+    <thead class="text-xs uppercase text-slate-800 dark:text-slate-100 bg-slate-200/70 dark:bg-slate-700/70">
+      <tr>
+        <th scope="col" class="px-6 py-3 whitespace-nowrap">
+          <div class="flex items-center">
+            Team member
+            <!-- Sort icon -->
+          </div>
+        </th>
+        <th scope="col" class="px-6 py-3 whitespace-nowrap">
+          <% if @team.settings(:join_requirements).require_gender %>
+            <div class="flex items-center">
+              Gender
+              <!-- Sort icon -->
+            </div>
+          <% end %>
+        </th>
+        <th scope="col" class="px-6 py-3 whitespace-nowrap">
+          <div class="flex items-center">
+            # of miles
+            <!-- Sort icon -->
+          </div>
+        </th>
+        <th scope="col" class="px-6 py-3 whitespace-nowrap">
+          <div class="flex items-center">
+            # of long runs
+            <!-- Sort icon -->
+          </div>
+        </th>
+      </tr>
+    </thead>
+
+    <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+      <% @team.members.sort_by { |member| -member.miles_this_season(@team) }.each do |member| %>
+        <tr class="bg-slate-50/85 dark:bg-slate-800/85 hover:bg-slate-200/70 dark:hover:bg-slate-700/70">
+          <th scope="row" class="px-6 py-4 font-medium text-slate-800 dark:text-slate-100">
+            <div class="flex items-center">
+              <div class="row-number mr-4 -ml-1"></div>
+              <div>
+                <%= content_tag(:p, 'Coach', class: 'help-text') if member.owns?(@team) %>
+                <%= link_to member.default_name, member, data: { turbo: false }, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %>
+              </div>
+            </div>
+          </th>
+          <% if @team.settings(:join_requirements).require_gender %>
+            <td class="px-6 py-4">
+              <%= member.gender.present? ? member.gender.capitalize : '—' %>
+            </td>
+          <% end %>
+          <td class="px-6 py-4">
+            <%= member.miles_this_season(@team) %>
+          </td>
+          <td class="px-6 py-4">
+            <%= member.count_long_runs_this_season(@team) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+
+    <tfoot>
+      <tr class="text-sm font-semibold text-slate-800 dark:text-slate-100 bg-slate-200/70 dark:bg-slate-700/70">
+        <th scope="row" class="px-6 py-3">Total</th>
+        <td class="px-6 py-3"></td>
+        <td class="px-6 py-3"><%= @team.total_miles_in_season %> <span class="text-xs">mi</span></td>
+        <td class="px-6 py-3"><%= @team.total_long_runs_in_season %> <span class="text-xs">long runs</span></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>

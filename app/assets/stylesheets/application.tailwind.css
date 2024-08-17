@@ -13,6 +13,26 @@
   .subheading {
     @apply text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight;
   }
+
+  .text-soft {
+    @apply text-slate-700 dark:text-slate-400;
+  }
+
+  .row-numbers {
+    @apply relative;
+  }
+
+  .row-numbers tbody {
+    counter-reset: rowNumber
+  }
+
+  .row-numbers tbody tr {
+    counter-increment: rowNumber;
+  }
+
+  .row-numbers tbody .row-number::before {
+    content: counter(rowNumber);
+  }
 }
 
 @layer base {
