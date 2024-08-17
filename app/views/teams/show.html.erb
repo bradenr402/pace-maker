@@ -18,56 +18,56 @@
   </div>
 
   <div class="tab-container">
-    <button type="button" id="infoTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+    <button type="button" id="infoTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'infoTab' ? 'btn-tab-active' : '' %>">
       <%= inline_svg_tag 'icons/info.svg', class: 'size-5' %>
       <span>Team Info</span>
     </button>
 
-    <button type="button" id="membersTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+    <button type="button" id="membersTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'membersTab' ? 'btn-tab-active' : '' %>">
       <%= inline_svg_tag 'icons/team.svg', class: 'size-5' %>
       <span>Team Members</span>
     </button>
 
     <% if current_user.owns?(@team) %>
-      <button type="button" id="joinRequestsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+      <button type="button" id="joinRequestsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'joinRequestsTab' ? 'btn-tab-active' : '' %>">
         <%= inline_svg_tag 'icons/user-plus.svg', class: 'size-5' %>
         <span>Join Requests</span>
       </button>
     <% end %>
 
     <% if current_user.member_of?(@team) %>
-      <button type="button" id="recentActivityTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+      <button type="button" id="recentActivityTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'recentActivityTab' ? 'btn-tab-active' : '' %>">
         <%= inline_svg_tag 'icons/clock.svg', class: 'size-5' %>
         <span>Recent Activity</span>
       </button>
 
-      <button type="button" id="featuredTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+      <button type="button" id="featuredTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'featuredTab' ? 'btn-tab-active' : '' %>">
         <%= inline_svg_tag 'icons/star.svg', class: 'size-5' %>
         <span>Featured</span>
       </button>
     <% end %>
   </div>
 
-  <div id="infoTab" data-tabs-target="tab" class="mb-24">
+  <div id="infoTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'infoTab' ? '' : 'hidden' %>">
     <%= render 'team_stats', team: @team %>
   </div>
 
-  <div id="membersTab" data-tabs-target="tab" class="mb-24 hidden">
+  <div id="membersTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'membersTab' ? '' : 'hidden' %>">
     <%= render 'members', members: @members %>
   </div>
 
   <% if current_user.owns?(@team) %>
-    <div id="joinRequestsTab" data-tabs-target="tab" class="mb-24 hidden">
+    <div id="joinRequestsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'joinRequestsTab' ? '' : 'hidden' %>">
       <%= render 'join_requests', join_requests: @join_requests %>
     </div>
   <% end %>
 
   <% if current_user.member_of?(@team) %>
-    <div id="recentActivityTab" data-tabs-target="tab" class="mb-24 hidden">
+    <div id="recentActivityTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'recentActivityTab' ? '' : 'hidden' %>">
       <%= render 'recent_activity', team: @team %>
     </div>
 
-    <div id="featuredTab" data-tabs-target="tab" class="mb-24 hidden">
+    <div id="featuredTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'featuredTab' ? '' : 'hidden' %>">
       <%= render 'featured', team: @team %>
     </div>
   <% end %>

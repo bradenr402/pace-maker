@@ -1,30 +1,30 @@
 <div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="ownedTeamsTab" class="max-w-3xl mx-auto px-4 my-16">
   <div class="tab-container">
-    <button type="button" id="ownedTeamsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+    <button type="button" id="ownedTeamsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'ownedTeamsTab' ? 'btn-tab-active' : '' %>">
       <%= inline_svg_tag 'icons/team.svg', class: 'size-5' %>
       <span>My Teams</span>
     </button>
 
-    <button type="button" id="teamMembershipsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+    <button type="button" id="teamMembershipsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'teamMembershipsTab' ? 'btn-tab-active' : '' %>">
       <%= inline_svg_tag 'icons/id-card.svg', class: 'size-5' %>
       <span>My Team Memberships</span>
     </button>
 
-    <button type="button" id="otherTeamsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+    <button type="button" id="otherTeamsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'otherTeamsTab' ? 'btn-tab-active' : '' %>">
       <%= inline_svg_tag 'icons/search.svg', class: 'size-5' %>
       <span>Find Teams</span>
     </button>
   </div>
 
-  <div id="ownedTeamsTab" data-tabs-target="tab" class="mb-24">
+  <div id="ownedTeamsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'ownedTeamsTab' ? '' : 'hidden' %>">
     <%= render 'owned_teams', owned_teams: @owned_teams %>
   </div>
 
-  <div id="teamMembershipsTab" data-tabs-target="tab" class="mb-24 hidden">
+  <div id="teamMembershipsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'teamMembershipsTab' ? '' : 'hidden' %>">
     <%= render 'membered_teams', membered_teams: @membered_teams %>
   </div>
 
-  <div id="otherTeamsTab" data-tabs-target="tab" class="mb-24 hidden">
+  <div id="otherTeamsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'otherTeamsTab' ? '' : 'hidden' %>">
     <%= render 'other_teams', other_teams: @other_teams %>
   </div>
 </div>

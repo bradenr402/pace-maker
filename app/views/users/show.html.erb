@@ -14,31 +14,31 @@
   </div>
 
   <div class="tab-container">
-    <button type="button" id="infoTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+    <button type="button" id="infoTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'infoTab' ? 'btn-tab-active' : '' %>">
       <%= inline_svg_tag 'icons/info.svg', class: 'size-5' %>
       <span>User Info</span>
     </button>
 
-    <button type="button" id="teamsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+    <button type="button" id="teamsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'teamsTab' ? 'btn-tab-active' : '' %>">
       <%= inline_svg_tag 'icons/team.svg', class: 'size-5' %>
       <span>Teams</span>
     </button>
 
-    <button type="button" id="runsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+    <button type="button" id="runsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'runsTab' ? 'btn-tab-active' : '' %>">
       <%= inline_svg_tag 'icons/runner.svg', class: 'size-5' %>
       <span>Runs</span>
     </button>
   </div>
 
-  <div id="infoTab" data-tabs-target="tab" class="mb-24">
+  <div id="infoTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'infoTab' ? '' : 'hidden' %>">
     <%= render 'user_stats', user: @user %>
   </div>
 
-  <div id="teamsTab" data-tabs-target="tab" class="mb-24 hidden">
+  <div id="teamsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'teamsTab' ? '' : 'hidden' %>">
     <%= render 'teams', user: @user, owned_teams: @user.owned_teams, membered_teams: @user.membered_teams %>
   </div>
 
-  <div id="runsTab" data-tabs-target="tab" class="hidden">
+  <div id="runsTab" data-tabs-target="tab" class="<%= params[:tab] == 'runsTab' ? '' : 'hidden' %>">
     <div class="mb-24">
       <%= render 'runs_today', user: @user %>
     </div>

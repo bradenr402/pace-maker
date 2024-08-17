@@ -1,21 +1,21 @@
-<div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="editTab" class="max-w-3xl mx-auto px-4 my-16">
-  <div class="tab-container">
-    <button type="button" id="editTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+<div data-controller="tabs" data-tabs-active-class="mb-24 btn-tab-active" data-tabs-default-tab-value="editTab" class="mb-24 max-w-3xl mx-auto px-4 my-16">
+  <div class="mb-24 tab-container">
+    <button type="button" id="editTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'editTab' ? 'btn-tab-active' : '' %>">
       <%= inline_svg_tag 'icons/team.svg', class: 'size-5' %>
       <span>Team</span>
     </button>
 
-    <button type="button" id="settingsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab">
+    <button type="button" id="settingsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'settingsTab' ? 'btn-tab-active' : '' %>">
       <%= inline_svg_tag 'icons/settings.svg', class: 'size-5' %>
       <span>Settings</span>
     </button>
   </div>
 
-  <div id="editTab" data-tabs-target="tab">
+  <div id="editTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'editTab' ? '' : 'hidden' %>">
     <%= render 'edit_team' %>
   </div>
 
-  <div id="settingsTab" data-tabs-target="tab" class="hidden">
+  <div id="settingsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'settingsTab' ? '' : 'hidden' %>">
     <%= render 'edit_settings' %>
   </div>
 </div>
