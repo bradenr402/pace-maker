@@ -25,5 +25,5 @@ module UserCalculations
     runs_this_season(team).where('distance > ?', long_run_distance)
   end
 
-  def count_long_runs_this_season(team) = long_runs_this_season(team).count
+  def total_long_runs_this_season(team) = long_runs_this_season(team).count
 end
