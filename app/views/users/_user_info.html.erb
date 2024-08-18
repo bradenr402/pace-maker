@@ -29,7 +29,7 @@
 
     <div class="block sm:flex space-y-10 sm:space-y-0 sm:items-center sm:justify-around mb-8">
       <% if user.show_email? %>
-        <div class="space-y-1">
+        <div class="space-y-1 text-center">
           <p><%= user.email %></p>
           <div class="flex items-center justify-center gap-3">
             <%= mail_to user.email, class: 'btn btn-sm btn-white' do %>
@@ -40,7 +40,7 @@
       <% end %>
 
       <% if user.show_phone? && user.phone_number? %>
-        <div class="space-y-1">
+        <div class="space-y-1 text-center">
           <p><%= number_to_phone(user.phone_number, area_code: true) %></p>
           <div class="flex items-center justify-center gap-3">
             <%= sms_to user.phone_number, class: 'btn btn-sm btn-white' do %>
