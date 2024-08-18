@@ -10,20 +10,10 @@
       </div>
     <% end %>
 
-    <div>
-      <% if @team.season_dates? %>
-        <div class="text-center">
-          <p class="font-semibold text-slate-800 dark:text-slate-100 leading-tight"><%= member.miles_this_season(@team) %>
-            <span class="help-text font-normal">miles this season</span>
-          </p>
-        </div>
-      <% end %>
-
-      <% if current_user.owns?(@team) && member != current_user %>
-        <div class="text-right">
-          <%= button_to 'Remove from team', remove_member_path(team_id: @team.id, user_id: member.id), method: :post, class: 'text-xs text-rose-600 font-semibold hover:text-rose-700', data: { confirm: 'Are you sure you want to remove this member?' } %>
-        </div>
-      <% end %>
-    </div>
+    <% if current_user.owns?(@team) && member != current_user %>
+      <div class="text-right">
+        <%= button_to 'Remove from team', remove_member_path(team_id: @team.id, user_id: member.id), method: :post, class: 'text-xs text-rose-600 font-semibold hover:text-rose-700', data: { confirm: 'Are you sure you want to remove this member?' } %>
+      </div>
+    <% end %>
   </div>
 </div>
