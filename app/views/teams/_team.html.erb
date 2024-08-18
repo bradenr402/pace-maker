@@ -24,7 +24,7 @@
   <%= render 'teams/team_buttons', team: team %>
 </div>
 
-<% if show_members && team.any_members_in_common?(current_user) %>
+<% if show_members && team.any_members_in_common?(current_user) && !current_user.member_of?(team) %>
   <p class="help-text mt-1">
     <span>Members you know:</span>
     <%= list(items: team.members_in_common(current_user).map { |user| link_to(user.default_name, user, data: { turbo: false }, class: 'btn-link') }).html_safe %>
