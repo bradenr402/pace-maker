@@ -1,6 +1,6 @@
 <div class="flex flex-wrap gap-6 items-center justify-between mt-10 pb-6 border-b border-slate-200 dark:border-slate-700">
   <div class="space-y-2">
-    <h1 class="heading"><%= user.default_name %>'s Teams</h1>
+    <h1 class="heading"><%= user == current_user ? 'Your' : "#{user.default_name}'s" %> Teams</h1>
     <p class="text-slate-700 dark:text-slate-400">Teams <%= user == current_user ? 'you are' : 'this user is' %> the coach of.</p>
   </div>
 
@@ -23,7 +23,7 @@
 <% end %>
 
 <div class="mt-10 mb-6 pb-6 border-b dark:border-slate-700 space-y-2">
-  <h1 class="heading"><%= user.default_name %>'s Team Memberships</h1>
+  <h1 class="heading"><%= user == current_user ? 'Your' : "#{user.default_name}'s" %> Team Memberships</h1>
   <p class="text-slate-700 dark:text-slate-400">Teams <%= user == current_user ? 'you are' : 'this user is' %> a member of.</p>
 </div>
 
