@@ -16,4 +16,6 @@ module TeamSettings
             }
     end
   end
+
+  def require_gender? = settings(:join_requirements).require_gender
 end

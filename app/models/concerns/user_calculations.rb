@@ -11,7 +11,7 @@ module UserCalculations
   def miles_this_season(team) = runs_this_season(team).pluck(:distance).sum
 
   def long_runs_this_season(team)
-    unless team.settings(:join_requirements).require_gender
+    unless team.require_gender?
       long_run_distance = team.settings(:runs).long_run_distance_neutral
     else
       long_run_distance =

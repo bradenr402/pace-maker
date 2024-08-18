@@ -14,7 +14,7 @@
           </div>
         </th>
         <th scope="col" class="px-6 py-3 whitespace-nowrap">
-          <% if @team.settings(:join_requirements).require_gender %>
+          <% if @team.require_gender? %>
             <div class="flex items-center">
               Gender
               <!-- Sort icon -->
@@ -48,7 +48,7 @@
               </div>
             </div>
           </th>
-          <% if @team.settings(:join_requirements).require_gender %>
+          <% if @team.require_gender? %>
             <td class="px-6 py-4">
               <%= member.gender.present? ? member.gender.capitalize : '—' %>
             </td>

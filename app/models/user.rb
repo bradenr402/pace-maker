@@ -85,7 +85,7 @@ class User < ApplicationRecord
   def meets_requirements?(team)
     return { allowed?: false, message: 'Team not found.' } if team.nil?
 
-    if team.settings(:join_requirements).require_gender && gender.blank?
+    if team.require_gender? && gender.blank?
       return(
         {
           allowed?: false,
@@ -98,7 +98,7 @@ class User < ApplicationRecord
   end
 
   def teams_requiring_gender =
-    teams.select { |team| team.settings(:join_requirements).require_gender }
+    teams.select { |team| team.require_gender? }
 
   def any_teams_require_gender? = teams_requiring_gender.any?
 
