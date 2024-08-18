@@ -34,6 +34,9 @@ application.register("restore-defaults", RestoreDefaultsController)
 import SearchFormController from "./search_form_controller"
 application.register("search-form", SearchFormController)
 
+import SortTableController from "./sort_table_controller"
+application.register("sort-table", SortTableController)
+
 import TabsController from "./tabs_controller"
 application.register("tabs", TabsController)
 
