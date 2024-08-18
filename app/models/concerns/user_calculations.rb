@@ -26,4 +26,19 @@ module UserCalculations
   end
 
   def total_long_runs_this_season(team) = long_runs_this_season(team).count
+
+  def total_long_runs(team)
+    unless team.require_gender?
+      long_run_distance = team.settings(:runs).long_run_distance_neutral
+    else
+      long_run_distance =
+        if male?
+          team.settings(:runs).long_run_distance_male
+        else
+          team.settings(:runs).long_run_distance_female
+        end
+    end
+
+    runs.where('distance > ?', long_run_distance).count
+  end
 end

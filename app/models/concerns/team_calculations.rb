@@ -16,6 +16,12 @@ module TeamCalculations
   def total_long_runs_in_season =
     members.sum { |member| member.total_long_runs_this_season(self) }
 
+  def total_miles =
+    members.sum { |member| member.total_miles }
+
+  def total_long_runs =
+    members.sum { |member| member.total_long_runs(self) }
+
   def season_progress
     return nil unless self.season_dates?
 

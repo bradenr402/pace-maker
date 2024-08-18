@@ -21,15 +21,29 @@
             </div>
           </th>
         <% end %>
+        <% if @team.season_dates? %>
+          <th scope="col" class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              # of miles this season
+              <!-- Sort icon -->
+            </div>
+          </th>
+          <th scope="col" class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              # of long runs this season
+              <!-- Sort icon -->
+            </div>
+          </th>
+        <% end %>
         <th scope="col" class="px-6 py-3 whitespace-nowrap">
           <div class="flex items-center">
-            # of miles
+            # of miles total
             <!-- Sort icon -->
           </div>
         </th>
         <th scope="col" class="px-6 py-3 whitespace-nowrap">
           <div class="flex items-center">
-            # of long runs
+            # of long runs total
             <!-- Sort icon -->
           </div>
         </th>
@@ -53,11 +67,19 @@
               <%= member.gender.present? ? member.gender.capitalize : '—' %>
             </td>
           <% end %>
+          <% if @team.season_dates? %>
+            <td class="px-6 py-4">
+              <%= member.miles_this_season(@team) %>
+            </td>
+            <td class="px-6 py-4">
+              <%= member.total_long_runs_this_season(@team) %>
+            </td>
+          <% end %>
           <td class="px-6 py-4">
-            <%= member.miles_this_season(@team) %>
+            <%= member.total_miles %>
           </td>
           <td class="px-6 py-4">
-            <%= member.total_long_runs_this_season(@team) %>
+            <%= member.total_long_runs(@team) %>
           </td>
         </tr>
       <% end %>
@@ -67,8 +89,12 @@
       <tr class="text-sm font-semibold text-slate-800 dark:text-slate-100 bg-slate-200/70 dark:bg-slate-700/70">
         <th scope="row" class="px-6 py-3">Total</th>
         <td class="px-6 py-3"></td>
-        <td class="px-6 py-3"><%= @team.total_miles_in_season %> <span class="text-xs">mi</span></td>
-        <td class="px-6 py-3"><%= @team.total_long_runs_in_season %> <span class="text-xs">long runs</span></td>
+        <% if @team.season_dates? %>
+          <td class="px-6 py-3"><%= @team.total_miles_in_season %> <span class="text-xs">mi</span></td>
+          <td class="px-6 py-3"><%= @team.total_long_runs_in_season %> <span class="text-xs">long runs</span></td>
+        <% end %>
+        <td class="px-6 py-3"><%= @team.total_miles %> <span class="text-xs">mi</span></td>
+        <td class="px-6 py-3"><%= @team.total_long_runs %> <span class="text-xs">long runs</span></td>
       </tr>
     </tfoot>
   </table>
