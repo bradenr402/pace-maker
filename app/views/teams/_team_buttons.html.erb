@@ -3,7 +3,7 @@
 <% if current_user.owns?(team) %>
   <%= link_to 'Edit team', edit_team_path(team), class: 'btn btn-white', data: { turbo: false } %>
 <% elsif current_user.member_of?(team) %>
-  <%= button_to 'Leave team', leave_team_path(team), class: 'btn btn-destructive', data: { turbo: false } %>
+  <%= button_to 'Leave team', leave_team_path(team), class: 'btn btn-destructive btn-outline', data: { turbo: false } %>
 <% else %>
   <% if request.nil? || ((request.rejected? || request.canceled?) && request.allowed?) %>
     <% if team.gender_requirement_met?(current_user) %>
@@ -12,7 +12,7 @@
       <p class="error-message text-base w-full text-center">You must specify your gender to join this team.</p>
     <% end %>
   <% elsif request.pending? %>
-    <%= button_to 'Cancel request', cancel_request_path(request), method: :patch, class: 'btn btn-destructive', data: { turbo: false } %>
+    <%= button_to 'Cancel request', cancel_request_path(request), method: :patch, class: 'btn btn-destructive btn-outline', data: { turbo: false } %>
   <% elsif current_page?(team_path(team)) %>
     <p class="error-message text-base">You have been blocked from this team.</p>
   <% end %>
