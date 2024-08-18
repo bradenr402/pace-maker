@@ -31,7 +31,7 @@
   </div>
 
   <div id="infoTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'infoTab' ? '' : 'hidden' %>">
-    <%= render 'user_stats', user: @user %>
+    <%= render 'user_info', user: @user %>
   </div>
 
   <div id="teamsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'teamsTab' ? '' : 'hidden' %>">
