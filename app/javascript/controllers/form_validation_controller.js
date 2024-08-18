@@ -308,6 +308,7 @@ export default class extends Controller {
       }
     } else {
       this.hidePasswordRequirements();
+      this.newPasswordTarget.classList.remove('form-input-error');
     }
   }
 
@@ -331,6 +332,7 @@ export default class extends Controller {
       this.newPasswordConfirmationTarget.disabled = true;
       this.newPasswordConfirmationLabelTarget.classList.add('opacity-60');
       this.newPasswordConfirmationHintTarget.classList.add('opacity-0');
+      this.newPasswordConfirmationErrorTarget.classList.add('hidden');
     }
   }
 
