@@ -1,13 +1,13 @@
 <div class="z-50 fixed inset-x-0 bottom-0 w-full block bg-slate-50 dark:bg-slate-800 border-t dark:border-slate-700 pb-1 lg:hidden">
   <nav class="grid grid-cols-5 place-items-center gap-y-4 w-full">
-    <%= link_to profile_path, aria: { current: current_page?(profile_path) ? 'page' : nil }, class: "tab-link #{current_page?(profile_path) ? 'tab-link-active' : 'tab-link-inactive'}" do %>
-      <%= inline_svg_tag 'icons/profile.svg', class: 'size-6' %>
-      <span>Profile</span>
+    <%= link_to edit_user_registration_path, aria: { current: current_page?(edit_user_registration_path) ? 'page' : nil }, class: "tab-link #{current_page?(edit_user_registration_path) ? 'tab-link-active' : 'tab-link-inactive'}" do %>
+      <%= inline_svg_tag 'icons/settings.svg', class: 'size-6' %>
+      <span>Settings</span>
     <% end %>
 
-    <%= link_to teams_path, aria: { current: current_page?(teams_path) ? 'page' : nil }, class: "tab-link #{current_page?(teams_path) ? 'tab-link-active' : 'tab-link-inactive'}" do %>
-      <%= inline_svg_tag 'icons/team.svg', class: 'size-6' %>
-      <span>Teams</span>
+    <%= link_to search_path, aria: { current: current_page?(search_path) ? 'page' : nil }, class: "tab-link #{current_page?(search_path) ? 'tab-link-active' : 'tab-link-inactive'}" do %>
+      <%= inline_svg_tag 'icons/search.svg', class: 'size-6' %>
+      <span>Search</span>
     <% end %>
 
     <!-- Floating run button -->
@@ -16,14 +16,14 @@
       <span class="sr-only">New Run</span>
     <% end %>
 
-    <%= link_to search_path, aria: { current: current_page?(search_path) ? 'page' : nil }, class: "tab-link #{current_page?(search_path) ? 'tab-link-active' : 'tab-link-inactive'}" do %>
-      <%= inline_svg_tag 'icons/search.svg', class: 'size-6' %>
-      <span>Search</span>
+    <%= link_to teams_path, aria: { current: current_page?(teams_path) ? 'page' : nil }, class: "tab-link #{current_page?(teams_path) ? 'tab-link-active' : 'tab-link-inactive'}" do %>
+      <%= inline_svg_tag 'icons/team.svg', class: 'size-6' %>
+      <span>Teams</span>
     <% end %>
 
-    <%= link_to edit_user_registration_path, aria: { current: current_page?(edit_user_registration_path) ? 'page' : nil }, class: "tab-link #{current_page?(edit_user_registration_path) ? 'tab-link-active' : 'tab-link-inactive'}" do %>
-      <%= inline_svg_tag 'icons/settings.svg', class: 'size-6' %>
-      <span>Settings</span>
+    <%= link_to profile_path, aria: { current: current_page?(profile_path) ? 'page' : nil }, class: "tab-link #{current_page?(profile_path) ? 'tab-link-active' : 'tab-link-inactive'}" do %>
+      <%= inline_svg_tag 'icons/profile.svg', class: 'size-6' %>
+      <span>Profile</span>
     <% end %>
   </nav>
 </div>
