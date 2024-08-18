@@ -5,7 +5,7 @@
 
 <div class="my-6">
   <h2 class="font-normal text-lg text-slate-700 dark:text-slate-200 mb-2">Profile</h2>
-  <p class="text-sm text-slate-600 dark:text-slate-400">This information will be displayed publicly.</p>
+  <p class="text-sm text-slate-600 dark:text-slate-400">This information will be visible to other users.</p>
 </div>
 
 <%= form_for resource, as: resource_name, url: registration_path(resource_name), data: { controller: "form-validation" }, html: { method: :put, novalidate: true } do |f| %>
@@ -50,8 +50,8 @@
   </div>
 
   <div class="py-10 mt-6 border-t border-slate-200 dark:border-slate-700">
-    <h2 class="font-normal text-lg text-slate-700 dark:text-slate-200 mb-2">Contact inforamtion</h2>
-    <p class="text-sm text-slate-600 dark:text-slate-400">This information will only be displayed publicly if you choose.</p>
+    <h2 class="font-normal text-lg text-slate-700 dark:text-slate-200 mb-2">Contact information</h2>
+    <p class="text-sm text-slate-600 dark:text-slate-400">Choose whether this information will be visible to other users.</p>
   </div>
 
   <div class='form-group'>
@@ -62,7 +62,7 @@
       <%= hidden_field_tag 'user[settings][email_visible]', 'false' %>
       <%= f.fields_for :settings do |settings_form| %>
         <%= settings_form.check_box :email_visible, { checked: @user.show_email?, class: 'form-input-checkbox' }, true, false %>
-        <%= settings_form.label :email_visible, 'Display email to other users', class: 'select-none text-sm' %>
+        <%= settings_form.label :email_visible, 'Show email to other users', class: 'select-none text-sm' %>
       <% end %>
     </div>
   </div>
@@ -79,14 +79,14 @@
       <%= hidden_field_tag 'user[settings][phone_visible]', 'false' %>
       <%= f.fields_for :settings do |settings_form| %>
         <%= settings_form.check_box :phone_visible, { checked: @user.show_phone?, class: 'form-input-checkbox' }, true, false %>
-        <%= settings_form.label :phone_visible, 'Display phone number to other users', class: 'select-none text-sm' %>
+        <%= settings_form.label :phone_visible, 'Show phone number to other users', class: 'select-none text-sm' %>
       <% end %>
     </div>
   </div>
 
   <div class="py-10 mt-6 border-t border-slate-200 dark:border-slate-700">
     <h2 class="font-normal text-lg text-slate-700 dark:text-slate-200 mb-2">Personal details</h2>
-    <p class="text-sm text-slate-600 dark:text-slate-400">This information will not be displayed publicly.</p>
+    <p class="text-sm text-slate-600 dark:text-slate-400">This information will only be visible to your coaches and other team members.</p>
   </div>
 
   <div class="form-group">
@@ -98,7 +98,7 @@
 
     <% if resource.any_teams_require_gender? %>
       <%= f.select :gender, User.genders.keys.map { |gender| [gender.humanize, gender] }, {}, class: 'form-select' %>
-      <p class="help-text my-1">You are a member of <%= pluralize(resource.teams_requiring_gender.count, 'team that requires its members', 'teams that require their members') %> to specify their gender.</p>
+      <p class="help-text my-1">You are a member of <%= pluralize(resource.teams_requiring_gender.count, 'team that requires its members', 'teams that require their members') %> to specify their gender:</p>
 
       <ul class="list-disc pl-4 help-text my-1">
         <%= resource.teams_requiring_gender.map { |team| content_tag(:li, link_to(team.name, team, class: 'btn-link')) }.join.html_safe %>
@@ -108,6 +108,11 @@
     <% else %>
       <%= f.select :gender, [['Prefer not to answer', '']].concat(User.genders.keys.map { |gender| [gender.humanize, gender] }), {}, class: 'form-select' %>
     <% end %>
+  </div>
+
+  <div class="py-10 mt-6 border-t border-slate-200 dark:border-slate-700">
+    <h2 class="font-normal text-lg text-slate-700 dark:text-slate-200 mb-2">Password</h2>
+    <p class="text-sm text-slate-600 dark:text-slate-400">Leave the fields below blank if you don't want to change your password.</p>
   </div>
 
   <div class='form-group relative'>
