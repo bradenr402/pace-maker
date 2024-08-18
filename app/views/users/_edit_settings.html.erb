@@ -17,11 +17,11 @@
 
     <div class="form-group space-y-2">
       <div class="flex items-center gap-2">
-        <%= settings_form.check_box :email_visible, { checked: @user.settings(:privacy).email_visible, class: 'form-input-checkbox', data: { restore_defaults_target: 'emailVisible' } }, true, false %>
+        <%= settings_form.check_box :email_visible, { checked: @user.show_email?, class: 'form-input-checkbox', data: { restore_defaults_target: 'emailVisible' } }, true, false %>
         <%= settings_form.label :email_visible, 'Show email', class: 'select-none text-sm text-slate-700 dark:text-slate-300' %>
       </div>
       <div class="flex items-center gap-2">
-        <%= settings_form.check_box :phone_visible, { checked: @user.settings(:privacy).phone_visible, class: 'form-input-checkbox', data: { restore_defaults_target: 'phoneVisible' } }, true, false %>
+        <%= settings_form.check_box :phone_visible, { checked: @user.show_phone?, class: 'form-input-checkbox', data: { restore_defaults_target: 'phoneVisible' } }, true, false %>
         <%= settings_form.label :phone_visible, 'Show phone number', class: 'select-none text-sm text-slate-700 dark:text-slate-300' %>
       </div>
     </div>

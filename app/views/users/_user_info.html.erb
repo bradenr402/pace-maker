@@ -20,7 +20,7 @@
   </div>
 </div>
 
-<% if user.settings(:privacy).email_visible || (user.settings(:privacy).phone_visible && user.phone_number.present?) %>
+<% if user.show_email? || (user.phone_number? && user.show_phone?) %>
   <div class="mb-24">
     <div class="mt-10 mb-6 pb-6 border-b dark:border-slate-700 space-y-2">
       <h1 class="heading">Contact Information</h1>
@@ -28,7 +28,7 @@
     </div>
 
     <div class="block sm:flex space-y-4 sm:items-center sm:justify-around mb-8">
-      <% if user.settings(:privacy).email_visible %>
+      <% if user.show_email? %>
         <div class="space-y-1">
           <p><%= user.email %></p>
           <div class="flex items-center justify-center gap-3">
@@ -39,7 +39,7 @@
         </div>
       <% end %>
 
-      <% if user.settings(:privacy).phone_visible && user.phone_number.present? %>
+      <% if user.show_phone? && user.phone_number? %>
         <div class="space-y-1">
           <p><%= number_to_phone(user.phone_number, area_code: true) %></p>
           <div class="flex items-center justify-center gap-3">

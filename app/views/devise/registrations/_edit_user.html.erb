@@ -61,7 +61,7 @@
     <div class="flex items-center gap-2 mt-2">
       <%= hidden_field_tag 'user[settings][email_visible]', 'false' %>
       <%= f.fields_for :settings do |settings_form| %>
-        <%= settings_form.check_box :email_visible, { checked: @user.settings(:privacy).email_visible, class: 'form-input-checkbox' }, true, false %>
+        <%= settings_form.check_box :email_visible, { checked: @user.show_email?, class: 'form-input-checkbox' }, true, false %>
         <%= settings_form.label :email_visible, 'Display email to other users', class: 'select-none text-sm' %>
       <% end %>
     </div>
@@ -78,7 +78,7 @@
     <div class="flex items-center gap-2 mt-2">
       <%= hidden_field_tag 'user[settings][phone_visible]', 'false' %>
       <%= f.fields_for :settings do |settings_form| %>
-        <%= settings_form.check_box :phone_visible, { checked: @user.settings(:privacy).phone_visible, class: 'form-input-checkbox' }, true, false %>
+        <%= settings_form.check_box :phone_visible, { checked: @user.show_phone?, class: 'form-input-checkbox' }, true, false %>
         <%= settings_form.label :phone_visible, 'Display phone number to other users', class: 'select-none text-sm' %>
       <% end %>
     </div>

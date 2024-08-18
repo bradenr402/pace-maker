@@ -8,4 +8,8 @@ module UserSettings
       s.key :notifications, defaults: { in_app: true }
     end
   end
+
+  def show_email? = settings(:privacy).email_visible
+
+  def show_phone? = settings(:privacy).phone_visible
 end
