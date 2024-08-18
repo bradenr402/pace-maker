@@ -1,7 +1,7 @@
 <div class="mb-24">
   <div class="mt-10 mb-6 pb-6 border-b dark:border-slate-700 space-y-2">
     <h1 class="heading">User Info</h1>
-    <p class="text-slate-700 dark:text-slate-400">Information and statistics about <%= user == current_user ? 'you' : 'this user' %>.</p>
+    <p class="text-soft">Information and statistics about <%= user == current_user ? 'you' : 'this user' %>.</p>
   </div>
 
   <div class="block sm:flex space-y-8 sm:space-y-0 sm:items-center sm:justify-around">
@@ -9,13 +9,13 @@
       <p class='font-semibold text-2xl'>
         <%= user.total_miles %>
       </p>
-      <p class='text-slate-700 dark:text-slate-400'>miles ran</p>
+      <p class='text-soft'>miles ran</p>
     </div>
     <div class='flex flex-col items-center justify-center text-center'>
       <p class='font-semibold text-2xl'>
         <%= precise_time_ago(user.total_duration, format: :short) %>
       </p>
-      <p class='text-slate-700 dark:text-slate-400'>spent running</p>
+      <p class='text-soft'>spent running</p>
     </div>
   </div>
 </div>
@@ -24,7 +24,7 @@
   <div class="mb-24">
     <div class="mt-10 mb-6 pb-6 border-b dark:border-slate-700 space-y-2">
       <h1 class="heading">Contact</h1>
-      <p class="text-slate-700 dark:text-slate-400"><%= user == current_user ? 'Your contact information' : 'Contact information for this user' %>.</p>
+      <p class="text-soft"><%= user == current_user ? 'Your contact information' : 'Contact information for this user' %>.</p>
     </div>
 
     <div class="block sm:flex space-y-10 sm:space-y-0 sm:items-center sm:justify-around mb-8">

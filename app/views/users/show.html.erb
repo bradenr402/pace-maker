@@ -5,10 +5,10 @@
 
     <h1 class="heading"><%= @user.default_name %></h1>
     <% if @user.display_name.present? %>
-      <h2 class="text-lg my-1 text-slate-700 dark:text-slate-400"><%= @user.username %></h2>
+      <h2 class="text-lg my-1 text-soft"><%= @user.username %></h2>
     <% elsif @user == current_user %>
       <p class="mt-1">
-        <%= link_to 'Add a display name to your profile', edit_user_registration_path, class: 'text-sm text-slate-700 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %>
+        <%= link_to 'Add a display name to your profile', edit_user_registration_path, class: 'text-sm text-soft hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %>
       </p>
     <% end %>
   </div>

@@ -1,6 +1,6 @@
 <div class="mt-10 mb-6 pb-6 border-b dark:border-slate-700 space-y-2">
   <h1 class="heading">Team Info</h1>
-  <p class="text-slate-700 dark:text-slate-400">Information and statistics about this team.</p>
+  <p class="text-soft">Information and statistics about this team.</p>
 </div>
 
 <div class="block sm:flex sm:gap-6 space-y-8 sm:space-y-0 sm:items-center sm:justify-around">
@@ -11,17 +11,17 @@
         <%= format_date(team.season_start_date) %> to <%= format_date(team.season_end_date) %>
       </p>
       <% if team.season_progress == 0.0 %>
-        <p class='text-slate-700 dark:text-slate-400'>Season hasn't started yet</p>
+        <p class='text-soft'>Season hasn't started yet</p>
       <% elsif team.season_progress == 100.0 %>
-        <p class='text-slate-700 dark:text-slate-400'>Season is over</p>
+        <p class='text-soft'>Season is over</p>
       <% else %>
-        <p class='text-slate-700 dark:text-slate-400 text-lg'><%= team.days_remaining_in_season %> days remaining</p>
-        <p class='text-slate-700 dark:text-slate-400 text-sm'><%= team.season_progress %>% through season</p>
+        <p class='text-soft text-lg'><%= team.days_remaining_in_season %> days remaining</p>
+        <p class='text-soft text-sm'><%= team.season_progress %>% through season</p>
       <% end %>
     </div>
   <% else %>
     <div class="text-center my-12 mx-8">
-      <p class="prose dark:prose-invert text-slate-700 dark:text-slate-400">No season dates have been set for this team.</p>
+      <p class="prose dark:prose-invert text-soft">No season dates have been set for this team.</p>
     </div>
   <% end %>
 
@@ -32,15 +32,15 @@
         <%= team.total_miles_in_season %> out of <%= team.mileage_goal %>
       </p>
       <% if team.season_progress == 0.0 %>
-        <p class='text-slate-700 dark:text-slate-400'>Season hasn't started yet</p>
+        <p class='text-soft'>Season hasn't started yet</p>
       <% else %>
-        <p class='text-slate-700 dark:text-slate-400 text-lg'><%= team.miles_remaining_in_goal %> miles remaining</p>
-        <p class='text-slate-700 dark:text-slate-400 text-sm'><%= team.mileage_goal_progress %>% of goal</p>
+        <p class='text-soft text-lg'><%= team.miles_remaining_in_goal %> miles remaining</p>
+        <p class='text-soft text-sm'><%= team.mileage_goal_progress %>% of goal</p>
       <% end %>
     </div>
   <% else %>
     <div class="text-center my-12 mx-8">
-      <p class="prose dark:prose-invert text-slate-700 dark:text-slate-400">No mileage goal has been set for this team.</p>
+      <p class="prose dark:prose-invert text-soft">No mileage goal has been set for this team.</p>
     </div>
   <% end %>
 </div>

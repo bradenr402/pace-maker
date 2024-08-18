@@ -17,9 +17,9 @@
     <p class="help-text">Coach: <%= link_to team.owner.default_name, team.owner, data: { turbo: false }, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %></p>
     <% if team.season_dates? %>
       <% if team.season_start_date.after?(Date.today) %>
-        <p class="text-slate-700 dark:text-slate-400 text-sm mt-1">Season starts <%= pretty_date(team.season_start_date) %></p>
+        <p class="text-soft text-sm mt-1">Season starts <%= pretty_date(team.season_start_date) %></p>
       <% else %>
-        <p class="text-slate-700 dark:text-slate-400 text-sm mt-1">Season started <%= pretty_date(team.season_start_date) %></p>
+        <p class="text-soft text-sm mt-1">Season started <%= pretty_date(team.season_start_date) %></p>
       <% end %>
     <% end %>
   </div>
