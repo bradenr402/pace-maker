@@ -27,7 +27,7 @@
       <p class="text-slate-700 dark:text-slate-400"><%= user == current_user ? 'Your contact information' : 'Contact information for this user' %>.</p>
     </div>
 
-    <div class="block sm:flex space-y-4 sm:items-center sm:justify-around mb-8">
+    <div class="block sm:flex space-y-10 sm:space-y-0 sm:items-center sm:justify-around mb-8">
       <% if user.show_email? %>
         <div class="space-y-1">
           <p><%= user.email %></p>
