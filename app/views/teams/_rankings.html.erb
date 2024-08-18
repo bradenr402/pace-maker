@@ -43,7 +43,7 @@
             <div class="flex items-center">
               <div class="row-number mr-4 -ml-1"></div>
               <div>
-                <%= content_tag(:p, 'Coach', class: 'help-text') if member.owns?(@team) %>
+                <%= content_tag(:p, member == current_user ? 'You' : 'Coach', class: 'help-text') if member.owns?(@team) || member == current_user %>
                 <%= link_to member.default_name, member, data: { turbo: false }, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %>
               </div>
             </div>
