@@ -13,14 +13,14 @@
             <!-- Sort icon -->
           </div>
         </th>
-        <th scope="col" class="px-6 py-3 whitespace-nowrap">
-          <% if @team.require_gender? %>
+        <% if @team.require_gender? %>
+          <th scope="col" class="px-6 py-3 whitespace-nowrap">
             <div class="flex items-center">
               Gender
               <!-- Sort icon -->
             </div>
-          <% end %>
-        </th>
+          </th>
+        <% end %>
         <th scope="col" class="px-6 py-3 whitespace-nowrap">
           <div class="flex items-center">
             # of miles
