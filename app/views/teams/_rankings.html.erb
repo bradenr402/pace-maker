@@ -4,10 +4,12 @@
 </div>
 
 <div data-controller="filter-gender">
-  <div class="form-group">
-    <%= label_tag :gender_filter, "Filter by gender:", class: "form-label" %>
-    <%= select_tag :gender_filter, options_for_select([["All", "all"], ["Male", "male"], ["Female", "female"]]), data: { action: "change->filter-gender#filter", filter_gender_target: "filter" }, class: "form-select" %>
-  </div>
+  <% if @team.require_gender? %>
+    <div class="form-group">
+      <%= label_tag :gender_filter, "Filter by gender:", class: "form-label" %>
+      <%= select_tag :gender_filter, options_for_select([["All", "all"], ["Male", "male"], ["Female", "female"]]), data: { action: "change->filter-gender#filter", filter_gender_target: "filter" }, class: "form-select" %>
+    </div>
+  <% end %>
 
   <div data-controller="sort-table" class="relative overflow-x-auto shadow-md dark:shadow-none rounded-lg border border-slate-200 dark:border-slate-700">
     <table data-sort-table-target="table" class="w-full table-auto overflow-x-auto text-sm text-left rtl:text-right text-soft row-numbers">
