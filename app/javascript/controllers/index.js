@@ -16,6 +16,9 @@ application.register("custom-date-range", CustomDateRangeController)
 import DistanceShortcutsController from "./distance_shortcuts_controller"
 application.register("distance-shortcuts", DistanceShortcutsController)
 
+import FilterGenderController from "./filter_gender_controller"
+application.register("filter-gender", FilterGenderController)
+
 import FormValidationController from "./form_validation_controller"
 application.register("form-validation", FormValidationController)
 

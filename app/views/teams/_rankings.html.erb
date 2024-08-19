@@ -3,75 +3,82 @@
   <p class="text-soft"><%= current_user.owns?(@team) ? "View your team's rankings to see how your athletes stack up against each other." : 'View the rankings for this team to see how you stack up against the other members.' %></p>
 </div>
 
-<div data-controller="sort-table" class="relative overflow-x-auto shadow-md dark:shadow-none rounded-lg border border-slate-200 dark:border-slate-700">
-  <table data-sort-table-target="table" class="w-full table-auto overflow-x-auto text-sm text-left rtl:text-right text-soft row-numbers">
-    <thead class="text-xs uppercase text-slate-800 dark:text-slate-100 bg-slate-200/70 dark:bg-slate-700/70">
-      <tr>
-        <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th" class="px-6 py-3 whitespace-nowrap hover:cursor-pointer select-none">
-          <div class="flex items-center">
-            Team member
-            <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-4 ml-1 transition ease-in-out duration-200 hidden' %>
-          </div>
-        </th>
-        <% if @team.require_gender? %>
+<div data-controller="filter-gender">
+  <div class="form-group">
+    <%= label_tag :gender_filter, "Filter by gender:", class: "form-label" %>
+    <%= select_tag :gender_filter, options_for_select([["All", "all"], ["Male", "male"], ["Female", "female"]]), data: { action: "change->filter-gender#filter", filter_gender_target: "filter" }, class: "form-select" %>
+  </div>
+
+  <div data-controller="sort-table" class="relative overflow-x-auto shadow-md dark:shadow-none rounded-lg border border-slate-200 dark:border-slate-700">
+    <table data-sort-table-target="table" class="w-full table-auto overflow-x-auto text-sm text-left rtl:text-right text-soft row-numbers">
+      <thead class="text-xs uppercase text-slate-800 dark:text-slate-100 bg-slate-200/70 dark:bg-slate-700/70">
+        <tr>
           <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th" class="px-6 py-3 whitespace-nowrap hover:cursor-pointer select-none">
             <div class="flex items-center">
-              Gender
+              Team member
               <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-4 ml-1 transition ease-in-out duration-200 hidden' %>
             </div>
           </th>
-        <% end %>
-        <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th defaultSort" data-numeric="true" class="px-6 py-3 whitespace-nowrap hover:cursor-pointer select-none">
-          <div class="flex items-center">
-            miles <%= @team.season_dates? ? 'this season' : 'total' %>
-            <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-4 ml-1 transition ease-in-out duration-200 rotate-180' %>
-          </div>
-        </th>
-        <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th" data-numeric="true" class="px-6 py-3 whitespace-nowrap hover:cursor-pointer select-none">
-          <div class="flex items-center">
-            long runs <%= @team.season_dates? ? 'this season' : 'total' %>
-            <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-4 ml-1 transition ease-in-out duration-200 hidden' %>
-          </div>
-        </th>
-      </tr>
-    </thead>
-
-    <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
-      <% @team.members.sort_by { |member| -(@team.require_gender? ? member.miles_this_season(@team) : member.total_miles) }.each do |member| %>
-        <tr class="bg-slate-50/85 dark:bg-slate-800/85 hover:bg-slate-200/70 dark:hover:bg-slate-700/70">
-          <th scope="row" class="px-6 py-4 font-medium text-slate-800 dark:text-slate-100 whitespace-nowrap">
-            <div class="flex items-center">
-              <div class="row-number font-mono mr-4 -ml-1"></div>
-              <div>
-                <%= link_to member.default_name, member, data: { turbo: false }, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %>
-                <%= content_tag(:p, member == current_user ? 'You' : 'Coach', class: 'help-text') if member.owns?(@team) || member == current_user %>
+          <% if @team.require_gender? %>
+            <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th" class="px-6 py-3 whitespace-nowrap hover:cursor-pointer select-none">
+              <div class="flex items-center">
+                Gender
+                <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-4 ml-1 transition ease-in-out duration-200 hidden' %>
               </div>
+            </th>
+          <% end %>
+          <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th defaultSort" data-numeric="true" class="px-6 py-3 whitespace-nowrap hover:cursor-pointer select-none">
+            <div class="flex items-center">
+              miles <%= @team.season_dates? ? 'this season' : 'total' %>
+              <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-4 ml-1 transition ease-in-out duration-200 rotate-180' %>
             </div>
           </th>
-          <% if @team.require_gender? %>
-            <td class="px-6 py-4">
-              <%= member.gender.present? ? member.gender.capitalize : '—' %>
-            </td>
-          <% end %>
-          <td class="px-6 py-4 font-mono">
-            <%= @team.season_dates? ? member.miles_this_season(@team) : member.total_miles %>
-          </td>
-          <td class="px-6 py-4 font-mono">
-            <%= @team.season_dates? ? member.total_long_runs_this_season(@team) : member.total_long_runs(@team) %>
-          </td>
+          <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th" data-numeric="true" class="px-6 py-3 whitespace-nowrap hover:cursor-pointer select-none">
+            <div class="flex items-center">
+              long runs <%= @team.season_dates? ? 'this season' : 'total' %>
+              <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-4 ml-1 transition ease-in-out duration-200 hidden' %>
+            </div>
+          </th>
         </tr>
-      <% end %>
-    </tbody>
+      </thead>
 
-    <tfoot>
-      <tr class="text-sm font-semibold text-slate-800 dark:text-slate-100 bg-slate-200/70 dark:bg-slate-700/70">
-        <th scope="row" class="px-6 py-3">Total</th>
-        <% if @team.require_gender? %>
-          <td class="px-6 py-3"></td>
+      <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+        <% @team.members.sort_by { |member| -(@team.require_gender? ? member.miles_this_season(@team) : member.total_miles) }.each do |member| %>
+          <tr data-filter-gender-target="row" class="bg-slate-50/85 dark:bg-slate-800/85 hover:bg-slate-200/70 dark:hover:bg-slate-700/70">
+            <th scope="row" class="px-6 py-4 font-medium text-slate-800 dark:text-slate-100 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="row-number font-mono mr-4 -ml-1"></div>
+                <div>
+                  <%= link_to member.default_name, member, data: { turbo: false }, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %>
+                  <%= content_tag(:p, member == current_user ? 'You' : 'Coach', class: 'help-text') if member.owns?(@team) || member == current_user %>
+                </div>
+              </div>
+            </th>
+            <% if @team.require_gender? %>
+              <td data-filter-gender-target="genderCell" class="px-6 py-4">
+                <%= member.gender.present? ? member.gender.capitalize : '—' %>
+              </td>
+            <% end %>
+            <td class="px-6 py-4 font-mono">
+              <%= @team.season_dates? ? member.miles_this_season(@team) : member.total_miles %>
+            </td>
+            <td class="px-6 py-4 font-mono">
+              <%= @team.season_dates? ? member.total_long_runs_this_season(@team) : member.total_long_runs(@team) %>
+            </td>
+          </tr>
         <% end %>
-        <td class="px-6 py-3 font-mono"><%= @team.season_dates? ? @team.total_miles_in_season : @team.total_miles %> <span class="text-xs">mi</span></td>
-        <td class="px-6 py-3 font-mono"><%= @team.season_dates? ? @team.total_long_runs_in_season : @team.total_long_runs %> <span class="text-xs">long runs</span></td>
-      </tr>
-    </tfoot>
-  </table>
+      </tbody>
+
+      <tfoot>
+        <tr class="text-sm font-semibold text-slate-800 dark:text-slate-100 bg-slate-200/70 dark:bg-slate-700/70">
+          <th scope="row" class="px-6 py-3">Total</th>
+          <% if @team.require_gender? %>
+            <td class="px-6 py-3"></td>
+          <% end %>
+          <td class="px-6 py-3 font-mono"><%= @team.season_dates? ? @team.total_miles_in_season : @team.total_miles %> <span class="text-xs">mi</span></td>
+          <td class="px-6 py-3 font-mono"><%= @team.season_dates? ? @team.total_long_runs_in_season : @team.total_long_runs %> <span class="text-xs">long runs</span></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
 </div>
