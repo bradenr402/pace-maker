@@ -14,12 +14,14 @@
 
   <div class="mr-auto">
     <p class="subheading mb-0.5"><%= link_to team.name, team, data: { turbo: false }, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %></p>
-      <% if team.season_dates? %>
-        <p class="text-soft text-sm mt-1">
-          Season <%= team.season_start_date.after?(Date.today) ? "starts" : "started" %> <%= pretty_date(team.season_start_date) %>
-        </p>
-      <% end %>
-    <p class="help-text">Coach: <%= link_to team.owner.default_name, team.owner, data: { turbo: false }, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %></p>
+    <% if team.season_dates? %>
+      <p class="text-soft text-sm mt-1">
+        Season <%= team.season_start_date.after?(Date.today) ? 'starts' : 'started' %> <%= pretty_date(team.season_start_date) %>
+      </p>
+    <% end %>
+    <p class="help-text">
+      Coach: <%= link_to team.owner.default_name, team.owner, data: { turbo: false }, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %>
+    </p>
   </div>
   <%= render 'teams/team_buttons', team: team %>
 </div>
