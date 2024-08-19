@@ -5,7 +5,7 @@
 
     <h1 class="heading"><%= @team.name %></h1>
     <h2 class="text-lg text-slate-700 my-1 dark:text-slate-400">
-      <%= link_to @team.owner.default_name, @team.owner, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %>
+      Coach: <%= link_to @team.owner.default_name, @team.owner, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %>
     </h2>
 
     <% unless @team.description.blank? %>
