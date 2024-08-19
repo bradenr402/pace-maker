@@ -18,27 +18,27 @@
           <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th" class="px-6 py-3 whitespace-nowrap hover:cursor-pointer select-none">
             <div class="flex items-center">
               Team member
-              <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-4 ml-1 transition ease-in-out duration-200 hidden' %>
+              <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
             </div>
           </th>
           <% if @team.require_gender? %>
             <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th" class="px-6 py-3 whitespace-nowrap hover:cursor-pointer select-none">
               <div class="flex items-center">
                 Gender
-                <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-4 ml-1 transition ease-in-out duration-200 hidden' %>
+                <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
               </div>
             </th>
           <% end %>
           <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th defaultSort" data-numeric="true" class="px-6 py-3 whitespace-nowrap hover:cursor-pointer select-none">
             <div class="flex items-center">
               miles <%= @team.season_dates? ? 'this season' : 'total' %>
-              <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-4 ml-1 transition ease-in-out duration-200 rotate-180' %>
+              <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 rotate-180' %>
             </div>
           </th>
           <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th" data-numeric="true" class="px-6 py-3 whitespace-nowrap hover:cursor-pointer select-none">
             <div class="flex items-center">
               long runs <%= @team.season_dates? ? 'this season' : 'total' %>
-              <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-4 ml-1 transition ease-in-out duration-200 hidden' %>
+              <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
             </div>
           </th>
         </tr>
