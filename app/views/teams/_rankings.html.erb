@@ -49,11 +49,14 @@
           <tr data-filter-gender-target="row" class="bg-slate-50/85 dark:bg-slate-800/85 hover:bg-slate-200/70 dark:hover:bg-slate-700/70">
             <th scope="row" class="px-6 py-4 font-medium text-slate-800 dark:text-slate-100 whitespace-nowrap">
               <div class="flex items-center">
-                <div class="row-number font-mono mr-4 -ml-1"></div>
-                <div>
-                  <%= link_to member.default_name, member, data: { turbo: false }, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %>
-                  <%= content_tag(:p, member == current_user ? 'You' : 'Coach', class: 'help-text') if member.owns?(@team) || member == current_user %>
-                </div>
+                <span class="row-number font-mono mr-4 -ml-1"></span>
+                <%= link_to member, data: { turbo: false }, class: 'group flex gap-2 items-center mr-auto' do %>
+                  <%= image_tag member.avatar, class: 'size-9 rounded-md drop-shadow-lg dark:drop-shadow-none' if member.avatar.attached? %>
+                  <div>
+                    <p class="group-hover:text-indigo-600 dark:group-hover:text-indigo-500 transition ease-in-out duration-300"><%= member.default_name %></p>
+                    <%= content_tag(:p, member == current_user ? 'You' : 'Coach', class: 'help-text') if member.owns?(@team) || member == current_user %>
+                  </div>
+                <% end %>
               </div>
             </th>
             <% if @team.require_gender? %>
