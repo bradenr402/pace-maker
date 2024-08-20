@@ -2,10 +2,21 @@ import { Controller } from '@hotwired/stimulus';
 
 // Connects to data-controller="filter-gender"
 export default class extends Controller {
-  static targets = ['filter', 'genderCell', 'row'];
+  static targets = ['filter', 'genderCell', 'row', 'maleTotal', 'femaleTotal'];
 
   filter() {
     const selectedGender = this.filterTarget.value;
+
+    if (selectedGender === 'all') {
+      this.maleTotalTarget.classList.remove('hidden');
+      this.femaleTotalTarget.classList.remove('hidden');
+    } else if (selectedGender === 'male') {
+      this.femaleTotalTarget.classList.add('hidden');
+      this.maleTotalTarget.classList.remove('hidden');
+    } else if (selectedGender === 'female') {
+      this.femaleTotalTarget.classList.remove('hidden');
+      this.maleTotalTarget.classList.add('hidden');
+    }
 
     this.rowTargets.forEach((row) => {
       const genderCell = row.querySelector(

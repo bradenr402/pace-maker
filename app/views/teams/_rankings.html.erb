@@ -78,7 +78,10 @@
         <tr class="text-sm font-semibold text-slate-800 dark:text-slate-100 bg-slate-200/70 dark:bg-slate-700/70">
           <th scope="row" class="px-6 py-3">Total</th>
           <% if @team.require_gender? %>
-            <td class="px-6 py-3"></td>
+            <td class="px-6 py-3">
+              <p data-filter-gender-target="maleTotal" class="whitespace-nowrap text-xs"><%= @team.members.where(gender: 'male').count %> male</p>
+              <p data-filter-gender-target="femaleTotal" class="whitespace-nowrap text-xs"><%= @team.members.where(gender: 'female').count %> female</p>
+            </td>
           <% end %>
           <td class="px-6 py-3 font-mono"><%= @team.season_dates? ? @team.total_miles_in_season : @team.total_miles %> <span class="text-xs">mi</span></td>
           <td class="px-6 py-3 font-mono"><%= @team.season_dates? ? @team.total_long_runs_in_season : @team.total_long_runs %> <span class="text-xs">long runs</span></td>
