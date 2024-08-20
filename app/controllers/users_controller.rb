@@ -2,11 +2,7 @@ class UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_user, only: %i[show]
 
-  def index
-  end
-
   def show
-    @user = User.find(params[:id])
     today = Date.today
 
     @runs, @date_range =
@@ -54,21 +50,6 @@ class UsersController < ApplicationController
       format.html
       format.turbo_stream
     end
-  end
-
-  def new
-  end
-
-  def create
-  end
-
-  def edit
-  end
-
-  def update
-  end
-
-  def destroy
   end
 
   def profile
