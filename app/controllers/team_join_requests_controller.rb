@@ -34,34 +34,42 @@ class TeamJoinRequestsController < ApplicationController
   end
 
   def approve
-    if @join_request.approved!
-      @team.team_memberships.create(user: @join_request.user)
-      redirect_back fallback_location: @team, success: 'Join request approved.'
-    else
-      redirect_back fallback_location: @team,
-                    alert: 'Unable to approve join request.'
+    unless @join_request.approved!
+      return(
+        redirect_back fallback_location: @team,
+                      alert: 'Unable to approve join request.'
+      )
     end
+
+    @team.team_memberships.create(user: @join_request.user)
+    redirect_back fallback_location: @team, success: 'Join request approved.'
   end
 
   def reject
-    if @join_request.rejected!
-      redirect_back fallback_location: @team, success: 'Join request rejected.'
-    else
-      redirect_back fallback_location: @team,
-                    alert: 'Unable to reject join request.'
+    unless @join_request.rejected!
+      return(
+        redirect_back fallback_location: @team,
+                      alert: 'Unable to reject join request.'
+      )
     end
+
+    redirect_back fallback_location: @team, success: 'Join request rejected.'
   end
 
   def cancel
-    if @join_request.transaction {
-         @join_request.canceled! && @join_request.decrement!(:request_number)
-       }
-      redirect_back fallback_location: @team,
-                    success: 'Join request was successfully canceled.'
-    else
-      redirect_back fallback_location: @team,
-                    error: 'Unable to cancel join request.'
+    unless @join_request.transaction {
+             raise ActiveRecord::Rollback unless @join_request.canceled!
+
+             @join_request.decrement!(:request_number)
+           }
+      return(
+        redirect_back fallback_location: @team,
+                      error: 'Unable to cancel join request.'
+      )
     end
+
+    redirect_back fallback_location: @team,
+                  success: 'Join request was successfully canceled.'
   end
 
   private
