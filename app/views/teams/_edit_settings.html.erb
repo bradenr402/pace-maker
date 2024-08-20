@@ -46,6 +46,18 @@
       <%= settings_form.label :long_run_distance_neutral, 'Long run distance', class: 'form-label' %>
       <%= settings_form.number_field :long_run_distance_neutral, step: 0.1, min: 0.1, value: @team.settings(:runs).long_run_distance_neutral, class: 'form-input', data: { restore_defaults_target: 'longRunDistanceNeutral' } %>
     </div>
+
+    <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
+      <h2 class="font-normal text-lg text-slate-700 dark:text-slate-200 mb-2">General</h2>
+      <p class="text-sm text-slate-600 dark:text-slate-400">Miscellaneous settings to optimize your experience.</p>
+    </div>
+
+    <div class="form-group">
+      <%= settings_form.label :week_start, 'Start week on', class: 'form-label' %>
+      <%= settings_form.select :week_start, options_for_select([['Sunday', 0], ['Monday', 1], ['Tuesday', 2], ['Wednesday', 3], ['Thursday', 4], ['Friday', 5], ['Saturday', 6]], @team.settings(:general).week_start), {}, data: { restore_defaults_target: 'weekStart' }, class: 'form-select' %>
+      <p class="help-text my-1">Choose what day is considered the start of the week.</p>
+      <p class="help-text my-1">This will affect how user's streaks are calculated and how graphs display on your team's page.</p>
+    </div>
   <% end %>
 
   <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">

@@ -12,8 +12,17 @@ class TeamSettingsController < ApplicationController
 
     settings_params[:require_gender] = false if @team.owner.gender.blank?
 
-    if @team.settings(:join_requirements).update(settings_params) &&
-         @team.settings(:runs).update(settings_params)
+    if @team.settings(:join_requirements).update(
+         settings_params.slice(:require_gender, :max_allowed_requests)
+       ) &&
+         @team.settings(:runs).update(
+           settings_params.slice(
+             :long_run_distance_male,
+             :long_run_distance_female,
+             :long_run_distance_neutral
+           )
+         ) &&
+         @team.settings(:general).update(settings_params.slice(:week_start))
       redirect_to @team, success: 'Team settings updated successfully'
     else
       redirect_to @team, alert: 'Unable to update team settings'
@@ -31,7 +40,8 @@ class TeamSettingsController < ApplicationController
         :max_allowed_requests,
         :long_run_distance_male,
         :long_run_distance_female,
-        :long_run_distance_neutral
+        :long_run_distance_neutral,
+        :week_start
       )
 
   def authorize_owner!
