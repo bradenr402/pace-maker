@@ -16,6 +16,9 @@ export default class extends Controller {
   ];
 
   connect() {
+    // Default settings
+    // Refer to [user_settings.rb](/app/models/user_settings.rb) and [team_settings.rb](/app/models/team_settings.rb) for more info
+
     this.defaultValues = {
       emailVisible: false,
       phoneVisible: false,
