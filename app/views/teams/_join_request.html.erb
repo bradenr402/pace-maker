@@ -9,7 +9,7 @@
   <% end %>
 
   <div class="flex items-center gap-3">
-    <%= button_to 'Approve', approve_request_path(request), method: :patch, class: 'btn btn-sm btn-primary', data: { turbo: false } %>
-    <%= button_to 'Reject', reject_request_path(request), method: :patch, class: 'btn btn-sm btn-destructive btn-outline', data: { turbo: false } %>
+    <%= button_to 'Approve', approve_team_join_request_path(request), method: :patch, class: 'btn btn-sm btn-primary', data: { turbo: false } %>
+    <%= button_to 'Reject', reject_team_join_request_path(request), method: :patch, class: 'btn btn-sm btn-destructive btn-outline', data: { turbo: false } %>
   </div>
 </div>

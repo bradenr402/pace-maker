@@ -12,7 +12,7 @@
 
     <% if current_user.owns?(@team) && member != current_user %>
       <div class="text-right">
-        <%= button_to 'Remove from team', remove_member_path(team_id: @team.id, user_id: member.id), method: :post, class: 'text-xs text-rose-600 font-semibold hover:text-rose-700', data: { confirm: 'Are you sure you want to remove this member?' } %>
+        <%= button_to 'Remove from team', remove_member_team_path(team_id: @team.id, user_id: member.id), method: :post, class: 'text-xs text-rose-600 font-semibold hover:text-rose-700', data: { confirm: 'Are you sure you want to remove this member?' } %>
       </div>
     <% end %>
   </div>

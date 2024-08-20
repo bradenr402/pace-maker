@@ -3,7 +3,7 @@
   <p class="text-soft">Set your preferences to optimize your experience.</p>
 </div>
 
-<%= form_with model: @user, url: user_settings_path, local: true, data: { controller: 'restore-defaults' } do |form| %>
+<%= form_with model: @user, url: user_settings_path(@user), local: true, data: { controller: 'restore-defaults' } do |form| %>
   <!-- Hidden fields to ensure that unchecked checkboxes submit 'false' -->
   <%= hidden_field_tag 'user[settings][email_visible]', 'false' %>
   <%= hidden_field_tag 'user[settings][phone_visible]', 'false' %>
