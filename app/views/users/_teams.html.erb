@@ -22,7 +22,7 @@
   </div>
 <% end %>
 
-<div class="mt-10 mb-6 pb-6 border-b dark:border-slate-700 space-y-2">
+<div class="mt-10 pb-6 border-b dark:border-slate-700 space-y-2">
   <h1 class="heading"><%= user == current_user ? 'Your' : "#{user.default_name}'s" %> Team Memberships</h1>
   <p class="text-soft">Teams <%= user == current_user ? 'you are' : 'this user is' %> a member of.</p>
 </div>
