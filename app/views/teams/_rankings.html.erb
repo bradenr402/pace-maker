@@ -11,82 +11,25 @@
     </div>
   <% end %>
 
-  <div data-controller="sort-table" class="relative overflow-x-auto shadow-md dark:shadow-none rounded-lg border border-slate-200 dark:border-slate-700">
-    <table data-sort-table-target="table" class="w-full table-auto overflow-x-auto text-sm text-left rtl:text-right text-soft row-numbers">
-      <thead class="text-xs uppercase text-slate-800 dark:text-slate-100 bg-slate-200/70 dark:bg-slate-700/70">
-        <tr>
-          <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th" class="px-6 py-3 whitespace-nowrap hover:cursor-pointer select-none">
-            <div class="flex items-center">
-              Team member
-              <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
-            </div>
-          </th>
-          <% if @team.require_gender? %>
-            <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th" class="px-6 py-3 whitespace-nowrap hover:cursor-pointer select-none">
-              <div class="flex items-center">
-                Gender
-                <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
-              </div>
-            </th>
-          <% end %>
-          <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th defaultSort" data-numeric="true" class="px-6 py-3 whitespace-nowrap hover:cursor-pointer select-none">
-            <div class="flex items-center">
-              miles <%= @team.season_dates? ? 'this season' : 'total' %>
-              <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 rotate-180' %>
-            </div>
-          </th>
-          <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th" data-numeric="true" class="px-6 py-3 whitespace-nowrap hover:cursor-pointer select-none">
-            <div class="flex items-center">
-              long runs <%= @team.season_dates? ? 'this season' : 'total' %>
-              <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
-            </div>
-          </th>
-        </tr>
-      </thead>
+  <%= form_with url: team_path(@team), method: :get, local: true, html: { novalidate: true }, data: { turbo_frame: 'teamRankings', turbo_action: 'advance', turbo_stream: true, controller: 'custom-date-range form-validation' } do %>
+    <div class="form-group">
+      <%= label_tag :date_range, 'Select date range', class: 'form-label' %>
+      <%= select_tag :date_range, options_for_select(['All season', 'This week', 'Last week', 'This month', 'Last month', 'Custom range'], params[:date_range]), data: { custom_date_range_target: 'select', action: 'custom-date-range#update custom-date-range#search' }, class: 'form-select' %>
+    </div>
 
-      <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
-        <% @team.members.sort_by { |member| -(@team.require_gender? ? member.miles_this_season(@team) : member.total_miles) }.each do |member| %>
-          <tr data-filter-gender-target="row" class="bg-slate-50/85 dark:bg-slate-800/85 hover:bg-slate-200/70 dark:hover:bg-slate-700/70">
-            <th scope="row" class="px-6 py-4 font-medium text-slate-800 dark:text-slate-100 whitespace-nowrap">
-              <div class="flex items-center">
-                <span class="row-number font-mono mr-4 -ml-1"></span>
-                <%= link_to member, data: { turbo: false }, class: 'group flex gap-2 items-center mr-auto' do %>
-                  <%= image_tag member.avatar, class: 'size-9 rounded-md drop-shadow-lg dark:drop-shadow-none' if member.avatar.attached? %>
-                  <div>
-                    <p class="group-hover:text-indigo-600 dark:group-hover:text-indigo-500 transition ease-in-out duration-300"><%= member.default_name %></p>
-                    <%= content_tag(:p, member == current_user ? 'You' : 'Coach', class: 'help-text') if member.owns?(@team) || member == current_user %>
-                  </div>
-                <% end %>
-              </div>
-            </th>
-            <% if @team.require_gender? %>
-              <td data-filter-gender-target="genderCell" class="px-6 py-4">
-                <%= member.gender.present? ? member.gender.capitalize : '—' %>
-              </td>
-            <% end %>
-            <td class="px-6 py-4 font-mono">
-              <%= @team.season_dates? ? member.miles_this_season(@team) : member.total_miles %>
-            </td>
-            <td class="px-6 py-4 font-mono">
-              <%= @team.season_dates? ? member.total_long_runs_this_season(@team) : member.total_long_runs(@team) %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
+    <div class="form-group hidden" data-custom-date-range-target="startDate">
+      <%= label_tag :start_date, 'Start date', class: 'form-label' %>
+      <%= date_field_tag :start_date, nil, max: Date.yesterday, class: 'form-input', data: { form_validation_target: 'startDate', custom_date_range_target: 'startDateField', action: 'input->form-validation#validateEndDate custom-date-range#search' } %>
+    </div>
 
-      <tfoot>
-        <tr class="text-sm font-semibold text-slate-800 dark:text-slate-100 bg-slate-200/70 dark:bg-slate-700/70">
-          <th scope="row" class="px-6 py-3">Total</th>
-          <% if @team.require_gender? %>
-            <td class="px-6 py-3">
-              <p data-filter-gender-target="maleTotal" class="whitespace-nowrap text-xs"><%= @team.members.where(gender: 'male').count %> male</p>
-              <p data-filter-gender-target="femaleTotal" class="whitespace-nowrap text-xs"><%= @team.members.where(gender: 'female').count %> female</p>
-            </td>
-          <% end %>
-          <td class="px-6 py-3 font-mono"><%= @team.season_dates? ? @team.total_miles_in_season : @team.total_miles %> <span class="text-xs">mi</span></td>
-          <td class="px-6 py-3 font-mono"><%= @team.season_dates? ? @team.total_long_runs_in_season : @team.total_long_runs %> <span class="text-xs">long runs</span></td>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
+    <div class="form-group hidden" data-custom-date-range-target="endDate">
+      <%= label_tag :end_date, 'End date', class: 'form-label' %>
+      <%= date_field_tag :end_date, nil, max: Date.today, class: 'form-input', data: { form_validation_target: 'endDate', custom_date_range_target: 'endDateField', action: 'input->form-validation#validateEndDate custom-date-range#search' } %>
+      <span class="error-message hidden my-1" data-form-validation-target="endDateError">End date must be today or earlier and must be after start date</span>
+    </div>
+  <% end %>
+
+  <%= turbo_frame_tag 'teamRankings' do %>
+    <%= render 'rankings_table', team: @team, date_range: @date_range, date_range_description: @date_range_description %>
+  <% end %>
 </div>

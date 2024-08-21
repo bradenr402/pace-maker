@@ -41,4 +41,25 @@ module UserCalculations
 
     runs.where('distance > ?', long_run_distance).count
   end
+
+  def miles_in_date_range(date_range) =
+    runs_in_date_range(date_range).pluck(:distance).sum
+
+  def long_runs_in_date_range(team, date_range)
+    unless team.require_gender?
+      long_run_distance = team.settings(:runs).long_run_distance_neutral
+    else
+      long_run_distance =
+        if male?
+          team.settings(:runs).long_run_distance_male
+        else
+          team.settings(:runs).long_run_distance_female
+        end
+    end
+
+    runs_in_date_range(date_range).where('distance > ?', long_run_distance).count
+  end
+
+  def total_long_runs_in_date_range(team, date_range) =
+    long_runs_in_date_range(team, date_range).count
 end

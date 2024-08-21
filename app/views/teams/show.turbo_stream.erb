@@ -3,3 +3,9 @@
     <%= render 'member_list', members: @members %>
   </div>
 <% end %>
+
+<%= turbo_stream.replace 'teamRankings' do %>
+  <%= turbo_frame_tag 'teamRankings' do %>
+      <%= render 'rankings_table', team: @team, date_range: @date_range, date_range_description: @date_range_description %>
+  <% end %>
+<% end %>

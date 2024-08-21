@@ -71,6 +71,41 @@ class TeamsController < ApplicationController
         @team.members
       end
 
+    @date_range, @date_range_description =
+      if params[:date_range].present?
+        today = Date.today
+
+        case params[:date_range]
+        when 'All season'
+          [@team.season_start_date..@team.season_end_date, 'this season']
+        when 'This week'
+          [today.beginning_of_week..today, 'this week']
+        when 'Last week'
+          one_week_ago = today - 1.week
+          [
+            one_week_ago.beginning_of_week..one_week_ago.end_of_week,
+            'last week'
+          ]
+        when 'This month'
+          [today.beginning_of_month..today, 'this month']
+        when 'Last month'
+          one_month_ago = today - 1.month
+          [
+            one_month_ago.beginning_of_month..one_month_ago.end_of_month,
+            'last month'
+          ]
+        when 'Custom range'
+          start_date = params[:start_date].to_date
+          end_date = params[:end_date].to_date
+          [
+            start_date..end_date,
+            "between #{start_date.strftime('%m/%d/%Y')} and #{end_date.strftime('%m/%d/%Y')}"
+          ]
+        end
+      else
+        [@team.season_start_date..@team.season_end_date, 'this season']
+      end
+
     if current_user.owns?(@team)
       @join_requests = @team.join_requests.pending.order(updated_at: :desc)
     end
