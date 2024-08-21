@@ -16,11 +16,11 @@ module TeamSettings
             }
       s.key :general,
             defaults: {
-              week_start: 1 # 0 = Sunday, 1 = Monday, etc.
+              week_start: :monday
             }
     end
   end
 
   def require_gender? = settings(:join_requirements).require_gender
-  def week_start = settings(:general).week_start
+  def week_start = settings(:general).week_start.to_sym
 end

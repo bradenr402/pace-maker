@@ -79,11 +79,11 @@ class TeamsController < ApplicationController
         when 'All season'
           [@team.season_start_date..@team.season_end_date, 'this season']
         when 'This week'
-          [today.beginning_of_week..today, 'this week']
+          [today.beginning_of_week(@team.week_start)..today, 'this week']
         when 'Last week'
           one_week_ago = today - 1.week
           [
-            one_week_ago.beginning_of_week..one_week_ago.end_of_week,
+            one_week_ago.beginning_of_week(@team.week_start)..one_week_ago.end_of_week(@team.week_start),
             'last week'
           ]
         when 'This month'

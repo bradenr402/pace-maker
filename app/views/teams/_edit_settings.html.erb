@@ -54,7 +54,7 @@
 
     <div class="form-group">
       <%= settings_form.label :week_start, 'Start week on', class: 'form-label' %>
-      <%= settings_form.select :week_start, options_for_select([['Sunday', 0], ['Monday', 1], ['Tuesday', 2], ['Wednesday', 3], ['Thursday', 4], ['Friday', 5], ['Saturday', 6]], @team.settings(:general).week_start), {}, data: { restore_defaults_target: 'weekStart' }, class: 'form-select' %>
+      <%= settings_form.select :week_start, options_for_select([['Sunday', :sunday], ['Monday', :monday], ['Tuesday', :tuesday], ['Wednesday', :wednesday], ['Thursday', :thursday], ['Friday', :friday], ['Saturday', :saturday]], @team.settings(:general).week_start), {}, data: { restore_defaults_target: 'weekStart' }, class: 'form-select' %>
       <p class="help-text my-1">Choose what day is considered the start of the week.</p>
       <p class="help-text my-1">This will affect how user's streaks are calculated and how graphs display on your team's page.</p>
     </div>
