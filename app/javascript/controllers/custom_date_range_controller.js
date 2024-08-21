@@ -2,7 +2,13 @@ import { Controller } from '@hotwired/stimulus';
 
 // Connects to data-controller="custom-date-range"
 export default class extends Controller {
-  static targets = ['select', 'startDate', 'endDate', 'startDateField', 'endDateField'];
+  static targets = [
+    'select',
+    'startDate',
+    'endDate',
+    'startDateField',
+    'endDateField',
+  ];
 
   update(event) {
     if (this.selectTarget.value === 'Custom range')
@@ -22,7 +28,12 @@ export default class extends Controller {
 
   search() {
     if (this.selectTarget.value === 'Custom range') {
-      if (this.startDateFieldTarget.value && this.endDateFieldTarget.value) {
+      if (
+        this.startDateFieldTarget.value &&
+        this.endDateFieldTarget.value &&
+        Date.parse(this.endDateFieldTarget.value) >=
+          Date.parse(this.startDateFieldTarget.value)
+      ) {
         clearTimeout(this.timeout);
         this.timeout = setTimeout(() => {
           this.element.requestSubmit();

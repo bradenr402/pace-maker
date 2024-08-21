@@ -54,9 +54,9 @@ export default class extends Controller {
     'digitCross',
     'specialCheck',
     'specialCross',
-    'runStartDate',
-    'runEndDate',
-    'runEndDateError',
+    'startDate',
+    'endDate',
+    'endDateError',
   ];
 
   connect() {
@@ -429,17 +429,17 @@ export default class extends Controller {
     }
   }
 
-  validateRunEndDate(event) {
-    const startDate = Date.parse(this.runStartDateTarget.value);
-    const endDate = Date.parse(this.runEndDateTarget.value);
+  validateEndDate(event) {
+    const startDate = Date.parse(this.startDateTarget.value);
+    const endDate = Date.parse(this.endDateTarget.value);
     const today = new Date();
 
     if (startDate >= endDate || endDate >= today) {
-      this.runEndDateTarget.classList.add('form-input-error');
-      this.runEndDateErrorTarget.classList.remove('hidden');
+      this.endDateTarget.classList.add('form-input-error');
+      this.endDateErrorTarget.classList.remove('hidden');
     } else {
-      this.runEndDateTarget.classList.remove('form-input-error');
-      this.runEndDateErrorTarget.classList.add('hidden');
+      this.endDateTarget.classList.remove('form-input-error');
+      this.endDateErrorTarget.classList.add('hidden');
     }
   }
 }
