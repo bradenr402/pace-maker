@@ -5,25 +5,24 @@
   </div>
 <% end %>
 
-<div class="flex gap-4 items-center">
-  <%= link_to user, data: { turbo: false }, class: 'group flex gap-4 items-center mr-auto' do %>
-    <%= image_tag user.avatar, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none' if user.avatar.attached? %>
+<%= link_to user, data: { turbo: false }, class: 'group flex gap-4 items-center mr-auto' do %>
+  <%= image_tag user.avatar, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none' if user.avatar.attached? %>
 
-    <div>
-      <h2 class='subheading group-hover:text-indigo-600 dark:group-hover:text-indigo-500 transition ease-in-out duration-300'><%= user.default_name %></h2>
-      <%= content_tag(:p, user.username, class: 'help-text') if user.display_name.present? %>
-    </div>
-  <% end %>
-</div>
+  <div>
+    <%= content_tag(:p,'You', class: 'help-text') if user == current_user %>
+    <h2 class='subheading group-hover:text-indigo-600 dark:group-hover:text-indigo-500 transition ease-in-out duration-300'><%= user.default_name %></h2>
+    <%= content_tag(:p, user.username, class: 'help-text') if user.display_name.present? %>
+  </div>
+<% end %>
 
-<% if user.any_owned_teams_in_common?(current_user) %>
+<% if user != current_user && user.any_owned_teams_in_common?(current_user) %>
   <p class="help-text mt-1">
     <span>Coach of:</span>
     <%= list(items: user.owned_teams_in_common(current_user).map { |team| link_to(team.name, team, data: { turbo: false }, class: 'btn-link') }).html_safe %>
   </p>
 <% end %>
 
-<% if user.any_membered_teams_in_common?(current_user) %>
+<% if user != current_user && user.any_membered_teams_in_common?(current_user) %>
   <p class="help-text mt-1">
     <span>Member of:</span>
     <%= list(items: user.membered_teams_in_common(current_user).map { |team| link_to(team.name, team, data: { turbo: false }, class: 'btn-link') }).html_safe %>
