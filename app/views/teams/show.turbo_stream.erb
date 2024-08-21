@@ -7,7 +7,7 @@
 <% end %>
 
 <%= turbo_stream.replace 'teamRankings' do %>
-  <%= turbo_frame_tag 'teamRankings' do %>
+  <%= turbo_frame_tag 'teamRankings', data: { filter_gender_target: 'turboFrame' } do %>
     <%= render 'rankings_table', team: @team, date_range: @date_range, date_range_description: @date_range_description %>
   <% end %>
 <% end %>
