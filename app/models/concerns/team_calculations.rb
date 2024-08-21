@@ -4,8 +4,7 @@ module TeamCalculations
       .joins(user: :teams)
       .where(teams: { id: })
       .in_date_range(season_start_date..season_end_date)
-      .pluck(:distance)
-      .sum
+      .sum(:distance)
 
   def runs_in_season =
     Run

@@ -1,14 +1,14 @@
 module UserCalculations
-  def total_miles = runs.pluck(:distance).sum
+  def total_miles = runs.sum(:distance)
 
-  def total_duration = runs.where.not(duration: nil).pluck(:duration).sum
+  def total_duration = runs.where.not(duration: nil).sum(:duration)
 
   def total_km = (total_miles * 1.609344).round(3)
 
   def runs_this_season(team) =
     runs.in_date_range(team.season_start_date..team.season_end_date)
 
-  def miles_this_season(team) = runs_this_season(team).pluck(:distance).sum
+  def miles_this_season(team) = runs_this_season(team).sum(:distance)
 
   def long_runs_this_season(team)
     unless team.require_gender?
@@ -43,7 +43,7 @@ module UserCalculations
   end
 
   def miles_in_date_range(date_range) =
-    runs_in_date_range(date_range).pluck(:distance).sum
+    runs_in_date_range(date_range).sum(:distance)
 
   def long_runs_in_date_range(team, date_range)
     unless team.require_gender?
