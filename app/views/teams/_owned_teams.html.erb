@@ -1,11 +1,11 @@
 <div class="flex flex-wrap gap-6 items-center justify-between mt-10 pb-6 border-b dark:border-slate-700">
   <h1 class="heading">My Teams</h1>
-  <% if owned_teams.any? %>
+  <% if owned_teams.present? %>
     <%= link_to 'New team', new_team_path, class: 'btn btn-primary' %>
   <% end %>
 </div>
 
-<% if owned_teams.any? %>
+<% if owned_teams.present? %>
   <%= render 'team_list', teams: owned_teams %>
 <% else %>
   <div class="flex flex-col gap-6 items-center justify-center py-12">
