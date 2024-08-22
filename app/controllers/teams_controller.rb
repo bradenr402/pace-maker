@@ -83,7 +83,9 @@ class TeamsController < ApplicationController
         when 'Last week'
           one_week_ago = today - 1.week
           [
-            one_week_ago.beginning_of_week(@team.week_start)..one_week_ago.end_of_week(@team.week_start),
+            one_week_ago.beginning_of_week(
+              @team.week_start
+            )..one_week_ago.end_of_week(@team.week_start),
             'last week'
           ]
         when 'This month'

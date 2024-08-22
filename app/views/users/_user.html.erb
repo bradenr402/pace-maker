@@ -9,7 +9,7 @@
   <%= image_tag user.avatar, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none' if user.avatar.attached? %>
 
   <div>
-    <%= content_tag(:p,'You', class: 'help-text') if user == current_user %>
+    <%= content_tag(:p, 'You', class: 'help-text') if user == current_user %>
     <h2 class='subheading group-hover:text-indigo-600 dark:group-hover:text-indigo-500 transition ease-in-out duration-300'><%= user.default_name %></h2>
     <%= content_tag(:p, user.username, class: 'help-text') if user.display_name.present? %>
   </div>
