@@ -175,14 +175,21 @@ class TeamsController < ApplicationController
   end
 
   def leave
-    team_membership = @team.team_memberships.find(user_id: current_user)
+    team_membership = @team.team_memberships.find_by(user_id: current_user)
+    join_request =
+      TeamJoinRequest.find_by(user_id: current_user, team_id: @team)
 
-    if team_membership.destroy
+    if ActiveRecord::Base.transaction {
+         join_request.pending! if join_request.present?
+         team_membership&.destroy
+       }
       redirect_back fallback_location: @team,
                     success: 'You have successfully left this team.'
     else
       redirect_back fallback_location: @team, alert: 'Unable to leave team.'
     end
+  rescue StandardError
+    redirect_back fallback_location: @team, alert: 'Unable to leave team.'
   end
 
   def remove_member
@@ -198,7 +205,9 @@ class TeamsController < ApplicationController
     join_request = TeamJoinRequest.find_by(user_id: member.id, team_id: team.id)
     team_membership = team.team_memberships.find_by(user: member)
 
-    if join_request.rejected! && team_membership.destroy
+    if ActiveRecord::Base.transaction {
+         join_request.rejected! && team_membership.destroy
+       }
       redirect_back fallback_location: team,
                     success:
                       "#{member.default_name} was successfully removed from this team."
