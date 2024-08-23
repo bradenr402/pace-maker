@@ -81,6 +81,12 @@ class Team < ApplicationRecord
 
   def any_members_in_common?(user) = members_in_common(user).any?
 
+  def male_members = members.where(gender: 'male')
+
+  def female_members = members.where(gender: 'female')
+
+  def neutral_gender_members = members.where(gender: '')
+
   private
 
   def season_dates_presence

@@ -1,4 +1,11 @@
-<h2 class="subheading mb-3">Rankings <%= date_range_description.titlecase %></h2>
+<div class="mt-10 mb-3 space-y-2 flex flex-wrap items-end justify-between">
+  <h2 class="subheading">Rankings <%= date_range_description.titlecase %></h2>
+  <%= link_to team_path(team, format: :xlsx), class: 'btn btn-white gap-2' do %>
+    <%= inline_svg_tag 'icons/download.svg', class: 'size-5 shrink-0' %>
+    <span>Download as Excel</span>
+  <% end %>
+</div>
+
 <div data-controller="sort-table" class="relative overflow-x-auto shadow-md dark:shadow-none rounded-lg border border-slate-200 dark:border-slate-700">
   <table data-sort-table-target="table" class="w-full table-auto overflow-x-auto text-sm text-left rtl:text-right text-soft row-numbers">
     <thead class="text-xs uppercase text-slate-800 dark:text-slate-100 bg-slate-200/70 dark:bg-slate-700/70">

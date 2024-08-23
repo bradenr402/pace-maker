@@ -115,6 +115,14 @@ class TeamsController < ApplicationController
     respond_to do |format|
       format.html
       format.turbo_stream
+      format.xlsx do
+        timestamp = Time.now.strftime('%Y_%m_%d_at_%H-%M-%S')
+        sanitized_team_name = @team.name.gsub(/[^0-9A-Za-z.\-_]/, '_')
+        filename = "#{sanitized_team_name}_team_rankings_#{timestamp}.xlsx"
+        response.headers[
+          'Content-Disposition'
+        ] = "attachment; filename=\"#{filename}\""
+      end
     end
   end
 

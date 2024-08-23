@@ -1,0 +1,71 @@
+wb = xlsx_package.workbook
+
+wb.styles do |style|
+  project_heading = style.add_style(b: true, sz: 14)
+  heading = style.add_style(b: true)
+
+  wb.add_worksheet(name: "All") do |sheet|
+    # Add a title row
+    sheet.add_row ["#{@team.name} Team Rankings", "#{Time.now.strftime('%B %d, %Y at %I:%M %P')}"], style: project_heading
+
+    # Create the header row
+    if @team.require_gender?
+      sheet.add_row ["Team Member", "Gender", "# of miles", "# of long runs"], style: heading
+    else
+      sheet.add_row ["Team Member", "# of miles", "# of long runs"], style: heading
+    end
+
+    # Create entries for each team member
+    @team.members.each do |member|
+      if @team.require_gender?
+        sheet.add_row [member.display_name? ? "#{member.default_name} (#{member.username})" : member.username, member.gender.present? ? member.gender.capitalize : '—', member.miles_in_date_range(@date_range), member.long_runs_in_date_range(@team, @date_range)]
+      else
+        sheet.add_row [member.display_name? ? "#{member.default_name} (#{member.username})" : member.username, member.miles_in_date_range(@date_range), member.long_runs_in_date_range(@team, @date_range)]
+      end
+    end
+  end
+
+  if @team.require_gender?
+    wb.add_worksheet(name: "Male") do |sheet|
+      # Add a title row
+      sheet.add_row ["#{@team.name} Team Rankings", "#{Time.now.strftime('%B %d, %Y at %I:%M %P')}"], style: project_heading
+
+      # Create the header row
+      if @team.require_gender?
+        sheet.add_row ["Team Member", "Gender", "# of miles", "# of long runs"], style: heading
+      else
+        sheet.add_row ["Team Member", "# of miles", "# of long runs"], style: heading
+      end
+
+      # Create entries for each team member
+      @team.male_members.each do |member|
+        if @team.require_gender?
+          sheet.add_row [member.display_name? ? "#{member.default_name} (#{member.username})" : member.username, member.gender.present? ? member.gender.capitalize : '—', member.miles_in_date_range(@date_range), member.long_runs_in_date_range(@team, @date_range)]
+        else
+          sheet.add_row [member.display_name? ? "#{member.default_name} (#{member.username})" : member.username, member.miles_in_date_range(@date_range), member.long_runs_in_date_range(@team, @date_range)]
+        end
+      end
+    end
+
+    wb.add_worksheet(name: "Female") do |sheet|
+      # Add a title row
+      sheet.add_row ["#{@team.name} Team Rankings", "#{Time.now.strftime('%B %d, %Y at %I:%M %P')}"], style: project_heading
+
+      # Create the header row
+      if @team.require_gender?
+        sheet.add_row ["Team Member", "Gender", "# of miles", "# of long runs"], style: heading
+      else
+        sheet.add_row ["Team Member", "# of miles", "# of long runs"], style: heading
+      end
+
+      # Create entries for each team member
+      @team.female_members.each do |member|
+        if @team.require_gender?
+          sheet.add_row [member.display_name? ? "#{member.default_name} (#{member.username})" : member.username, member.gender.present? ? member.gender.capitalize : '—', member.miles_in_date_range(@date_range), member.long_runs_in_date_range(@team, @date_range)]
+        else
+          sheet.add_row [member.display_name? ? "#{member.default_name} (#{member.username})" : member.username, member.miles_in_date_range(@date_range), member.long_runs_in_date_range(@team, @date_range)]
+        end
+      end
+    end
+  end
+end
