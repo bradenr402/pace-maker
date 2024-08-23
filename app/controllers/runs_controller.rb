@@ -18,7 +18,9 @@ class RunsController < ApplicationController
     if @run.save
       redirect_to @run, success: 'Run was successfully created.'
     else
-      render :new, status: :unprocessable_entity
+      render :new,
+             status: :unprocessable_entity,
+             error: 'Run could not be created.'
     end
   end
 
@@ -33,13 +35,19 @@ class RunsController < ApplicationController
     if @run.update(run_params)
       redirect_to @run, success: 'Run was successfully updated.'
     else
-      render :edit, status: :unprocessable_entity
+      render :edit,
+             status: :unprocessable_entity,
+             error: 'Run could not be updated.'
     end
   end
 
   def destroy
-    @run.destroy
-    redirect_to runs_path, success: 'Run was successfully deleted.'
+    if @run.destroy
+      redirect_back fallback_location: root_path,
+                    success: 'Run was successfully deleted.'
+    else
+      redirect_back fallback_location: root_path, error: 'Unable to delete run.'
+    end
   end
 
   private
