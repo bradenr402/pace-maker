@@ -23,9 +23,9 @@ class TeamSettingsController < ApplicationController
            )
          ) &&
          @team.settings(:general).update(settings_params.slice(:week_start))
-      redirect_to @team, success: 'Team settings updated successfully'
+      redirect_to @team, success: 'Team settings updated successfully.'
     else
-      redirect_to @team, alert: 'Unable to update team settings'
+      redirect_to @team, error: 'Unable to update team settings.'
     end
   end
 
