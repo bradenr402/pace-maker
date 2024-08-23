@@ -17,14 +17,14 @@
   </div>
 
   <div id="ownedTeamsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'ownedTeamsTab' ? '' : 'hidden' %>">
-    <%= render 'owned_teams', owned_teams: @owned_teams %>
+    <%= render 'teams/index/owned_teams', owned_teams: @owned_teams %>
   </div>
 
   <div id="teamMembershipsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'teamMembershipsTab' ? '' : 'hidden' %>">
-    <%= render 'membered_teams', membered_teams: @membered_teams %>
+    <%= render 'teams/index/membered_teams', membered_teams: @membered_teams %>
   </div>
 
   <div id="otherTeamsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'otherTeamsTab' ? '' : 'hidden' %>">
-    <%= render 'other_teams', other_teams: @other_teams %>
+    <%= render 'teams/index/other_teams', other_teams: @other_teams %>
   </div>
 </div>

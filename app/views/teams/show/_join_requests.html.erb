@@ -6,7 +6,7 @@
 <% if join_requests.present? %>
   <div class="divide-y dark:divide-slate-700 dark:text-slate-700 mb-10">
     <% join_requests.each do |request| %>
-      <%= render 'join_request', request: request %>
+      <%= render 'teams/show/join_request', request: request %>
     <% end %>
   </div>
 <% else %>

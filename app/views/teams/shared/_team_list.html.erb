@@ -3,7 +3,7 @@
 <div class="divide-y dark:divide-slate-700 dark:text-slate-700">
   <% teams.each do |team| %>
     <div class="py-6">
-      <%= render team, show_members: show_members %>
+      <%= render 'teams/shared/team', team: team, show_members: show_members %>
     </div>
   <% end %>
 </div>

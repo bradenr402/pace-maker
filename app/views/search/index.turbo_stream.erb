@@ -1,7 +1,7 @@
 <%= turbo_stream.replace 'searchResults' do %>
   <%= turbo_frame_tag 'searchResults' do %>
     <% if @teams.present? || @users.present? %>
-      <%= render 'teams/team_list', teams: @teams, show_members: true if @teams.present? %>
+      <%= render 'teams/shared/team_list', teams: @teams, show_members: true if @teams.present? %>
       <div class="border-t dark:border-slate-700">
         <%= render 'users/user_list', users: @users if @users.present? %>
       </div>

@@ -12,10 +12,10 @@
   </div>
 
   <div id="editTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'editTab' ? '' : 'hidden' %>">
-    <%= render 'edit_team' %>
+    <%= render 'teams/forms/edit_team' %>
   </div>
 
   <div id="settingsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'settingsTab' ? '' : 'hidden' %>">
-    <%= render 'edit_settings' %>
+    <%= render 'teams/forms/edit_settings' %>
   </div>
 </div>

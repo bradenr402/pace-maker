@@ -6,8 +6,8 @@
 <div data-controller="filter-gender">
   <% if @team.require_gender? %>
     <div class="form-group">
-      <%= label_tag :gender_filter, "Filter by gender:", class: "form-label" %>
-      <%= select_tag :gender_filter, options_for_select([["All", "all"], ["Male", "male"], ["Female", "female"]]), data: { action: "change->filter-gender#filter", filter_gender_target: "filter" }, class: "form-select" %>
+      <%= label_tag :gender_filter, 'Filter by gender', class: 'form-label' %>
+      <%= select_tag :gender_filter, options_for_select([['All', 'all'], ['Male', 'male'], ['Female', 'female']]), data: { action: 'change->filter-gender#filter', filter_gender_target: 'filter' }, class: 'form-select' %>
     </div>
   <% end %>
 
@@ -30,6 +30,6 @@
   <% end %>
 
   <%= turbo_frame_tag 'teamRankings', data: { filter_gender_target: 'turboFrame' } do %>
-    <%= render 'rankings_table', team: @team, date_range: @date_range, date_range_description: @date_range_description %>
+    <%= render 'teams/show/rankings_table', team: @team, date_range: @date_range, date_range_description: @date_range_description %>
   <% end %>
 </div>

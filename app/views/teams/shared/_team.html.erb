@@ -29,7 +29,7 @@
 
     <%= link_to "View #{@user == current_user ? 'your' : "#{@user.default_name}'s"} member page", team_member_path(team, @user), class: 'btn-link text-xs' if @user.present? && !@user.owns?(team) && current_page?(user_path(@user)) %>
   </div>
-  <%= render 'teams/team_buttons', team: team %>
+  <%= render 'teams/shared/team_buttons', team: team %>
 </div>
 
 <% if show_members && team.any_members_in_common?(current_user) && !current_user.member_of?(team) %>

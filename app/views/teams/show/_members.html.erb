@@ -17,7 +17,7 @@
 <%= turbo_frame_tag 'teamMembers' do %>
   <div class="divide-y dark:divide-slate-700 dark:text-slate-700 mb-10">
     <% if members.present? %>
-      <%= render 'member_list', members: members %>
+      <%= render 'teams/show/member_list', members: members %>
     <% else %>
       <div class="flex flex-col gap-6 items-center justify-center py-12">
         <p class="prose dark:prose-invert text-soft">No team members found.</p>
