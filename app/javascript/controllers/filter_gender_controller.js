@@ -2,7 +2,14 @@ import { Controller } from '@hotwired/stimulus';
 
 // Connects to data-controller="filter-gender"
 export default class extends Controller {
-  static targets = ['filter', 'genderCell', 'row', 'maleTotal', 'femaleTotal', 'turboFrame'];
+  static targets = [
+    'filter',
+    'genderCell',
+    'row',
+    'maleTotal',
+    'femaleTotal',
+    'turboFrame',
+  ];
 
   filter() {
     const selectedGender = this.filterTarget.value;
