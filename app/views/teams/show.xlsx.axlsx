@@ -16,7 +16,7 @@ wb.styles do |style|
     end
 
     # Create entries for each team member
-    @team.members.each do |member|
+    @members.each do |member|
       if @team.require_gender?
         sheet.add_row [member.display_name? ? "#{member.default_name} (#{member.username})" : member.username, member.gender.present? ? member.gender.capitalize : '—', member.miles_in_date_range(@date_range), member.long_runs_in_date_range(@team, @date_range)]
       else
@@ -38,7 +38,7 @@ wb.styles do |style|
       end
 
       # Create entries for each team member
-      @team.male_members.each do |member|
+      @male_members.each do |member|
         if @team.require_gender?
           sheet.add_row [member.display_name? ? "#{member.default_name} (#{member.username})" : member.username, member.gender.present? ? member.gender.capitalize : '—', member.miles_in_date_range(@date_range), member.long_runs_in_date_range(@team, @date_range)]
         else
@@ -59,7 +59,7 @@ wb.styles do |style|
       end
 
       # Create entries for each team member
-      @team.female_members.each do |member|
+      @female_members.each do |member|
         if @team.require_gender?
           sheet.add_row [member.display_name? ? "#{member.default_name} (#{member.username})" : member.username, member.gender.present? ? member.gender.capitalize : '—', member.miles_in_date_range(@date_range), member.long_runs_in_date_range(@team, @date_range)]
         else
