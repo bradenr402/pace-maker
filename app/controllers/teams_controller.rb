@@ -153,7 +153,7 @@ class TeamsController < ApplicationController
     if @team.destroy
       redirect_to teams_path, success: 'Team was successfully deleted.'
     else
-      redirect_to @team, alert: 'Unable to delete team.'
+      redirect_to @team, error: 'Unable to delete team.'
     end
   end
 
@@ -174,7 +174,7 @@ class TeamsController < ApplicationController
                     success: 'Join request was successfully sent.'
     else
       redirect_back fallback_location: teams_path,
-                    alert: 'Unable to send join request.'
+                    error: 'Unable to send join request.'
     end
   end
 
@@ -190,10 +190,10 @@ class TeamsController < ApplicationController
       redirect_back fallback_location: @team,
                     success: 'You have successfully left this team.'
     else
-      redirect_back fallback_location: @team, alert: 'Unable to leave team.'
+      redirect_back fallback_location: @team, error: 'Unable to leave team.'
     end
   rescue StandardError
-    redirect_back fallback_location: @team, alert: 'Unable to leave team.'
+    redirect_back fallback_location: @team, error: 'Unable to leave team.'
   end
 
   def remove_member
@@ -202,7 +202,7 @@ class TeamsController < ApplicationController
 
     if member == current_user
       redirect_back fallback_location: team,
-                    alert: 'You cannot remove yourself from the team.'
+                    error: 'You cannot remove yourself from the team.'
       return
     end
 
@@ -217,7 +217,7 @@ class TeamsController < ApplicationController
                       "#{member.default_name} was successfully removed from this team."
     else
       redirect_back fallback_location: team,
-                    alert:
+                    error:
                       "Unable to remove #{member.default_name} from this team."
     end
   end
