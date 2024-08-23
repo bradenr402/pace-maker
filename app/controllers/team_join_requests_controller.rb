@@ -17,8 +17,7 @@ class TeamJoinRequestsController < ApplicationController
     unless @join_request.allowed?
       return(
         redirect_back fallback_location: teams_path,
-                      error:
-                        'Sorry, you cannot request to join this team again.'
+                      error: 'Sorry, you have been blocked from this team.'
       )
     end
 
@@ -37,7 +36,7 @@ class TeamJoinRequestsController < ApplicationController
     unless @join_request.approved!
       return(
         redirect_back fallback_location: @team,
-                      alert: 'Unable to approve join request.'
+                      error: 'Unable to approve join request.'
       )
     end
 
@@ -49,7 +48,7 @@ class TeamJoinRequestsController < ApplicationController
     unless @join_request.rejected!
       return(
         redirect_back fallback_location: @team,
-                      alert: 'Unable to reject join request.'
+                      error: 'Unable to reject join request.'
       )
     end
 
