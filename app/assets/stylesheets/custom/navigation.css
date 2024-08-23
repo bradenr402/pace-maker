@@ -65,5 +65,5 @@
 }
 
 .tab-container {
-  @apply flex items-center gap-1.5 bg-slate-50/85 dark:bg-slate-800/85 p-1.5 rounded-md mb-6 border dark:border-slate-700 overflow-x-auto whitespace-nowrap max-w-max mx-auto sticky top-4 backdrop-blur-sm z-50;
+  @apply flex items-center gap-1.5 bg-slate-50/85 dark:bg-slate-800/85 p-1.5 rounded-md mb-6 border dark:border-slate-700 overflow-x-auto whitespace-nowrap max-w-max mx-auto sticky top-4 backdrop-blur-sm z-40;
 }
