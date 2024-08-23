@@ -129,7 +129,9 @@ class TeamsController < ApplicationController
       @team.team_memberships.create(user: current_user) # Owner is also a member
       redirect_to @team, success: 'Team was successfully created.'
     else
-      render :new, status: :unprocessable_entity
+      render :new,
+             status: :unprocessable_entity,
+             error: 'Team could not be created.'
     end
   end
 
@@ -141,7 +143,9 @@ class TeamsController < ApplicationController
     if @team.update(team_params)
       redirect_to @team, success: 'Team was successfully updated.'
     else
-      render :edit, status: :unprocessable_entity
+      render :edit,
+             status: :unprocessable_entity,
+             error: 'Team could not be updated.'
     end
   end
 
