@@ -74,3 +74,6 @@ gem 'devise'
 gem 'inline_svg'
 
 gem 'ledermann-rails-settings'
+
+gem 'caxlsx'
+gem 'caxlsx_rails'
