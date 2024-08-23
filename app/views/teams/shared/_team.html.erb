@@ -8,7 +8,7 @@
 <div class="flex items-center flex-wrap gap-4">
   <% if team.photo.attached? %>
     <%= link_to team, data: { turbo: false } do %>
-      <%= image_tag team.photo.variant(resize_to_limit: [100, 100]).processed, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none' %>
+      <%= image_tag team.photo.variant(resize_to_limit: [100, 100]).processed, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none object-cover' %>
     <% end %>
   <% end %>
 

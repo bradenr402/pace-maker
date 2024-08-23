@@ -6,7 +6,7 @@
 <% end %>
 
 <%= link_to user, data: { turbo: false }, class: 'group flex gap-4 items-center mr-auto' do %>
-  <%= image_tag user.avatar.variant(resize_to_limit: [100, 100]).processed, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none' if user.avatar.attached? %>
+  <%= image_tag user.avatar.variant(resize_to_limit: [100, 100]).processed, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none object-cover' if user.avatar.attached? %>
 
   <div>
     <%= content_tag(:p, 'You', class: 'help-text') if user == current_user %>

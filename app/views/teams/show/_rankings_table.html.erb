@@ -39,7 +39,7 @@
             <div class="flex items-center">
               <span class="row-number font-mono mr-4 -ml-1"></span>
               <%= link_to team_member_path(team, member), data: { turbo: false }, class: 'group flex gap-2 items-center mr-auto' do %>
-                <%= image_tag member.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-9 rounded-md drop-shadow-lg dark:drop-shadow-none' if member.avatar.attached? %>
+                <%= image_tag member.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-9 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover' if member.avatar.attached? %>
                 <div class="flex flex-col-reverse">
                   <p class="group-hover:text-indigo-600 dark:group-hover:text-indigo-500 transition ease-in-out duration-300"><%= member.default_name %></p>
                   <%= content_tag(:p, member == current_user ? 'You' : 'Coach', class: 'help-text') if member.owns?(team) || member == current_user %>

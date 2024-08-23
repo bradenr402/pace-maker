@@ -2,7 +2,7 @@
   <div class="pb-6 border-b border-slate-200 dark:border-slate-700">
     <div class="flex flex-wrap gap-4 items-center">
       <%= link_to @run.user, class: 'group flex gap-4 items-center mr-auto' do %>
-        <%= image_tag @run.user.avatar.variant(resize_to_limit: [100, 100]).processed, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none' if @run.user.avatar.attached? %>
+        <%= image_tag @run.user.avatar.variant(resize_to_limit: [100, 100]).processed, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none object-cover' if @run.user.avatar.attached? %>
         <h1 class="heading group-hover:text-indigo-600 dark:group-hover:text-indigo-500 transition ease-in-out duration-300">
           <%= @run.user.default_name %>
         </h1>

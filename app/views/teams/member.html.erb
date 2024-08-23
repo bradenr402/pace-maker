@@ -1,7 +1,7 @@
 <div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="infoTab" class="max-w-3xl mx-auto px-4 my-16">
   <div class="pb-6 text-center">
 
-    <%= image_tag @member.avatar.variant(resize_to_limit: [150, 150]).processed, class: 'size-28 sm:size-32 md:size-36 rounded-lg drop-shadow-lg dark:drop-shadow-none mx-auto mb-4' if @member.avatar.attached? %>
+    <%= image_tag @member.avatar.variant(resize_to_limit: [150, 150]).processed, class: 'size-28 sm:size-32 md:size-36 rounded-lg drop-shadow-lg dark:drop-shadow-none mx-auto mb-4 object-cover' if @member.avatar.attached? %>
 
     <h1 class="heading"><%= @member.default_name %></h1>
     <h2 class="text-lg my-1 text-soft">
