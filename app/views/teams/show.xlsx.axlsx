@@ -6,7 +6,7 @@ wb.styles do |style|
 
   wb.add_worksheet(name: "All") do |sheet|
     # Add a title row
-    sheet.add_row ["#{@team.name} Team Rankings", "#{Time.now.strftime('%B %d, %Y at %I:%M %P')}"], style: project_heading
+    sheet.add_row ["#{@team.name}#{@team.require_gender? ? 'All Athletes' : ' '}Team Rankings #{@date_range_description.titlecase}", "Downloaded on #{@pretty_timestamp}"], style: project_heading
 
     # Create the header row
     if @team.require_gender?
@@ -28,7 +28,7 @@ wb.styles do |style|
   if @team.require_gender?
     wb.add_worksheet(name: "Male") do |sheet|
       # Add a title row
-      sheet.add_row ["#{@team.name} Team Rankings", "#{Time.now.strftime('%B %d, %Y at %I:%M %P')}"], style: project_heading
+      sheet.add_row ["#{@team.name} Male Athletes Team Rankings #{@date_range_description.titlecase}", "Downloaded on #{@pretty_timestamp}"], style: project_heading
 
       # Create the header row
       if @team.require_gender?
@@ -49,7 +49,7 @@ wb.styles do |style|
 
     wb.add_worksheet(name: "Female") do |sheet|
       # Add a title row
-      sheet.add_row ["#{@team.name} Team Rankings", "#{Time.now.strftime('%B %d, %Y at %I:%M %P')}"], style: project_heading
+      sheet.add_row ["#{@team.name} Female Athletes Team Rankings #{@date_range_description.titlecase}", "Downloaded on #{@pretty_timestamp}"], style: project_heading
 
       # Create the header row
       if @team.require_gender?

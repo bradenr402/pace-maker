@@ -116,8 +116,19 @@ class TeamsController < ApplicationController
       format.html
       format.turbo_stream
       format.xlsx do
-        timestamp = Time.now.strftime('%Y_%m_%d_at_%H-%M-%S')
+        time = Time.now
+
+        # Manually format hour to 12-hour format
+        hour_12 = time.hour % 12
+        hour_12 = hour_12.zero? ? 12 : hour_12 # Handle midnight/noon
+
+        @pretty_timestamp =
+          "#{time.strftime('%B %d, %Y at ')}#{hour_12}:#{time.strftime('%M %P')}"
+        @male_members = @team.male_members if @team.require_gender?
+        @female_members = @team.female_members if @team.require_gender?
+
         sanitized_team_name = @team.name.gsub(/[^0-9A-Za-z.\-_]/, '_')
+        timestamp = time.strftime('%Y_%m_%d_at_%H-%M-%S')
         filename = "#{sanitized_team_name}_team_rankings_#{timestamp}.xlsx"
         response.headers[
           'Content-Disposition'
