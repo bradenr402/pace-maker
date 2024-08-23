@@ -29,6 +29,8 @@ Rails.application.routes.draw do
       post :join
       post :leave
     end
+
+    get 'member/:user_id', to: 'teams#member', as: 'member'
   end
 
   resources :team_join_requests, only: %i[update] do

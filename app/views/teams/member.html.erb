@@ -1,0 +1,43 @@
+<div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="infoTab" class="max-w-3xl mx-auto px-4 my-16">
+  <div class="pb-6 text-center">
+
+    <%= image_tag @member.avatar, class: 'size-28 sm:size-32 md:size-36 rounded-lg drop-shadow-lg dark:drop-shadow-none mx-auto mb-4' if @member.avatar.attached? %>
+
+    <h1 class="heading"><%= @member.default_name %></h1>
+    <h2 class="text-lg my-1 text-soft">
+      <%= @member.owns?(@team) ? "Coach" : "Member" %> of <%= link_to @team.name, @team, class: 'btn-link' %>
+      <%= "for #{time_ago_in_words(@team_membership.created_at)}" unless @member.owns?(@team) %>
+    </h2>
+
+    <% if @member != current_user && @member.any_membered_teams_in_common_except?(current_user, exclude: [@team]) %>
+      <p class="help-text mt-1">
+        <span>Also a member of:</span>
+        <%= list(items: @member.membered_teams_in_common_except(current_user, exclude: [@team]).map { |team| link_to(@team.name, @team, data: { turbo: false }, class: 'btn-link') }).html_safe %>
+      </p>
+    <% end %>
+
+    <div class="flex items-center justify-center mt-4">
+      <%= link_to 'View user profile', @member, class: 'btn btn-white' %>
+    </div>
+  </div>
+
+  <div class="tab-container">
+    <button type="button" id="infoTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'infoTab' ? 'btn-tab-active' : '' %>">
+      <%= inline_svg_tag 'icons/info.svg', class: 'size-5' %>
+      <span>Member Info</span>
+    </button>
+
+    <button type="button" id="trendsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'trendsTab' ? 'btn-tab-active' : '' %>">
+      <%= inline_svg_tag 'icons/chart-bar.svg', class: 'size-5' %>
+      <span>Trends</span>
+    </button>
+  </div>
+
+  <div id="infoTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'infoTab' ? '' : 'hidden' %>">
+    <%= render 'member_info', member: @member %>
+  </div>
+
+  <div id="trendsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'trendsTab' ? '' : 'hidden' %>">
+    <%= render 'member_graphs', member: @member %>
+  </div>
+</div>
