@@ -1,6 +1,6 @@
 <div class="py-6">
   <div class="flex gap-4 items-center">
-    <%= link_to member, data: { turbo: false }, class: 'group flex gap-4 items-center mr-auto' do %>
+    <%= link_to team_member_path(@team, member), data: { turbo: false }, class: 'group flex gap-4 items-center mr-auto' do %>
       <%= image_tag member.avatar, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none' if member.avatar.attached? %>
 
       <div>

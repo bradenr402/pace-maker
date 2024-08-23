@@ -218,6 +218,12 @@ class TeamsController < ApplicationController
     end
   end
 
+  def member
+    @team = Team.find(params[:team_id])
+    @member = @team.members.find(params[:user_id])
+    @team_membership = @team.team_memberships.find_by(user: @member)
+  end
+
   private
 
   def set_team = @team = Team.find(params[:id])

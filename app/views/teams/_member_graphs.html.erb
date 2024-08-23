@@ -1,0 +1,6 @@
+<div class="mt-10 mb-6 pb-6 border-b dark:border-slate-700 space-y-2">
+  <h1 class="heading">Trends</h1>
+  <p class="text-soft">Recent trends in <%= @member == current_user ? 'your' : "this user's" %> participation in <%= link_to @team.name, @team, class: 'btn-link' %>.</p>
+</div>
+
+<!-- Add graphs here -->

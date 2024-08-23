@@ -1,0 +1,19 @@
+<div class="mt-10 mb-6 pb-6 border-b dark:border-slate-700 space-y-2">
+  <h1 class="heading">Member Info</h1>
+  <p class="text-soft">Information and statistics about <%= @member == current_user ? 'your' : "this user's" %> participation in <%= link_to @team.name, @team, class: 'btn-link' %>.</p>
+</div>
+
+<div class="block sm:flex space-y-8 sm:space-y-0 sm:items-center sm:justify-around">
+  <div class='flex flex-col items-center justify-center text-center'>
+    <p class='font-semibold font-mono text-2xl'>
+      <%= @member.miles_this_season(@team) %>
+    </p>
+    <p class='text-soft'><%= 'mile'.pluralize(@member.miles_this_season(@team)) %> ran this season</p>
+  </div>
+  <div class='flex flex-col items-center justify-center text-center'>
+    <p class='font-semibold font-mono text-2xl'>
+      <%= @member.total_long_runs_this_season(@team) %>
+    </p>
+    <p class='text-soft'>long <%= 'run'.pluralize(@member.total_long_runs_this_season(@team)) %> this season</p>
+  </div>
+</div>
