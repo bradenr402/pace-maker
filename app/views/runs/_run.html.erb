@@ -2,7 +2,7 @@
   <div class="flex flex-wrap-reverse gap-4 items-center">
     <% unless current_page?(run_path(run)) %>
       <%= link_to run.user, data: { turbo: false }, class: 'group flex gap-4 items-center mr-auto' do %>
-        <%= image_tag run.user.avatar, class: 'size-12 rounded-lg drop-shadow-lg dark:drop-shadow-none' if run.user.avatar.attached? %>
+        <%= image_tag run.user.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-12 rounded-lg drop-shadow-lg dark:drop-shadow-none' if run.user.avatar.attached? %>
         <p class="subheading group-hover:text-indigo-600 dark:group-hover:text-indigo-500 transition ease-in-out duration-300">
           <%= run.user.default_name %>
         </p>

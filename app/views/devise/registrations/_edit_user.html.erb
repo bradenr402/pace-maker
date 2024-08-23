@@ -35,7 +35,7 @@
         <span class="help-text">(optional)</span>
       </p>
     <% end %>
-    <%= image_tag(resource.avatar.attached? ? resource.avatar : '', data: { image_preview_target: 'output' }, class: "size-24 rounded-md drop-shadow-lg dark:drop-shadow-none #{resource.avatar.blank? ? 'hidden' : ''}") %>
+    <%= image_tag(resource.avatar.attached? ? resource.avatar.variant(resize_to_limit: [100, 100]).processed : '', data: { image_preview_target: 'output' }, class: "size-24 rounded-md drop-shadow-lg dark:drop-shadow-none #{resource.avatar.blank? ? 'hidden' : ''}") %>
 
     <%= f.file_field :avatar, accept: 'image/png, image/jpeg', class: 'form-file my-2', data: { image_preview_target: 'input', action: 'image-preview#readURL' } %>
 
