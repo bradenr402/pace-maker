@@ -22,7 +22,7 @@ class UserSettingsController < ApplicationController
                   success: 'Settings updated successfully.'
     else
       redirect_to edit_user_registration_path,
-                  alert: 'Unable to update settings'
+                  error: 'Unable to update settings.'
     end
   end
 
