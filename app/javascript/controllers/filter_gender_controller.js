@@ -33,6 +33,6 @@ export default class extends Controller {
   }
 
   turboFrameTargetConnected() {
-    this.filter();
+    if (this.hasFilterTarget) this.filter();
   }
 }
