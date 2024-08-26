@@ -71,7 +71,7 @@
 
     <tfoot>
       <tr class="text-sm font-semibold text-slate-800 dark:text-slate-100 bg-slate-200/70 dark:bg-slate-700/70">
-        <th scope="row" class="px-6 py-3">Total</th>
+        <th scope="row" class="px-6 py-3">Totals</th>
         <% if team.require_gender? %>
           <td class="px-6 py-3">
             <p data-filter-gender-target="maleTotal" class="whitespace-nowrap text-xs"><%= team.members.where(gender: 'male').count %> male</p>
