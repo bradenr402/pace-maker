@@ -6,7 +6,7 @@ wb.styles do |style|
 
   wb.add_worksheet(name: "All") do |sheet|
     # Add a title row
-    sheet.add_row ["#{@team.name}#{@team.require_gender? ? 'All Athletes' : ' '}Team Rankings #{@date_range_description.titlecase}", "Downloaded on #{@pretty_timestamp}"], style: project_heading
+    sheet.add_row ["#{@team.name}#{@team.require_gender? ? ' All Athletes ' : ' '}Team Rankings #{@date_range_description.titlecase}", "Downloaded on #{@pretty_timestamp}"], style: project_heading
 
     # Create the header row
     if @team.require_gender?
