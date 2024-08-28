@@ -120,11 +120,11 @@ class User < ApplicationRecord
 
   def membered_teams_in_common_except(other_user, exclude: []) =
     membered_teams
-      .select { |team| other_user.teams.include?(team) }
+      .select { |team| other_user.membered_teams.include?(team) }
       .reject { |team| exclude.include?(team) }
 
   def any_membered_teams_in_common_except?(other_user, exclude: []) =
-    membered_teams_in_common(other_user).any? { |team| !team.in?(exclude) }
+    membered_teams_in_common_except(other_user, exclude:).any?
 
   private
 
