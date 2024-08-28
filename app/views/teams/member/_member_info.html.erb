@@ -3,17 +3,40 @@
   <p class="text-soft">Information and statistics about <%= @member == current_user ? 'your' : "this user's" %> participation in <%= link_to @team.name, @team, class: 'btn-link' %>.</p>
 </div>
 
-<div class="block sm:flex space-y-8 sm:space-y-0 sm:items-center sm:justify-around">
-  <div class='flex flex-col items-center justify-center text-center'>
-    <p class='font-semibold font-mono text-2xl'>
+<div class="grid gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+  <!-- Miles This Season Card -->
+  <div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6">
+    <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Miles This Season</h2>
+    <p class="text-3xl font-bold font-mono">
       <%= @member.miles_this_season(@team) %>
     </p>
-    <p class='text-soft'><%= 'mile'.pluralize(@member.miles_this_season(@team)) %> ran this season</p>
+    <p class="text-soft text-base font-sans font-normal">
+      <%= 'mile'.pluralize(@member.miles_this_season(@team)) %>
+    </p>
   </div>
-  <div class='flex flex-col items-center justify-center text-center'>
-    <p class='font-semibold font-mono text-2xl'>
+
+  <!-- Long Runs This Season Card -->
+  <div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6">
+    <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Long Runs This Season</h2>
+    <p class="text-3xl font-bold font-mono">
       <%= @member.total_long_runs_this_season(@team) %>
     </p>
-    <p class='text-soft'>long <%= 'run'.pluralize(@member.total_long_runs_this_season(@team)) %> this season</p>
+    <p class="text-soft text-base font-sans font-normal">
+      <%= 'long run'.pluralize(@member.total_long_runs_this_season(@team)) %>
+    </p>
+  </div>
+
+  <!-- TODO: Personal Goal Progress Card -->
+  <div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6">
+    <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Personal Goal Progress</h2>
+    <p class="text-3xl font-bold font-mono">
+      <%= @member.respond_to?(:personal_goal_progress) ? @member.personal_goal_progress(@team) : '42' %>%
+    </p>
+    <p class="text-soft text-base font-sans font-normal">of 100 mile goal</p>
+
+    <!-- progress bar -->
+    <div class="w-full bg-gray-200 dark:bg-slate-600 rounded-full h-2.5 my-2">
+      <div class="bg-indigo-500 h-2.5 rounded-full w-[<%= @member.respond_to?(:personal_goal_progress) ? @member.personal_goal_progress(@team) : '42' %>%]"></div>
+    </div>
   </div>
 </div>
