@@ -26,7 +26,7 @@ module TeamCalculations
     members.sum { |member| member.long_runs_in_date_range(self, date_range) }
 
   def season_progress
-    return nil unless self.season_dates?
+    return nil unless season_dates?
 
     season_duration = season_end_date - season_start_date
     days_since_start = Date.today - season_start_date
