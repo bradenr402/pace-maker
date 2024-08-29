@@ -65,7 +65,29 @@ class User < ApplicationRecord
             },
             if: -> { gender.present? }
 
-  def login = @login || username || email
+  def first_name
+    return username if display_name.blank?
+
+    display_name.split(' ').first
+  end
+
+  def gender_possessive
+    return 'their' unless gender?
+
+    gender == 'male' ? 'his' : 'her'
+  end
+
+  def gender_object
+    return 'them' unless gender?
+
+    male? ? 'him' : 'her'
+  end
+
+  def gender_subject
+    return 'he' unless gender?
+
+    male? ? 'him' : 'her'
+  end
 
   def runs_in_date_range(range) = runs.in_date_range(range)
 
@@ -127,6 +149,8 @@ class User < ApplicationRecord
     membered_teams_in_common_except(other_user, exclude:).any?
 
   private
+
+  def login = @login || username || email
 
   def password_complexity
     return if password.blank?
