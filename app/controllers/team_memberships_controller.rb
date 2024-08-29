@@ -28,8 +28,9 @@ class TeamMembershipsController < ApplicationController
     params.require(:team_membership).permit(:mileage_goal, :long_run_goal)
 
   def authorize_member!
-    unless current_user.owns?(@team)
-      redirect_to @team_membership, alert: 'You are not authorized to perform this action.'
+    unless @team_membership.user == current_user
+      redirect_to team_member_path(@team, @team_membership.user),
+                  alert: 'You are not authorized to perform this action.'
     end
   end
 end
