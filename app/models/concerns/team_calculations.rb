@@ -41,7 +41,7 @@ module TeamCalculations
   def mileage_goal_progress
     return nil unless mileage_goal.present?
 
-    progress = (total_miles_in_season / mileage_goal) * 100.0
+    progress = (total_miles_in_season / mileage_goal.to_f) * 100.0
 
     [progress, 0.0].max.round(2) # Ensures progess stays above 0%
   end
