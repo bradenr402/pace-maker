@@ -1,0 +1,42 @@
+<div class="mb-24 max-w-3xl mx-auto px-4 my-16">
+  <div class="mb-24">
+    <div class="mt-10 mb-6 pb-6 border-b dark:border-slate-700 space-y-2">
+      <h1 class="heading">Team Membership Settings</h1>
+      <p class="text-soft">Set your personal preferences for this team.</p>
+    </div>
+
+    <%= form_with model: [@team, @team_membership], local: true, url: team_team_membership_path(@team, @team_membership.user), data: { controller: 'form-validation' } do |form| %>
+      <div class="my-6">
+        <h2 class="font-normal text-lg text-slate-700 dark:text-slate-200 mb-2">Personal Goals</h2>
+        <p class="text-sm text-slate-600 dark:text-slate-400">Set your personal goals for this team. These will be visible to your fellow team members.</p>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :mileage_goal, class: 'form-label' do %>
+          <p> Personal mileage goal
+            <span class="help-text">(optional)</span>
+          </p>
+        <% end %>
+        <%= form.number_field :mileage_goal, step: 1, min: 0, class: 'form-input', data: { form_validation_target: 'mileageGoal', action: 'input->form-validation#validateMileageGoal' } %>
+        <span class="error-message hidden my-1" data-form-validation-target="milageGoalError">Personal mileage goal must be a positive number</span>
+        <p class="help-text my-1">Set a personal goal for how many miles you want to run during this team's season.</p>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :long_run_goal, class: 'form-label' do %>
+          <p> Personal long run goal
+            <span class="help-text">(optional)</span>
+          </p>
+        <% end %>
+        <%= form.number_field :long_run_goal, step: 1, min: 0, class: 'form-input', data: { form_validation_target: 'mileageGoal', action: 'input->form-validation#validateMileageGoal' } %>
+        <span class="error-message hidden my-1" data-form-validation-target="milageGoalError">Long run goal must be a positive number</span>
+        <p class="help-text my-1">Set a personal goal for how many long runs you want to run during this team's season.</p>
+      </div>
+
+      <div class="flex items-center gap-6 mt-10">
+        <%= form.submit 'Save', data: { turbo: false }, class: 'btn btn-primary mr-auto' %>
+        <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-white' %>
+      </div>
+    <% end %>
+  </div>
+</div>

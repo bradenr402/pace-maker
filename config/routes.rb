@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     end
 
     get 'member/:user_id', to: 'teams#member', as: 'member'
+    resources :team_memberships, param: :user_id, only: %i[edit update]
   end
 
   resources :team_join_requests, only: %i[update] do

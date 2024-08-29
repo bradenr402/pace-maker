@@ -20,7 +20,11 @@
     <% end %>
 
     <div class="flex items-center justify-center mt-4">
-      <%= link_to 'View user profile', @member, class: 'btn btn-white' %>
+      <% if @member == current_user %>
+        <%= link_to 'Edit goals', edit_team_team_membership_path(@team, @member), data: { turbo: false }, class: 'btn btn-white' %>
+      <% else %>
+        <%= link_to 'View user profile', @member, data: { turbo: false }, class: 'btn btn-white' %>
+      <% end %>
     </div>
   </div>
 
