@@ -39,12 +39,6 @@ class Team < ApplicationRecord
 
   def season_not_started_yet? = season_dates? && season_start_date.future?
 
-  def meeting_goal? = (mileage_goal_progress - season_progress).abs <= 5
-
-  def ahead_of_goal? = mileage_goal_progress - season_progress > 5
-
-  def behind_goal? = season_progress - mileage_goal_progress > 5
-
   def gender_requirement_met?(user)
     return true unless settings(:join_requirements).require_gender
 

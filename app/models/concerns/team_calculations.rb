@@ -46,5 +46,11 @@ module TeamCalculations
     [progress, 0.0].max.round(2) # Ensures progess stays above 0%
   end
 
-  def miles_remaining_in_goal = (mileage_goal - total_miles_in_season).to_i
+  def miles_remaining_in_goal = mileage_goal - total_miles_in_season
+
+  def meeting_mileage_goal? = (mileage_goal_progress - season_progress).abs <= 5
+
+  def ahead_of_mileage_goal? = mileage_goal_progress - season_progress > 5
+
+  def behind_mileage_goal? = season_progress - mileage_goal_progress > 5
 end
