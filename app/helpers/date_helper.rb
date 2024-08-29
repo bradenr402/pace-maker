@@ -1,5 +1,7 @@
 module DateHelper
-  def pretty_date(date)
+  def pretty_date(date, format: :long)
+    return date.strftime('%b %e, %Y') if format == :short
+
     today = Date.today
     days_difference = (today - date).to_i
 
