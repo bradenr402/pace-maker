@@ -65,6 +65,8 @@ class User < ApplicationRecord
             },
             if: -> { gender.present? }
 
+  def login = @login || username || email
+
   def first_name
     return username if display_name.blank?
 
@@ -149,8 +151,6 @@ class User < ApplicationRecord
     membered_teams_in_common_except(other_user, exclude:).any?
 
   private
-
-  def login = @login || username || email
 
   def password_complexity
     return if password.blank?
