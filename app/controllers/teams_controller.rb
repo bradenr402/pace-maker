@@ -258,6 +258,7 @@ class TeamsController < ApplicationController
       :season_start_date,
       :season_end_date,
       :mileage_goal,
+      :long_run_goal,
       :photo
     )
 

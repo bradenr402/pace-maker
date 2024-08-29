@@ -3,41 +3,41 @@
   <p class="text-soft">Information and statistics about this team.</p>
 </div>
 
-<div class="grid gap-6 grid-cols-1 lg:grid-cols-2">
-  <!-- Season Dates Card -->
-  <div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6">
-    <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Season Dates</h2>
-    <% if team.season_dates? %>
-      <div class="mb-4 space-y-2">
-        <div>
-          <p class="text-soft">Start Date</p>
-          <p class="text-xl font-semibold">
-            <%= pretty_date(team.season_start_date, format: :short) %>
-          </p>
-        </div>
-
-        <div>
-          <p class="text-soft">End Date</p>
-          <p class="text-xl font-semibold">
-            <%= pretty_date(team.season_end_date, format: :short) %>
-          </p>
-        </div>
+<!-- Season Dates Card -->
+<div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6 mb-6">
+  <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Season Dates</h2>
+  <% if team.season_dates? %>
+    <div class="mb-4 space-y-2 lg:space-y-0 block lg:flex lg:flex-wrap lg:items-center lg:justify-around lg:gap-4">
+      <div class="lg:text-center">
+        <p class="text-soft">Start Date</p>
+        <p class="text-2xl font-semibold">
+          <%= pretty_date(team.season_start_date, format: :short) %>
+        </p>
       </div>
 
-      <% if team.season_not_started_yet? %>
-        <p class='text-soft'>Season hasn't started yet.</p>
-      <% elsif team.season_over? %>
-        <p class='text-soft text-sm'>Season is over.</p>
-      <% else %>
-        <%= render 'shared/progress_bar', percentage: team.season_progress, label: 'Season Progress' %>
+      <div class="lg:text-center">
+        <p class="text-soft">End Date</p>
+        <p class="text-2xl font-semibold">
+          <%= pretty_date(team.season_end_date, format: :short) %>
+        </p>
+      </div>
+    </div>
 
-        <p class='text-soft text-xs my-1'><%= team.days_remaining_in_season %> days remaining</p>
-      <% end %>
+    <% if team.season_not_started_yet? %>
+      <p class='text-soft'>Season hasn't started yet.</p>
+    <% elsif team.season_over? %>
+      <p class='text-soft text-sm'>Season is over.</p>
     <% else %>
-      <p class="text-soft">No season dates have been set for this team.</p>
-    <% end %>
-  </div>
+      <%= render 'shared/progress_bar', percentage: team.season_progress, label: 'Season Progress', size: :md %>
 
+      <p class='text-soft text-xs my-1'><%= team.days_remaining_in_season %> days remaining</p>
+    <% end %>
+  <% else %>
+    <p class="text-soft">No season dates have been set for this team.</p>
+  <% end %>
+</div>
+
+<div class="grid gap-6 grid-cols-1 lg:grid-cols-2">
   <!-- Mileage Goal Card -->
   <div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6">
     <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Mileage Goal</h2>
@@ -45,7 +45,7 @@
       <div class="mb-4">
         <p class="text-3xl font-bold">
           <%= team.total_miles_in_season %>
-          <span class="text-soft text-base font-normal">miles</span>
+          <span class="text-soft text-base font-normal"><%= 'mile'.pluralize(team.total_miles_in_season) %></span>
         </p>
         <p class="text-soft">of <%= team.mileage_goal %> mile goal</p>
       </div>
@@ -55,25 +55,50 @@
       <% else %>
         <%= render 'shared/progress_bar', percentage: team.mileage_goal_progress, label: 'Mileage Goal Progress' %>
 
-        <p class='text-soft text-xs my-1'><%= team.miles_remaining_in_goal %> miles remaining</p>
+        <p class='text-soft text-xs my-1'><%= pluralize(team.miles_remaining_in_goal, 'mile') %> remaining</p>
       <% end %>
     <% else %>
       <p class="text-soft">No mileage goal has been set for this team.</p>
     <% end %>
   </div>
+
+  <!-- Long Runs This Season Card -->
+  <div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6">
+    <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Long Run Goal</h2>
+    <% if team.long_run_goal? %>
+      <div class="mb-4">
+        <p class="text-3xl font-bold">
+          <%= team.total_long_runs_in_season %>
+          <span class="text-soft text-base font-normal"><%= 'long run'.pluralize(team.total_long_runs_in_season) %></span>
+        </p>
+        <p class="text-soft">of <%= team.long_run_goal %> long run goal</p>
+      </div>
+
+      <% if team.season_not_started_yet? %>
+        <p class='text-soft'>Season hasn't started yet.</p>
+      <% else %>
+        <%= render 'shared/progress_bar', percentage: team.long_run_goal_progress, label: 'Long Run Goal Progress' %>
+
+        <p class='text-soft text-xs my-1'><%= pluralize(team.long_runs_remaining_in_goal, 'long run') %> remaining</p>
+      <% end %>
+    <% else %>
+      <p class="text-soft">No long run goal has been set for this team.</p>
+    <% end %>
+  </div>
 </div>
 
+<!-- Season Progress vs. Mileage Goal Card -->
 <div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6 mt-6">
   <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Season Progress vs. Mileage Goal</h2>
   <% if team.mileage_goal? && team.season_in_progress? %>
     <div class="mb-4">
-      <% if team.meeting_goal? %>
+      <% if team.meeting_mileage_goal? %>
         <p>
           Your team is on track! You're <%= team.season_progress %>% through the season, and you've met <%= team.mileage_goal_progress %>% of your mileage goal.
         </p>
-      <% elsif team.ahead_of_goal? %>
+      <% elsif team.ahead_of_mileage_goal? %>
         <p>
-          Your team is advancing! You're <%= team.season_progress %>% through the season, and you've already met <%= team.mileage_goal_progress %>% of your mileage goal.
+          Your team is advancing! You're <%= team.season_progress %>% through the season, and you've already met <%= team.long_run_goal_progress %>% of your mileage goal.
         </p>
       <% else %>
         <p>
@@ -82,7 +107,7 @@
       <% end %>
     </div>
 
-    <%= render 'shared/progress_bar', percentage: team.mileage_goal_progress, label: 'Progress', marker: team.season_progress, size: :lg %>
+    <%= render 'shared/progress_bar', percentage: team.mileage_goal_progress, label: 'Mileage Goal Progress', marker: team.season_progress, size: :lg %>
 
     <p class='text-soft text-xs my-1'>
       Your team has <%= pluralize(team.days_remaining_in_season, 'day') %> to finish the remaining <%= pluralize(team.miles_remaining_in_goal, 'mile') %> of your goal.
@@ -95,5 +120,41 @@
     <p class="text-soft">No season dates have been set for this team.</p>
   <% else %>
     <p class="text-soft">No mileage goal or season dates have been set for this team.</p>
+  <% end %>
+</div>
+
+<!-- Season Progress vs. Long Run Goal Card -->
+<div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6 mt-6">
+  <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Season Progress vs. Long Run Goal</h2>
+  <% if team.long_run_goal? && team.season_in_progress? %>
+    <div class="mb-4">
+      <% if team.meeting_long_run_goal? %>
+        <p>
+          Your team is on track! You're <%= team.season_progress %>% through the season, and you've met <%= team.long_run_goal_progress %>% of your long run goal.
+        </p>
+      <% elsif team.ahead_of_long_run_goal? %>
+        <p>
+          Your team is advancing! You're <%= team.season_progress %>% through the season, and you've already met <%= team.long_run_goal_progress %>% of your long run goal.
+        </p>
+      <% else %>
+        <p>
+          Your team is falling behind! You're <%= team.season_progress %>% through the season, but you've only met <%= team.long_run_goal_progress %>% of your long run goal.
+        </p>
+      <% end %>
+    </div>
+
+    <%= render 'shared/progress_bar', percentage: team.long_run_goal_progress, label: 'Long Run Goal Progress', marker: team.season_progress, size: :lg %>
+
+    <p class='text-soft text-xs my-1'>
+      Your team has <%= pluralize(team.days_remaining_in_season, 'day') %> to finish the remaining <%= pluralize(team.long_runs_remaining_in_goal, 'long run') %> of your goal.
+    </p>
+  <% elsif team.season_not_started_yet? %>
+    <p class='text-soft'>Season hasn't started yet.</p>
+  <% elsif team.season_dates? %>
+    <p class="text-soft">No long run goal has been set for this team.</p>
+  <% elsif team.long_run_goal? %>
+    <p class="text-soft">No season dates have been set for this team.</p>
+  <% else %>
+    <p class="text-soft">No long run goal or season dates have been set for this team.</p>
   <% end %>
 </div>

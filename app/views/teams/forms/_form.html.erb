@@ -81,6 +81,18 @@
     <% end %>
     <%= form.number_field :mileage_goal, step: 1, min: 0, class: 'form-input', data: { form_validation_target: "mileageGoal", action: "input->form-validation#validateMileageGoal" } %>
     <span class="error-message hidden my-1" data-form-validation-target="milageGoalError">Mileage goal must be a positive number</span>
+    <p class="help-text my-1">Set a goal for how many miles you want your team to run collectively during the season.</p>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :long_run_goal, class: 'form-label' do %>
+      <p> Long run goal
+        <span class="help-text">(optional)</span>
+      </p>
+    <% end %>
+    <%= form.number_field :long_run_goal, step: 1, min: 0, class: 'form-input', data: { form_validation_target: 'mileageGoal', action: 'input->form-validation#validateMileageGoal' } %>
+    <span class="error-message hidden my-1" data-form-validation-target="milageGoalError">Long run goal must be a positive number</span>
+    <p class="help-text my-1">Set a goal for how many long runs you want your team to run collectively during the season.</p>
   </div>
 
   <div class="flex items-center justify-start flex-wrap gap-6">
