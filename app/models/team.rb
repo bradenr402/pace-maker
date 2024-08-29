@@ -2,6 +2,8 @@ class Team < ApplicationRecord
   include TeamCalculations
   include TeamSettings
 
+  before_validation :convert_empty_string_season_dates_to_nil
+
   belongs_to :owner, class_name: 'User'
   has_many :team_memberships, dependent: :destroy
   has_many :members, through: :team_memberships, source: :user
@@ -96,6 +98,13 @@ class Team < ApplicationRecord
         :base,
         'Season start date and season end date must both be present or both be absent'
       )
+    end
+  end
+
+  def convert_empty_string_season_dates_to_nil
+    unless season_dates?
+      self.season_start_date = nil
+      self.season_end_date = nil
     end
   end
 
