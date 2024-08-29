@@ -39,7 +39,7 @@ module TeamCalculations
   def days_remaining_in_season = (season_end_date - Date.today).to_i
 
   def mileage_goal_progress
-    return nil unless mileage_goal.present?
+    return nil unless mileage_goal?
 
     progress = (total_miles_in_season / mileage_goal.to_f) * 100.0
 
@@ -53,4 +53,20 @@ module TeamCalculations
   def ahead_of_mileage_goal? = mileage_goal_progress - season_progress > 5
 
   def behind_mileage_goal? = season_progress - mileage_goal_progress > 5
+
+  def long_run_goal_progress
+    return nil unless long_run_goal?
+
+    progress = (total_long_runs_in_season / long_run_goal.to_f) * 100.0
+
+    [progress, 0.0].max.round(2) # Ensures progess stays above 0%
+  end
+
+  def long_runs_remaining_in_goal = long_run_goal - total_long_runs_in_season
+
+  def meeting_long_run_goal? = (long_run_goal_progress - season_progress).abs <= 5
+
+  def ahead_of_long_run_goal? = long_run_goal_progress - season_progress > 5
+
+  def behind_long_run_goal? = season_progress - long_run_goal_progress > 5
 end
