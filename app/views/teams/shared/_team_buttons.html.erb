@@ -1,7 +1,7 @@
 <% request = team.join_requests.find_by(user_id: current_user.id) %>
 
 <% if current_user.owns?(team) %>
-  <%= link_to 'Edit team', edit_team_path(team), class: "btn btn-white #{current_page?(team_path(team)) ? '' : 'btn-sm'}", data: { turbo: false } %>
+  <%= link_to 'Edit team', edit_team_path(team), class: "btn #{current_page?(team_path(team)) ? 'btn-primary' : 'btn-white btn-sm'}", data: { turbo: false } %>
 <% elsif current_user.member_of?(team) %>
   <%= button_to 'Leave team', leave_team_path(team), class: "btn btn-destructive btn-outline #{current_page?(team_path(team)) ? '' : 'btn-sm'}", data: { turbo: false } %>
 <% else %>

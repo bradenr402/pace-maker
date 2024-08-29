@@ -12,8 +12,9 @@
       <p class="prose dark:prose-invert text-center mx-auto"><%= @team.description %></p>
     <% end %>
 
-    <div class="flex items-center justify-center md:justify-end mt-4">
+    <div class="flex items-center justify-center md:justify-end gap-4 mt-4">
       <%= render 'teams/shared/team_buttons', team: @team %>
+      <%= link_to 'Edit personal goals', edit_team_team_membership_path(@team, current_user), data: { turbo: false }, class: 'btn btn-white' %>
     </div>
   </div>
 

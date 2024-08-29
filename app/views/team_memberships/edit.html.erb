@@ -1,7 +1,7 @@
 <div class="mb-24 max-w-3xl mx-auto px-4 my-16">
   <div class="mb-24">
     <div class="mt-10 mb-6 pb-6 border-b dark:border-slate-700 space-y-2">
-      <h1 class="heading">Team Membership Settings</h1>
+      <h1 class="heading">Team Membership Goals</h1>
       <p class="text-soft">Set your personal preferences for this team.</p>
     </div>
 
@@ -34,7 +34,7 @@
       </div>
 
       <div class="flex items-center gap-6 mt-10">
-        <%= form.submit 'Save', data: { turbo: false }, class: 'btn btn-primary mr-auto' %>
+        <%= form.submit 'Update goals', data: { turbo: false }, class: 'btn btn-primary mr-auto' %>
         <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-white' %>
       </div>
     <% end %>
