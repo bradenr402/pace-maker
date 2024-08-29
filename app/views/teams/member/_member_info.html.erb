@@ -9,11 +9,12 @@
     <div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6">
       <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Miles This Season</h2>
       <p class="text-3xl font-bold">
-        <%= member.miles_this_season(team) %>
+        <%= team_membership.miles_completed_in_goal %>
+        <span class="text-soft text-base font-normal"><%= 'mile'.pluralize(team_membership.miles_completed_in_goal) %></span>
       </p>
-      <p class="text-soft">
-        <%= 'mile'.pluralize(member.miles_this_season(team)) %>
-      </p>
+      <% if team_membership.mileage_goal? %>
+        <p class="text-soft">of <%= team_membership.mileage_goal %> mile goal</p>
+      <% end %>
       <% if team.season_not_started_yet? %>
         <p class="text-soft my-1">Season hasn't started yet.</p>
       <% end %>
@@ -23,11 +24,12 @@
     <div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6">
       <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Long Runs This Season</h2>
       <p class="text-3xl font-bold">
-        <%= member.total_long_runs_this_season(team) %>
+        <%= team_membership.long_runs_completed_in_goal %>
+        <span class="text-soft text-base font-normal"><%= 'long run'.pluralize(team_membership.long_runs_completed_in_goal) %></span>
       </p>
-      <p class="text-soft">
-        <%= 'long run'.pluralize(member.total_long_runs_this_season(team)) %>
-      </p>
+      <% if team_membership.long_run_goal? %>
+        <p class="text-soft">of <%= team_membership.long_run_goal %> long run goal</p>
+      <% end %>
       <% if team.season_not_started_yet? %>
         <p class="text-soft my-1">Season hasn't started yet.</p>
       <% end %>
@@ -39,11 +41,11 @@
     <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Personal Mileage Goal</h2>
     <% if team_membership.mileage_goal? && team.season_in_progress? %>
       <div class="mb-4">
-        <% if team_membership.meeting_goal? %>
+        <% if team_membership.meeting_mileage_goal? %>
           <p>
             <%= member == current_user ? "You're" : "#{member.first_name} is" %> on track! <%= member == current_user ? "You're" : 'Your team is' %> <%= team_membership.season_progress %>% through the season, and <%= member == current_user ? "you've" : "#{member.first_name} has" %> met <%= team_membership.mileage_goal_progress %>% of <%= member == current_user ? "your" : member.gender_possessive %> personal mileage goal.
           </p>
-        <% elsif team_membership.ahead_of_goal? %>
+        <% elsif team_membership.ahead_of_mileage_goal? %>
           <p>
             <%= member == current_user ? "You're" : "#{member.first_name} is" %> advancing! <%= member == current_user ? "You're" : 'Your team is' %> <%= team_membership.season_progress %>% through the season, and <%= member == current_user ? "you've" : "#{member.first_name} has" %> already met <%= team_membership.mileage_goal_progress %>% of <%= member == current_user ? "your" : member.gender_possessive %> personal mileage goal.
           </p>

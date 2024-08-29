@@ -10,27 +10,40 @@ class TeamMembership < ApplicationRecord
 
   delegate :season_progress, to: :team
 
-  # TODO: remove this later
-  def mileage_goal? = true
+  def miles_completed_in_goal = user.miles_this_season(team)
 
-  # TODO: remove this later
-  def mileage_goal = 100
+  def miles_remaining_in_goal = mileage_goal - miles_completed_in_goal
 
-  # TODO: implement this
-  def miles_completed = 42
+  def long_runs_completed_in_goal = user.total_long_runs_this_season(team)
 
-  # TODO: implement this
-  def mileage_goal_progress = 42
+  def long_runs_remaining_in_goal = long_run_goal - long_runs_completed_in_goal
 
-  # TODO: implement this
-  def miles_remaining_in_goal = mileage_goal - miles_completed
+  def mileage_goal_progress
+    return nil unless mileage_goal?
 
-  # TODO: implement this
-  def meeting_goal? = true
+    progress = (miles_completed_in_goal / mileage_goal.to_f) * 100.0
 
-  # TODO: implement this
-  def ahead_of_goal? = false
+    [progress, 0.0].max.round(2) # Ensures progess stays above 0%
+  end
 
-  # TODO: implement this
-  def behind_goal? = false
+  def meeting_mileage_goal? = (mileage_goal_progress - season_progress).abs <= 5
+
+  def ahead_of_mileage_goal? = mileage_goal_progress - season_progress > 5
+
+  def behind_mileage_goal? = season_progress - mileage_goal_progress > 5
+
+  def long_run_goal_progress
+    return nil unless long_run_goal?
+
+    progress = (long_runs_completed_in_goal / long_run_goal.to_f) * 100.0
+
+    [progress, 0.0].max.round(2) # Ensures progess stays above 0%
+  end
+
+  def meeting_long_run_goal? =
+    (long_run_goal_progress - season_progress).abs <= 5
+
+  def ahead_of_long_run_goal? = long_run_goal_progress - season_progress > 5
+
+  def behind_long_run_goal? = season_progress - long_run_goal_progress > 5
 end
