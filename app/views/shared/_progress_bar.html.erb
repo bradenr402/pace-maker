@@ -1,0 +1,25 @@
+<% size ||= :sm %>
+
+<% size_classes = {
+  sm: 'h-2 rounded-full',
+  md: 'h-4 rounded',
+  lg: 'h-6 rounded-md',
+} %>
+
+<div>
+  <div class="flex items-end justify-between my-1">
+    <span class="text-soft text-sm"><%= label %></span>
+    <span class="text-soft text-sm text-right text-balance"><%= "#{percentage}%".concat(local_assigns[:marker] ? ' of goal met' : '') %>
+      <% if local_assigns[:marker] %>
+        <%= " / #{(marker - percentage).abs.round(2)}%" %>
+        <%= percentage < marker ? 'behind' : 'ahead' %>
+      <% end %>
+    </span>
+  </div>
+  <div class="<%= size_classes[size] %> w-full bg-gray-200 dark:bg-gray-700 relative">
+    <div class="<%= size_classes[size] %> bg-indigo-600 absolute left-0 top-0 z-30" style="width: <%= percentage %>%"></div>
+    <% if local_assigns[:marker] %>
+      <div class="<%= size_classes[size] %> bg-red-600/25 absolute left-0 top-0 z-20" style="width: <%= marker %>%"></div>
+    <% end %>
+  </div>
+</div>

@@ -4,18 +4,27 @@
     <p class="text-soft">Information and statistics about <%= user == current_user ? 'you' : 'this user' %>.</p>
   </div>
 
-  <div class="block sm:flex space-y-8 sm:space-y-0 sm:items-center sm:justify-around">
-    <div class='flex flex-col items-center justify-center text-center'>
-      <p class='font-semibold font-mono text-2xl'>
+  <div class="grid gap-6 grid-cols-1 lg:grid-cols-2">
+    <!-- Total Miles Card -->
+    <div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6">
+      <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Total Miles</h2>
+      <p class="text-3xl font-bold">
         <%= user.total_miles %>
       </p>
-      <p class='text-soft'>miles ran</p>
+      <p class="text-soft">
+        <%= 'mile'.pluralize(user.total_miles) %>
+      </p>
     </div>
-    <div class='flex flex-col items-center justify-center text-center'>
-      <p class='font-semibold font-mono text-2xl'>
+
+    <!-- Time Spent Running Card -->
+    <div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6">
+      <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Time Spent Running</h2>
+      <p class="text-3xl font-bold">
         <%= precise_time_ago(user.total_duration, format: :short) %>
       </p>
-      <p class='text-soft'>spent running</p>
+      <p class="text-soft">
+        <%= precise_time_ago(user.total_duration) %>
+      </p>
     </div>
   </div>
 </div>

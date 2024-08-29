@@ -1,42 +1,72 @@
-<div class="mt-10 mb-6 pb-6 border-b dark:border-slate-700 space-y-2">
-  <h1 class="heading">Member Info</h1>
-  <p class="text-soft">Information and statistics about <%= @member == current_user ? 'your' : "this user's" %> participation in <%= link_to @team.name, @team, class: 'btn-link' %>.</p>
-</div>
-
-<div class="grid gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
-  <!-- Miles This Season Card -->
-  <div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6">
-    <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Miles This Season</h2>
-    <p class="text-3xl font-bold font-mono">
-      <%= @member.miles_this_season(@team) %>
-    </p>
-    <p class="text-soft text-base font-sans font-normal">
-      <%= 'mile'.pluralize(@member.miles_this_season(@team)) %>
-    </p>
+<div class="mb-24">
+  <div class="mt-10 mb-6 pb-6 border-b dark:border-slate-700 space-y-2">
+    <h1 class="heading">Member Info</h1>
+    <p class="text-soft">Information and statistics about <%= member == current_user ? 'your' : "this user's" %> participation in <%= link_to team.name, team, class: 'btn-link' %>.</p>
   </div>
 
-  <!-- Long Runs This Season Card -->
-  <div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6">
-    <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Long Runs This Season</h2>
-    <p class="text-3xl font-bold font-mono">
-      <%= @member.total_long_runs_this_season(@team) %>
-    </p>
-    <p class="text-soft text-base font-sans font-normal">
-      <%= 'long run'.pluralize(@member.total_long_runs_this_season(@team)) %>
-    </p>
-  </div>
-
-  <!-- TODO: Personal Goal Progress Card -->
-  <div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6">
-    <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Personal Goal Progress</h2>
-    <p class="text-3xl font-bold font-mono">
-      <%= @member.respond_to?(:personal_goal_progress) ? @member.personal_goal_progress(@team) : '42' %>%
-    </p>
-    <p class="text-soft text-base font-sans font-normal">of 100 mile goal</p>
-
-    <!-- progress bar -->
-    <div class="w-full bg-gray-200 dark:bg-slate-600 rounded-full h-2.5 my-2">
-      <div class="bg-indigo-500 h-2.5 rounded-full w-[<%= @member.respond_to?(:personal_goal_progress) ? @member.personal_goal_progress(@team) : '42' %>%]"></div>
+  <div class="grid gap-6 grid-cols-1 lg:grid-cols-2">
+    <!-- Miles This Season Card -->
+    <div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6">
+      <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Miles This Season</h2>
+      <p class="text-3xl font-bold">
+        <%= member.miles_this_season(team) %>
+      </p>
+      <p class="text-soft">
+        <%= 'mile'.pluralize(member.miles_this_season(team)) %>
+      </p>
+      <% if team.season_not_started_yet? %>
+        <p class="text-soft my-1">Season hasn't started yet.</p>
+      <% end %>
     </div>
+
+    <!-- Long Runs This Season Card -->
+    <div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6">
+      <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Long Runs This Season</h2>
+      <p class="text-3xl font-bold">
+        <%= member.total_long_runs_this_season(team) %>
+      </p>
+      <p class="text-soft">
+        <%= 'long run'.pluralize(member.total_long_runs_this_season(team)) %>
+      </p>
+      <% if team.season_not_started_yet? %>
+        <p class="text-soft my-1">Season hasn't started yet.</p>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Personal Mileage Goal Card -->
+  <div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6 mt-6">
+    <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Personal Mileage Goal</h2>
+    <% if team_membership.mileage_goal? && team.season_in_progress? %>
+      <div class="mb-4">
+        <% if team_membership.meeting_goal? %>
+          <p>
+            <%= member == current_user ? "You're" : "#{member.first_name} is" %> on track! <%= member == current_user ? "You're" : 'Your team is' %> <%= team_membership.season_progress %>% through the season, and <%= member == current_user ? "you've" : "#{member.first_name} has" %> met <%= team_membership.mileage_goal_progress %>% of <%= member == current_user ? "your" : member.gender_possessive %> personal mileage goal.
+          </p>
+        <% elsif team_membership.ahead_of_goal? %>
+          <p>
+            <%= member == current_user ? "You're" : "#{member.first_name} is" %> advancing! <%= member == current_user ? "You're" : 'Your team is' %> <%= team_membership.season_progress %>% through the season, and <%= member == current_user ? "you've" : "#{member.first_name} has" %> already met <%= team_membership.mileage_goal_progress %>% of <%= member == current_user ? "your" : member.gender_possessive %> personal mileage goal.
+          </p>
+        <% else %>
+          <p>
+            <%= member == current_user ? "You're" : "#{member.first_name} is" %> falling behind! <%= member == current_user ? "You're" : 'Your team is' %> <%= team_membership.season_progress %>% through the season, but <%= member == current_user ? "you've" : "#{member.first_name} has" %> only met <%= team_membership.mileage_goal_progress %>% of <%= member == current_user ? "your" : member.gender_possessive %> personal mileage goal.
+          </p>
+        <% end %>
+      </div>
+
+      <%= render 'shared/progress_bar', percentage: team_membership.mileage_goal_progress, label: 'Personal Mileage Goal Progress', marker: team_membership.season_progress, size: :lg %>
+
+      <p class='text-soft text-xs my-1'>
+        You have <%= pluralize(team.days_remaining_in_season, 'day') %> to finish the remaining <%= pluralize(team_membership.miles_remaining_in_goal, 'mile') %> of your personal mileage goal.
+      </p>
+    <% elsif team.season_not_started_yet? %>
+      <p class="text-soft">Season hasn't started yet.</p>
+    <% elsif team.season_dates? %>
+      <p class="text-soft">No personal mileage goal has been set by this member.</p>
+    <% elsif team_membership.mileage_goal? %>
+      <p class="text-soft">No season dates have been set for this team.</p>
+    <% else %>
+      <p class="text-soft">No personal mileage goal has been set by this member or season dates set for this team.</p>
+    <% end %>
   </div>
 </div>

@@ -19,7 +19,7 @@
 
     <% if team.season_dates? %>
       <p class="text-soft text-sm mt-1">
-        Season <%= team.season_start_date.after?(Date.today) ? 'starts' : 'started' %> <%= pretty_date(team.season_start_date) %>
+        Season <%= team.season_not_started_yet? ? 'starts' : 'started' %> <%= pretty_date(team.season_start_date) %>
       </p>
     <% end %>
 
