@@ -70,59 +70,6 @@ module UserCalculations
     runs.where('distance >= ?', 2) # TODO: Add team settings for minimum distance
   end
 
-  # def longest_streak(team)
-  #   max_streak = 0
-  #   current_streak = 0
-  #   start_date = nil
-  #   longest_start_date = nil
-  #   longest_end_date = nil
-
-  #   filtered_runs =
-  #     runs
-  #       .where('distance >= ?', 2)
-  #       .order(date: :asc)
-  #       .distinct
-  #       .pluck(:date)
-  #       .map(&:to_date)
-
-  #   return { streak: 0, start_date: nil, end_date: nil } if filtered_runs.empty?
-
-  #   filtered_runs.each_cons(2) do |current_date, next_date|
-  #     if next_date == current_date + 1
-  #       current_streak += 1
-  #       start_date ||= current_date
-  #     elsif next_date == current_date + 2 &&
-  #           !(
-  #             (current_date.saturday? && team.exclude_saturday_from_streak?) ||
-  #               (current_date.sunday? && team.exclude_sunday_from_streak?)
-  #           )
-  #       # Case where the gap is exactly one day and it's a weekend day that's excluded
-  #       current_streak += 1
-  #       start_date ||= current_date
-  #     else
-  #       if current_streak >= max_streak
-  #         max_streak = current_streak
-  #         longest_start_date = start_date
-  #         longest_end_date = current_date
-  #       end
-  #       current_streak = 0
-  #       start_date = nil
-  #     end
-  #   end
-
-  #   if current_streak >= max_streak
-  #     max_streak = current_streak
-  #     longest_start_date = start_date
-  #     longest_end_date = filtered_runs.last
-  #   end
-
-  #   {
-  #     streak: max_streak,
-  #     start_date: longest_start_date,
-  #     end_date: longest_end_date
-  #   }
-  # end
-
   def current_streak(team)
     filtered_runs =
       runs_valid_for_streak(team)
