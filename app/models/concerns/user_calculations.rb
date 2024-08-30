@@ -124,9 +124,6 @@ module UserCalculations
   # end
 
   def current_streak(team)
-    streak = 1
-    start_date = nil
-
     filtered_runs =
       runs_valid_for_streak(team)
         .order(date: :desc)
@@ -137,11 +134,23 @@ module UserCalculations
     # Return a streak of 0 if there are no qualifying runs
     return { streak: 0, start_date: nil, end_date: nil } if filtered_runs.empty?
 
+    # Initialize streak count and start date
+    streak = 1
+    start_date = nil
+
+    most_recent_run = filtered_runs.first
+    unless (most_recent_run.saturday? && team.exclude_saturday_from_streak?) ||
+             (most_recent_run.sunday? && team.exclude_sunday_from_streak?) ||
+             (most_recent_run == Date.current - 1.day)
+      return { streak: 0, start_date: nil, end_date: most_recent_run }
+    end
+
     filtered_runs.each_cons(2) do |current_date, previous_date|
       if current_date == previous_date + 1.day
         streak += 1
         start_date = previous_date
-      elsif (current_date - 1.day).saturday? && team.exclude_saturday_from_streak?
+      elsif (current_date - 1.day).saturday? &&
+            team.exclude_saturday_from_streak?
         next
       elsif (current_date - 1.day).sunday? && team.exclude_sunday_from_streak?
         next
@@ -154,14 +163,6 @@ module UserCalculations
   end
 
   def longest_streak(team)
-    longest_streak = 1
-    longest_start_date = nil
-    longest_end_date = nil
-
-    temp_streak = 1
-    temp_start_date = nil
-    temp_end_date = nil
-
     filtered_runs =
       runs_valid_for_streak(team)
         .order(date: :desc)
@@ -172,12 +173,22 @@ module UserCalculations
     # Return a streak of 0 if there are no qualifying runs
     return { streak: 0, start_date: nil, end_date: nil } if filtered_runs.empty?
 
+    # Initialize streak counts, start dates, and end dates
+    longest_streak = 1
+    longest_start_date = nil
+    longest_end_date = nil
+
+    temp_streak = 1
+    temp_start_date = nil
+    temp_end_date = nil
+
     filtered_runs.each_cons(2) do |current_date, previous_date|
       if current_date == previous_date + 1.day
         temp_streak += 1
         temp_start_date = previous_date
         temp_end_date ||= current_date
-      elsif (current_date - 1.day).saturday? && team.exclude_saturday_from_streak?
+      elsif (current_date - 1.day).saturday? &&
+            team.exclude_saturday_from_streak?
         next
       elsif (current_date - 1.day).sunday? && team.exclude_sunday_from_streak?
         next
