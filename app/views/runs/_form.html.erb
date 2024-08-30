@@ -2,31 +2,31 @@
   <div class="form-group">
     <%= form.label :date, 'What day did you run?', class: 'form-label' %>
     <%= form.date_field :date, autofocus: true, max: Date.today, value: form.object.new_record? ? Date.today : @run.date, class: 'form-input', data: { form_validation_target: "date", action: "input->form-validation#validateDate" } %>
-    <span class="error-message hidden my-1" data-form-validation-target="dateError">Date must be today or earlier</span>
+    <span class="hidden my-1 error-message" data-form-validation-target="dateError">Date must be today or earlier</span>
   </div>
 
   <div data-controller="distance-shortcuts">
     <div class="form-group">
       <%= form.label :distance, 'How many miles did you run?', class: 'form-label' %>
       <%= form.number_field :distance, step: 0.1, min: 0, class: 'form-input', data: { form_validation_target: "distance", action: "input->form-validation#validateDistance", distance_shortcuts_target: "distance" } %>
-      <span class="error-message hidden my-1" data-form-validation-target="distanceError">Distance must be a positive number</span>
+      <span class="hidden my-1 error-message" data-form-validation-target="distanceError">Distance must be a positive number</span>
     </div>
 
-    <div class="form-group flex flex-wrap items-center justify-center gap-3 -mt-2 select-none">
+    <div class="flex flex-wrap items-center justify-center gap-3 -mt-2 select-none form-group">
       <button type="button" data-action="click->distance-shortcuts#updateDistance click->form-validation#validateDistance" data-update-distance-value="-0.1" class="btn btn-white min-w-12">-</button>
-      <p class="w-1/4 sm:w-1/5 md:w-1/6 min-w-max text-center">0.1 miles</p>
+      <p class="w-1/4 text-center sm:w-1/5 md:w-1/6 min-w-max">0.1 miles</p>
       <button type="button" data-action="click->distance-shortcuts#updateDistance click->form-validation#validateDistance" data-update-distance-value="0.1" class="btn btn-white min-w-12">+</button>
     </div>
 
-    <div class="form-group flex flex-wrap items-center justify-center gap-3 -mt-2 select-none">
+    <div class="flex flex-wrap items-center justify-center gap-3 -mt-2 select-none form-group">
       <button type="button" data-action="click->distance-shortcuts#updateDistance click->form-validation#validateDistance" data-update-distance-value="-1" class="btn btn-white min-w-12">-</button>
-      <p class="w-1/4 sm:w-1/5 md:w-1/6 min-w-max text-center">1 mile</p>
+      <p class="w-1/4 text-center sm:w-1/5 md:w-1/6 min-w-max">1 mile</p>
       <button type="button" data-action="click->distance-shortcuts#updateDistance click->form-validation#validateDistance" data-update-distance-value="1" class="btn btn-white min-w-12">+</button>
     </div>
 
-    <div class="form-group flex flex-wrap items-center justify-center gap-3 -mt-2 select-none">
+    <div class="flex flex-wrap items-center justify-center gap-3 -mt-2 select-none form-group">
       <button type="button" data-action="click->distance-shortcuts#updateDistance click->form-validation#validateDistance" data-update-distance-value="-5" class="btn btn-white min-w-12">-</button>
-      <p class="w-1/4 sm:w-1/5 md:w-1/6 min-w-max text-center">5 miles</p>
+      <p class="w-1/4 text-center sm:w-1/5 md:w-1/6 min-w-max">5 miles</p>
       <button type="button" data-action="click->distance-shortcuts#updateDistance click->form-validation#validateDistance" data-update-distance-value="5" class="btn btn-white min-w-12">+</button>
     </div>
   </div>
@@ -38,8 +38,8 @@
       </p>
     <% end %>
     <%= form.text_field :duration_input, value: form.object.new_record? ? '' : clock_time_display(@run.duration), class: 'form-input', data: { form_validation_target: "duration", action: "input->form-validation#validateDuration" } %>
-    <span class="error-message hidden my-1" data-form-validation-target="durationError">Duration must be in MM:SS or HH:MM:SS format and must be less than 24 hours</span>
-    <p class="text-xs text-slate-700 my-1 dark:text-slate-400">Enter time in MM:SS or HH:MM:SS format.</p>
+    <span class="hidden my-1 error-message" data-form-validation-target="durationError">Duration must be in MM:SS or HH:MM:SS format and must be less than 24 hours</span>
+    <p class="my-1 text-xs text-slate-700 dark:text-slate-400">Enter time in MM:SS or HH:MM:SS format.</p>
   </div>
 
   <div class="form-group">
@@ -51,7 +51,7 @@
     <%= form.text_area :comments, placeholder: 'Add comments...', class: 'form-input', data: { controller: 'autogrow', action: 'input->autogrow#grow' } %>
   </div>
 
-  <div class="flex items-center justify-start flex-wrap gap-6">
+  <div class="flex flex-wrap items-center justify-start gap-6">
     <% if form.object.new_record? %>
       <%= form.submit 'Create run', data: { turbo: false }, class: 'btn btn-primary' %>
     <% else %>

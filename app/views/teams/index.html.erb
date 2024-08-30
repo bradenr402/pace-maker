@@ -1,4 +1,4 @@
-<div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="ownedTeamsTab" class="max-w-3xl mx-auto px-4 my-16">
+<div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="ownedTeamsTab" class="max-w-3xl px-4 mx-auto my-16">
   <div class="tab-container">
     <button type="button" id="ownedTeamsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'ownedTeamsTab' ? 'btn-tab-active' : '' %>">
       <%= inline_svg_tag 'icons/team.svg', class: 'size-5' %>

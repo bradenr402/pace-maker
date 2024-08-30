@@ -1,16 +1,16 @@
-<div class="mt-10 pb-6 border-b dark:border-slate-700 space-y-2">
+<div class="pb-6 mt-10 space-y-2 border-b dark:border-slate-700">
   <h1 class="heading">Recent Activity</h1>
   <p class="text-soft">Recent runs by members of this team.</p>
 </div>
 
-<div class="divide-y dark:divide-slate-700 dark:text-slate-700 mb-10">
+<div class="mb-10 divide-y dark:divide-slate-700 dark:text-slate-700">
   <% recent_runs =  team.recent_runs %>
   <% if recent_runs.present? %>
     <% recent_runs.each do |run| %>
       <%= render run, team: team %>
     <% end %>
   <% else %>
-    <div class="flex flex-col gap-6 items-center justify-center py-12">
+    <div class="flex flex-col items-center justify-center gap-6 py-12">
       <p class="prose dark:prose-invert text-soft">No recent activity to show.</p>
     </div>
   <% end %>

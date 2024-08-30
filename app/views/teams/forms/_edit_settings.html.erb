@@ -1,4 +1,4 @@
-<div class="mt-10 mb-6 pb-6 border-b dark:border-slate-700 space-y-2">
+<div class="pb-6 mt-10 mb-6 space-y-2 border-b dark:border-slate-700">
   <h1 class="heading">Team Settings</h1>
   <p class="text-soft">Set preferences for your team to match your needs.</p>
 </div>
@@ -9,7 +9,7 @@
 
   <%= form.fields_for :settings do |settings_form| %>
     <div class="my-6">
-      <h2 class="font-normal text-lg text-slate-700 dark:text-slate-200 mb-2">Join Requirements</h2>
+      <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Join Requirements</h2>
       <p class="text-sm text-slate-600 dark:text-slate-400">Set the requirements for users to request to join this team.</p>
     </div>
 
@@ -18,17 +18,17 @@
         <%= settings_form.check_box :require_gender, { checked: @team.require_gender?, disabled: @team.owner.gender.blank?, class: "form-input-checkbox", data: { restore_defaults_target: 'requireGender', team_gender_fields_target: 'requireGender', action: 'change->team-gender-fields#toggleFields' } }, true, false %>
         <%= settings_form.label :require_gender, 'Require gender', class: "select-none text-sm text-slate-700 dark:text-slate-300" %>
       </div>
-      <p class="help-text my-1"><%= @team.owner.gender.blank? ? 'You cannot require gender for your team if your own gender is not specified.' : 'Require users to specify their gender in order to join this team.' %></p>
+      <p class="my-1 help-text"><%= @team.owner.gender.blank? ? 'You cannot require gender for your team if your own gender is not specified.' : 'Require users to specify their gender in order to join this team.' %></p>
     </div>
 
     <div class="form-group">
       <%= settings_form.label :max_allowed_requests, 'Maximum allowed requests', class: 'form-label' %>
       <%= settings_form.number_field :max_allowed_requests, step: 1, min: 1, value: @team.settings(:join_requirements).max_allowed_requests, class: 'form-input', data: { restore_defaults_target: 'maxAllowedRequests' } %>
-      <p class="help-text my-1">Choose how many times a user can request to join your team before being blocked.</p>
+      <p class="my-1 help-text">Choose how many times a user can request to join your team before being blocked.</p>
     </div>
 
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
-      <h2 class="font-normal text-lg text-slate-700 dark:text-slate-200 mb-2">Run Settings</h2>
+      <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Run Settings</h2>
       <p class="text-sm text-slate-600 dark:text-slate-400">Set the number of miles for a run to count as a "long run".</p>
     </div>
 
@@ -48,21 +48,21 @@
     </div>
 
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
-      <h2 class="font-normal text-lg text-slate-700 dark:text-slate-200 mb-2">General</h2>
+      <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">General</h2>
       <p class="text-sm text-slate-600 dark:text-slate-400">Miscellaneous settings to optimize your experience.</p>
     </div>
 
     <div class="form-group">
       <%= settings_form.label :week_start, 'Start week on', class: 'form-label' %>
       <%= settings_form.select :week_start, options_for_select([['Sunday', :sunday], ['Monday', :monday], ['Tuesday', :tuesday], ['Wednesday', :wednesday], ['Thursday', :thursday], ['Friday', :friday], ['Saturday', :saturday]], @team.settings(:general).week_start), {}, data: { restore_defaults_target: 'weekStart' }, class: 'form-select' %>
-      <p class="help-text my-1">Choose what day is considered the start of the week.</p>
-      <p class="help-text my-1">This will affect how user's streaks are calculated and how graphs display on your team's page.</p>
+      <p class="my-1 help-text">Choose what day is considered the start of the week.</p>
+      <p class="my-1 help-text">This will affect how user's streaks are calculated and how graphs display on your team's page.</p>
     </div>
   <% end %>
 
   <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
     <button type="button" data-action="restore-defaults#restore" class="btn btn-sm btn-white">Restore defaults</button>
-    <p class="help-text my-1">Reset all settings to their defaults for a fresh start.</p>
+    <p class="my-1 help-text">Reset all settings to their defaults for a fresh start.</p>
   </div>
 
   <div class="flex items-center gap-6 mt-10">

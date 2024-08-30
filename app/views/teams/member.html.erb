@@ -1,19 +1,19 @@
-<div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="infoTab" class="max-w-3xl mx-auto px-4 my-16">
+<div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="infoTab" class="max-w-3xl px-4 mx-auto my-16">
   <div class="pb-6 text-center">
 
     <%= image_tag @member.avatar.variant(resize_to_limit: [150, 150]).processed, class: 'size-28 sm:size-32 md:size-36 rounded-lg drop-shadow-lg dark:drop-shadow-none mx-auto mb-4 object-cover' if @member.avatar.attached? %>
 
     <h1 class="heading"><%= @member.default_name %></h1>
     <% if @member.display_name.present? %>
-      <h2 class="text-lg my-1 text-soft"><%= @member.username %></h2>
+      <h2 class="my-1 text-lg text-soft"><%= @member.username %></h2>
     <% end %>
-    <h2 class="text-lg my-1 text-soft">
+    <h2 class="my-1 text-lg text-soft">
       <%= @member.owns?(@team) ? 'Coach' : 'Member' %> of <%= link_to @team.name, @team, class: 'btn-link' %>
       <%= "for #{time_ago_in_words(@team_membership.created_at)}" unless @member.owns?(@team) %>
     </h2>
 
     <% if @member != current_user && @member.any_membered_teams_in_common_except?(current_user, exclude: [@team]) %>
-      <p class="help-text mt-1">
+      <p class="mt-1 help-text">
         <span>Also a member of:</span>
         <%= list(items: @member.membered_teams_in_common_except(current_user, exclude: [@team]).map { |team| link_to(@team.name, @team, data: { turbo: false }, class: 'btn-link') }).html_safe %>
       </p>

@@ -1,10 +1,10 @@
 <article id="<%= dom_id run %>" class="prose dark:prose-invert">
   <div class="flex items-center gap-2">
     <%= inline_svg_tag 'icons/calendar.svg', class: 'size-5' %>
-    <p class="font-bold text-lg"><%= pretty_date(run.date).titlecase %></p>
+    <p class="text-lg font-bold"><%= pretty_date(run.date).titlecase %></p>
   </div>
 
-  <table class="text-base my-0 table-auto border-y border-slate-200 dark:border-slate-700">
+  <table class="my-0 text-base table-auto border-y border-slate-200 dark:border-slate-700">
     <tr>
       <th>Distance:</th>
       <td><span class="text-base"><%= run.distance %> <span class="text-sm text-slate-600 dark:text-slate-400">mi</span></span></td>
@@ -26,7 +26,7 @@
 
   <% if run.comments.present? %>
     <% if current_page?(run_path(run)) %>
-      <p class="font-semibold mb-0">Comments</p>
+      <p class="mb-0 font-semibold">Comments</p>
       <%= simple_format run.comments, class: 'mt-0 text-sm' %>
     <% else %>
       <div class="flex items-center gap-2 my-3">
@@ -38,9 +38,9 @@
 
   <div class="flex items-center mt-2">
     <%= inline_svg_tag 'icons/clock.svg', class: 'size-4 mr-1.5' %>
-    <time class="text-slate-600 dark:text-slate-400 text-xs pr-3" datetime="<%= run.created_at.to_formatted_s(:long) %>">Posted <%= time_ago_in_words(run.created_at) + " ago" %></time>
+    <time class="pr-3 text-xs text-slate-600 dark:text-slate-400" datetime="<%= run.created_at.to_formatted_s(:long) %>">Posted <%= time_ago_in_words(run.created_at) + " ago" %></time>
     <%- if run.edited? %>
-      <time class="text-slate-600 dark:text-slate-400 text-xs pl-3 border-l dark:border-slate-700" datetime="<%= run.updated_at.to_formatted_s(:long) %>">Edited <%= time_ago_in_words(run.updated_at) + " ago" %></time>
+      <time class="pl-3 text-xs border-l text-slate-600 dark:text-slate-400 dark:border-slate-700" datetime="<%= run.updated_at.to_formatted_s(:long) %>">Edited <%= time_ago_in_words(run.updated_at) + " ago" %></time>
     <%- end %>
   </div>
 </article>

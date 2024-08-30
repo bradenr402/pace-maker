@@ -1,4 +1,4 @@
-<div class="mt-10 pb-6 space-y-2">
+<div class="pb-6 mt-10 space-y-2">
   <h1 class="heading">Find Teams</h1>
   <p class="text-soft">Find teams by team name or coach name.</p>
 </div>
@@ -7,7 +7,7 @@
   <%= form_with url: teams_path, method: :get, html: { novalidate: true }, data: { turbo_frame: 'otherTeams', turbo_action: 'advance', controller: 'search-form' } do |form| %>
     <%= form.label :query, 'Find a team by name:', class: 'sr-only' %>
 
-    <div class="form-group relative">
+    <div class="relative form-group">
       <%= inline_svg_tag 'icons/search.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
       <%= form.search_field :query, placeholder: 'Search...', data: { action: 'input->search-form#search' }, class: 'form-input pl-10' %>
     </div>
@@ -18,7 +18,7 @@
   <% if other_teams.present? %>
     <%= render 'teams/shared/team_list', teams: other_teams, show_members: true %>
   <% else %>
-    <div class="flex flex-col gap-6 items-center justify-center py-12">
+    <div class="flex flex-col items-center justify-center gap-6 py-12">
       <p class="prose dark:prose-invert text-soft">No teams found.</p>
     </div>
   <% end %>

@@ -1,11 +1,11 @@
 <div class="py-6">
-  <div class="flex gap-4 items-center">
+  <div class="flex items-center gap-4">
     <%= link_to team_member_path(@team, member), data: { turbo: false }, class: 'group flex gap-4 items-center mr-auto' do %>
       <%= image_tag member.avatar.variant(resize_to_limit: [100, 100]).processed, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none object-cover' if member.avatar.attached? %>
 
       <div>
         <%= content_tag(:p, 'Coach', class: 'text-slate-800 dark:text-slate-100 text-sm') if member.owns?(@team) %>
-        <h2 class='subheading group-hover:text-indigo-600 dark:group-hover:text-indigo-500 transition ease-in-out duration-300'><%= member.default_name %></h2>
+        <h2 class='transition duration-300 ease-in-out subheading group-hover:text-indigo-600 dark:group-hover:text-indigo-500'><%= member.default_name %></h2>
         <%= content_tag(:p, member.username, class: 'help-text') if member.display_name.present? %>
       </div>
     <% end %>

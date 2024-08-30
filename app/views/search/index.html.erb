@@ -1,6 +1,6 @@
-<div class="max-w-3xl mx-auto px-4 my-16">
+<div class="max-w-3xl px-4 mx-auto my-16">
   <div class="mb-24">
-    <div class="mt-10 pb-6 space-y-2">
+    <div class="pb-6 mt-10 space-y-2">
       <h1 class="heading">Search</h1>
       <p class="text-soft">Find new teams or members you are connected with.</p>
     </div>
@@ -9,7 +9,7 @@
       <%= form_with url: search_path, method: :get, html: { novalidate: true,}, data: { turbo_frame: 'searchResults', turbo_action: 'advance', turbo_stream: true, controller: 'search-form' } do |form| %>
         <%= form.label :query, 'Search', class: 'sr-only' %>
 
-        <div class="form-group relative">
+        <div class="relative form-group">
           <%= inline_svg_tag 'icons/search.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
           <%= form.search_field :query, autofocus: true, placeholder: 'Search...', data: { action: 'input->search-form#search' }, class: 'form-input pl-10' %>
         </div>
@@ -17,8 +17,8 @@
     </div>
 
     <%= turbo_frame_tag 'searchResults' do %>
-      <div class="flex flex-col gap-6 items-center justify-center py-12">
-        <p class="prose dark:prose-invert text-soft text-center">Start typing to find teams or other members.</p>
+      <div class="flex flex-col items-center justify-center gap-6 py-12">
+        <p class="prose text-center dark:prose-invert text-soft">Start typing to find teams or other members.</p>
       </div>
     <% end %>
   </div>

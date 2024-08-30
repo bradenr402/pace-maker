@@ -1,13 +1,13 @@
-<div class="mt-10 mb-6 pb-6 border-b dark:border-slate-700 space-y-2">
+<div class="pb-6 mt-10 mb-6 space-y-2 border-b dark:border-slate-700">
   <h1 class="heading">Team Info</h1>
   <p class="text-soft">Information and statistics about this team.</p>
 </div>
 
 <!-- Season Dates Card -->
-<div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6 mb-6">
-  <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Season Dates</h2>
+<div class="p-6 mb-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
+  <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Season Dates</h2>
   <% if team.season_dates? %>
-    <div class="mb-4 space-y-2 lg:space-y-0 block lg:flex lg:flex-wrap lg:items-center lg:justify-around lg:gap-4">
+    <div class="block mb-4 space-y-2 lg:space-y-0 lg:flex lg:flex-wrap lg:items-center lg:justify-around lg:gap-4">
       <div class="lg:text-center">
         <p class="text-soft">Start Date</p>
         <p class="text-2xl font-semibold">
@@ -26,26 +26,26 @@
     <% if team.season_not_started_yet? %>
       <p class='text-soft'>Season hasn't started yet.</p>
     <% elsif team.season_over? %>
-      <p class='text-soft text-sm'>Season is over.</p>
+      <p class='text-sm text-soft'>Season is over.</p>
     <% else %>
       <%= render 'shared/progress_bar', percentage: team.season_progress, label: 'Season Progress', size: :md %>
 
-      <p class='text-soft text-xs my-1'><%= team.days_remaining_in_season %> days remaining</p>
+      <p class='my-1 text-xs text-soft'><%= team.days_remaining_in_season %> days remaining</p>
     <% end %>
   <% else %>
     <p class="text-soft">No season dates have been set for this team.</p>
   <% end %>
 </div>
 
-<div class="grid gap-6 grid-cols-1 lg:grid-cols-2">
+<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
   <!-- Mileage Goal Card -->
-  <div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6">
-    <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Mileage Goal</h2>
+  <div class="p-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
+    <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Mileage Goal</h2>
     <% if team.mileage_goal? %>
       <div class="mb-4">
         <p class="text-3xl font-bold">
           <%= team.total_miles_in_season %>
-          <span class="text-soft text-base font-normal"><%= 'mile'.pluralize(team.total_miles_in_season) %></span>
+          <span class="text-base font-normal text-soft"><%= 'mile'.pluralize(team.total_miles_in_season) %></span>
         </p>
         <p class="text-soft">of <%= team.mileage_goal %> mile goal</p>
       </div>
@@ -63,13 +63,13 @@
   </div>
 
   <!-- Long Runs This Season Card -->
-  <div class="bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-lg shadow-md dark:shadow-none border dark:border-slate-700 p-6">
-    <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-6">Long Run Goal</h2>
+  <div class="p-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
+    <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Long Run Goal</h2>
     <% if team.long_run_goal? %>
       <div class="mb-4">
         <p class="text-3xl font-bold">
           <%= team.total_long_runs_in_season %>
-          <span class="text-soft text-base font-normal"><%= 'long run'.pluralize(team.total_long_runs_in_season) %></span>
+          <span class="text-base font-normal text-soft"><%= 'long run'.pluralize(team.total_long_runs_in_season) %></span>
         </p>
         <p class="text-soft">of <%= team.long_run_goal %> long run goal</p>
       </div>

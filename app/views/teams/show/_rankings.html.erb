@@ -1,4 +1,4 @@
-<div class="mt-10 pb-6 space-y-2">
+<div class="pb-6 mt-10 space-y-2">
   <h1 class="heading">Team Rankings</h1>
   <p class="text-soft"><%= current_user.owns?(@team) ? "View your team's rankings to see how your athletes stack up against each other." : 'View the rankings for this team to see how you stack up against the other members.' %></p>
 </div>
@@ -17,15 +17,15 @@
       <%= select_tag :date_range, options_for_select(['All season', 'This week', 'Last week', 'This month', 'Last month', 'Custom range'], params[:date_range]), data: { custom_date_range_target: 'select', action: 'custom-date-range#update custom-date-range#search' }, class: 'form-select' %>
     </div>
 
-    <div class="form-group hidden" data-custom-date-range-target="startDate">
+    <div class="hidden form-group" data-custom-date-range-target="startDate">
       <%= label_tag :start_date, 'Start date', class: 'form-label' %>
       <%= date_field_tag :start_date, nil, max: Date.yesterday, class: 'form-input', data: { form_validation_target: 'startDate', custom_date_range_target: 'startDateField', action: 'input->form-validation#validateEndDate custom-date-range#search' } %>
     </div>
 
-    <div class="form-group hidden" data-custom-date-range-target="endDate">
+    <div class="hidden form-group" data-custom-date-range-target="endDate">
       <%= label_tag :end_date, 'End date', class: 'form-label' %>
       <%= date_field_tag :end_date, nil, max: Date.today, class: 'form-input', data: { form_validation_target: 'endDate', custom_date_range_target: 'endDateField', action: 'input->form-validation#validateEndDate custom-date-range#search' } %>
-      <span class="error-message hidden my-1" data-form-validation-target="endDateError">End date must be today or earlier and must be after start date</span>
+      <span class="hidden my-1 error-message" data-form-validation-target="endDateError">End date must be today or earlier and must be after start date</span>
     </div>
   <% end %>
 
