@@ -7,9 +7,10 @@
 } %>
 
 <div>
-  <div class="flex items-end justify-between my-1">
-    <span class="text-soft text-sm"><%= label %></span>
-    <span class="text-soft text-sm text-right text-balance"><%= "#{percentage}%".concat(local_assigns[:marker] ? ' of goal met' : '') %>
+  <div class="flex items-end justify-between gap-4 my-1">
+    <span class="text-sm text-soft"><%= label %></span>
+    <span class="text-sm text-right text-soft text-balance">
+      <%= "#{percentage}%".concat(local_assigns[:marker] ? ' of goal met' : '') %>
       <% if local_assigns[:marker] %>
         <%= " / #{(marker - percentage).abs.round(2)}%" %>
         <%= percentage < marker ? 'behind' : 'ahead' %>
