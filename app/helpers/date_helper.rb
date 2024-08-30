@@ -1,20 +1,30 @@
 module DateHelper
   def pretty_date(date, format: :long)
+    return 'Invalid date' unless date.is_a?(Date)
+
     return date.strftime('%b %e, %Y') if format == :short
 
     today = Date.today
     days_difference = (today - date).to_i
 
-    return 'today' if days_difference.zero?
-    return 'yesterday' if days_difference == 1
+    day = date.strftime('%A')
+    day = 'today' if days_difference.zero?
+    day = 'yesterday' if days_difference == 1
 
-    if days_difference.between?(2, 6)
-      return date.strftime('%A')
-    elsif days_difference.between?(7, 365) && date.year == today.year
-      date.strftime('%A, %B %e')
+    if days_difference.between?(0, 365) && date.year == today.year
+      "#{day}, #{date.strftime('%B %e')}"
     else
-      date.strftime('%A, %B %e, %Y')
+      "#{day}, #{date.strftime('%B %e, %Y')}"
     end
+  end
+
+  def precise_pretty_date(date)
+    return 'Invalid date' unless date.is_a?(Date)
+
+    return 'Today' if date == Date.today
+    return 'Yesterday' if date == Date.yesterday
+
+    date.strftime('%B %e, %Y')
   end
 
   def days_ago(date)
