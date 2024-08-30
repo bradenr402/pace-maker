@@ -36,6 +36,18 @@
             <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
           </div>
         </th>
+        <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th" data-numeric="true" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
+          <div class="flex items-center">
+            Current streak
+            <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
+          </div>
+        </th>
+        <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th" data-numeric="true" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
+          <div class="flex items-center">
+            Longest streak
+            <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
+          </div>
+        </th>
       </tr>
     </thead>
 
@@ -65,6 +77,14 @@
           <td class="px-6 py-4 font-mono">
             <%= member.long_runs_in_date_range(team, date_range) %>
           </td>
+          <td class="px-6 py-4 font-mono">
+            <% current_streak = member.current_streak(team)[:streak] %>
+            <%= current_streak %> <span class="font-sans text-xs"><%= 'day'.pluralize(current_streak) %></span>
+          </td>
+          <td class="px-6 py-4 font-mono">
+            <% longest_streak = member.longest_streak(team)[:streak] %>
+            <%= longest_streak %> <span class="font-sans text-xs"><%= 'day'.pluralize(longest_streak) %></span>
+          </td>
         </tr>
       <% end %>
     </tbody>
@@ -80,6 +100,8 @@
         <% end %>
         <td class="px-6 py-3 font-mono"><%= team.miles_in_date_range(date_range) %> <span class="text-xs">mi</span></td>
         <td class="px-6 py-3 font-mono"><%= team.total_long_runs_in_date_range(date_range) %> <span class="text-xs">long runs</span></td>
+        <td class="px-6 py-3 font-mono"></td>
+        <td class="px-6 py-3 font-mono"></td>
       </tr>
     </tfoot>
   </table>
