@@ -48,7 +48,13 @@
         <span class="text-base font-normal text-soft"><%= 'day'.pluralize(current_streak) %></span>
       </p>
       <p class="my-1 text-soft">
-        <%= precise_pretty_date(current_streak_start_date) %> &ndash; <%= precise_pretty_date(current_streak_end_date) %>
+        <% if current_streak_start_date.present? && current_streak_end_date.present? %>
+          <%= precise_pretty_date(current_streak_start_date) %> &ndash; <%= precise_pretty_date(current_streak_end_date) %>
+        <% elsif current_streak_start_date.present? && current_streak_end_date.blank? %>
+          <%= precise_pretty_date(current_streak_start_date) %>
+        <% elsif current_streak.zero? %>
+          No current streak recorded.
+        <% end %>
       </p>
     </div>
 
@@ -65,7 +71,14 @@
         <span class="text-base font-normal text-soft"><%= 'day'.pluralize(longest_streak) %></span>
       </p>
       <p class="my-1 text-soft">
-        <%= precise_pretty_date(longest_streak_start_date) %> &ndash; <%= precise_pretty_date(longest_streak_end_date) %>
+        <% if longest_streak_start_date.present? && longest_streak_end_date.present? %>
+          <%= precise_pretty_date(longest_streak_start_date) %> &ndash; <%= precise_pretty_date(longest_streak_end_date) %>
+        <% elsif longest_streak_start_date.present? && longest_streak_end_date.blank? %>
+          <%= precise_pretty_date(longest_streak_start_date) %>
+          <span class="my-1 ml-1 help-text">(Most recent run)</span>
+        <% elsif longest_streak.zero? %>
+          No longest streak recorded.
+        <% end %>
       </p>
     </div>
   </div>

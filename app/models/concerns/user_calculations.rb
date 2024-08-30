@@ -107,6 +107,11 @@ module UserCalculations
       end
     end
 
+    # Return most recent run date if current streak is 1
+    if streak == 1
+      return { streak: 1, start_date: filtered_runs.first, end_date: nil }
+    end
+
     { streak:, start_date:, end_date: filtered_runs.first }
   end
 
@@ -151,6 +156,11 @@ module UserCalculations
         temp_end_date = nil
         next
       end
+    end
+
+    # Return most recent run date if longest streak is 1
+    if longest_streak == 1
+      return { streak: 1, start_date: filtered_runs.first, end_date: nil }
     end
 
     {
