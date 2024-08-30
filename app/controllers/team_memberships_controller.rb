@@ -8,9 +8,8 @@ class TeamMembershipsController < ApplicationController
 
   def update
     if @team_membership.update(team_membership_params)
-      redirect_back fallback_location:
-                      team_member_path(@team, @team_membership.user),
-                    success: 'Team membership was successfully updated.'
+      redirect_to team_member_path(@team, @team_membership.user),
+                  success: 'Team membership was successfully updated.'
     else
       render :edit,
              status: :unprocessable_entity,
