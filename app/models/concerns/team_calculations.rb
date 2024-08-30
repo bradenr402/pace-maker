@@ -12,6 +12,9 @@ module TeamCalculations
       .where(users: { id: members.pluck(:id) })
       .in_date_range(date: season_start_date..season_end_date)
 
+  def long_runs_in_season =
+    members.flat_map { |member| member.long_runs_this_season(self) }
+
   def total_long_runs_in_season =
     members.sum { |member| member.total_long_runs_this_season(self) }
 
@@ -21,6 +24,11 @@ module TeamCalculations
 
   def miles_in_date_range(date_range) =
     members.sum { |member| member.miles_in_date_range(date_range) }
+
+  def long_runs_in_date_range(date_range) =
+    members.flat_map do |member|
+      member.long_runs_in_date_range(self, date_range)
+    end
 
   def total_long_runs_in_date_range(date_range) =
     members.sum { |member| member.long_runs_in_date_range(self, date_range) }
