@@ -88,7 +88,8 @@ module UserCalculations
     most_recent_run = filtered_runs.first
     unless (most_recent_run.saturday? && team.exclude_saturday_from_streak?) ||
              (most_recent_run.sunday? && team.exclude_sunday_from_streak?) ||
-             (most_recent_run == Date.current - 1.day)
+             (most_recent_run == Date.current - 1.day) ||
+             (most_recent_run == Date.current)
       return { streak: 0, start_date: nil, end_date: most_recent_run }
     end
 
