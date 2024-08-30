@@ -30,7 +30,7 @@
     <% elsif team.season_over? %>
       <p class='text-sm text-soft'>Season is over.</p>
     <% else %>
-      <%= render 'shared/progress_bar', percentage: team.season_progress, label: 'Season Progress', size: :md %>
+      <%= render 'shared/progress_bar', percentage: team.season_progress, label: 'Season Progress', size: :lg %>
 
       <p class='my-1 text-xs text-soft'><%= team.days_remaining_in_season %> days remaining</p>
     <% end %>
