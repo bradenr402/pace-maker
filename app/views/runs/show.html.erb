@@ -8,7 +8,12 @@
         </h1>
       <% end %>
 
-      <%= link_to "Edit run", edit_run_path(@run), class: "btn btn-primary" if @run.user == current_user %>
+      <%= link_to 'Edit run', edit_run_path(@run), class: 'btn btn-primary' if @run.user == current_user %>
+      <%= button_to 'Delete run', @run,
+                    method: :delete,
+                    data: { turbo: false },
+                    class: 'btn btn-destructive btn-outline mr-auto' %>
+
     </div>
   </div>
   <%= render @run %>

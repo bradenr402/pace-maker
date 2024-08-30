@@ -56,13 +56,6 @@
       <%= form.submit 'Create run', data: { turbo: false }, class: 'btn btn-primary' %>
     <% else %>
       <%= form.submit 'Update run', data: { turbo: false }, class: 'btn btn-primary' %>
-
-      <%= link_to "Delete run", @run,
-                    class: "btn btn-destructive btn-outline mr-auto",
-                    data: {
-                      turbo_method: :delete,
-                      turbo_confirm: 'Are you sure you want to delete this run?'
-                    } %>
     <% end %>
 
     <%= link_to "Cancel", :back, data: { turbo: false }, class: "btn btn-white" %>
