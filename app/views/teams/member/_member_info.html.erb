@@ -40,71 +40,51 @@
   <div class="p-6 mt-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
     <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Personal Mileage Goal</h2>
     <% if team_membership.mileage_goal? && team.season_in_progress? %>
-      <div class="mb-4">
-        <% if team_membership.meeting_mileage_goal? %>
-          <p>
-            <%= member == current_user ? "You're" : "#{member.first_name} is" %> on track! <%= member == current_user ? "You're" : 'Your team is' %> <%= team_membership.season_progress %>% through the season, and <%= member == current_user ? "you've" : "#{member.first_name} has" %> met <%= team_membership.mileage_goal_progress %>% of <%= member == current_user ? "your" : member.gender_possessive %> personal mileage goal.
-          </p>
-        <% elsif team_membership.ahead_of_mileage_goal? %>
-          <p>
-            <%= member == current_user ? "You're" : "#{member.first_name} is" %> advancing! <%= member == current_user ? "You're" : 'Your team is' %> <%= team_membership.season_progress %>% through the season, and <%= member == current_user ? "you've" : "#{member.first_name} has" %> already met <%= team_membership.mileage_goal_progress %>% of <%= member == current_user ? "your" : member.gender_possessive %> personal mileage goal.
-          </p>
-        <% else %>
-          <p>
-            <%= member == current_user ? "You're" : "#{member.first_name} is" %> falling behind! <%= member == current_user ? "You're" : 'Your team is' %> <%= team_membership.season_progress %>% through the season, but <%= member == current_user ? "you've" : "#{member.first_name} has" %> only met <%= team_membership.mileage_goal_progress %>% of <%= member == current_user ? "your" : member.gender_possessive %> personal mileage goal.
-          </p>
-        <% end %>
-      </div>
+      <p class="mb-4"><%= team_membership.mileage_goal_progress_message(current_user) %></p>
 
       <%= render 'shared/progress_bar', percentage: team_membership.mileage_goal_progress, label: 'Personal Mileage Goal Progress', marker: team_membership.season_progress, size: :lg %>
 
       <p class='my-1 text-xs text-soft'>
-        You have <%= pluralize(team.days_remaining_in_season, 'day') %> to finish the remaining <%= pluralize(team_membership.miles_remaining_in_goal, 'mile') %> of your personal mileage goal.
+        <% if team_membership.mileage_goal_complete? %>
+          You met your <%= team.mileage_goal %> personal mileage goal with <%= pluralize(team.days_remaining_in_season, 'day') %> to spare!
+        <% else %>
+          You have <%= pluralize(team.days_remaining_in_season, 'day') %> to finish the remaining <%= pluralize(team_membership.miles_remaining_in_goal, 'mile') %> of your personal mileage goal.
+        <% end %>
       </p>
     <% elsif team.season_not_started_yet? %>
       <p class="text-soft">Season hasn't started yet.</p>
     <% elsif team.season_dates? %>
-      <p class="text-soft">No personal mileage goal has been set by this member.</p>
+      <p class="text-soft"><%= member == current_user ? 'You have' : "#{member.first_name} has" %> not set a personal mileage goal.</p>
     <% elsif team_membership.mileage_goal? %>
       <p class="text-soft">No season dates have been set for this team.</p>
     <% else %>
-      <p class="text-soft">No personal mileage goal has been set by this member or season dates set for this team.</p>
+      <p class="text-soft"><%= member == current_user ? 'You have' : "#{member.first_name} has" %> not set a personal mileage goal and season dates have not been set for this team.</p>
     <% end %>
   </div>
 
-  <!-- Personal Mileage Goal Card -->
+  <!-- Personal Long Run Goal Card -->
   <div class="p-6 mt-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
     <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Personal Long Run Goal</h2>
     <% if team_membership.long_run_goal? && team.season_in_progress? %>
-      <div class="mb-4">
-        <% if team_membership.meeting_long_run_goal? %>
-          <p>
-            <%= member == current_user ? "You're" : "#{member.first_name} is" %> on track! <%= member == current_user ? "You're" : 'Your team is' %> <%= team_membership.season_progress %>% through the season, and <%= member == current_user ? "you've" : "#{member.first_name} has" %> met <%= team_membership.long_run_goal_progress %>% of <%= member == current_user ? "your" : member.gender_possessive %> personal long run goal.
-          </p>
-        <% elsif team_membership.ahead_of_long_run_goal? %>
-          <p>
-            <%= member == current_user ? "You're" : "#{member.first_name} is" %> advancing! <%= member == current_user ? "You're" : 'Your team is' %> <%= team_membership.season_progress %>% through the season, and <%= member == current_user ? "you've" : "#{member.first_name} has" %> already met <%= team_membership.long_run_goal_progress %>% of <%= member == current_user ? "your" : member.gender_possessive %> personal long run goal.
-          </p>
-        <% else %>
-          <p>
-            <%= member == current_user ? "You're" : "#{member.first_name} is" %> falling behind! <%= member == current_user ? "You're" : 'Your team is' %> <%= team_membership.season_progress %>% through the season, but <%= member == current_user ? "you've" : "#{member.first_name} has" %> only met <%= team_membership.long_run_goal_progress %>% of <%= member == current_user ? "your" : member.gender_possessive %> personal long run goal.
-          </p>
-        <% end %>
-      </div>
+      <p class="mb-4"><%= team_membership.long_run_goal_progress_message(current_user) %></p>
 
       <%= render 'shared/progress_bar', percentage: team_membership.long_run_goal_progress, label: 'Personal Long Run Goal Progress', marker: team_membership.season_progress, size: :lg %>
 
       <p class='my-1 text-xs text-soft'>
-        You have <%= pluralize(team.days_remaining_in_season, 'day') %> to finish the remaining <%= pluralize(team_membership.long_runs_remaining_in_goal, 'long run') %> of your personal long run goal.
+        <% if team_membership.long_run_goal_complete? %>
+          <%= member == current_user ? 'You met your' : "#{member.first_name} met #{member.gender_possessive}" %> <%= team.long_run_goal %> personal long run goal with <%= pluralize(team.days_remaining_in_season, 'day') %> to spare!
+        <% else %>
+          <%= member == current_user ? 'You have' : "#{member.first_name} has" %> <%= pluralize(team.days_remaining_in_season, 'day') %> to finish the remaining <%= pluralize(team_membership.long_runs_remaining_in_goal, 'long run') %> of <%= member == current_user ? 'your' : member.gender_possessive %> personal long run goal.
+        <% end %>
       </p>
     <% elsif team.season_not_started_yet? %>
       <p class="text-soft">Season hasn't started yet.</p>
     <% elsif team.season_dates? %>
-      <p class="text-soft">No personal mileage goal has been set by this member.</p>
+      <p class="text-soft"><%= member == current_user ? 'You have' : "#{member.first_name} has" %> not set a personal long run goal.</p>
     <% elsif team_membership.long_run_goal? %>
       <p class="text-soft">No season dates have been set for this team.</p>
     <% else %>
-      <p class="text-soft">No personal mileage goal has been set by this member or season dates set for this team.</p>
+      <p class="text-soft"><%= member == current_user ? 'You have' : "#{member.first_name} has" %> not set a personal long run goal and season dates have not been set for this team.</p>
     <% end %>
   </div>
 </div>
