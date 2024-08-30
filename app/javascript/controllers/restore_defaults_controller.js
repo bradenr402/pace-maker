@@ -13,6 +13,8 @@ export default class extends Controller {
     'longRunDistanceFemale',
     'longRunDistanceNeutral',
     'weekStart',
+    'includeSaturday',
+    'includeSunday',
   ];
 
   connect() {
@@ -29,7 +31,9 @@ export default class extends Controller {
       longRunDistanceMale: 8,
       longRunDistanceFemale: 6,
       longRunDistanceNeutral: 7,
-      weekStart: 1, // Default to monday
+      weekStart: 'monday',
+      includeSaturday: false,
+      includeSunday: false,
     };
   }
 
@@ -83,5 +87,11 @@ export default class extends Controller {
 
     if (this.hasWeekStartTarget)
       this.weekStartTarget.value = this.defaultValues.weekStart;
+
+    if (this.hasIncludeSaturdayTarget)
+      this.includeSaturdayTarget.checked = this.defaultValues.includeSaturday;
+
+    if (this.hasIncludeSundayTarget)
+      this.includeSundayTarget.checked = this.defaultValues.includeSunday;
   }
 }

@@ -14,13 +14,18 @@ module TeamSettings
               long_run_distance_female: 6,
               long_run_distance_neutral: 7
             }
-      s.key :general,
+      s.key :streaks,
             defaults: {
-              week_start: :monday
+              include_saturday: false,
+              include_sunday: false
             }
+      s.key :general, defaults: { week_start: :monday }
     end
   end
 
   def require_gender? = settings(:join_requirements).require_gender
   def week_start = settings(:general).week_start.to_sym
+
+  def include_saturday_in_streak? = settings(:streaks).include_saturday
+  def include_sunday_in_streak? = settings(:streaks).include_sunday
 end

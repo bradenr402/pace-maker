@@ -22,7 +22,10 @@ class TeamSettingsController < ApplicationController
              :long_run_distance_neutral
            )
          ) &&
-         @team.settings(:general).update(settings_params.slice(:week_start))
+         @team.settings(:general).update(settings_params.slice(:week_start)) &&
+         @team.settings(:streaks).update(
+           settings_params.slice(:include_saturday, :include_sunday)
+         )
       redirect_to @team, success: 'Team settings updated successfully.'
     else
       redirect_to @team, error: 'Unable to update team settings.'
@@ -41,7 +44,9 @@ class TeamSettingsController < ApplicationController
         :long_run_distance_male,
         :long_run_distance_female,
         :long_run_distance_neutral,
-        :week_start
+        :week_start,
+        :include_saturday,
+        :include_sunday
       )
 
   def authorize_owner!

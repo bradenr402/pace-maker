@@ -6,6 +6,8 @@
 <%= form_with model: @team, url: team_settings_path(@team), local: true, data: { controller: 'restore-defaults team-gender-fields' } do |form| %>
   <!-- Hidden fields to ensure that unchecked checkboxes submit 'false' -->
   <%= hidden_field_tag 'team[settings][require_gender]', 'false' %>
+  <%= hidden_field_tag 'team[settings][include_saturday]', 'false' %>
+  <%= hidden_field_tag 'team[settings][include_sunday]', 'false' %>
 
   <%= form.fields_for :settings do |settings_form| %>
     <div class="my-6">
@@ -28,7 +30,7 @@
     </div>
 
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
-      <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Run Settings</h2>
+      <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Long Runs</h2>
       <p class="text-sm text-slate-600 dark:text-slate-400">Set the number of miles for a run to count as a "long run".</p>
     </div>
 
@@ -48,6 +50,23 @@
     </div>
 
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
+      <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Streaks</h2>
+      <p class="text-sm text-slate-600 dark:text-slate-400">Choose if weekends are counted towards your team member's run streaks.</p>
+    </div>
+
+    <div class="space-y-2 form-group">
+      <div class="flex items-center gap-2">
+        <%= settings_form.check_box :include_saturday, { checked: @team.include_saturday_in_streak?, class: "form-input-checkbox", data: { restore_defaults_target: 'includeSaturday' } }, true, false %>
+        <%= settings_form.label :include_saturday, 'Saturday', class: "select-none text-sm text-slate-700 dark:text-slate-300" %>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <%= settings_form.check_box :include_sunday, { checked: @team.include_sunday_in_streak?, class: "form-input-checkbox", data: { restore_defaults_target: 'includeSunday' } }, true, false %>
+        <%= settings_form.label :include_sunday, 'Sunday', class: "select-none text-sm text-slate-700 dark:text-slate-300" %>
+      </div>
+    </div>
+
+    <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
       <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">General</h2>
       <p class="text-sm text-slate-600 dark:text-slate-400">Miscellaneous settings to optimize your experience.</p>
     </div>
@@ -56,7 +75,6 @@
       <%= settings_form.label :week_start, 'Start week on', class: 'form-label' %>
       <%= settings_form.select :week_start, options_for_select([['Sunday', :sunday], ['Monday', :monday], ['Tuesday', :tuesday], ['Wednesday', :wednesday], ['Thursday', :thursday], ['Friday', :friday], ['Saturday', :saturday]], @team.settings(:general).week_start), {}, data: { restore_defaults_target: 'weekStart' }, class: 'form-select' %>
       <p class="my-1 help-text">Choose what day is considered the start of the week.</p>
-      <p class="my-1 help-text">This will affect how user's streaks are calculated and how graphs display on your team's page.</p>
     </div>
   <% end %>
 
