@@ -54,7 +54,6 @@ class TeamMembership < ApplicationRecord
   def mileage_goal_progress_message(current_user)
     possessive = user == current_user ? 'your' : user.gender_possessive
     met_goal = user == current_user ? "you've" : "#{user.first_name} has"
-    personal = user == current_user ? 'your' : 'personal'
     season_state = user == current_user ? "You're" : "#{member.first_name} is"
     team_state = user == current_user ? "You're" : 'Your team is'
 
