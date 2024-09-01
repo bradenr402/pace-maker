@@ -1,5 +1,3 @@
-const defaultTheme = require('tailwindcss/defaultTheme');
-
 module.exports = {
   darkMode: 'class',
   mode: 'jit',
@@ -11,16 +9,6 @@ module.exports = {
     './app/assets/stylesheets/**/*.css',
   ],
   safelist: [{ pattern: /form-.+/ }, { pattern: /btn-.+/ }],
-  theme: {
-    extend: {
-      fontFamily: {
-        sans: ['Inter', ...defaultTheme.fontFamily.sans],
-      },
-    },
-  },
-  plugins: [
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/typography'),
-    require('@tailwindcss/container-queries'),
-  ],
+  theme: {},
+  plugins: [],
 };
