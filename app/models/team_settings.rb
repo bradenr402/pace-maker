@@ -29,6 +29,10 @@ module TeamSettings
   def require_gender? = settings(:join_requirements).require_gender
   def week_start = settings(:general).week_start.to_sym
 
+  def long_run_distance_male = settings(:long_runs).long_run_distance_male
+  def long_run_distance_female = settings(:long_runs).long_run_distance_female
+  def long_run_distance_neutral = settings(:long_runs).long_run_distance_neutral
+
   def include_saturday_in_streak? = settings(:streaks).include_saturday
   def include_sunday_in_streak? = settings(:streaks).include_sunday
   def exclude_saturday_from_streak? = !include_saturday_in_streak?

@@ -121,9 +121,9 @@ class Team < ApplicationRecord
     end
 
     if user.gender == 'male'
-      settings(:runs).long_run_distance_male.to_i
+      long_run_distance_male.to_i
     else
-      settings(:runs).long_run_distance_female.to_i
+      long_run_distance_female.to_i
     end
   end
 end

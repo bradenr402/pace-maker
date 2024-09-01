@@ -36,17 +36,17 @@
 
     <div class="form-group <%= @team.require_gender? ? '' : 'hidden' %>" data-team-gender-fields-target="longRunMale">
       <%= settings_form.label :long_run_distance_male, 'Male long run distance', class: 'form-label' %>
-      <%= settings_form.number_field :long_run_distance_male, step: 0.1, min: 0.1, value: @team.settings(:runs).long_run_distance_male, class: 'form-input', data: { restore_defaults_target: 'longRunDistanceMale' } %>
+      <%= settings_form.number_field :long_run_distance_male, step: 0.1, min: 0.1, value: @team.long_run_distance_male, class: 'form-input', data: { restore_defaults_target: 'longRunDistanceMale' } %>
     </div>
 
     <div class="form-group <%= @team.require_gender? ? '' : 'hidden' %>" data-team-gender-fields-target="longRunFemale">
       <%= settings_form.label :long_run_distance_female, 'Female long run distance', class: 'form-label' %>
-      <%= settings_form.number_field :long_run_distance_female, step: 0.1, min: 0.1, value: @team.settings(:runs).long_run_distance_female, class: 'form-input', data: { restore_defaults_target: 'longRunDistanceFemale' } %>
+      <%= settings_form.number_field :long_run_distance_female, step: 0.1, min: 0.1, value: @team.long_run_distance_female, class: 'form-input', data: { restore_defaults_target: 'longRunDistanceFemale' } %>
     </div>
 
     <div class="form-group <%= @team.require_gender? ? 'hidden' : '' %>" data-team-gender-fields-target="longRunNeutral">
       <%= settings_form.label :long_run_distance_neutral, 'Long run distance', class: 'form-label' %>
-      <%= settings_form.number_field :long_run_distance_neutral, step: 0.1, min: 0.1, value: @team.settings(:runs).long_run_distance_neutral, class: 'form-input', data: { restore_defaults_target: 'longRunDistanceNeutral' } %>
+      <%= settings_form.number_field :long_run_distance_neutral, step: 0.1, min: 0.1, value: @team.long_run_distance_neutral, class: 'form-input', data: { restore_defaults_target: 'longRunDistanceNeutral' } %>
     </div>
 
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
