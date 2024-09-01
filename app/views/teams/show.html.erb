@@ -14,7 +14,7 @@
 
     <div class="flex items-center justify-center gap-4 mt-4 md:justify-end">
       <%= render 'teams/shared/team_buttons', team: @team %>
-      <%= link_to 'Edit personal goals', edit_team_team_membership_path(@team, current_user), data: { turbo: false }, class: 'btn btn-white' %>
+      <%= link_to 'Edit personal goals', edit_team_team_membership_path(@team, current_user), data: { turbo: false }, class: 'btn btn-white ml-auto' if current_user.member_of?(@team) %>
     </div>
   </div>
 
