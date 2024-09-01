@@ -1,7 +1,7 @@
 <div class="mb-24">
   <div class="pb-6 mt-10 mb-6 space-y-2 border-b dark:border-slate-700">
     <h1 id="runs_title" class="heading">Filter Runs</h1>
-    <p class="text-soft">Filter <%= user == current_user ? 'your runs' : 'runs for this user' %> by date.</p>
+    <p class="text-soft">Filter <%= user == current_user ? 'your' : "#{user.first_name}'s" %> runs by date.</p>
   </div>
 
   <%= form_with url: user_path(user), method: :get, local: true, html: { novalidate: true }, data: { turbo_frame: 'runs', controller: 'custom-date-range form-validation' } do %>

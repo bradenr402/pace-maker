@@ -1,7 +1,7 @@
 <div class="mb-24">
   <div class="pb-6 mt-10 mb-6 space-y-2 border-b dark:border-slate-700">
     <h1 class="heading">User Info</h1>
-    <p class="text-soft">Information and statistics about <%= user == current_user ? 'you' : 'this user' %>.</p>
+    <p class="text-soft">Information and statistics about <%= user == current_user ? 'you' : "#{user.first_name}" %>.</p>
   </div>
 
   <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -33,7 +33,7 @@
   <div class="mb-24">
     <div class="pb-6 mt-10 mb-6 space-y-2 border-b dark:border-slate-700">
       <h1 class="heading">Contact</h1>
-      <p class="text-soft"><%= user == current_user ? 'Your contact information' : 'Contact information for this user' %>.</p>
+      <p class="text-soft"><%= user == current_user ? 'Your contact information' : "Contact information for #{user.first_name}" %>.</p>
     </div>
 
     <div class="block mb-8 space-y-10 sm:flex sm:space-y-0 sm:items-center sm:justify-around">

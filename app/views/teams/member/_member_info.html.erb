@@ -1,6 +1,6 @@
 <div class="pb-6 mt-10 mb-6 space-y-2 border-b dark:border-slate-700">
   <h1 class="heading">Member Info</h1>
-  <p class="text-soft">Information and statistics about <%= member == current_user ? 'your' : "this user's" %> participation in <%= link_to team.name, team, class: 'btn-link' %>.</p>
+  <p class="text-soft">Information and statistics about <%= member == current_user ? 'your' : "#{member.first_name}'s" %> participation in <%= link_to team.name, team, class: 'btn-link' %>.</p>
 </div>
 
 <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -92,9 +92,9 @@
 
     <p class='my-1 text-xs text-soft'>
       <% if team_membership.mileage_goal_complete? %>
-        You met your <%= team.mileage_goal %> personal mileage goal with <%= pluralize(team.days_remaining_in_season, 'day') %> to spare!
+        <%= member == current_user ? 'You met your' : "#{member.first_name} met #{member.gender_possessive}" %> <%= team.mileage_goal %> personal mileage goal with <%= pluralize(team.days_remaining_in_season, 'day') %> to spare!
       <% else %>
-        You have <%= pluralize(team.days_remaining_in_season, 'day') %> to finish the remaining <%= pluralize(team_membership.miles_remaining_in_goal, 'mile') %> of your personal mileage goal.
+        <%= member == current_user ? 'You have' : "#{member.first_name} has" %> <%= pluralize(team.days_remaining_in_season, 'day') %> to finish the remaining <%= pluralize(team_membership.miles_remaining_in_goal, 'mile') %> of your personal mileage goal.
       <% end %>
     </p>
   <% elsif team.season_not_started_yet? %>
