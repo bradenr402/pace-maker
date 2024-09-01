@@ -15,7 +15,7 @@ class TeamSettingsController < ApplicationController
     if @team.settings(:join_requirements).update(
          settings_params.slice(:require_gender, :max_allowed_requests)
        ) &&
-         @team.settings(:runs).update(
+         @team.settings(:long_runs).update(
            settings_params.slice(
              :long_run_distance_male,
              :long_run_distance_female,

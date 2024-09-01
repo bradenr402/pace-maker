@@ -8,7 +8,7 @@ module TeamSettings
               require_gender: false,
               max_allowed_requests: 3
             }
-      s.key :runs,
+      s.key :long_runs,
             defaults: {
               long_run_distance_male: 8,
               long_run_distance_female: 6,
