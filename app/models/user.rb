@@ -76,7 +76,7 @@ class User < ApplicationRecord
   def gender_possessive
     return 'their' unless gender?
 
-    gender == 'male' ? 'his' : 'her'
+    male? ? 'his' : 'her'
   end
 
   def gender_object

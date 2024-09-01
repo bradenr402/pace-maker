@@ -24,7 +24,7 @@ class Run < ApplicationRecord
     settings = team.settings(:long_runs)
     required_distance =
       if team.require_gender?
-        if user.gender == 'male'
+        if user.male?
           settings.long_run_distance_male.to_i
         else
           settings.long_run_distance_female.to_i

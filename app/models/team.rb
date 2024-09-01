@@ -118,10 +118,12 @@ class Team < ApplicationRecord
   def get_long_run_distance_for_user(user)
     return long_run_distance_neutral.to_i unless require_gender?
 
-    if user.gender == 'male'
-      long_run_distance_male.to_i
-    else
-      long_run_distance_female.to_i
-    end
+    user.male? ? long_run_distance_male.to_i : long_run_distance_female.to_i
+  end
+
+  def get_streak_distance_for_user(user)
+    return streak_distance_neutral.to_i unless require_gender?
+
+    user.male? ? streak_distance_male.to_i : streak_distance_female.to_i
   end
 end
