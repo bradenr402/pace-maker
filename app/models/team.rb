@@ -40,9 +40,9 @@ class Team < ApplicationRecord
   def season_not_started_yet? = season_dates? && season_start_date.future?
 
   def gender_requirement_met?(user)
-    return true unless settings(:join_requirements).require_gender
+    return true unless require_gender?
 
-    return true unless user.gender.blank?
+    return true unless user.gender?
 
     false
   end
@@ -116,9 +116,7 @@ class Team < ApplicationRecord
   end
 
   def get_long_run_distance_for_user(user)
-    unless settings(:join_requirements).require_gender
-      return settings(:runs).long_run_distance_neutral.to_i
-    end
+    return long_run_distance_neutral.to_i unless require_gender?
 
     if user.gender == 'male'
       long_run_distance_male.to_i
