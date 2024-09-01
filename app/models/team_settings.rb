@@ -17,7 +17,10 @@ module TeamSettings
       s.key :streaks,
             defaults: {
               include_saturday: false,
-              include_sunday: false
+              include_sunday: false,
+              streak_distance_male: 2,
+              streak_distance_female: 2,
+              streak_distance_neutral: 2
             }
       s.key :general, defaults: { week_start: :monday }
     end
@@ -30,4 +33,8 @@ module TeamSettings
   def include_sunday_in_streak? = settings(:streaks).include_sunday
   def exclude_saturday_from_streak? = !include_saturday_in_streak?
   def exclude_sunday_from_streak? = !include_sunday_in_streak?
+
+  def streak_distance_male = settings(:streaks).streak_distance_male
+  def streak_distance_female = settings(:streaks).streak_distance_female
+  def streak_distance_neutral = settings(:streaks).streak_distance_neutral
 end

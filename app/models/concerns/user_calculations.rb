@@ -67,7 +67,19 @@ module UserCalculations
     long_runs_in_date_range(team, date_range).count
 
   def runs_valid_for_streak(team)
-    runs.where('distance >= ?', 2) # TODO: Add team settings for minimum distance
+    settings = team.settings(:streaks)
+    required_distance =
+      if team.require_gender?
+        if male?
+          settings.streak_distance_male.to_i
+        else
+          settings.streak_distance_female.to_i
+        end
+      else
+        settings.streak_distance_neutral.to_i
+      end
+
+    runs.where('distance >= ?', required_distance)
   end
 
   def current_streak(team)

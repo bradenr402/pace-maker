@@ -34,6 +34,9 @@ export default class extends Controller {
       weekStart: 'monday',
       includeSaturday: false,
       includeSunday: false,
+      streakMale: 2,
+      streakFemale: 2,
+      streakNeutral: 2,
     };
   }
 
@@ -93,5 +96,14 @@ export default class extends Controller {
 
     if (this.hasIncludeSundayTarget)
       this.includeSundayTarget.checked = this.defaultValues.includeSunday;
+
+    if (this.hasStreakMaleTarget)
+      this.streakMaleTarget.value = this.defaultValues.streakMale;
+
+    if (this.hasStreakFemaleTarget)
+      this.streakFemaleTarget.value = this.defaultValues.streakFemale;
+
+    if (this.hasStreakNeutralTarget)
+      this.streakNeutralTarget.value = this.defaultValues.streakNeutral;
   }
 }

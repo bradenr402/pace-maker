@@ -7,6 +7,9 @@ export default class extends Controller {
     'longRunMale',
     'longRunFemale',
     'longRunNeutral',
+    'streakMale',
+    'streakFemale',
+    'streakNeutral',
   ];
 
   toggleFields() {
@@ -21,11 +24,19 @@ export default class extends Controller {
     this.longRunMaleTarget.classList.remove('hidden');
     this.longRunFemaleTarget.classList.remove('hidden');
     this.longRunNeutralTarget.classList.add('hidden');
+
+    this.streakMaleTarget.classList.remove('hidden');
+    this.streakFemaleTarget.classList.remove('hidden');
+    this.streakNeutralTarget.classList.add('hidden');
   }
 
   genderNotRequired() {
     this.longRunMaleTarget.classList.add('hidden');
     this.longRunFemaleTarget.classList.add('hidden');
     this.longRunNeutralTarget.classList.remove('hidden');
+
+    this.streakMaleTarget.classList.add('hidden');
+    this.streakFemaleTarget.classList.add('hidden');
+    this.streakNeutralTarget.classList.remove('hidden');
   }
 }

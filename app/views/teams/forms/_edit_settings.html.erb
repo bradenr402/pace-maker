@@ -51,6 +51,26 @@
 
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
       <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Streaks</h2>
+      <p class="text-sm text-slate-600 dark:text-slate-400">Set the number of miles for a run to count towards a member's run streak.</p>
+    </div>
+
+    <div class="form-group <%= @team.require_gender? ? '' : 'hidden' %>" data-team-gender-fields-target="streakMale">
+      <%= settings_form.label :streak_distance_male, 'Male streak distance', class: 'form-label' %>
+      <%= settings_form.number_field :streak_distance_male, step: 0.1, min: 0.1, value: @team.streak_distance_male, class: 'form-input', data: { restore_defaults_target: 'streakDistanceMale' } %>
+    </div>
+
+    <div class="form-group <%= @team.require_gender? ? '' : 'hidden' %>" data-team-gender-fields-target="streakFemale">
+      <%= settings_form.label :streak_distance_female, 'Female streak distance', class: 'form-label' %>
+      <%= settings_form.number_field :streak_distance_female, step: 0.1, min: 0.1, value: @team.streak_distance_female, class: 'form-input', data: { restore_defaults_target: 'streakDistanceFemale' } %>
+    </div>
+
+    <div class="form-group <%= @team.require_gender? ? 'hidden' : '' %>" data-team-gender-fields-target="streakNeutral">
+      <%= settings_form.label :streak_distance_neutral, 'Streak distance', class: 'form-label' %>
+      <%= settings_form.number_field :streak_distance_neutral, step: 0.1, min: 0.1, value: @team.streak_distance_neutral, class: 'form-input', data: { restore_defaults_target: 'streakDistanceNeutral' } %>
+    </div>
+
+    <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
+      <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Streak Resets</h2>
       <p class="text-sm text-slate-600 dark:text-slate-400">Choose if weekends can reset your team member's run streaks.</p>
       <p class="my-1 help-text">Weekend runs will still be counted towards their streaks, but skipping weekends will only reset their streaks if you check these boxes.</p>
     </div>
@@ -86,7 +106,7 @@
     <p class="my-1 help-text">Reset all settings to their defaults for a fresh start.</p>
   </div>
 
-  <div class="flex items-center gap-6 mt-10">
+  <div class="sticky bottom-0 flex items-center gap-6 pt-6 pb-6 bg-white border-t dark:bg-slate-900 border-slate-200 dark:border-slate-700">
     <%= form.submit "Save settings", data: { turbo: false }, class: "btn btn-primary mr-auto" %>
     <%= link_to "Cancel", :back, class: "btn btn-white", data: { turbo: false } %>
   </div>
