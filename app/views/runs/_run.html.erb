@@ -1,7 +1,8 @@
 <div class="py-6">
   <div class="flex flex-wrap-reverse items-center gap-4">
     <% unless current_page?(run_path(run)) %>
-      <%= link_to run.user, data: { turbo: false }, class: 'group flex gap-4 items-center mr-auto' do %>
+      <% path = local_assigns[:team] ? team_member_path(team, run.user) : user_path(run.user) %>
+      <%= link_to path, data: { turbo: false }, class: 'group flex gap-4 items-center mr-auto' do %>
         <%= image_tag run.user.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-12 rounded-lg drop-shadow-lg dark:drop-shadow-none object-cover' if run.user.avatar.attached? %>
         <p class="transition duration-300 ease-in-out subheading group-hover:text-indigo-600 dark:group-hover:text-indigo-500">
           <%= run.user.default_name %>
@@ -10,6 +11,8 @@
     <% end %>
 
     <%= render 'runs/long_run_badge' if local_assigns[:team] && run.long_run_for?(team) %>
+    <% streak = run.user.current_streak(team)[:streak] if local_assigns[:team] %>
+    <%= render 'runs/streak_badge', streak: streak if local_assigns[:team] && streak.positive? && run.date.today? %>
   </div>
 
   <%= current_page?(run) ? render('runs/run_content', run: run) : link_to(run, data: { turbo: false }) { render 'runs/run_content', run: run } %>

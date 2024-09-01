@@ -62,12 +62,27 @@ class Team < ApplicationRecord
         .where('date >= ?', 7.days.ago)
         .order(date: :desc)
 
-    # Filter runs based on user-specific distance requirements
     runs.select do |run|
       required_distance = get_long_run_distance_for_user(run.user)
       run.distance >= required_distance
     end
   end
+
+  def streak_runs
+    runs =
+      Run
+        .joins(:user)
+        .where(users: { id: members.pluck(:id) })
+        .where('date >= ?', Date.current)
+        .order(date: :desc)
+
+    runs.select do |run|
+      required_distance = get_streak_distance_for_user(run.user)
+      run.distance >= required_distance
+    end
+  end
+
+  def featured_runs = (recent_long_runs + streak_runs).uniq
 
   def long_runs_in_date_range(range)
     runs =

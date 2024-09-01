@@ -1,12 +1,12 @@
 <div class="pb-6 mt-10 space-y-2 border-b dark:border-slate-700">
   <h1 class="heading">Featured</h1>
-  <p class="text-soft">Recent long runs by members of this team.</p>
+  <p class="text-soft">Recent long runs and streaks by members of this team.</p>
 </div>
 
 <div class="mb-10 divide-y dark:divide-slate-700 dark:text-slate-700">
-  <% recent_long_runs = team.recent_long_runs %>
-  <% if recent_long_runs.present? %>
-    <% recent_long_runs.each do |run| %>
+  <% featured_runs = team.featured_runs %>
+  <% if featured_runs.present? %>
+    <% featured_runs.each do |run| %>
       <%= render run, team: team %>
     <% end %>
   <% else %>
