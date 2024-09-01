@@ -72,21 +72,25 @@
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
       <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Streak Resets</h2>
       <p class="text-sm text-slate-600 dark:text-slate-400">Choose if weekends can reset your team member's run streaks.</p>
-      <p class="my-1 help-text">Weekend runs will still be counted towards their streaks, but skipping weekends will only reset their streaks if you check these boxes.</p>
+      <p class="my-1 help-text">Leave these boxes unchecked if you want to give your team members the weekends off.</p>
     </div>
 
-    <div class="space-y-2 form-group">
-      <div class="flex items-center gap-2">
-        <%= settings_form.check_box :include_saturday, { checked: @team.include_saturday_in_streak?, class: "form-input-checkbox", data: { restore_defaults_target: 'includeSaturday' } }, true, false %>
-        <%= settings_form.label :include_saturday, 'Include Saturday', class: "select-none text-sm text-slate-700 dark:text-slate-300" %>
+    <div class="space-y-4 form-group">
+      <div>
+        <div class="flex items-center gap-2">
+          <%= settings_form.check_box :include_saturday, { checked: @team.include_saturday_in_streak?, class: "form-input-checkbox", data: { restore_defaults_target: 'includeSaturday' } }, true, false %>
+          <%= settings_form.label :include_saturday, 'Include Saturdays', class: "select-none text-sm text-slate-700 dark:text-slate-300" %>
+        </div>
+        <p class="my-1 help-text">Check this box if you want to allow Saturdays to reset your team member's run streaks.</p>
       </div>
-      <p class="my-1 help-text">Check this box if you want to allow Saturdays to reset your team member's run streaks.</p>
 
-      <div class="flex items-center gap-2">
-        <%= settings_form.check_box :include_sunday, { checked: @team.include_sunday_in_streak?, class: "form-input-checkbox", data: { restore_defaults_target: 'includeSunday' } }, true, false %>
-        <%= settings_form.label :include_sunday, 'Include Sunday', class: "select-none text-sm text-slate-700 dark:text-slate-300" %>
+      <div>
+        <div class="flex items-center gap-2">
+          <%= settings_form.check_box :include_sunday, { checked: @team.include_sunday_in_streak?, class: "form-input-checkbox", data: { restore_defaults_target: 'includeSunday' } }, true, false %>
+          <%= settings_form.label :include_sunday, 'Include Sundays', class: "select-none text-sm text-slate-700 dark:text-slate-300" %>
+        </div>
+        <p class="my-1 help-text">Check this box if you want to allow Sundays to reset your team member's run streaks.</p>
       </div>
-      <p class="my-1 help-text">Check this box if you want to allow Sundays to reset your team member's run streaks.</p>
     </div>
 
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
