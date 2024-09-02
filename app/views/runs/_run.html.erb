@@ -10,9 +10,11 @@
       <% end %>
     <% end %>
 
-    <%= render 'runs/long_run_badge' if local_assigns[:team] && run.long_run_for?(team) %>
     <% streak = run.user.current_streak(team)[:streak] if local_assigns[:team] %>
-    <%= render 'runs/streak_badge', streak: streak if local_assigns[:team] && streak.positive? && run.date.today? %>
+    <div class="flex flex-wrap items-center gap-2">
+      <%= render 'runs/long_run_badge' if local_assigns[:team] && run.long_run_for?(team) %>
+      <%= render 'runs/streak_badge', streak: streak if local_assigns[:team] && streak.positive? && (run.date.today? || run.date.yesterday?) %>
+    </div>
   </div>
 
   <%= current_page?(run) ? render('runs/run_content', run: run) : link_to(run, data: { turbo: false }) { render 'runs/run_content', run: run } %>
