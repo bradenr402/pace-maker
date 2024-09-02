@@ -85,12 +85,15 @@ module UserCalculations
     streak = 1
     start_date = nil
 
+    # Return a streak of 0 if the streak has been broken
+    # (i.e. the most recent run is not the previous day
+    # or the previous day is a Saturday or Sunday and the team excludes Saturdays and Sundays from streaks)
     most_recent_run = filtered_runs.first
     unless (most_recent_run.saturday? && team.exclude_saturday_from_streak?) ||
              (most_recent_run.sunday? && team.exclude_sunday_from_streak?) ||
              (most_recent_run == Date.current - 1.day) ||
              (most_recent_run == Date.current)
-      return { streak: 0, start_date: nil, end_date: most_recent_run }
+      return { streak: 0, start_date: nil, end_date: nil }
     end
 
     filtered_runs.each_cons(2) do |current_date, previous_date|
