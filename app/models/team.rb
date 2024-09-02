@@ -82,7 +82,7 @@ class Team < ApplicationRecord
     end
   end
 
-  def featured_runs = (recent_long_runs + streak_runs).uniq
+  def featured_runs = (recent_long_runs | streak_runs).sort_by(&:date).reverse
 
   def long_runs_in_date_range(range)
     runs =
