@@ -15,7 +15,7 @@ wb.styles do |style|
         "# of miles",
         "# of long runs",
         "Current Streak",
-        "Longest Streak"
+        "Record Streak"
       ], style: heading
     else
       sheet.add_row [
@@ -23,7 +23,7 @@ wb.styles do |style|
         "# of miles",
         "# of long runs",
         "Current Streak",
-        "Longest Streak"
+        "Record Streak"
       ], style: heading
     end
 
@@ -62,7 +62,7 @@ wb.styles do |style|
         "# of miles",
         "# of long runs",
         "Current Streak",
-        "Longest Streak"
+        "Record Streak"
       ], style: heading
     else
       sheet.add_row [
@@ -70,7 +70,7 @@ wb.styles do |style|
         "# of miles",
         "# of long runs",
         "Current Streak",
-        "Longest Streak"
+        "Record Streak"
       ], style: heading
     end
 
@@ -108,7 +108,7 @@ wb.styles do |style|
         "# of miles",
         "# of long runs",
         "Current Streak",
-        "Longest Streak"
+        "Record Streak"
       ], style: heading
     else
       sheet.add_row [
@@ -116,7 +116,7 @@ wb.styles do |style|
         "# of miles",
         "# of long runs",
         "Current Streak",
-        "Longest Streak"
+        "Record Streak"
       ], style: heading
     end
 
