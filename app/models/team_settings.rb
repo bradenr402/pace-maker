@@ -27,6 +27,8 @@ module TeamSettings
   end
 
   def require_gender? = settings(:join_requirements).require_gender
+  def max_allowed_requests = settings(:join_requirements).max_allowed_requests
+
   def week_start = settings(:general).week_start.to_sym
 
   def long_run_distance_male = settings(:long_runs).long_run_distance_male
