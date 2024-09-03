@@ -1,16 +1,9 @@
 module TeamCalculations
   def total_miles_in_season =
-    Run
-      .joins(user: :teams)
-      .where(teams: { id: })
-      .in_date_range(season_start_date..season_end_date)
-      .sum(:distance)
+    members.flat_map { |member| member.runs_this_season(self) }.sum(&:distance)
 
   def runs_in_season =
-    Run
-      .joins(:user)
-      .where(users: { id: members.pluck(:id) })
-      .in_date_range(date: season_start_date..season_end_date)
+    members.flat_map { |member| member.runs_this_season(self) }
 
   def long_runs_in_season =
     members.flat_map { |member| member.long_runs_this_season(self) }
@@ -18,7 +11,7 @@ module TeamCalculations
   def total_long_runs_in_season =
     members.sum { |member| member.total_long_runs_this_season(self) }
 
-  def total_miles = members.sum { |member| member.total_miles }
+  def total_miles = members.sum(&:total_miles)
 
   def total_long_runs = members.sum { |member| member.total_long_runs(self) }
 
