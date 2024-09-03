@@ -14,4 +14,6 @@ class TeamJoinRequest < ApplicationRecord
   def allowed? =
     request_number < team.max_allowed_requests && !user.member_of?(team) &&
       !user.owns?(team)
+
+  def blocked? = request_number >= team.max_allowed_requests
 end
