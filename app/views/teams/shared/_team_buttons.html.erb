@@ -1,19 +1,34 @@
-<% request = team.join_requests.find_by(user_id: current_user.id) %>
+<% request = team.join_requests.find_by(user_id: current_user) %>
+<% current_page_team = current_page?(team_path(team)) %>
 
 <% if current_user.owns?(team) %>
-  <%= link_to 'Edit team', edit_team_path(team), class: "btn #{current_page?(team_path(team)) ? 'btn-primary' : 'btn-white btn-sm'}", data: { turbo: false } %>
+  <%= link_to 'Edit team', edit_team_path(team), class: "btn #{current_page_team ? 'btn-primary' : 'btn-white btn-sm'}", data: { turbo: false } %>
+
 <% elsif current_user.member_of?(team) %>
-  <%= button_to 'Leave team', leave_team_path(team), class: "btn btn-destructive btn-outline #{current_page?(team_path(team)) ? '' : 'btn-sm'}", data: { turbo: false } %>
+  <%= button_to 'Leave team', leave_team_path(team), class: "btn btn-destructive btn-outline #{'btn-sm' unless current_page_team}", data: { turbo: false } %>
+
 <% else %>
-  <% if request.nil? || ((request.rejected? || request.canceled?) && request.allowed?) %>
-    <% if team.gender_requirement_met?(current_user) %>
-      <%= button_to 'Join team', request.nil? ? join_team_path(team) : team_join_request_path(request), method: request.nil? ? :post : :patch, class: "btn btn-primary #{current_page?(team_path(team)) ? '' : 'btn-sm'}", data: { turbo: false } %>
-    <% elsif current_page?(team_path(team)) %>
+  <% if team.gender_requirement_met?(current_user) %>
+    <% if request.nil? || request.allowed? %>
+      <%= button_to 'Join team',
+            request.nil? ? join_team_path(team) : team_join_request_path(request),
+            method: request.nil? ? :post : :patch,
+            class: "btn btn-primary #{'btn-sm' unless current_page_team}",
+            data: { turbo: false } %>
+
+    <% elsif request.pending? %>
+      <%= button_to 'Cancel request',
+            cancel_team_join_request_path(request),
+            method: :patch,
+            class: "btn btn-destructive btn-outline #{'btn-sm' unless current_page_team}",
+            data: { turbo: false } %>
+    <% end%>
+
+  <% elsif current_page_team %>
+    <% if request.present? && request.blocked? %>
+      <p class="text-base error-message">You have been blocked from this team.</p>
+    <% else %>
       <p class="w-full text-base text-center error-message">You must specify your gender to join this team.</p>
     <% end %>
-  <% elsif request.pending? %>
-    <%= button_to 'Cancel request', cancel_team_join_request_path(request), method: :patch, class: "btn btn-destructive btn-outline #{current_page?(team_path(team)) ? '' : 'btn-sm'}", data: { turbo: false } %>
-  <% elsif current_page?(team_path(team)) %>
-    <p class="text-base error-message">You have been blocked from this team.</p>
   <% end %>
 <% end %>
