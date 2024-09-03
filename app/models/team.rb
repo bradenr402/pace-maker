@@ -63,7 +63,7 @@ class Team < ApplicationRecord
         .order(date: :desc)
 
     runs.select do |run|
-      required_distance = get_long_run_distance_for_user(run.user)
+      required_distance = long_run_distance_for_user(run.user)
       run.distance >= required_distance
     end
   end
@@ -77,7 +77,7 @@ class Team < ApplicationRecord
         .order(date: :desc)
 
     runs.select do |run|
-      required_distance = get_streak_distance_for_user(run.user)
+      required_distance = streak_distance_for_user(run.user)
       run.distance >= required_distance
     end
   end
@@ -93,7 +93,7 @@ class Team < ApplicationRecord
 
     # Filter runs based on user-specific distance requirements
     runs.select do |run|
-      required_distance = get_long_run_distance_for_user(run.user)
+      required_distance = long_run_distance_for_user(run.user)
       run.distance >= required_distance
     end
   end
@@ -110,6 +110,18 @@ class Team < ApplicationRecord
   def female_members = members.where(gender: 'female')
 
   def neutral_gender_members = members.where(gender: '')
+
+  def long_run_distance_for_user(user)
+    return long_run_distance_neutral.to_i unless require_gender?
+
+    user.male? ? long_run_distance_male.to_i : long_run_distance_female.to_i
+  end
+
+  def streak_distance_for_user(user)
+    return streak_distance_neutral.to_i unless require_gender?
+
+    user.male? ? streak_distance_male.to_i : streak_distance_female.to_i
+  end
 
   private
 
@@ -128,17 +140,5 @@ class Team < ApplicationRecord
       self.season_start_date = nil
       self.season_end_date = nil
     end
-  end
-
-  def get_long_run_distance_for_user(user)
-    return long_run_distance_neutral.to_i unless require_gender?
-
-    user.male? ? long_run_distance_male.to_i : long_run_distance_female.to_i
-  end
-
-  def get_streak_distance_for_user(user)
-    return streak_distance_neutral.to_i unless require_gender?
-
-    user.male? ? streak_distance_male.to_i : streak_distance_female.to_i
   end
 end

@@ -11,12 +11,7 @@ module UserCalculations
   def miles_this_season(team) = runs_this_season(team).sum(:distance)
 
   def long_runs_this_season(team)
-    unless team.require_gender?
-      long_run_distance = team.long_run_distance_neutral
-    else
-      long_run_distance =
-        (male? ? team.long_run_distance_male : team.long_run_distance_female)
-    end
+    long_run_distance = team.long_run_distance_for_user(self)
 
     runs_this_season(team).where('distance > ?', long_run_distance)
   end
@@ -24,12 +19,7 @@ module UserCalculations
   def total_long_runs_this_season(team) = long_runs_this_season(team).count
 
   def total_long_runs(team)
-    unless team.require_gender?
-      long_run_distance = team.long_run_distance_neutral
-    else
-      long_run_distance =
-        (male? ? team.long_run_distance_male : team.long_run_distance_female)
-    end
+    long_run_distance = team.long_run_distance_for_user(self)
 
     runs.where('distance > ?', long_run_distance).count
   end
@@ -38,12 +28,7 @@ module UserCalculations
     runs_in_date_range(date_range).sum(:distance)
 
   def long_runs_in_date_range(team, date_range)
-    unless team.require_gender?
-      long_run_distance = team.long_run_distance_neutral
-    else
-      long_run_distance =
-        (male? ? team.long_run_distance_male : team.long_run_distance_female)
-    end
+    long_run_distance = team.long_run_distance_for_user(self)
 
     runs_in_date_range(date_range).where(
       'distance > ?',
@@ -55,17 +40,7 @@ module UserCalculations
     long_runs_in_date_range(team, date_range).count
 
   def runs_valid_for_streak(team)
-    settings = team.settings(:streaks)
-    required_distance =
-      if team.require_gender?
-        if male?
-          settings.streak_distance_male.to_i
-        else
-          settings.streak_distance_female.to_i
-        end
-      else
-        settings.streak_distance_neutral.to_i
-      end
+    required_distance = team.streak_distance_for_user(self)
 
     runs.where('distance >= ?', required_distance)
   end
