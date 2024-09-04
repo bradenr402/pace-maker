@@ -12,9 +12,14 @@
       <p class="mx-auto prose text-center dark:prose-invert"><%= @team.description %></p>
     <% end %>
 
-    <div class="flex items-center justify-center gap-4 mt-4 md:justify-end">
+    <div class="flex flex-wrap items-center justify-center gap-4 mt-4 md:justify-end">
       <%= render 'teams/shared/team_buttons', team: @team %>
-      <%= link_to 'Edit personal goals', edit_team_team_membership_path(@team, current_user), data: { turbo: false }, class: 'btn btn-white ml-auto' if current_user.member_of?(@team) %>
+      <%= button_to 'Delete team',
+                    @team,
+                    method: :delete,
+                    data: { turbo: false },
+                    class: 'btn btn-destructive btn-outline' if current_user.owns?(@team) %>
+      <%= link_to 'Edit personal goals', edit_team_team_membership_path(@team, current_user), data: { turbo: false }, class: 'btn btn-white sm:ml-auto' if current_user.member_of?(@team) %>
     </div>
   </div>
 

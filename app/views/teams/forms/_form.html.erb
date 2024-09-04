@@ -100,13 +100,6 @@
       <%= form.submit 'Create team', data: { turbo: false }, class: 'btn btn-primary' %>
     <% else %>
       <%= form.submit 'Update team', data: { turbo: false }, class: 'btn btn-primary' %>
-
-      <%= link_to 'Delete team', @team,
-                      class: 'btn btn-destructive btn-outline mr-auto',
-                      data: {
-                        turbo_method: :delete,
-                        turbo_confirm: 'Are you sure you want to delete this team?'
-                      } %>
     <% end %>
 
     <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-white' %>
