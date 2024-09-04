@@ -52,12 +52,7 @@
   </div>
 
   <div class="flex flex-wrap items-center justify-start gap-6">
-    <% if form.object.new_record? %>
-      <%= form.submit 'Create run', data: { turbo: false }, class: 'btn btn-primary' %>
-    <% else %>
-      <%= form.submit 'Update run', data: { turbo: false }, class: 'btn btn-primary' %>
-    <% end %>
-
-    <%= link_to "Cancel", :back, data: { turbo: false }, class: "btn btn-white" %>
+    <%= form.submit form.object.new_record? ? 'Create run' : 'Update run', data: { turbo: false }, class: 'btn btn-primary mr-auto' %>
+    <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-white' %>
   </div>
 <% end %>
