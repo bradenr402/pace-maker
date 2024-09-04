@@ -106,6 +106,12 @@
   <% end %>
 
   <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
+    <%= form.label :copy_from_team_id, 'Copy settings from:', class: 'form-label' %>
+    <%= form.collection_select :copy_from_team_id, current_user.owned_teams.reject { |team| team == @team }, :id, :name, { prompt: 'Select a team' }, { class: 'form-select' } %>
+    <p class="my-1 help-text">Copy settings from one of your other teams.</p>
+  </div>
+
+  <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
     <button type="button" data-action="restore-defaults#restore" class="btn btn-sm btn-white">Restore defaults</button>
     <p class="my-1 help-text">Reset all settings to their defaults for a fresh start.</p>
   </div>

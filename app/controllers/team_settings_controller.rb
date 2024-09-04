@@ -5,6 +5,18 @@ class TeamSettingsController < ApplicationController
   def update
     @team = Team.find(params[:team_id])
 
+    if params[:team][:copy_from_team_id].present?
+      source_team =
+        current_user.owned_teams.find(params[:team][:copy_from_team_id])
+
+      copy_settings_from_team(source_team)
+      return(
+        redirect_to @team,
+                    success:
+                      "Team settings successfully copied from #{source_team.name}."
+      )
+    end
+
     settings_params =
       team_settings_params.transform_values do |value|
         %w[true false].include?(value) ? value == 'true' : value
@@ -55,8 +67,26 @@ class TeamSettingsController < ApplicationController
         :include_sunday,
         :streak_distance_male,
         :streak_distance_female,
-        :streak_distance_neutral
+        :streak_distance_neutral,
+        :copy_from_team_id
       )
+
+  def copy_settings_from_team(source_team)
+    join_requirements = source_team.settings(:join_requirements).value || {}
+    @team.settings(:join_requirements).update(join_requirements)
+
+    long_runs = source_team.settings(:long_runs).value || {}
+    @team.settings(:long_runs).update(long_runs)
+
+    streaks = source_team.settings(:streaks).value || {}
+    @team.settings(:streaks).update(streaks)
+
+    general = source_team.settings(:general).value || {}
+    @team.settings(:general).update(general)
+
+    # Save the team to persist the copied settings
+    @team.save
+  end
 
   def authorize_owner!
     team = Team.find(params[:team_id])
