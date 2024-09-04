@@ -59,7 +59,7 @@
   </div>
 
   <div id="membersTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'membersTab' ? '' : 'hidden' %>">
-    <%= render 'teams/show/members', members: @members %>
+    <%= render 'teams/show/members', team: @team, members: @members %>
   </div>
 
   <% if current_user.owns?(@team) %>

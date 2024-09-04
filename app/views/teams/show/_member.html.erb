@@ -1,6 +1,6 @@
 <div class="py-6">
   <div class="flex items-center gap-4">
-    <%= link_to team_member_path(@team, member), data: { turbo: false }, class: 'group flex gap-4 items-center mr-auto' do %>
+    <%= link_to team_member_path(team, member), data: { turbo: false }, class: 'group flex gap-4 items-center mr-auto' do %>
       <%= image_tag member.avatar.variant(resize_to_limit: [100, 100]).processed, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none object-cover' if member.avatar.attached? %>
 
       <div>
@@ -10,9 +10,9 @@
       </div>
     <% end %>
 
-    <% if current_user.owns?(@team) && member != current_user %>
+    <% if current_user.owns?(team) && member != current_user %>
       <div class="text-right">
-        <%= button_to 'Remove from team', remove_member_team_path(team_id: @team.id, user_id: member.id), method: :post, class: 'text-xs text-rose-600 font-semibold hover:text-rose-700', data: { confirm: 'Are you sure you want to remove this member?' } %>
+        <%= button_to 'Remove from team', remove_member_team_path(team_id: team.id, user_id: member.id), method: :post, class: 'text-xs text-rose-600 font-semibold hover:text-rose-700', data: { confirm: 'Are you sure you want to remove this member?' } %>
       </div>
     <% end %>
   </div>
