@@ -13,8 +13,13 @@
         <%= button_to 'Delete run',
                       @run,
                       method: :delete,
-                      data: { turbo: false },
-                      class: 'btn btn-destructive btn-outline mr-auto' %>
+                      data: {
+                        turbo: false,
+                        controller: 'confirmation',
+                        action: 'confirmation#confirm',
+                        confirmation_message_value: 'Are you sure you want to delete this run?'
+                      },
+                      class: 'btn btn-destructive btn-outline' %>
       <% end %>
     </div>
   </div>
