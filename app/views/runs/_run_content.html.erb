@@ -1,46 +1,49 @@
-<article id="<%= dom_id run %>" class="prose dark:prose-invert">
-  <div class="flex items-center gap-2">
-    <%= inline_svg_tag 'icons/calendar.svg', class: 'size-5' %>
-    <p class="text-lg font-bold"><%= pretty_date(run.date).titlecase %></p>
+<div>
+  <div class="flex items-start justify-between mb-4">
+    <p class="text-lg font-bold text-balance"><%= run.distance %> mi Run <span class="text-sm text-soft">(<%= run.distance_km %> km)</span></p>
+    <p class="text-soft text-xs text-balance"><%= pretty_date(run.date).titlecase %></p>
   </div>
 
-  <table class="my-0 text-base table-auto border-y border-slate-200 dark:border-slate-700">
-    <tr>
-      <th>Distance:</th>
-      <td><span class="text-base"><%= run.distance %> <span class="text-sm text-slate-600 dark:text-slate-400">mi</span></span></td>
-      <td class='hidden md:block'><span class="text-sm text-slate-600 dark:text-slate-400"><%= run.distance_km %> km</span></td>
-    </tr>
-    <% if run.duration.present? %>
-      <tr>
-        <th>Time:</th>
-        <td><span class="text-base"><%= clock_time_display(run.duration) %></span></td>
-        <td class='hidden md:block'><span class="text-sm text-slate-600 dark:text-slate-400"><%= precise_time_ago(run.duration, { format: :short }) %></span></td>
-      </tr>
-      <tr>
-        <th>Pace:</th>
-        <td><span class="text-base"><%= clock_time_display(run.pace_per_mile) %> <span class="text-sm text-slate-600 dark:text-slate-400">/ mi</span></span></td>
-        <td class='hidden md:block'><span class="text-sm text-slate-600 dark:text-slate-400"><%= clock_time_display(run.pace_per_km) %> / km</span></td>
-      </tr>
-    <% end %>
-  </table>
-
-  <% if run.comments.present? %>
-    <% if current_page?(run_path(run)) %>
-      <p class="mb-0 font-semibold">Comments</p>
-      <%= simple_format run.comments, class: 'mt-0 text-sm' %>
-    <% else %>
-      <div class="flex items-center gap-2 my-3">
-        <%= inline_svg_tag 'icons/comment.svg', class: 'size-5' %>
-        <p class="my-0 text-sm">Comments</p>
+  <% if run.duration? %>
+    <div class="flex items-center gap-6 mb-4">
+      <div class="flex items-center gap-2">
+        <%= inline_svg_tag 'icons/clock.svg', class: 'size-5 text-soft' %>
+        <p class="text-sm font-bold"><%= clock_time_display(run.duration) %></p>
       </div>
-    <% end %>
+      <div class="flex items-center gap-2">
+        <%= inline_svg_tag 'icons/lightning.svg', class: 'size-5 text-soft' %>
+        <p class="text-sm font-bold"><%= clock_time_display(run.pace_per_mile) %> / mi <span class="text-xs font-normal text-soft">(<%= clock_time_display(run.pace_per_km )%> / km)</span></p>
+      </div>
+    </div>
   <% end %>
 
-  <div class="flex items-center mt-2">
-    <%= inline_svg_tag 'icons/clock.svg', class: 'size-4 mr-1.5' %>
-    <time class="pr-3 text-xs text-slate-600 dark:text-slate-400" datetime="<%= run.created_at.to_formatted_s(:long) %>">Posted <%= time_ago_in_words(run.created_at) + " ago" %></time>
-    <%- if run.edited? %>
-      <time class="pl-3 text-xs border-l text-slate-600 dark:text-slate-400 dark:border-slate-700" datetime="<%= run.updated_at.to_formatted_s(:long) %>">Edited <%= time_ago_in_words(run.updated_at) + " ago" %></time>
-    <%- end %>
+  <% if run.comments? %>
+    <div class="mb-4">
+      <% if current_page?(run_path(run)) %>
+        <div class="flex items-start gap-2">
+          <%= inline_svg_tag 'icons/comment.svg', class: 'size-5 text-soft' %>
+          <%= simple_format run.comments, class: 'mt-0 text-sm text-soft' %>
+        </div>
+      <% else %>
+        <div class="flex items-center gap-2">
+          <%= inline_svg_tag 'icons/comment.svg', class: 'size-5 text-soft' %>
+          <p class="my-0 text-sm text-soft">Comments</p>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="flex items-center pt-4 border-t dark:border-slate-700">
+    <div class="flex items-center gap-1">
+      <%= inline_svg_tag 'icons/calendar.svg', class: 'size-4 mr-1.5 text-soft' %>
+      <time class="help-text" datetime="<%= run.created_at.to_formatted_s(:long) %>">Created: <%= time_ago_in_words(run.created_at) + " ago" %></time>
+    </div>
+
+    <% if run.edited? %>
+      <div class="flex items-center gap-1 pl-4 ml-4 border-l dark:border-slate-700">
+        <%= inline_svg_tag 'icons/edit.svg', class: 'size-4 mr-1.5 text-soft' %>
+        <time class="help-text" datetime="<%= run.updated_at.to_formatted_s(:long) %>">Edited: <%= time_ago_in_words(run.updated_at) + " ago" %></time>
+      </div>
+    <% end %>
   </div>
-</article>
+</div>

@@ -1,33 +1,44 @@
-<div class="py-6">
-  <div class="flex flex-wrap-reverse items-center gap-4">
-    <% unless current_page?(run_path(run)) %>
-      <% path = local_assigns[:team] ? team_member_path(team, run.user) : user_path(run.user) %>
-      <%= link_to path, data: { turbo: false }, class: 'group flex gap-4 items-center mr-auto' do %>
-        <%= image_tag run.user.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-12 rounded-lg drop-shadow-lg dark:drop-shadow-none object-cover' if run.user.avatar.attached? %>
-        <p class="transition duration-300 ease-in-out subheading group-hover:text-indigo-600 dark:group-hover:text-indigo-500">
-          <%= run.user.default_name %>
-        </p>
+<div class="my-6">
+  <article id="<%= dom_id run %>">
+    <div class="p-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700 text-slate-800 dark:text-slate-100">
+      <% unless current_page?(run_path(run)) || current_page?(user_path(run.user)) || !local_assigns[:team] %>
+        <div class="mb-4 flex flex-wrap-reverse items-end gap-4">
+          <% unless current_page?(run_path(run)) || current_page?(user_path(run.user)) %>
+            <% path = local_assigns[:team] ? team_member_path(team, run.user) : user_path(run.user) %>
+
+            <%= link_to path, data: { turbo: false }, class: 'group mr-auto flex items-center gap-2' do %>
+              <%= image_tag run.user.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-10 rounded-lg object-cover drop-shadow-lg dark:drop-shadow-none' if run.user.avatar.attached? %>
+              <p class="text-lg font-bold transition duration-300 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= run.user.default_name %></p>
+            <% end %>
+          <% end %>
+
+          <% if local_assigns[:team] %>
+            <% streak_data = run.user.current_streak(team) %>
+            <% streak = streak_data[:streak] %>
+            <% streak_end_date = streak_data[:end_date] %>
+
+            <div class="flex flex-wrap items-center gap-2">
+              <%= render 'runs/long_run_badge' if local_assigns[:team] && run.long_run_for?(team) %>
+              <% if local_assigns[:team] && streak.positive? %>
+                <% if run.date.today? && streak_end_date&.today? %>
+                  <%= render 'runs/streak_badge', streak: streak %>
+                <% elsif run.date.yesterday? %>
+                  <%= render 'runs/streak_badge', streak: streak if streak_end_date&.yesterday? %>
+                  <%= render 'runs/streak_badge', streak: streak - 1 if streak_end_date&.today? %>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
       <% end %>
-    <% end %>
 
-    <% if local_assigns[:team] %>
-      <% streak_data = run.user.current_streak(team) %>
-      <% streak = streak_data[:streak] %>
-      <% streak_end_date = streak_data[:end_date] %>
-    <% end %>
-
-    <div class="flex flex-wrap items-center gap-2">
-      <%= render 'runs/long_run_badge' if local_assigns[:team] && run.long_run_for?(team) %>
-      <% if local_assigns[:team] && streak.positive? %>
-        <% if run.date.today? && streak_end_date&.today? %>
-          <%= render 'runs/streak_badge', streak: streak %>
-        <% elsif run.date.yesterday? %>
-          <%= render 'runs/streak_badge', streak: streak if streak_end_date&.yesterday? %>
-          <%= render 'runs/streak_badge', streak: streak - 1 if streak_end_date&.today? %>
+      <% if current_page?(run) %>
+        <%= render 'runs/run_content', run: run, team: local_assigns[:team] %>
+      <% else %>
+        <%= link_to run, data: { turbo: false }, class: 'block' do %>
+          <%= render 'runs/run_content', run: run, team: local_assigns[:team] %>
         <% end %>
       <% end %>
     </div>
-  </div>
-
-  <%= current_page?(run) ? render('runs/run_content', run: run) : link_to(run, data: { turbo: false }) { render 'runs/run_content', run: run } %>
+  </article>
 </div>
