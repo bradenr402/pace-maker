@@ -18,10 +18,10 @@
   <% else %>
     <div class="flex flex-col items-center justify-center gap-6 py-12">
       <% if user == current_user %>
-        <p class="prose dark:prose-invert text-soft">You haven't gone on any runs yet today.</p>
+        <p class="text-soft">You haven't gone on any runs yet today.</p>
         <%= link_to 'New run', new_run_path, class: 'btn btn-primary' %>
       <% else %>
-        <p class="prose dark:prose-invert text-soft"><%= user.default_name %> hasn't gone on any runs yet today.</p>
+        <p class="text-soft"><%= user.default_name %> hasn't gone on any runs yet today.</p>
       <% end %>
     </div>
   <% end %>
