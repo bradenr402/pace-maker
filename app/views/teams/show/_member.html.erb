@@ -4,7 +4,7 @@
       <%= image_tag member.avatar.variant(resize_to_limit: [100, 100]).processed, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none object-cover' if member.avatar.attached? %>
 
       <div>
-        <%= content_tag(:p, 'Coach', class: 'text-slate-800 dark:text-slate-100 text-sm') if member.owns?(@team) %>
+        <%= content_tag(:p, member == current_user ? 'You' : 'Coach', class: 'text-soft text-sm') if member.owns?(team) || member == current_user %>
         <h2 class='transition duration-300 ease-in-out subheading group-hover:text-indigo-600 dark:group-hover:text-indigo-500'><%= member.default_name %></h2>
         <%= content_tag(:p, member.username, class: 'help-text') if member.display_name.present? %>
       </div>
