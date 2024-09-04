@@ -40,5 +40,6 @@ module DateHelper
     end
   end
 
-  def format_date(date) = date.strftime('%m/%d/%Y')
+  def format_date(date, separator: '/') =
+    date.strftime("%m#{separator}%d#{separator}%Y")
 end
