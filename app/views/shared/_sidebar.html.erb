@@ -5,22 +5,22 @@
     </div>
 
     <%= link_to profile_path, aria: { current: current_page?(profile_path) ? 'page' : nil }, class: "sidebar-link #{current_page?(profile_path) ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
-      <%= inline_svg_tag 'icons/profile.svg', class: 'size-6' %>
+      <%= inline_svg_tag 'icons/profile.svg', class: 'size-6 text-soft' %>
       <span>Profile</span>
     <% end %>
 
     <%= link_to teams_path, aria: { current: current_page?(teams_path) ? 'page' : nil }, class: "sidebar-link #{current_page?(teams_path) ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
-      <%= inline_svg_tag 'icons/team.svg', class: 'size-6' %>
+      <%= inline_svg_tag 'icons/team.svg', class: 'size-6 text-soft' %>
       <span>Teams</span>
     <% end %>
 
     <%= link_to search_path, aria: { current: current_page?(search_path) ? 'page' : nil }, class: "sidebar-link #{current_page?(search_path) ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
-      <%= inline_svg_tag 'icons/search.svg', class: 'size-6' %>
+      <%= inline_svg_tag 'icons/search.svg', class: 'size-6 text-soft' %>
       <span>Search</span>
     <% end %>
 
     <%= link_to edit_user_registration_path, aria: { current: current_page?(edit_user_registration_path) ? 'page' : nil }, class: "sidebar-link #{current_page?(edit_user_registration_path) ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
-      <%= inline_svg_tag 'icons/settings.svg', class: 'size-6' %>
+      <%= inline_svg_tag 'icons/settings.svg', class: 'size-6 text-soft' %>
       <span>Settings</span>
     <% end %>
 

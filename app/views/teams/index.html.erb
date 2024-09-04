@@ -1,17 +1,17 @@
 <div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="ownedTeamsTab" class="max-w-3xl px-4 mx-auto my-16">
   <div class="tab-container">
     <button type="button" id="ownedTeamsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'ownedTeamsTab' ? 'btn-tab-active' : '' %>">
-      <%= inline_svg_tag 'icons/team.svg', class: 'size-5' %>
+      <%= inline_svg_tag 'icons/team.svg', class: 'size-5 text-soft' %>
       <span>My Teams</span>
     </button>
 
     <button type="button" id="teamMembershipsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'teamMembershipsTab' ? 'btn-tab-active' : '' %>">
-      <%= inline_svg_tag 'icons/id-card.svg', class: 'size-5' %>
+      <%= inline_svg_tag 'icons/id-card.svg', class: 'size-5 text-soft' %>
       <span>My Team Memberships</span>
     </button>
 
     <button type="button" id="otherTeamsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'otherTeamsTab' ? 'btn-tab-active' : '' %>">
-      <%= inline_svg_tag 'icons/search.svg', class: 'size-5' %>
+      <%= inline_svg_tag 'icons/search.svg', class: 'size-5 text-soft' %>
       <span>Find Teams</span>
     </button>
   </div>
