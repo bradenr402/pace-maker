@@ -1,20 +1,7 @@
 <!DOCTYPE html>
 <html data-controller="theme" data-theme-user-theme-value="<%= user_signed_in? ? current_user.settings(:appearance).theme : 'system' %>">
   <head>
-    <title>TeamRunner</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
-
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-
-    <script>
-      if ('<%= user_signed_in? ? current_user.settings(:appearance).theme : 'system' %>' === 'dark' || ('<%= user_signed_in? ? current_user.settings(:appearance).theme : 'system' %>' === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark')
-      }
-    </script>
+    <%= render "layouts/head" %>
   </head>
 
   <body class='relative antialiased font-normal leading-normal bg-white text-slate-800 dark:text-slate-100 selection:bg-indigo-500/40 dark:bg-slate-900'>

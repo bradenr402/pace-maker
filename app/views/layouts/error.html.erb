@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html class="h-full">
+  <head>
+    <%= render "layouts/head", error_code: @status_code %>
+  </head>
+  <body class='h-full bg-white font-normal leading-normal text-slate-800 antialiased selection:bg-indigo-500/40 dark:bg-slate-900 dark:text-slate-100'>
+    <main class="h-full">
+      <%= yield %>
+    </main>
+  </body>
+</html>

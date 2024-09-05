@@ -1,0 +1,20 @@
+<section class="grid h-screen place-items-center px-4">
+  <div class="text-center">
+    <div class="flex flex-col items-center justify-center gap-3 text-indigo-500/75 dark:text-indigo-500/65">
+      <%= inline_svg_tag 'icons/clock.svg', class: 'size-14' %>
+      <h1 class="mb-4 text-8xl sm:text-9xl font-black">504</h1>
+    </div>
+
+    <p class="mb-4 text-2xl font-bold tracking-tight sm:text-4xl">Gateway Timeout</p>
+    <p class="mb-1 text-soft text-balance">Sorry, the server took too long to respond.</p>
+    <p class="mb-6 text-soft text-balance">Try refreshing the page, or try one of the links below.</p>
+
+    <div class="flex items-center justify-center gap-x-6">
+      <%= link_to :back, class: 'btn btn-white gap-2 font-bold' do %>
+        <%= inline_svg_tag 'icons/arrow-long-left.svg', class: 'size-5' %>
+        <span>Go back</span>
+      <% end %>
+      <%= link_to 'Return home', root_path, class: 'btn btn-primary font-bold' %>
+    </div>
+  </div>
+</section>
