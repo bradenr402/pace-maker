@@ -1,17 +1,20 @@
-<%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-  <%= link_to "Forgot your password?", new_password_path(resource_name), class: 'btn-link text-sm' %>
-<% end %>
+<% forgot_password_check = devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+<% confirmation_instructions_check = devise_mapping.confirmable? && controller_name != 'confirmations' %>
+<% unlock_instructions_check = devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
+<% omniauth_check = devise_mapping.omniauthable? %>
 
-<%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-  <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name), class: 'btn-link text-sm' %>
-<% end %>
+<%- if forgot_password_check || confirmation_instructions_check || unlock_instructions_check || omniauth_check %>
+  <div class="mt-4 text-center">
+    <%= link_to 'Forgot your password?', new_password_path(resource_name), class: 'btn-link text-sm' if forgot_password_check %>
 
-<%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
-  <%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name), class: 'btn-link text-sm' %>
-<% end %>
+    <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name), class: 'btn-link text-sm' if confirmation_instructions_check %>
 
-<%- if devise_mapping.omniauthable? %>
-  <%- resource_class.omniauth_providers.each do |provider| %>
-    <%= button_to "Sign in with #{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider), data: { turbo: false } %>
-  <% end %>
+    <%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name), class: 'btn-link text-sm' if unlock_instructions_check %>
+
+    <%- if omniauth_check %>
+      <%- resource_class.omniauth_providers.each do |provider| %>
+        <%= button_to "Sign in with #{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider), data: { turbo: false } %>
+      <% end %>
+    <% end %>
+  </div>
 <% end %>
