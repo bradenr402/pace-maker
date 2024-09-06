@@ -1,0 +1,26 @@
+<% content_for :masthead do %>
+  <div class="text-center">
+    <h1 class="heading my-3">Forgot your password?</h1>
+    <p class="mb-6 text-slate-700 dark:text-slate-200">
+      Don&#8217;t have an account? <%= link_to "Sign up", new_registration_path(resource_name), class: 'btn-link' %>
+    </p>
+  </div>
+<% end %>
+
+<%= render 'auth_layout' do %>
+  <%= form_for resource, as: resource_name, url: password_path(resource_name), data: { controller: 'form-validation' }, html: { method: :post, novalidate: true } do |f| %>
+    <%= render 'devise/shared/error_messages', resource: resource %>
+
+    <p class="mb-6 text-soft text-sm">Enter your email address and we'll send you an email with instructions and a link to reset your password.</p>
+
+    <div class="form-group">
+      <%= f.label :email, class: 'form-label' %>
+      <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-input', data: { form_validation_target: 'email', action: 'input->form-validation#validateEmail' } %>
+      <p class="error-message hidden my-1" data-form-validation-target="emailError">Invalid email address</p>
+    </div>
+
+    <%= f.submit 'Send instructions', data: { turbo: false }, class: 'btn btn-primary w-full' %>
+  <% end %>
+
+  <%= render "devise/shared/links" %>
+<% end %>

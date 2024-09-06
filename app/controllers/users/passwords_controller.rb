@@ -12,14 +12,17 @@ class Users::PasswordsController < Devise::PasswordsController
   # end
 
   # GET /resource/password/edit?reset_password_token=abcdef
-  # def edit
-  #   super
-  # end
+  def edit
+    @token = params[:reset_password_token]
+    super
+  end
 
   # PUT /resource/password
-  # def update
-  #   super
-  # end
+  def update
+    super
+    flash.clear
+    set_flash_message! :success, :updated if resource.errors.empty?
+  end
 
   # protected
 

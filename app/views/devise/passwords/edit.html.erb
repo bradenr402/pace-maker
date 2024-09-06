@@ -1,0 +1,58 @@
+<% content_for :masthead do %>
+  <div class="text-center">
+    <h1 class="heading my-3">Change your password</h1>
+    <p class="mb-6 text-slate-700 dark:text-slate-200">
+      Remember your password? <%= link_to "Sign in", new_session_path(resource_name), class: 'btn-link' %>
+    </p>
+  </div>
+<% end %>
+
+<%= render 'auth_layout' do %>
+  <%= form_for resource, as: resource_name, url: password_path(resource_name), data: { controller: 'form-validation' }, html: { method: :put, novalidate: true } do |f| %>
+    <%= render 'devise/shared/error_messages', resource: resource %>
+    <%= f.hidden_field :reset_password_token, value: @token %>
+
+    <p class="mb-6 text-soft text-sm">Enter a new password below to change your password.</p>
+
+    <div class="form-group relative">
+      <%= f.label :password, 'New password', class: 'form-label' %>
+      <div class="flex items-center" data-controller="password-visibility">
+        <%= f.password_field :password, autofocus: true, autocomplete: 'new-password', class: 'form-input w-full', data: { form_validation_target: 'password', action: 'input->form-validation#validatePassword input->form-validation#validatePasswordConfirmation input->form-validation#showPasswordRequirements', password_visibility_target: 'password' } %>
+
+        <button type="button" class="-ml-9" data-action="password-visibility#toggle">
+          <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-6' %>
+          <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-6 hidden' %>
+        </button>
+      </div>
+
+      <div class="hidden" data-form-validation-target="passwordRequirements">
+        <p class="help-text mt-2 mb-1">Password must contain:</p>
+        <div class="ml-3">
+          <p class="help-text my-1" data-form-validation-target="passwordLength"><span class="hidden" data-form-validation-target="lengthCheck">&#10004;</span> <span class="hidden" data-form-validation-target="lengthCross">&times;</span> At least 6 characters</p>
+          <p class="help-text my-1" data-form-validation-target="passwordUppercase"><span class="hidden" data-form-validation-target="uppercaseCheck">&#10004;</span> <span class="hidden" data-form-validation-target="uppercaseCross">&times;</span> At least 1 uppercase letter</p>
+          <p class="help-text my-1" data-form-validation-target="passwordLowercase"><span class="hidden" data-form-validation-target="lowercaseCheck">&#10004;</span> <span class="hidden" data-form-validation-target="lowercaseCross">&times;</span> At least 1 lowercase letter</p>
+          <p class="help-text my-1" data-form-validation-target="passwordDigit"><span class="hidden" data-form-validation-target="digitCheck">&#10004;</span> <span class="hidden" data-form-validation-target="digitCross">&times;</span> At least 1 digit</p>
+          <p class="help-text my-1" data-form-validation-target="passwordSpecial"><span class="hidden" data-form-validation-target="specialCheck">&#10004;</span> <span class="hidden" data-form-validation-target="specialCross">&times;</span> At least 1 special character (#?!@$%^&*-)</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group relative">
+      <%= f.label :password_confirmation, 'Confirm new password', class: 'form-label' %>
+      <div class="flex items-center" data-controller="password-visibility">
+        <%= f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-input', data: { form_validation_target: 'passwordConfirmation', action: 'input->form-validation#validatePasswordConfirmation', password_visibility_target: 'password' } %>
+
+        <button type="button" class="-ml-9" data-action="password-visibility#toggle">
+          <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-6' %>
+          <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-6 hidden' %>
+        </button>
+      </div>
+
+      <p class="error-message hidden my-1" data-form-validation-target="passwordConfirmationError">Passwords do not match</p>
+    </div>
+
+      <%= f.submit 'Change my password', data: { turbo: false }, class: 'btn btn-primary w-full' %>
+  <% end %>
+
+  <%= render 'devise/shared/links' %>
+<% end %>
