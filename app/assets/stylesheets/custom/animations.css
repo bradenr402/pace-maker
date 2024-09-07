@@ -1,0 +1,103 @@
+@layer base {
+  .spin-animation {
+    transition: transform 700ms ease;
+  }
+
+  .spin {
+    transform: rotate(180deg);
+  }
+
+  @keyframes gelatine {
+    0%,
+    100% {
+      transform: scale(1, 1);
+    }
+    25% {
+      transform: scale(0.9, 1.1);
+    }
+    50% {
+      transform: scale(1.1, 0.9);
+    }
+    75% {
+      transform: scale(0.95, 1.05);
+    }
+  }
+
+  .gelatine-animation {
+    animation: gelatine 500ms;
+  }
+
+  @keyframes wiggle {
+    20% {
+      transform: scale(1.1);
+    }
+    20%,
+    80% {
+      transform: rotate(-10deg) scale(1.1);
+    }
+    50% {
+      transform: rotate(10deg) scale(1.1);
+    }
+    100% {
+      transform: rotate(0deg) scale(1);
+    }
+  }
+
+  .wiggle-animation {
+    animation: wiggle 700ms ease;
+  }
+
+  @keyframes bounce {
+    0% {
+      transform: scale(1, 1) translateY(0);
+    }
+    10% {
+      transform: scale(1.1, 0.9) translateY(0);
+    }
+    30% {
+      transform: scale(0.9, 1.1) translateY(-6px);
+    }
+    50% {
+      transform: scale(1.05, 0.95) translateY(0);
+    }
+    57% {
+      transform: scale(1, 1) translateY(-2px);
+    }
+    64% {
+      transform: scale(1, 1) translateY(0);
+    }
+    100% {
+      transform: scale(1, 1) translateY(0);
+    }
+  }
+
+  .bounce-animation {
+    animation: bounce 700ms cubic-bezier(0.28, 0.84, 0.42, 1);
+  }
+
+  @keyframes swing {
+    15% {
+      transform: translateY(5px);
+    }
+    30% {
+      transform: translateY(-5px);
+    }
+    50% {
+      transform: translateY(3px);
+    }
+    65% {
+      transform: translateY(-3px);
+    }
+    80% {
+      transform: translateY(2px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .swing-animation {
+    animation: swing 1000ms ease;
+    animation-iteration-count: 1;
+  }
+}
