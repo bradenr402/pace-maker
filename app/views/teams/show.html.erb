@@ -12,7 +12,7 @@
       <p class="mx-auto prose text-center dark:prose-invert"><%= @team.description %></p>
     <% end %>
 
-    <div class="flex flex-wrap items-center justify-center gap-4 mt-4 md:justify-end">
+    <div class="flex flex-wrap items-center justify-center gap-4 mt-4">
       <%= render 'teams/shared/team_buttons', team: @team %>
       <%= button_to 'Delete team',
                     @team,
