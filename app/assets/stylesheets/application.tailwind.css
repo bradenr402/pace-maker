@@ -23,7 +23,7 @@
   }
 
   .row-numbers tbody {
-    counter-reset: rowNumber
+    counter-reset: rowNumber;
   }
 
   .row-numbers tbody tr {
