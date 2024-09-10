@@ -51,10 +51,10 @@ module UserCalculations
   def current_streak(team)
     filtered_runs =
       runs_valid_for_streak(team)
-        .order(date: :desc)
-        .distinct
-        .pluck(:date)
-        .map(&:to_date)
+      .order(date: :desc)
+      .distinct
+      .pluck(:date)
+      .map(&:to_date)
 
     # Return a streak of 0 if there are no qualifying runs
     return { streak: 0, start_date: nil, end_date: nil } if filtered_runs.empty?
@@ -68,9 +68,9 @@ module UserCalculations
     # or the previous day is a Saturday or Sunday and the team excludes Saturdays and Sundays from streaks)
     most_recent_run = filtered_runs.first
     unless (most_recent_run.saturday? && team.exclude_saturday_from_streak?) ||
-             (most_recent_run.sunday? && team.exclude_sunday_from_streak?) ||
-             (most_recent_run == Date.current - 1.day) ||
-             (most_recent_run == Date.current)
+           (most_recent_run.sunday? && team.exclude_sunday_from_streak?) ||
+           (most_recent_run == Date.current - 1.day) ||
+           (most_recent_run == Date.current)
       return { streak: 0, start_date: nil, end_date: nil }
     end
 
@@ -89,9 +89,7 @@ module UserCalculations
     end
 
     # Return most recent run date if current streak is 1
-    if streak == 1
-      return { streak: 1, start_date: filtered_runs.first, end_date: nil }
-    end
+    return { streak: 1, start_date: filtered_runs.first, end_date: nil } if streak == 1
 
     { streak:, start_date:, end_date: filtered_runs.first }
   end
@@ -99,10 +97,10 @@ module UserCalculations
   def longest_streak(team)
     filtered_runs =
       runs_valid_for_streak(team)
-        .order(date: :desc)
-        .distinct
-        .pluck(:date)
-        .map(&:to_date)
+      .order(date: :desc)
+      .distinct
+      .pluck(:date)
+      .map(&:to_date)
 
     # Return a streak of 0 if there are no qualifying runs
     return { streak: 0, start_date: nil, end_date: nil } if filtered_runs.empty?
@@ -140,9 +138,7 @@ module UserCalculations
     end
 
     # Return most recent run date if longest streak is 1
-    if longest_streak == 1
-      return { streak: 1, start_date: filtered_runs.first, end_date: nil }
-    end
+    return { streak: 1, start_date: filtered_runs.first, end_date: nil } if longest_streak == 1
 
     {
       streak: longest_streak,
