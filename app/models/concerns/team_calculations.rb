@@ -47,7 +47,7 @@ module TeamCalculations
     end
 
   def total_long_runs_in_date_range(date_range) =
-    members.sum { |member| member.long_runs_in_date_range(self, date_range) }
+    members.sum { |member| member.total_long_runs_in_date_range(self, date_range) }
 
   def long_runs_on_day(date) =
     members.flat_map do |member|

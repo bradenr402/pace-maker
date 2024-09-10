@@ -1,0 +1,5 @@
+<%= turbo_stream.replace 'memberTrends' do %>
+  <%= turbo_frame_tag 'memberTrends' do %>
+    <%= render 'teams/member/trends_graphs', team: @team, member: @member, date_range: @trends_date_range, date_range_description: @trends_date_range_description %>
+  <% end %>
+<% end %>

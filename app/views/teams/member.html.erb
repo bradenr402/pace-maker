@@ -45,6 +45,6 @@
   </div>
 
   <div id="trendsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'trendsTab' ? '' : 'hidden' %>">
-    <%= render 'teams/member/trends', member: @member %>
+    <%= render 'teams/member/trends', member: @member, team: @team %>
   </div>
 </div>

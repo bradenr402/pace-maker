@@ -201,6 +201,23 @@ class TeamsController < ApplicationController
     @team = Team.find(params[:team_id])
     @member = @team.members.find(params[:user_id])
     @team_membership = @team.team_memberships.find_by(user: @member)
+
+    @trends_date_range, @trends_date_range_description = get_trends_date_range_and_description
+
+    @miles_data =
+      @trends_date_range.map do |date|
+        [
+          pretty_date(date, format: :short, include_year: false).titlecase,
+          @member.miles_in_date_range(date)
+        ]
+      end
+    @long_runs_data =
+      @trends_date_range.map do |date|
+        [
+          pretty_date(date, format: :short, include_year: false).titlecase,
+          @member.long_runs_in_date_range(@team, date).count
+        ]
+      end
   end
 
   private

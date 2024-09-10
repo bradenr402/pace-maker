@@ -42,7 +42,7 @@ module UserCalculations
     runs_in_date_range(date_range).where(
       'distance >= ?',
       team.long_run_distance_for_user(self)
-    ).count
+    )
 
   def total_long_runs_in_date_range(team, date_range) =
     long_runs_in_date_range(team, date_range).count
