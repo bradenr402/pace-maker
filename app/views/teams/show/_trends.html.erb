@@ -3,6 +3,26 @@
   <p class="text-soft">Recent trends in <%= team.name %>.</p>
 </div>
 
-<!-- Add graphs here -->
+<div>
+  <%= form_with url: team_path(team), method: :get, local: true, html: { novalidate: true }, data: { turbo_frame: 'teamTrends', turbo_action: 'advance', turbo_stream: true, controller: 'custom-date-range form-validation' } do %>
+    <div class="form-group">
+      <%= label_tag :trends_date_range, 'Select date range', class: 'form-label' %>
+      <%= select_tag :trends_date_range, options_for_select(['All season', 'This week', 'Last week', 'This month', 'Last month', 'Custom range'], params[:trends_date_range] || 'This week'), data: { custom_date_range_target: 'select', action: 'custom-date-range#update custom-date-range#search' }, class: 'form-select' %>
+    </div>
 
-<%= render 'teams/show/trends_graphs' %>
+    <div class="hidden form-group" data-custom-date-range-target="startDate">
+      <%= label_tag :trends_start_date, 'Start date', class: 'form-label' %>
+      <%= date_field_tag :trends_start_date, nil, max: Date.yesterday, class: 'form-input', data: { form_validation_target: 'startDate', custom_date_range_target: 'startDateField', action: 'input->form-validation#validateEndDate custom-date-range#search' } %>
+    </div>
+
+    <div class="hidden form-group" data-custom-date-range-target="endDate">
+      <%= label_tag :trends_end_date, 'End date', class: 'form-label' %>
+      <%= date_field_tag :trends_end_date, nil, max: Date.today, class: 'form-input', data: { form_validation_target: 'endDate', custom_date_range_target: 'endDateField', action: 'input->form-validation#validateEndDate custom-date-range#search' } %>
+      <span class="hidden my-1 error-message" data-form-validation-target="endDateError">End date must be today or earlier and must be after start date</span>
+    </div>
+  <% end %>
+
+  <%= turbo_frame_tag 'teamTrends' do %>
+    <%= render 'teams/show/trends_graphs', team: team, date_range_description: @trends_date_range_description %>
+  <% end %>
+</div>

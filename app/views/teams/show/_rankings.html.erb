@@ -18,13 +18,13 @@
     </div>
 
     <div class="hidden form-group" data-custom-date-range-target="startDate">
-      <%= label_tag :start_date, 'Start date', class: 'form-label' %>
-      <%= date_field_tag :start_date, nil, max: Date.yesterday, class: 'form-input', data: { form_validation_target: 'startDate', custom_date_range_target: 'startDateField', action: 'input->form-validation#validateEndDate custom-date-range#search' } %>
+      <%= label_tag :rankings_start_date, 'Start date', class: 'form-label' %>
+      <%= date_field_tag :rankings_start_date, nil, max: Date.yesterday, class: 'form-input', data: { form_validation_target: 'startDate', custom_date_range_target: 'startDateField', action: 'input->form-validation#validateEndDate custom-date-range#search' } %>
     </div>
 
     <div class="hidden form-group" data-custom-date-range-target="endDate">
-      <%= label_tag :end_date, 'End date', class: 'form-label' %>
-      <%= date_field_tag :end_date, nil, max: Date.today, class: 'form-input', data: { form_validation_target: 'endDate', custom_date_range_target: 'endDateField', action: 'input->form-validation#validateEndDate custom-date-range#search' } %>
+      <%= label_tag :rankings_end_date, 'End date', class: 'form-label' %>
+      <%= date_field_tag :rankings_end_date, nil, max: Date.today, class: 'form-input', data: { form_validation_target: 'endDate', custom_date_range_target: 'endDateField', action: 'input->form-validation#validateEndDate custom-date-range#search' } %>
       <span class="hidden my-1 error-message" data-form-validation-target="endDateError">End date must be today or earlier and must be after start date</span>
     </div>
   <% end %>

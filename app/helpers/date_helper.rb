@@ -52,4 +52,11 @@ module DateHelper
 
     start_of_week..end_of_week
   end
+
+  def month_range(current_date: Date.today)
+    start_of_month = current_date.beginning_of_month
+    end_of_month = current_date.end_of_month
+
+    start_of_month..end_of_month
+  end
 end

@@ -46,96 +46,28 @@ class TeamsController < ApplicationController
   end
 
   def show
-    @members =
-      if params[:query].present?
-        sanitized_query = ActiveRecord::Base.connection.quote(params[:query])
-        @team
-          .members
-          .where(
-            'LOWER(users.username) LIKE LOWER(:query) OR
-            LOWER(users.display_name) LIKE LOWER(:query) OR
-            similarity(users.username, :query) > 0.3 OR
-            similarity(users.display_name, :query) > 0.3',
-            query: "%#{params[:query]}%"
-          )
-          .order(
-            Arel.sql(
-              "GREATEST(similarity(users.username, #{sanitized_query}),
-                          similarity(users.display_name, #{sanitized_query}),
-                          CASE
-                            WHEN LOWER(users.username) LIKE LOWER(#{sanitized_query})
-                            THEN 1
-                            ELSE 0
-                          END) DESC"
-            )
-          )
-      else
-        @team.members
-      end
+    @members = get_members
 
-    @rankings_date_range, @rankings_date_range_description =
-      if params[:rankings_date_range].present?
-        today = Date.today
+    @rankings_date_range, @rankings_date_range_description = get_rankings_date_range_and_description
 
-        case params[:rankings_date_range]
-        when 'All season'
-          [@team.season_start_date..@team.season_end_date, 'this season']
-        when 'This week'
-          [today.beginning_of_week(@team.week_start)..today, 'this week']
-        when 'Last week'
-          one_week_ago = today - 1.week
-          [
-            one_week_ago.beginning_of_week(
-              @team.week_start
-            )..one_week_ago.end_of_week(@team.week_start),
-            'last week'
-          ]
-        when 'This month'
-          [today.beginning_of_month..today, 'this month']
-        when 'Last month'
-          one_month_ago = today - 1.month
-          [
-            one_month_ago.beginning_of_month..one_month_ago.end_of_month,
-            'last month'
-          ]
-        when 'Custom range'
-          start_date = params[:rankings_start_date].to_date
-          end_date = params[:rankings_end_date].to_date
-          [
-            start_date..end_date,
-            "between #{start_date.strftime('%m/%d/%Y')} and #{end_date.strftime('%m/%d/%Y')}"
-          ]
-        end
-      else
-        [@team.season_start_date..@team.season_end_date, 'this season']
-      end
-
-    if current_user.owns?(@team)
-      @join_requests = @team.join_requests.pending.order(updated_at: :desc)
-    end
-
-    @trends_date_range =
-      week_range(
-        current_date: Date.today - 1.week,
-        week_start: @team.week_start
-      )
-
-    @trends_date_range_description = 'this week'
+    @trends_date_range, @trends_date_range_description = get_trends_date_range_and_description
 
     @miles_data =
       @trends_date_range.map do |date|
         [
           pretty_date(date, format: :short, include_year: false).titlecase,
-          @team.total_miles_on_day(date)
+          @team.miles_in_date_range(date)
         ]
       end
     @long_runs_data =
       @trends_date_range.map do |date|
         [
           pretty_date(date, format: :short, include_year: false).titlecase,
-          @team.long_runs_on_day(date).count
+          @team.long_runs_in_date_range(date).count
         ]
       end
+
+    @join_requests = @team.join_requests.pending.order(updated_at: :desc) if current_user.owns?(@team)
 
     respond_to do |format|
       format.html
@@ -179,8 +111,7 @@ class TeamsController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     @team.photo.attach(params[:photo])
@@ -227,10 +158,10 @@ class TeamsController < ApplicationController
     join_request =
       TeamJoinRequest.find_by(user_id: current_user, team_id: @team)
 
-    if ActiveRecord::Base.transaction {
+    if ActiveRecord::Base.transaction do
          join_request.pending! if join_request.present?
          team_membership&.destroy
-       }
+       end
       redirect_back fallback_location: @team,
                     success: 'You have successfully left this team.'
     else
@@ -253,9 +184,9 @@ class TeamsController < ApplicationController
     join_request = TeamJoinRequest.find_by(user_id: member.id, team_id: team.id)
     team_membership = team.team_memberships.find_by(user: member)
 
-    if ActiveRecord::Base.transaction {
+    if ActiveRecord::Base.transaction do
          join_request.rejected! && team_membership.destroy
-       }
+       end
       redirect_back fallback_location: team,
                     success:
                       "#{member.default_name} was successfully removed from this team."
@@ -289,8 +220,111 @@ class TeamsController < ApplicationController
 
   def authorize_owner!
     team = Team.find(params[:team_id])
-    unless current_user.owns?(team)
-      redirect_to team, alert: 'You are not authorized to perform this action.'
+    return if current_user.owns?(team)
+
+    redirect_to team, alert: 'You are not authorized to perform this action.'
+  end
+
+  def get_members
+    if params[:query].present?
+      sanitized_query = ActiveRecord::Base.connection.quote(params[:query])
+      @team
+        .members
+        .where(
+          'LOWER(users.username) LIKE LOWER(:query) OR
+            LOWER(users.display_name) LIKE LOWER(:query) OR
+            similarity(users.username, :query) > 0.3 OR
+            similarity(users.display_name, :query) > 0.3',
+          query: "%#{params[:query]}%"
+        )
+        .order(
+          Arel.sql(
+            "GREATEST(similarity(users.username, #{sanitized_query}),
+                          similarity(users.display_name, #{sanitized_query}),
+                          CASE
+                            WHEN LOWER(users.username) LIKE LOWER(#{sanitized_query})
+                            THEN 1
+                            ELSE 0
+                          END) DESC"
+          )
+        )
+    else
+      @team.members
+    end
+  end
+
+  def get_rankings_date_range_and_description
+    if params[:rankings_date_range].present?
+      today = Date.today
+
+      case params[:rankings_date_range]
+      when 'All season'
+        [@team.season_start_date..@team.season_end_date, 'this season']
+      when 'This week'
+        [today.beginning_of_week(@team.week_start)..today, 'this week']
+      when 'Last week'
+        one_week_ago = today - 1.week
+        [
+          one_week_ago.beginning_of_week(
+            @team.week_start
+          )..one_week_ago.end_of_week(@team.week_start),
+          'last week'
+        ]
+      when 'This month'
+        [today.beginning_of_month..today, 'this month']
+      when 'Last month'
+        one_month_ago = today - 1.month
+        [
+          one_month_ago.beginning_of_month..one_month_ago.end_of_month,
+          'last month'
+        ]
+      when 'Custom range'
+        start_date = params[:rankings_start_date].to_date
+        end_date = params[:rankings_end_date].to_date
+        [
+          start_date..end_date,
+          "between #{start_date.strftime('%m/%d/%Y')} and #{end_date.strftime('%m/%d/%Y')}"
+        ]
+      end
+    else
+      [@team.season_start_date..@team.season_end_date, 'this season']
+    end
+  end
+
+  def get_trends_date_range_and_description
+    today = Date.today
+
+    if params[:trends_date_range].present?
+      case params[:trends_date_range]
+      when 'All season'
+        [@team.season_start_date..@team.season_end_date, 'this season']
+      when 'This week'
+        [week_range(
+          current_date: today,
+          week_start: @team.week_start
+        ), 'this week']
+      when 'Last week'
+        [week_range(
+          current_date: today - 1.week,
+          week_start: @team.week_start
+        ), 'last week']
+      when 'This month'
+        [month_range(current_date: today), 'this month']
+      when 'Last month'
+        [month_range(current_date: today - 1.month), 'last month']
+
+      when 'Custom range'
+        start_date = params[:trends_start_date].to_date
+        end_date = params[:trends_end_date].to_date
+
+        [start_date..end_date,
+         "between #{format_date(start_date)} and #{format_date(end_date)}"]
+      end
+    else
+      [week_range(
+        current_date: today,
+        week_start: @team.week_start
+      ), 'this week']
     end
   end
 end

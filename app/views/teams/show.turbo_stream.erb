@@ -11,3 +11,9 @@
     <%= render 'teams/show/rankings_table', team: @team, date_range: @rankings_date_range, date_range_description: @rankings_date_range_description %>
   <% end %>
 <% end %>
+
+<%= turbo_stream.replace 'teamTrends' do %>
+  <%= turbo_frame_tag 'teamTrends' do %>
+    <%= render 'teams/show/trends_graphs', team: @team, date_range: @trends_date_range, date_range_description: @trends_date_range_description %>
+  <% end %>
+<% end %>
