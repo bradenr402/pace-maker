@@ -3,48 +3,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[show]
 
   def show
-    today = Date.today
-
-    @runs, @date_range =
-      if params[:run_date_range].present?
-        case params[:run_date_range]
-        when 'This week'
-          [
-            @user.runs_in_date_range(today.beginning_of_week..today),
-            'this week'
-          ]
-        when 'Last week'
-          one_week_ago = today - 1.week
-          [
-            @user.runs_in_date_range(
-              one_week_ago.beginning_of_week..one_week_ago.end_of_week
-            ),
-            'last week'
-          ]
-        when 'This month'
-          [
-            @user.runs_in_date_range(today.beginning_of_month..today),
-            'this month'
-          ]
-        when 'Last month'
-          one_month_ago = today - 1.month
-          [
-            @user.runs_in_date_range(
-              one_month_ago.beginning_of_month..one_month_ago.end_of_month
-            ),
-            'last month'
-          ]
-        when 'Custom range'
-          start_date = params[:run_start_date].to_date
-          end_date = params[:run_end_date].to_date
-          [
-            @user.runs_in_date_range(start_date..end_date),
-            "between #{start_date.strftime('%m/%d/%Y')} and #{end_date.strftime('%m/%d/%Y')}"
-          ]
-        end
-      else
-        [@user.runs_in_date_range(today.beginning_of_week..today), 'this week']
-      end
+    @runs, @date_range = get_runs_and_date_range
 
     respond_to do |format|
       format.html
@@ -59,4 +18,48 @@ class UsersController < ApplicationController
   private
 
   def set_user = @user = User.find(params[:id])
+
+  def get_runs_and_date_range
+    today = Date.today
+
+    if params[:run_date_range].present?
+      case params[:run_date_range]
+      when 'This week'
+        [
+          @user.runs_in_date_range(today.beginning_of_week..today),
+          'this week'
+        ]
+      when 'Last week'
+        one_week_ago = today - 1.week
+        [
+          @user.runs_in_date_range(
+            one_week_ago.beginning_of_week..one_week_ago.end_of_week
+          ),
+          'last week'
+        ]
+      when 'This month'
+        [
+          @user.runs_in_date_range(today.beginning_of_month..today),
+          'this month'
+        ]
+      when 'Last month'
+        one_month_ago = today - 1.month
+        [
+          @user.runs_in_date_range(
+            one_month_ago.beginning_of_month..one_month_ago.end_of_month
+          ),
+          'last month'
+        ]
+      when 'Custom range'
+        start_date = params[:run_start_date].to_date
+        end_date = params[:run_end_date].to_date
+        [
+          @user.runs_in_date_range(start_date..end_date),
+          "between #{start_date.strftime('%m/%d/%Y')} and #{end_date.strftime('%m/%d/%Y')}"
+        ]
+      end
+    else
+      [@user.runs_in_date_range(today.beginning_of_week..today), 'this week']
+    end
+  end
 end
