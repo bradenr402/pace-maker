@@ -3,6 +3,8 @@
   <p class="text-soft">Recent trends in <%= team.name %>.</p>
 </div>
 
+<p class="text-right"><%= link_to 'View your personal trends', team_member_path(team, current_user, tab: 'trendsTab'), class: 'btn-link text-xs' %></p>
+
 <div>
   <%= form_with url: team_path(team), method: :get, local: true, html: { novalidate: true }, data: { turbo_frame: 'teamTrends', turbo_action: 'advance', turbo_stream: true, controller: 'custom-date-range form-validation' } do %>
     <div class="form-group">
