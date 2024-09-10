@@ -1,0 +1,17 @@
+<div class="mb-24">
+  <div class="my-6">
+    <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Miles <%= @trends_date_range_description.titlecase %></h2>
+    <p class="text-sm text-slate-600 dark:text-slate-400">This graph shows how many miles your team ran collectively <%= @trends_date_range_description %>.</p>
+  </div>
+
+  <%= render 'shared/column_chart', data: @miles_data, precision: 3, xtitle: 'Date', ytitle: '# of miles' %>
+</div>
+
+<div class="mb-24">
+  <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
+    <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Long Runs <%= @trends_date_range_description.titlecase %></h2>
+    <p class="text-sm text-slate-600 dark:text-slate-400">This graph shows how many long runs your team ran collectively <%= @trends_date_range_description %>.</p>
+  </div>
+
+  <%= render 'shared/column_chart', data: @long_runs_data, xtitle: 'Date', ytitle: '# of long runs' %>
+</div>

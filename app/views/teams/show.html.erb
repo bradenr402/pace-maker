@@ -52,6 +52,11 @@
         <span>Rankings</span>
       </button>
 
+      <button type="button" id="trendsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'trendsTab' ? 'btn-tab-active' : '' %>">
+        <%= inline_svg_tag 'icons/arrow-trending-up.svg', class: 'size-5 text-soft' %>
+        <span>Trends</span>
+      </button>
+
       <button type="button" id="featuredTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'featuredTab' ? 'btn-tab-active' : '' %>">
         <%= inline_svg_tag 'icons/star.svg', class: 'size-5 text-soft' %>
         <span>Featured</span>
@@ -81,6 +86,10 @@
   <% if current_user.member_of?(@team) %>
     <div id="rankingsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'rankingsTab' ? '' : 'hidden' %>">
       <%= render 'teams/show/rankings', team: @team %>
+    </div>
+
+    <div id="trendsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'trendsTab' ? '' : 'hidden' %>">
+      <%= render 'teams/show/trends', team: @team %>
     </div>
 
     <div id="featuredTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'featuredTab' ? '' : 'hidden' %>">

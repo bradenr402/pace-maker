@@ -4,7 +4,7 @@
 </div>
 
 <div class="border-b border-slate-200 dark:border-slate-700">
-  <%= form_with url: @team, method: :get, html: { novalidate: true }, data: { turbo_frame: 'teamMembers', turbo_action: 'advance', controller: 'search-form' } do |form| %>
+  <%= form_with url: team, method: :get, html: { novalidate: true }, data: { turbo_frame: 'teamMembers', turbo_action: 'advance', controller: 'search-form' } do |form| %>
     <%= form.label :query, 'Find a team member by name:', class: 'sr-only' %>
 
     <div class="relative form-group">

@@ -1,4 +1,6 @@
 class TeamsController < ApplicationController
+  include DateHelper
+
   before_action :authenticate_user!
   before_action :set_team, only: %i[show edit update destroy join leave]
   before_action :authorize_owner!, only: %i[remove_member]
@@ -71,11 +73,11 @@ class TeamsController < ApplicationController
         @team.members
       end
 
-    @date_range, @date_range_description =
-      if params[:date_range].present?
+    @rankings_date_range, @rankings_date_range_description =
+      if params[:rankings_date_range].present?
         today = Date.today
 
-        case params[:date_range]
+        case params[:rankings_date_range]
         when 'All season'
           [@team.season_start_date..@team.season_end_date, 'this season']
         when 'This week'
@@ -97,8 +99,8 @@ class TeamsController < ApplicationController
             'last month'
           ]
         when 'Custom range'
-          start_date = params[:start_date].to_date
-          end_date = params[:end_date].to_date
+          start_date = params[:rankings_start_date].to_date
+          end_date = params[:rankings_end_date].to_date
           [
             start_date..end_date,
             "between #{start_date.strftime('%m/%d/%Y')} and #{end_date.strftime('%m/%d/%Y')}"
@@ -111,6 +113,29 @@ class TeamsController < ApplicationController
     if current_user.owns?(@team)
       @join_requests = @team.join_requests.pending.order(updated_at: :desc)
     end
+
+    @trends_date_range =
+      week_range(
+        current_date: Date.today - 1.week,
+        week_start: @team.week_start
+      )
+
+    @trends_date_range_description = 'this week'
+
+    @miles_data =
+      @trends_date_range.map do |date|
+        [
+          pretty_date(date, format: :short, include_year: false).titlecase,
+          @team.total_miles_on_day(date)
+        ]
+      end
+    @long_runs_data =
+      @trends_date_range.map do |date|
+        [
+          pretty_date(date, format: :short, include_year: false).titlecase,
+          @team.long_runs_on_day(date).count
+        ]
+      end
 
     respond_to do |format|
       format.html

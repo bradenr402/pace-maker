@@ -42,4 +42,14 @@ module DateHelper
 
   def format_date(date, separator: '/') =
     date.strftime("%m#{separator}%d#{separator}%Y")
+
+  def week_range(current_date: Date.today, week_start: :monday)
+    # Convert the symbol (e.g., :monday, :sunday) to a Rails-recognized week start
+    start_day = week_start.to_sym
+
+    start_of_week = current_date.beginning_of_week(start_day).to_date
+    end_of_week = current_date.end_of_week(start_day).to_date
+
+    start_of_week..end_of_week
+  end
 end

@@ -79,3 +79,5 @@ gem 'ledermann-rails-settings'
 
 gem 'caxlsx'
 gem 'caxlsx_rails'
+
+gem 'chartkick'

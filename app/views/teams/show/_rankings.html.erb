@@ -13,8 +13,8 @@
 
   <%= form_with url: team_path(@team), method: :get, local: true, html: { novalidate: true }, data: { turbo_frame: 'teamRankings', turbo_action: 'advance', turbo_stream: true, controller: 'custom-date-range form-validation' } do %>
     <div class="form-group">
-      <%= label_tag :date_range, 'Select date range', class: 'form-label' %>
-      <%= select_tag :date_range, options_for_select(['All season', 'This week', 'Last week', 'This month', 'Last month', 'Custom range'], params[:date_range]), data: { custom_date_range_target: 'select', action: 'custom-date-range#update custom-date-range#search' }, class: 'form-select' %>
+      <%= label_tag :rankings_date_range, 'Select date range', class: 'form-label' %>
+      <%= select_tag :rankings_date_range, options_for_select(['All season', 'This week', 'Last week', 'This month', 'Last month', 'Custom range'], params[:rankings_date_range]), data: { custom_date_range_target: 'select', action: 'custom-date-range#update custom-date-range#search' }, class: 'form-select' %>
     </div>
 
     <div class="hidden form-group" data-custom-date-range-target="startDate">
@@ -30,6 +30,6 @@
   <% end %>
 
   <%= turbo_frame_tag 'teamRankings', data: { filter_gender_target: 'turboFrame' } do %>
-    <%= render 'teams/show/rankings_table', team: @team, date_range: @date_range, date_range_description: @date_range_description %>
+    <%= render 'teams/show/rankings_table', team: @team, date_range: @rankings_date_range, date_range_description: @rankings_date_range_description %>
   <% end %>
 </div>

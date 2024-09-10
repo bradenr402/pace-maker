@@ -1,13 +1,13 @@
 <%= turbo_stream.replace 'teamMembers' do %>
   <%= turbo_frame_tag 'teamMembers' do %>
     <div class="mb-10 divide-y dark:divide-slate-700 dark:text-slate-700">
-      <%= render 'teams/show/member_list', members: @members %>
+      <%= render 'teams/show/member_list', team: @team, members: @members %>
     </div>
   <% end %>
 <% end %>
 
 <%= turbo_stream.replace 'teamRankings' do %>
   <%= turbo_frame_tag 'teamRankings', data: { filter_gender_target: 'turboFrame' } do %>
-    <%= render 'teams/show/rankings_table', team: @team, date_range: @date_range, date_range_description: @date_range_description %>
+    <%= render 'teams/show/rankings_table', team: @team, date_range: @rankings_date_range, date_range_description: @rankings_date_range_description %>
   <% end %>
 <% end %>
