@@ -1,15 +1,32 @@
 module UserCalculations
+  # Mileage calculations
   def total_miles = runs.sum(:distance)
-
-  def total_duration = runs.where.not(duration: nil).sum(:duration)
 
   def total_km = (total_miles * 1.609344).round(3)
 
+  def miles_this_season(team) = runs_this_season(team).sum(:distance)
+
+  def miles_in_date_range(date_range) =
+    runs_in_date_range(date_range).sum(:distance)
+
+  # Duration calculations
+  def total_duration = runs.where.not(duration: nil).sum(:duration)
+
+  # Run calculations
   def runs_this_season(team) =
     runs.in_date_range(team.season_start_date..team.season_end_date)
 
-  def miles_this_season(team) = runs_this_season(team).sum(:distance)
+  def runs_in_date_range(date_range) = runs.where(date: date_range)
 
+  def runs_on_day(date) = runs.where(date:)
+
+  def runs_valid_for_streak(team)
+    required_distance = team.streak_distance_for_user(self)
+
+    runs.where('distance >= ?', required_distance)
+  end
+
+  # Long run calculations
   def long_runs_this_season(team)
     long_run_distance = team.long_run_distance_for_user(self)
 
@@ -18,33 +35,19 @@ module UserCalculations
 
   def total_long_runs_this_season(team) = long_runs_this_season(team).count
 
-  def total_long_runs(team)
-    long_run_distance = team.long_run_distance_for_user(self)
+  def total_long_runs(team) =
+    runs.where('distance >= ?', team.long_run_distance_for_user(self)).count
 
-    runs.where('distance > ?', long_run_distance).count
-  end
-
-  def miles_in_date_range(date_range) =
-    runs_in_date_range(date_range).sum(:distance)
-
-  def long_runs_in_date_range(team, date_range)
-    long_run_distance = team.long_run_distance_for_user(self)
-
+  def long_runs_in_date_range(team, date_range) =
     runs_in_date_range(date_range).where(
-      'distance > ?',
-      long_run_distance
+      'distance >= ?',
+      team.long_run_distance_for_user(self)
     ).count
-  end
 
   def total_long_runs_in_date_range(team, date_range) =
     long_runs_in_date_range(team, date_range).count
 
-  def runs_valid_for_streak(team)
-    required_distance = team.streak_distance_for_user(self)
-
-    runs.where('distance >= ?', required_distance)
-  end
-
+  # Streak calculations
   def current_streak(team)
     filtered_runs =
       runs_valid_for_streak(team)

@@ -1,31 +1,5 @@
 module TeamCalculations
-  def total_miles_in_season =
-    members.flat_map { |member| member.runs_this_season(self) }.sum(&:distance)
-
-  def runs_in_season =
-    members.flat_map { |member| member.runs_this_season(self) }
-
-  def long_runs_in_season =
-    members.flat_map { |member| member.long_runs_this_season(self) }
-
-  def total_long_runs_in_season =
-    members.sum { |member| member.total_long_runs_this_season(self) }
-
-  def total_miles = members.sum(&:total_miles)
-
-  def total_long_runs = members.sum { |member| member.total_long_runs(self) }
-
-  def miles_in_date_range(date_range) =
-    members.sum { |member| member.miles_in_date_range(date_range) }
-
-  def long_runs_in_date_range(date_range) =
-    members.flat_map do |member|
-      member.long_runs_in_date_range(self, date_range)
-    end
-
-  def total_long_runs_in_date_range(date_range) =
-    members.sum { |member| member.long_runs_in_date_range(self, date_range) }
-
+  # Season-related calculations
   def season_progress
     return nil unless season_dates?
 
@@ -39,6 +13,53 @@ module TeamCalculations
 
   def days_remaining_in_season = (season_end_date - Date.today).to_i
 
+  # Mileage calculations
+  def total_miles_in_season =
+    members.flat_map { |member| member.runs_this_season(self) }.sum(&:distance)
+
+  def total_miles = members.sum(&:total_miles)
+
+  def total_miles_on_day(date) =
+    members.sum { |member| member.runs_on_day(date).sum(&:distance) }
+
+  def miles_in_date_range(date_range) =
+    members.sum { |member| member.miles_in_date_range(date_range) }
+
+  # Run calculations
+  def runs_in_season =
+    members.flat_map { |member| member.runs_this_season(self) }
+
+  def runs_in_date_range(date_range) =
+    members.flat_map { |member| member.runs_in_date_range(date_range) }
+
+  # Long run calculations
+  def long_runs_in_season =
+    members.flat_map { |member| member.long_runs_this_season(self) }
+
+  def total_long_runs_in_season =
+    members.sum { |member| member.total_long_runs_this_season(self) }
+
+  def total_long_runs = members.sum { |member| member.total_long_runs(self) }
+
+  def long_runs_in_date_range(date_range) =
+    members.flat_map do |member|
+      member.long_runs_in_date_range(self, date_range)
+    end
+
+  def total_long_runs_in_date_range(date_range) =
+    members.sum { |member| member.long_runs_in_date_range(self, date_range) }
+
+  def long_runs_on_day(date) =
+    members.flat_map do |member|
+      member
+        .runs
+        .where(date:)
+        .select { |run| run.distance >= long_run_distance_for_user(member) }
+    end
+
+  def total_long_runs_on_day(date) = long_runs_on_day(date).count
+
+  # Mileage goal progress
   def mileage_goal_progress
     return nil unless mileage_goal?
 
@@ -57,6 +78,7 @@ module TeamCalculations
 
   def mileage_goal_complete? = mileage_goal_progress >= 100
 
+  # Long run goal progress
   def long_run_goal_progress
     return nil unless long_run_goal?
 
@@ -76,6 +98,7 @@ module TeamCalculations
 
   def long_run_goal_complete? = long_run_goal_progress >= 100
 
+  # Progress messages
   def mileage_goal_progress_message
     if mileage_goal_complete?
       "Your team met its mileage goal! You're #{season_progress}% through the season, and you've met #{mileage_goal_progress}% of your mileage goal."
