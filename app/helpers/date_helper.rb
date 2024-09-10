@@ -1,8 +1,8 @@
 module DateHelper
-  def pretty_date(date, format: :long)
+  def pretty_date(date, format: :long, include_year: true)
     return 'Invalid date' unless date.is_a?(Date)
 
-    return date.strftime('%b %e, %Y') if format == :short
+    return date.strftime("%b %e#{', %Y' if include_year}") if format == :short
 
     today = Date.today
     days_difference = (today - date).to_i
@@ -14,7 +14,7 @@ module DateHelper
     if days_difference.between?(0, 365) && date.year == today.year
       "#{day}, #{date.strftime('%B %e')}"
     else
-      "#{day}, #{date.strftime('%B %e, %Y')}"
+      "#{day}, #{date.strftime("%B %e#{', %Y' if include_year}")}"
     end
   end
 
