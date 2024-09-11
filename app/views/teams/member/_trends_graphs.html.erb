@@ -1,17 +1,35 @@
 <div class="mb-24">
   <div class="mt-10 mb-6 space-y-1">
     <h2 class="subheading">Miles <%= date_range_description.titlecase %></h2>
-    <p class="text-sm text-soft">This graph shows how many miles <%= @member.first_name %> ran <%= date_range_description %>.</p>
+    <p class="text-sm text-soft">This graph shows how many miles <%= @member == current_user ? 'you' : @member.first_name %> ran <%= date_range_description %>.</p>
   </div>
 
-  <%= render 'shared/column_chart', data: @miles_data, precision: 3, xtitle: 'Date', ytitle: '# of miles' %>
+  <% chart_partial, xtitle, ytitle = case @chart_type %>
+    <% when 'column' %>
+      <% ['shared/column_chart', 'Date', '# of miles'] %>
+    <% when 'line' %>
+      <% ['shared/line_chart', 'Date', '# of miles'] %>
+    <% when 'bar' %>
+      <% ['shared/bar_chart', '# of miles', 'Date'] %>
+  <% end %>
+
+  <%= render chart_partial, data: @miles_data, precision: 3, xtitle:, ytitle: %>
 </div>
 
 <div class="mb-24">
-  <div class="mt-10 mb-6 space-y-1">
+  <div class="pt-6 my-6 space-y-1 border-t border-slate-200 dark:border-slate-700">
     <h2 class="subheading">Long Runs <%= date_range_description.titlecase %></h2>
-    <p class="text-sm text-soft">This graph shows how many long runs <%= @member.first_name %> ran <%= date_range_description %>.</p>
+    <p class="text-sm text-soft">This graph shows how many long runs <%= @member == current_user ? 'you' : @member.first_name %> ran <%= date_range_description %>.</p>
   </div>
 
-  <%= render 'shared/column_chart', data: @long_runs_data, xtitle: 'Date', ytitle: '# of long runs' %>
+  <% chart_partial, xtitle, ytitle = case @chart_type %>
+    <% when 'column' %>
+      <% ['shared/column_chart', 'Date', '# of long runs'] %>
+    <% when 'line' %>
+      <% ['shared/line_chart', 'Date', '# of long runs'] %>
+    <% when 'bar' %>
+      <% ['shared/bar_chart', '# of long runs', 'Date'] %>
+  <% end %>
+
+  <%= render chart_partial, data: @long_runs_data, xtitle:, ytitle: %>
 </div>

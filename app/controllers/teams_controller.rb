@@ -52,17 +52,19 @@ class TeamsController < ApplicationController
 
     @trends_date_range, @trends_date_range_description = get_trends_date_range_and_description
 
+    @chart_type = params[:chart_type] || 'column'
+
     @miles_data =
       @trends_date_range.map do |date|
         [
-          pretty_date(date, format: :short, include_year: false).titlecase,
+          pretty_date(date, format: :short, include_year: @chart_type == 'line').titlecase,
           @team.miles_in_date_range(date)
         ]
       end
     @long_runs_data =
       @trends_date_range.map do |date|
         [
-          pretty_date(date, format: :short, include_year: false).titlecase,
+          pretty_date(date, format: :short, include_year: @chart_type == 'line').titlecase,
           @team.long_runs_in_date_range(date).count
         ]
       end
@@ -204,17 +206,19 @@ class TeamsController < ApplicationController
 
     @trends_date_range, @trends_date_range_description = get_trends_date_range_and_description
 
+    @chart_type = params[:chart_type] || 'column'
+
     @miles_data =
       @trends_date_range.map do |date|
         [
-          pretty_date(date, format: :short, include_year: false).titlecase,
+          pretty_date(date, format: :short, include_year: @chart_type == 'line').titlecase,
           @member.miles_in_date_range(date)
         ]
       end
     @long_runs_data =
       @trends_date_range.map do |date|
         [
-          pretty_date(date, format: :short, include_year: false).titlecase,
+          pretty_date(date, format: :short, include_year: @chart_type == 'line').titlecase,
           @member.long_runs_in_date_range(@team, date).count
         ]
       end

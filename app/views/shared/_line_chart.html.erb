@@ -1,0 +1,79 @@
+<% data ||= [] %>
+<% height ||= '300px' %>
+<% min ||= 0 %>
+<% colors ||= ['#6366f1', '#4f46e5'] %>
+<% suffix ||= '' %>
+<% xtitle  ||= '' %>
+<% ytitle ||= '' %>
+<% precision ||= 0 %>
+<% curve ||= false %>
+
+<div>
+  <%=
+    line_chart data,
+    height: height,
+    min: min,
+    colors: colors,
+    suffix: suffix,
+    xtitle: xtitle,
+    ytitle: ytitle,
+    curve: curve,
+    library: {
+      options: {
+        interaction: {
+          intersect: false,
+          mode: 'index',
+          axis: 'xy',
+        },
+        layout: {
+          padding: 20,
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: '#FF6347',
+            },
+          },
+          tooltip: {
+            titleColor: '#6366f1',
+            bodyColor: '#cbd5e1',
+          },
+        },
+      },
+      scales: {
+        x: {
+          title: {
+            display: xtitle.present?,
+            text: xtitle,
+            color: "#64748b",
+            font: {
+              size: 16,
+              weight: 'bold',
+            },
+          },
+          ticks: {
+            color: '#64748b',
+          },
+        },
+        y: {
+          title: {
+            display: ytitle.present?,
+            text: ytitle,
+            color: '#64748b',
+            font: {
+              size: 16,
+              weight: 'bold',
+            },
+          },
+          ticks: {
+            precision: precision,
+            color: '#64748b',
+          },
+          grid: {
+            color: '#64748b22',
+          },
+        },
+      },
+    }
+  %>
+</div>
