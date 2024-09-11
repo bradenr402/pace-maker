@@ -54,21 +54,41 @@ class TeamsController < ApplicationController
 
     @chart_type = params[:chart_type] || 'column'
 
+    group_by = params[:group_by] || 'day'
+
     @miles_data =
-      @trends_date_range.map do |date|
-        [
-          pretty_date(date, format: :short, include_year: @chart_type == 'line').titlecase,
-          @team.miles_in_date_range(date)
-        ]
-      end
-    @long_runs_data =
-      @trends_date_range.map do |date|
-        [
-          pretty_date(date, format: :short, include_year: @chart_type == 'line').titlecase,
-          @team.long_runs_in_date_range(date).count
-        ]
+      if group_by == 'week'
+        @trends_date_range.group_by { |date| date.beginning_of_week(@team.week_start) }.map do |week_start, dates|
+          [
+            pretty_date(week_start, format: :short, include_year: @chart_type == 'line').titlecase,
+            dates.sum { |date| @team.miles_in_date_range(date) }
+          ]
+        end
+      else # group_by == 'day'
+        @trends_date_range.map do |date|
+          [
+            pretty_date(date, format: :short, include_year: @chart_type == 'line').titlecase,
+            @team.miles_in_date_range(date)
+          ]
+        end
       end
 
+    @long_runs_data =
+      if group_by == 'week'
+        @trends_date_range.group_by { |date| date.beginning_of_week(@team.week_start) }.map do |week_start, dates|
+          [
+            pretty_date(week_start, format: :short, include_year: @chart_type == 'line').titlecase,
+            dates.sum { |date| @team.long_runs_in_date_range(date).count }
+          ]
+        end
+      else # group_by == 'day'
+        @trends_date_range.map do |date|
+          [
+            pretty_date(date, format: :short, include_year: @chart_type == 'line').titlecase,
+            @team.long_runs_in_date_range(date).count
+          ]
+        end
+      end
     @join_requests = @team.join_requests.pending.order(updated_at: :desc) if current_user.owns?(@team)
 
     respond_to do |format|
@@ -208,19 +228,40 @@ class TeamsController < ApplicationController
 
     @chart_type = params[:chart_type] || 'column'
 
+    group_by = params[:group_by] || 'day'
+
     @miles_data =
-      @trends_date_range.map do |date|
-        [
-          pretty_date(date, format: :short, include_year: @chart_type == 'line').titlecase,
-          @member.miles_in_date_range(date)
-        ]
+      if group_by == 'week'
+        @trends_date_range.group_by { |date| date.beginning_of_week(@team.week_start) }.map do |week_start, dates|
+          [
+            pretty_date(week_start, format: :short, include_year: @chart_type == 'line').titlecase,
+            dates.sum { |date| @member.miles_in_date_range(date) }
+          ]
+        end
+      else # group_by == 'day'
+        @trends_date_range.map do |date|
+          [
+            pretty_date(date, format: :short, include_year: @chart_type == 'line').titlecase,
+            @member.miles_in_date_range(date)
+          ]
+        end
       end
+
     @long_runs_data =
-      @trends_date_range.map do |date|
-        [
-          pretty_date(date, format: :short, include_year: @chart_type == 'line').titlecase,
-          @member.long_runs_in_date_range(@team, date).count
-        ]
+      if group_by == 'week'
+        @trends_date_range.group_by { |date| date.beginning_of_week(@team.week_start) }.map do |week_start, dates|
+          [
+            pretty_date(week_start, format: :short, include_year: @chart_type == 'line').titlecase,
+            dates.sum { |date| @member.long_runs_in_date_range(@team, date).count }
+          ]
+        end
+      else # group_by == 'day'
+        @trends_date_range.map do |date|
+          [
+            pretty_date(date, format: :short, include_year: @chart_type == 'line').titlecase,
+            @member.long_runs_in_date_range(@team, date).count
+          ]
+        end
       end
   end
 

@@ -22,6 +22,11 @@
     </div>
 
     <div class="form-group">
+      <%= label_tag :group_by, 'Group by', class: 'form-label' %>
+      <%= select_tag :group_by, options_for_select([['Day', 'day'], ['Week', 'week']], params[:group_by] || 'day'), data: { action: 'input->search-form#searchNow' }, class: 'form-select' %>
+    </div>
+
+    <div class="form-group">
       <%= label_tag :chart_type, 'Chart type', class: 'form-label' %>
       <%= select_tag :chart_type, options_for_select([['Column', 'column'], ['Line', :line], ['Bar', 'bar']], @chart_type || 'column'), data: { action: 'input->search-form#searchNow' }, class: 'form-select' %>
     </div>
