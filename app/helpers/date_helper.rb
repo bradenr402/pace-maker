@@ -28,7 +28,7 @@ module DateHelper
     "#{month} #{day_of_month}#{year}"
   end
 
-  def format_date(date, separator: '/') =
+  def format_date(date, separator: '-') =
     date.strftime("%m#{separator}%d#{separator}%Y")
 
   def week_range(current_date: Date.today, week_start: :monday)

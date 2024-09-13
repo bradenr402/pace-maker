@@ -1,7 +1,7 @@
 <div>
   <div class="flex items-start justify-between mb-4">
     <p class="text-lg font-bold text-balance"><%= run.distance %> mi Run <span class="text-sm text-soft">(<%= run.distance_km %> km)</span></p>
-    <p class="text-soft text-xs text-balance"><%= current_page?(run_path(run)) ? pretty_date(run.date, date_style: :relative) : format_date(run.date, separator: '-') %></p>
+    <p class="text-soft text-xs text-balance"><%= current_page?(run_path(run)) ? pretty_date(run.date, date_style: :relative) : format_date(run.date) %></p>
   </div>
 
   <% if run.duration? %>
