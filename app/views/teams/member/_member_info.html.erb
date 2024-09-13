@@ -48,9 +48,9 @@
     </p>
     <p class="my-1 text-soft">
       <% if current_streak_start_date.present? && current_streak_end_date.present? %>
-        <%= precise_pretty_date(current_streak_start_date) %> &ndash; <%= precise_pretty_date(current_streak_end_date) %>
+        <%= pretty_date(current_streak_start_date, date_style: :relative) %> &ndash; <%= pretty_date(current_streak_end_date, date_style: :relative) %>
       <% elsif current_streak_start_date.present? && current_streak_end_date.blank? %>
-        <%= precise_pretty_date(current_streak_start_date) %>
+        <%= pretty_date(current_streak_start_date, date_style: :relative) %>
       <% elsif current_streak.zero? %>
         No current streak recorded.
       <% end %>
@@ -71,9 +71,9 @@
     </p>
     <p class="my-1 text-soft">
       <% if longest_streak_start_date.present? && longest_streak_end_date.present? %>
-        <%= precise_pretty_date(longest_streak_start_date) %> &ndash; <%= precise_pretty_date(longest_streak_end_date) %>
+        <%= pretty_date(longest_streak_start_date, date_style: :relative) %> &ndash; <%= pretty_date(longest_streak_end_date, date_style: :relative) %>
       <% elsif longest_streak_start_date.present? && longest_streak_end_date.blank? %>
-        <%= precise_pretty_date(longest_streak_start_date) %>
+        <%= pretty_date(longest_streak_start_date, date_style: :relative) %>
         <span class="my-1 ml-1 help-text">(Most recent run)</span>
       <% elsif longest_streak.zero? %>
         No longest streak recorded.
