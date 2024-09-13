@@ -4,3 +4,28 @@
 </div>
 
 <%= render 'teams/forms/form', team: @team %>
+
+<div class="pt-6 border-t border-slate-200 dark:border-slate-700">
+  <h2 class="mb-2 text-lg font-bold text-slate-700 dark:text-slate-200">Danger Zone</h2>
+</div>
+
+<div class="p-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
+  <div class="flex flex-wrap gap-4 items-center justify-between">
+    <div>
+      <p class="font-bold">Delete this team</p>
+      <p class="help-text">Once you delete this team, there is no going back.</p>
+    </div>
+      <%= button_to 'Delete team',
+                    @team,
+                    method: :delete,
+                    class: 'btn btn-destructive',
+                    form: {
+                      data: {
+                        turbo: false,
+                        controller: 'confirmation',
+                        action: 'confirmation#confirm',
+                        confirmation_message_value: 'Are you sure you want to delete this team?'
+                      }
+                    } %>
+  </div>
+</div>
