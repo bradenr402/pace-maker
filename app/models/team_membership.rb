@@ -52,36 +52,73 @@ class TeamMembership < ApplicationRecord
   def long_run_goal_complete? = long_run_goal_progress >= 100
 
   def mileage_goal_progress_message(current_user)
-    possessive = user == current_user ? 'your' : user.gender_possessive
-    met_goal = user == current_user ? "you've" : "#{user.first_name} has"
-    season_state = user == current_user ? "You're" : "#{user.first_name} is"
-    team_state = user == current_user ? "You're" : 'Your team is'
+    user_is_current = user == current_user
 
-    if mileage_goal_complete?
-      "#{season_state} met #{possessive} mileage goal! #{team_state} #{season_progress}% through the season, and #{met_goal} met #{mileage_goal_progress}% of #{possessive} long run goal."
-    elsif meeting_mileage_goal?
-      "#{season_state} on track! #{team_state} #{season_progress}% through the season, and #{met_goal} met #{mileage_goal_progress}% of #{possessive} personal mileage goal."
-    elsif ahead_of_mileage_goal?
-      "#{season_state} advancing! #{team_state} #{season_progress}% through the season, and #{met_goal} already met #{mileage_goal_progress}% of #{possessive} personal mileage goal."
-    else
-      "#{season_state} falling behind! #{team_state} #{season_progress}% through the season, but #{met_goal} only met #{mileage_goal_progress}% of #{possessive} personal mileage goal."
-    end
+    user_status, meeting_goal_status =
+      if mileage_goal_complete?
+        if user_is_current
+          ['You\'ve met your mileage goal', 'and you\'ve completed']
+        else
+          ["#{user.first_name} met #{user.gender_possessive} mileage goal ", "and #{user.first_name} has completed"]
+        end
+      elsif meeting_mileage_goal?
+        if user_is_current
+          ['You\'re on track', 'and you\'ve completed']
+        else
+          ["#{user.first_name} is on track", "and #{user.first_name} has completed"]
+        end
+      elsif ahead_of_mileage_goal?
+        if user_is_current
+          ['You\'re advancing', 'and you\'ve already completed']
+        else
+          ["#{user.first_name} is advancing", "and #{user.first_name} has already completed"]
+        end
+      elsif user_is_current
+        ['You\'re falling behind', 'but you\'ve only completed']
+      else
+        ["#{user.first_name} is falling behind", "but #{user.first_name} has only completed"]
+      end
+
+    team_state = user_is_current ? "You're" : 'Your team is'
+    possessive = user_is_current ? 'your' : user.gender_possessive
+
+    "#{user_status}! #{team_state} #{season_progress}% through the season, #{meeting_goal_status} #{mileage_goal_progress}% of #{possessive} personal mileage goal."
   end
 
   def long_run_goal_progress_message(current_user)
-    possessive = user == current_user ? 'your' : user.gender_possessive
-    met_goal = user == current_user ? "you've" : "#{user.first_name} has"
-    season_state = user == current_user ? "You're" : "#{user.first_name} is"
-    team_state = user == current_user ? "You're" : 'Your team is'
+    user_is_current = user == current_user
 
-    if long_run_goal_complete?
-      "#{season_state} met #{possessive} long run goal! #{team_state} #{season_progress}% through the season, and #{met_goal} met #{long_run_goal_progress}% of #{possessive} mileage goal."
-    elsif meeting_long_run_goal?
-      "#{season_state} on track! #{team_state} #{season_progress}% through the season, and #{met_goal} met #{long_run_goal_progress}% of #{possessive} personal long run goal."
-    elsif ahead_of_long_run_goal?
-      "#{season_state} advancing! #{team_state} #{season_progress}% through the season, and #{met_goal} already met #{long_run_goal_progress}% of #{possessive} personal long run goal."
-    else
-      "#{season_state} falling behind! #{team_state} #{season_progress}% through the season, but #{met_goal} only met #{long_run_goal_progress}% of #{possessive} personal long run goal."
-    end
+    user_status, meeting_goal_status =
+      if long_run_goal_complete?
+        if user_is_current
+          ['You\'ve met your long run goal', 'and you\'ve completed']
+        else
+          ["#{user.first_name} met #{user.gender_possessive} long run goal", "and #{user.first_name} has completed"]
+        end
+
+      elsif meeting_long_run_goal?
+        if user_is_current
+          ['You\'re on track', 'and you\'ve completed']
+        else
+          ["#{user.first_name} is on track", "and #{user.first_name} has completed"]
+        end
+
+      elsif ahead_of_long_run_goal?
+        if user_is_current
+          ['You\'re advancing', 'and you\'ve already completed']
+        else
+          ["#{user.first_name} is advancing", "and #{user.first_name} has already completed"]
+        end
+
+      elsif user_is_current
+        ['You\'re falling behind', 'but you\'ve only completed']
+      else
+        ["#{user.first_name} is falling behind", "but #{user.first_name} has only completed"]
+      end
+
+    team_state = user_is_current ? "You're" : 'Your team is'
+    possessive = user_is_current ? 'your' : user.gender_possessive
+
+    "#{user_status}! #{team_state} #{season_progress}% through the season, #{meeting_goal_status} #{long_run_goal_progress}% of #{possessive} personal long run goal."
   end
 end

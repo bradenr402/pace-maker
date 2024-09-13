@@ -105,7 +105,7 @@
 
     <p class='my-1 text-xs text-soft'>
       <% if team.mileage_goal_complete? %>
-        Your team met its <%= team.mileage_goal %> long run goal with <%= pluralize(team.days_remaining_in_season, 'day') %> to spare!
+        Your team met its <%= team.mileage_goal %> mile goal with <%= pluralize(team.days_remaining_in_season, 'day') %> to spare!
       <% else %>
         Your team has <%= pluralize(team.days_remaining_in_season, 'day') %> to finish the remaining <%= pluralize(team.miles_remaining_in_goal, 'mile') %> of your goal.
       <% end %>
