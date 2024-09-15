@@ -10,5 +10,9 @@ module.exports = {
   ],
   safelist: [{ pattern: /form-.+/ }, { pattern: /btn-.+/ }],
   theme: {},
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/aspect-ratio'),
+    require('@tailwindcss/typography'),
+  ],
 };
