@@ -329,14 +329,14 @@ class TeamsController < ApplicationController
     if group_by == 'week'
       @trends_date_range.group_by { |date| date.beginning_of_week(@team.week_start) }.map do |week_start, dates|
         [
-          pretty_date(week_start, month_format: :short, include_year: @chart_type == 'line'),
+          pretty_date(week_start, month_format: :short, include_year: @chart_type == 'line', date_style: :absolute),
           dates.sum { |date| @team.miles_in_date_range(date) }
         ]
       end
     else # group_by == 'day'
       @trends_date_range.map do |date|
         [
-          pretty_date(date, month_format: :short, include_year: @chart_type == 'line'),
+          pretty_date(date, month_format: :short, include_year: @chart_type == 'line', date_style: :absolute),
           @team.miles_in_date_range(date)
         ]
       end
@@ -349,14 +349,14 @@ class TeamsController < ApplicationController
     if group_by == 'week'
       @trends_date_range.group_by { |date| date.beginning_of_week(@team.week_start) }.map do |week_start, dates|
         [
-          pretty_date(week_start, month_format: :short, include_year: @chart_type == 'line'),
+          pretty_date(week_start, month_format: :short, include_year: @chart_type == 'line', date_style: :absolute),
           dates.sum { |date| @team.long_runs_in_date_range(date).count }
         ]
       end
     else # group_by == 'day'
       @trends_date_range.map do |date|
         [
-          pretty_date(date, month_format: :short, include_year: @chart_type == 'line'),
+          pretty_date(date, month_format: :short, include_year: @chart_type == 'line', date_style: :absolute),
           @team.long_runs_in_date_range(date).count
         ]
       end
@@ -369,14 +369,14 @@ class TeamsController < ApplicationController
     if group_by == 'week'
       @trends_date_range.group_by { |date| date.beginning_of_week(@team.week_start) }.map do |week_start, dates|
         [
-          pretty_date(week_start, month_format: :short, include_year: @chart_type == 'line'),
+          pretty_date(week_start, month_format: :short, include_year: @chart_type == 'line', date_style: :absolute),
           dates.sum { |date| @member.miles_in_date_range(date) }
         ]
       end
     else # group_by == 'day'
       @trends_date_range.map do |date|
         [
-          pretty_date(date, month_format: :short, include_year: @chart_type == 'line'),
+          pretty_date(date, month_format: :short, include_year: @chart_type == 'line', date_style: :absolute),
           @member.miles_in_date_range(date)
         ]
       end
@@ -389,14 +389,14 @@ class TeamsController < ApplicationController
     if group_by == 'week'
       @trends_date_range.group_by { |date| date.beginning_of_week(@team.week_start) }.map do |week_start, dates|
         [
-          pretty_date(week_start, month_format: :short, include_year: @chart_type == 'line'),
+          pretty_date(week_start, month_format: :short, include_year: @chart_type == 'line', date_style: :absolute),
           dates.sum { |date| @member.long_runs_in_date_range(@team, date).count }
         ]
       end
     else # group_by == 'day'
       @trends_date_range.map do |date|
         [
-          pretty_date(date, month_format: :short, include_year: @chart_type == 'line'),
+          pretty_date(date, month_format: :short, include_year: @chart_type == 'line', date_style: :absolute),
           @member.long_runs_in_date_range(@team, date).count
         ]
       end
