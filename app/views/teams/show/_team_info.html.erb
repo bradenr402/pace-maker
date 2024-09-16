@@ -3,7 +3,7 @@
   <p class="text-soft">Information and statistics about this team.</p>
 </div>
 
-<p class="mb-2 text-right"><%= link_to 'View your personal progress', team_member_path(team, current_user), class: 'btn-link text-xs' %></p>
+<%= content_tag(:p, class: 'mb-2 text-right') { link_to 'View your personal progress', team_member_path(team, current_user), class: 'btn-link text-xs' } if current_user.member_of?(team) %>
 
 <!-- Season Dates Card -->
 <div class="p-6 mb-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
