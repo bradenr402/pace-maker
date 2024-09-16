@@ -24,7 +24,8 @@
       <span>Settings</span>
     <% end %>
 
-    <%= link_to new_run_path, aria: { current: current_page?(new_run_path) ? 'page' : nil }, class: 'btn btn-lg btn-primary mt-auto flex gap-4 items-center' do %>
+    <!-- New run button -->
+    <%= link_to new_run_path, aria: { current: current_page?(new_run_path) ? 'page' : nil }, class: 'btn btn-lg btn-primary mt-auto flex gap-3 items-center' do %>
       <%= inline_svg_tag 'icons/runner.svg', class: 'size-6' %>
       <span>New run</span>
     <% end %>
