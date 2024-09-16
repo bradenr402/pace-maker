@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_29_220743) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_15_152715) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
@@ -41,6 +41,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_29_220743) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "pinned_pages", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "title"
+    t.string "page_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_pinned_pages_on_user_id"
   end
 
   create_table "runs", force: :cascade do |t|
@@ -120,6 +129,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_29_220743) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "pinned_pages", "users"
   add_foreign_key "runs", "users"
   add_foreign_key "team_join_requests", "teams"
   add_foreign_key "team_join_requests", "users"

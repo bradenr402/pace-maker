@@ -19,6 +19,7 @@ class User < ApplicationRecord
            class_name: 'TeamJoinRequest',
            dependent: :destroy
   has_one_attached :avatar
+  has_many :pinned_pages, dependent: :destroy
 
   attr_accessor :remove_avatar
 
