@@ -1,5 +1,7 @@
 <%= turbo_frame_tag 'pin_unpin_button', class: 'mt-2' do %>
-  <% unless current_user.pinned_pages.exists?(page_url:) || page_url.in?([profile_path, teams_path, search_path, edit_user_registration_path, manage_pinned_pages_path, new_run_path]) %>
+  <% excluded_paths = [profile_path, teams_path, search_path, edit_user_registration_path, manage_pinned_pages_path, new_run_path] %>
+
+  <% unless current_user.pinned_pages.exists?(page_url:) || excluded_paths.any? { |path| page_url.include?(path) } %>
     <%= button_to pinned_pages_path(page_url:, title: content_for(:title) || 'Untitled Page'), method: :post, class: 'btn btn-white gap-2.5 items-center w-full' do %>
       <%= inline_svg_tag 'icons/bookmark.svg', class: 'size-5' %>
       <span>Pin current page</span>
