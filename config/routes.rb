@@ -45,6 +45,13 @@ Rails.application.routes.draw do
 
   get 'search', to: 'search#index', as: :search
 
+  resources :pinned_pages, only: %i[create destroy] do
+    collection do
+      get :manage
+      patch :update_all
+    end
+  end
+
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get 'up', to: 'rails/health#show', as: :rails_health_check

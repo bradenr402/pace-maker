@@ -1,0 +1,27 @@
+<% content_for :title, 'Edit Pinned Pages' %>
+
+<div class="max-w-3xl px-4 mx-auto my-16">
+  <div class="pb-6 mb-4 border-b border-slate-200 dark:border-slate-700">
+    <div class="flex items-center justify-between">
+      <h1 class="heading">Edit Pinned Pages</h1>
+    </div>
+  </div>
+
+  <div>
+    <%= form_with url: update_all_pinned_pages_path, method: :patch do |f| %>
+      <% @pinned_pages.each do |page| %>
+        <div class="form-group">
+          <div class="flex items-center gap-3">
+            <%= f.text_field "pinned_pages[#{page.id}][title]", value: page.title, class: 'form-input' %>
+            <%= link_to pinned_page_path(page), data: { turbo_method: :delete }, class: 'text-red-700 dark:text-red-400' do %>
+              <%= inline_svg_tag 'icons/trash.svg', class: 'size-5' %>
+              <span class="sr-only">Delete page</span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <%= f.submit 'Save changes', class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+</div>

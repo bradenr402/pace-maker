@@ -1,0 +1,25 @@
+<%= turbo_frame_tag 'pinned_pages_list' do %>
+  <div class="space-y-1.5">
+    <div class="flex items-end justify-between ml-1 mb-2">
+      <p class="text-soft text-sm">Pinned pages</p>
+      <%= link_to 'Edit', manage_pinned_pages_path, data: { turbo: false }, class: 'btn-link-soft text-xs' %>
+    </div>
+
+    <% current_user.pinned_pages.each do |page| %>
+      <% link_options = { data: { turbo: false }, class: "group sidebar-link #{current_page?(page.page_url) ? 'sidebar-link-active' : 'sidebar-link-inactive' }" } %>
+
+      <% link_content = capture do %>
+        <% if (member = User.find_by(id: page.page_url.split('/').last)) && page.page_url.match?(/teams\/\d+\/member\/\d+/) %>
+          <%= image_tag member.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-6 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover' if member.avatar.attached? %>
+        <% elsif (team = Team.find_by(id: page.page_url.split('/').last)) && page.page_url.match?(/teams\/\d+/) %>
+          <%= image_tag team.photo.variant(resize_to_limit: [50, 50]).processed, class: 'size-6 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover' if team.photo.attached? %>
+        <% elsif (user = User.find_by(id: page.page_url.split('/').last)) && page.page_url.match?(/users\/\d+/) %>
+          <%= image_tag user.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-6 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover' if user.avatar.attached? %>
+        <% end %>
+        <span><%= page.title %></span>
+      <% end %>
+
+      <%= link_to link_content, page.page_url, **link_options %>
+    <% end %>
+  </div>
+<% end %>
