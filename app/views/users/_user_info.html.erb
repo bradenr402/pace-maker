@@ -33,7 +33,14 @@
   <div class="mb-24">
     <div class="pb-6 mt-10 mb-6 space-y-2 border-b dark:border-slate-700">
       <h1 class="heading">Contact</h1>
-      <p class="text-soft"><%= user == current_user ? 'Your contact information' : "Contact information for #{user.first_name}" %>.</p>
+
+      <p class="text-soft">
+        <% if user == current_user %>
+          Your contact information. You can hide this in <%= link_to 'settings', edit_user_registration_path(tab: 'settingsTab'), class: 'btn-link transition duration-200 ease-in-out' %>.
+        <% else %>
+          Contact information for <%= user.first_name %>.
+        <% end %>
+      </p>
     </div>
 
     <div class="block mb-8 space-y-10 sm:flex sm:space-y-0 sm:items-center sm:justify-around">
