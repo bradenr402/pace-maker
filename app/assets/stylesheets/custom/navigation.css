@@ -33,7 +33,7 @@
 }
 
 .sidebar-link {
-  @apply rounded-md px-3 py-3 focus:text-indigo-600 text-base font-medium hover:transition hover:duration-300 hover:ease-in-out dark:focus:text-white flex gap-2.5 items-center;
+  @apply rounded-md px-3 py-2.5 focus:text-indigo-600 text-sm font-medium hover:transition hover:duration-300 hover:ease-in-out dark:focus:text-white flex gap-2.5 items-center;
 }
 
 .sidebar-link-active {

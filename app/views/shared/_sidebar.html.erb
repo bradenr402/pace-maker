@@ -1,4 +1,4 @@
-<div class="hidden h-full flex-[0.3] min-w-72 md:block">
+<div class="hidden h-full flex-[0.25] min-w-72 md:block">
   <nav class="h-full flex flex-col py-8 px-6 backdrop-blur-sm bg-slate-50/85 dark:bg-slate-800/85 border-r dark:border-slate-700">
     <div class="mb-2 text-xl font-bold">
       <span class="text-indigo-500">Team</span><span>Runner</span>
@@ -7,19 +7,19 @@
     <!-- Main navigation links -->
     <div class="mb-6 space-y-1.5">
       <%= link_to profile_path, aria: { current: current_page?(profile_path) ? 'page' : nil }, class: "group sidebar-link #{current_page?(profile_path) ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
-        <%= inline_svg_tag 'icons/profile.svg', class: 'size-6 text-soft motion-safe:group-hover:bounce-animation motion-safe:group-focus:bounce-animation' %>
+        <%= inline_svg_tag 'icons/profile.svg', class: 'size-5 text-soft motion-safe:group-hover:bounce-animation motion-safe:group-focus:bounce-animation' %>
         <span>Profile</span>
       <% end %>
       <%= link_to teams_path, aria: { current: current_page?(teams_path) ? 'page' : nil }, class: "group sidebar-link #{current_page?(teams_path) ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
-        <%= inline_svg_tag 'icons/team.svg', class: 'size-6 text-soft motion-safe:group-hover:gelatine-animation motion-safe:group-focus:gelatine-animation' %>
+        <%= inline_svg_tag 'icons/team.svg', class: 'size-5 text-soft motion-safe:group-hover:gelatine-animation motion-safe:group-focus:gelatine-animation' %>
         <span>Teams</span>
       <% end %>
       <%= link_to search_path, aria: { current: current_page?(search_path) ? 'page' : nil }, class: "group sidebar-link #{current_page?(search_path) ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
-        <%= inline_svg_tag 'icons/search.svg', class: 'size-6 text-soft motion-safe:group-hover:wiggle-animation motion-safe:group-focus:wiggle-animation' %>
+        <%= inline_svg_tag 'icons/search.svg', class: 'size-5 text-soft motion-safe:group-hover:wiggle-animation motion-safe:group-focus:wiggle-animation' %>
         <span>Search</span>
       <% end %>
       <%= link_to edit_user_registration_path, aria: { current: current_page?(edit_user_registration_path) ? 'page' : nil }, class: "group sidebar-link #{current_page?(edit_user_registration_path) ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
-        <%= inline_svg_tag 'icons/settings.svg', class: 'size-6 text-soft spin-animation motion-safe:group-hover:spin motion-safe:group-focus:spin' %>
+        <%= inline_svg_tag 'icons/settings.svg', class: 'size-5 text-soft spin-animation motion-safe:group-hover:spin motion-safe:group-focus:spin' %>
         <span>Settings</span>
       <% end %>
     </div>
