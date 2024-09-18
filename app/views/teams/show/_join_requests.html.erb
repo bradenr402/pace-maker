@@ -1,10 +1,10 @@
-<div class="pb-6 mt-10 space-y-2 border-b dark:border-slate-700">
+<div class="pb-6 mt-10 space-y-2">
   <h1 class="heading">Join Requests</h1>
-  <p class="text-soft"><%= join_requests.count < 1 ? 'No requests' : pluralize(join_requests.count, 'request') %></p>
+  <p class="text-soft"><%= join_requests.count < 1 ? 'There are currently no pending join requests for this team' : "There #{join_requests.count == 1 ? 'is' : 'are'} #{pluralize(join_requests.count, 'pending join request')}" %>.</p>
 </div>
 
 <% if join_requests.present? %>
-  <div class="mb-10 divide-y dark:divide-slate-700 dark:text-slate-700">
+  <div class="space-y-4">
     <% join_requests.each do |request| %>
       <%= render 'teams/show/join_request', request: request %>
     <% end %>
