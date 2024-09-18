@@ -1,37 +1,41 @@
-<div class="flex flex-wrap items-center justify-between gap-6 pb-6 mt-10 border-b border-slate-200 dark:border-slate-700">
-  <div class="space-y-2">
-    <h1 class="heading"><%= user == current_user ? 'Your' : "#{user.first_name}'s" %> Teams</h1>
-    <p class="text-soft">Teams <%= user == current_user ? 'you are' : "#{user.first_name} is" %> the coach of.</p>
+<div class="mb-24">
+  <div class="flex flex-wrap items-center justify-between gap-6 pb-6 mt-10">
+    <div class="space-y-2">
+      <h1 class="heading"><%= user == current_user ? 'Your' : "#{user.first_name}'s" %> Teams</h1>
+      <p class="text-soft">Teams <%= user == current_user ? 'you are' : "#{user.first_name} is" %> the coach of.</p>
+    </div>
+
+    <% if user == current_user && owned_teams.present? %>
+      <%= link_to 'New team', new_team_path, class: 'btn btn-primary' %>
+    <% end %>
   </div>
 
-  <% if user == current_user && owned_teams.present? %>
-    <%= link_to 'New team', new_team_path, class: 'btn btn-primary' %>
+  <% if owned_teams.present? %>
+    <%= render 'teams/shared/team_list', teams: owned_teams %>
+  <% else %>
+    <div class="flex flex-col items-center justify-center gap-6 py-12">
+      <% if user == current_user %>
+        <p class="prose dark:prose-invert text-soft">You don't have any teams yet.</p>
+        <%= link_to 'New run', new_run_path, class: 'btn btn-primary' %>
+      <% else %>
+        <p class="prose dark:prose-invert text-soft"><%= user.first_name %> doesn't have any teams yet.</p>
+      <% end %>
+    </div>
   <% end %>
 </div>
 
-<% if owned_teams.present? %>
-  <%= render 'teams/shared/team_list', teams: owned_teams %>
-<% else %>
-  <div class="flex flex-col items-center justify-center gap-6 py-12">
-    <% if user == current_user %>
-      <p class="prose dark:prose-invert text-soft">You don't have any teams yet.</p>
-      <%= link_to 'New run', new_run_path, class: 'btn btn-primary' %>
-    <% else %>
-      <p class="prose dark:prose-invert text-soft"><%= user.first_name %> doesn't have any teams yet.</p>
-    <% end %>
+<div class="mb-24">
+  <div class="pb-6 mt-10 space-y-2">
+    <h1 class="heading"><%= user == current_user ? 'Your' : "#{user.first_name}'s" %> Team Memberships</h1>
+    <p class="text-soft">Teams <%= user == current_user ? 'you are' : "#{user.first_name} is" %> a member of.</p>
   </div>
-<% end %>
 
-<div class="pb-6 mt-10 space-y-2 border-b dark:border-slate-700">
-  <h1 class="heading"><%= user == current_user ? 'Your' : "#{user.first_name}'s" %> Team Memberships</h1>
-  <p class="text-soft">Teams <%= user == current_user ? 'you are' : "#{user.first_name} is" %> a member of.</p>
+  <% if membered_teams.present? %>
+    <%= render 'teams/shared/team_list', teams: membered_teams %>
+  <% else %>
+    <div class="flex flex-col items-center justify-center gap-6 py-12">
+      <p class="prose dark:prose-invert text-soft">You're not a member of any teams yet.</p>
+      <%= link_to 'Find a team', teams_path, class: 'btn btn-white' %>
+    </div>
+  <% end %>
 </div>
-
-<% if membered_teams.present? %>
-  <%= render 'teams/shared/team_list', teams: membered_teams %>
-<% else %>
-  <div class="flex flex-col items-center justify-center gap-6 py-12">
-    <p class="prose dark:prose-invert text-soft">You're not a member of any teams yet.</p>
-    <%= link_to 'Find a team', teams_path, class: 'btn btn-white' %>
-  </div>
-<% end %>
