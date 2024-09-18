@@ -17,8 +17,11 @@
 
   <div class="form-group">
     <%= form.label :name, class: 'form-label' %>
-    <%= form.text_field :name, autofocus: true, class: 'form-input', data: { form_validation_target: 'teamName', action: 'input->form-validation#validateTeamName' } %>
-    <span class="hidden my-1 error-message" data-form-validation-target="teamNameError">Name cannot be blank</span>
+    <div class="relative">
+      <%= inline_svg_tag 'icons/team.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+      <%= form.text_field :name, autofocus: true, placeholder: 'Enter team name', class: 'form-input pl-10', data: { form_validation_target: 'teamName', action: 'input->form-validation#validateTeamName' } %>
+    </div>
+    <p class="hidden my-1 error-message" data-form-validation-target="teamNameError">Name cannot be blank</p>
   </div>
 
   <div class="form-group">
@@ -28,7 +31,7 @@
       </p>
     <% end %>
     <%= form.text_area :description, placeholder: 'Add a description...', class: 'form-input', data: { controller: 'autogrow', form_validation_target: 'teamDescription', action: 'input->autogrow#grow input->form-validation#validateTeamDescription' } %>
-    <span class="hidden my-1 error-message" data-form-validation-target="teamDescriptionError">Description must be 500 characters or less</span>
+    <p class="hidden my-1 error-message" data-form-validation-target="teamDescriptionError">Description must be 500 characters or less</p>
     <p class="my-1 help-text">Maximum 500 characters</p>
   </div>
 
@@ -60,7 +63,11 @@
         <span class="help-text">(optional)</span>
       </p>
     <% end %>
-    <%= form.date_field :season_start_date, value: form.object.new_record? ? nil : @team.season_start_date, class: 'form-input', data: { form_validation_target: "seasonStartDate", action: "input->form-validation#validateSeasonEndDate" } %>
+
+    <div class="relative">
+      <%= inline_svg_tag 'icons/calendar.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+      <%= form.date_field :season_start_date, value: form.object.new_record? ? nil : @team.season_start_date, class: 'form-input pl-10', data: { form_validation_target: "seasonStartDate", action: "input->form-validation#validateSeasonEndDate" } %>
+    </div>
   </div>
 
   <div class="form-group">
@@ -69,8 +76,13 @@
         <span class="help-text">(optional)</span>
       </p>
     <% end %>
-    <%= form.date_field :season_end_date, value: form.object.new_record? ? nil : @team.season_end_date, class: 'form-input', data: { form_validation_target: "seasonEndDate", action: "input->form-validation#validateSeasonEndDate" } %>
-    <span class="hidden my-1 error-message" data-form-validation-target="seasonEndDateError">Season end date must be after season start date</span>
+
+    <div class="relative">
+      <%= inline_svg_tag 'icons/calendar.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+      <%= form.date_field :season_end_date, value: form.object.new_record? ? nil : @team.season_end_date, class: 'form-input pl-10', data: { form_validation_target: "seasonEndDate", action: "input->form-validation#validateSeasonEndDate" } %>
+    </div>
+
+    <p class="hidden my-1 error-message" data-form-validation-target="seasonEndDateError">Season end date must be after season start date</p>
   </div>
 
   <div class="form-group">
@@ -79,8 +91,13 @@
         <span class="help-text">(optional)</span>
       </p>
     <% end %>
-    <%= form.number_field :mileage_goal, step: 1, min: 0, class: 'form-input', data: { form_validation_target: "mileageGoal", action: "input->form-validation#validateMileageGoal" } %>
-    <span class="hidden my-1 error-message" data-form-validation-target="milageGoalError">Mileage goal must be a positive number</span>
+
+    <div class="relative">
+      <%= inline_svg_tag 'icons/ruler.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+      <%= form.number_field :mileage_goal, step: 1, min: 0, placeholder: 'e.g., 500', class: 'form-input pl-10', data: { form_validation_target: "mileageGoal", action: "input->form-validation#validateMileageGoal" } %>
+    </div>
+
+    <p class="hidden my-1 error-message" data-form-validation-target="milageGoalError">Mileage goal must be a positive number</p>
     <p class="my-1 help-text">Set a goal for how many miles you want your team to run collectively during the season.</p>
   </div>
 
@@ -90,13 +107,18 @@
         <span class="help-text">(optional)</span>
       </p>
     <% end %>
-    <%= form.number_field :long_run_goal, step: 1, min: 0, class: 'form-input', data: { form_validation_target: 'mileageGoal', action: 'input->form-validation#validateMileageGoal' } %>
-    <span class="hidden my-1 error-message" data-form-validation-target="milageGoalError">Long run goal must be a positive number</span>
+
+    <div class="relative">
+      <%= inline_svg_tag 'icons/runner.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+      <%= form.number_field :long_run_goal, step: 1, min: 0, placeholder: 'e.g., 75', class: 'form-input pl-10', data: { form_validation_target: 'mileageGoal', action: 'input->form-validation#validateMileageGoal' } %>
+    </div>
+
+    <p class="hidden my-1 error-message" data-form-validation-target="milageGoalError">Long run goal must be a positive number</p>
     <p class="my-1 help-text">Set a goal for how many long runs you want your team to run collectively during the season.</p>
   </div>
 
   <div class="sticky bottom-0 flex items-center gap-6 pt-6 pb-6 bg-white border-t dark:bg-slate-900 border-slate-200 dark:border-slate-700 flex-wrap justify-start">
-    <%= form.submit form.object.new_record? ? 'Create team' : 'Update team', data: { turbo: false }, class: 'btn btn-primary mr-auto' %>
+    <%= form.submit form.object.new_record? ? 'Create team' : 'Save changes', data: { turbo: false }, class: 'btn btn-primary mr-auto' %>
     <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-white' %>
   </div>
 <% end %>
