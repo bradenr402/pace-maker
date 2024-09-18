@@ -9,7 +9,13 @@ module.exports = {
     './app/assets/stylesheets/**/*.css',
   ],
   safelist: [{ pattern: /form-.+/ }, { pattern: /btn-.+/ }],
-  theme: {},
+  theme: {
+    extend: {
+      spacing: {
+        '4.5': '1.125rem',
+      }
+    }
+  },
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/aspect-ratio'),
