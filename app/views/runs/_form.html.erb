@@ -1,34 +1,36 @@
 <%= form_with model: @run, data: { controller: "form-validation" }, html: { novalidate: true } do |form| %>
   <div class="form-group">
     <%= form.label :date, 'What day did you run?', class: 'form-label' %>
-    <%= form.date_field :date, autofocus: true, max: Date.today, value: form.object.new_record? ? Date.today : @run.date, class: 'form-input', data: { form_validation_target: "date", action: "input->form-validation#validateDate" } %>
-    <span class="hidden my-1 error-message" data-form-validation-target="dateError">Date must be today or earlier</span>
+    <div class="relative">
+      <%= inline_svg_tag 'icons/calendar.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+      <%= form.date_field :date, max: Date.today, value: form.object.new_record? ? Date.today : @run.date, class: 'form-input pl-10', data: { form_validation_target: 'date', action: 'input->form-validation#validateDate' } %>
+    </div>
+    <p class="hidden my-1 error-message" data-form-validation-target="dateError">Date must be today or earlier</p>
   </div>
 
-  <div data-controller="distance-shortcuts">
-    <div class="form-group">
-      <%= form.label :distance, 'How many miles did you run?', class: 'form-label' %>
-      <%= form.number_field :distance, step: 0.1, min: 0, class: 'form-input', data: { form_validation_target: "distance", action: "input->form-validation#validateDistance", distance_shortcuts_target: "distance" } %>
-      <span class="hidden my-1 error-message" data-form-validation-target="distanceError">Distance must be a positive number</span>
+  <div data-controller="distance-shortcuts" class="form-group">
+    <%= form.label :distance, 'How many miles did you run?', class: 'form-label' %>
+
+    <div class="flex items-center gap-2.5">
+      <!-- Decrease distance button -->
+      <%= button_tag type: 'button', data: { action: 'click->distance-shortcuts#updateDistance click->form-validation#validateDistance', update_distance_value: '-1' }, class: 'btn btn-white size-10' do %>
+        <%= inline_svg_tag 'icons/minus.svg', class: 'size-5 shrink-0' %>
+        <span class="sr-only">Decrease by 1 mile</span>
+      <% end %>
+
+      <div class="relative flex-1">
+        <%= inline_svg_tag 'icons/ruler.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+        <%= form.number_field :distance, step: 0.1, min: 0, placeholder: '3.14', class: 'form-input pl-10', data: { form_validation_target: 'distance', action: 'input->form-validation#validateDistance', distance_shortcuts_target: 'distance' } %>
+      </div>
+
+      <!-- Increase distance button -->
+      <%= button_tag type: 'button', data: { action: 'click->distance-shortcuts#updateDistance click->form-validation#validateDistance', update_distance_value: '1' }, class: 'btn btn-white size-10' do %>
+        <%= inline_svg_tag 'icons/plus.svg', class: 'size-5 shrink-0' %>
+        <span class="sr-only">Increase by 1 mile</span>
+      <% end %>
     </div>
 
-    <div class="flex flex-wrap items-center justify-center gap-3 -mt-2 select-none form-group">
-      <button type="button" data-action="click->distance-shortcuts#updateDistance click->form-validation#validateDistance" data-update-distance-value="-0.1" class="btn btn-white min-w-12">-</button>
-      <p class="w-1/4 text-center sm:w-1/5 md:w-1/6 min-w-max">0.1 miles</p>
-      <button type="button" data-action="click->distance-shortcuts#updateDistance click->form-validation#validateDistance" data-update-distance-value="0.1" class="btn btn-white min-w-12">+</button>
-    </div>
-
-    <div class="flex flex-wrap items-center justify-center gap-3 -mt-2 select-none form-group">
-      <button type="button" data-action="click->distance-shortcuts#updateDistance click->form-validation#validateDistance" data-update-distance-value="-1" class="btn btn-white min-w-12">-</button>
-      <p class="w-1/4 text-center sm:w-1/5 md:w-1/6 min-w-max">1 mile</p>
-      <button type="button" data-action="click->distance-shortcuts#updateDistance click->form-validation#validateDistance" data-update-distance-value="1" class="btn btn-white min-w-12">+</button>
-    </div>
-
-    <div class="flex flex-wrap items-center justify-center gap-3 -mt-2 select-none form-group">
-      <button type="button" data-action="click->distance-shortcuts#updateDistance click->form-validation#validateDistance" data-update-distance-value="-5" class="btn btn-white min-w-12">-</button>
-      <p class="w-1/4 text-center sm:w-1/5 md:w-1/6 min-w-max">5 miles</p>
-      <button type="button" data-action="click->distance-shortcuts#updateDistance click->form-validation#validateDistance" data-update-distance-value="5" class="btn btn-white min-w-12">+</button>
-    </div>
+    <span class="hidden my-1 error-message" data-form-validation-target="distanceError">Distance must be a positive number</span>
   </div>
 
   <div class="form-group">
@@ -37,9 +39,11 @@
         <span class="help-text">(optional)</span>
       </p>
     <% end %>
-    <%= form.text_field :duration_input, value: form.object.new_record? ? '' : clock_time_display(@run.duration), class: 'form-input', data: { form_validation_target: "duration", action: "input->form-validation#validateDuration" } %>
-    <span class="hidden my-1 error-message" data-form-validation-target="durationError">Duration must be in MM:SS or HH:MM:SS format and must be less than 24 hours</span>
-    <p class="my-1 text-xs text-slate-700 dark:text-slate-400">Enter time in MM:SS or HH:MM:SS format.</p>
+    <div class="relative">
+      <%= inline_svg_tag 'icons/clock.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+      <%= form.text_field :duration_input, value: form.object.new_record? ? '' : clock_time_display(@run.duration), placeholder: 'MM:SS or HH:MM:SS', class: 'form-input pl-10', data: { form_validation_target: 'duration', action: 'input->form-validation#validateDuration' } %>
+    </div>
+    <p class="hidden my-1 error-message" data-form-validation-target="durationError">Duration must be in MM:SS or HH:MM:SS format and must be less than 24 hours</p>
   </div>
 
   <div class="form-group">
