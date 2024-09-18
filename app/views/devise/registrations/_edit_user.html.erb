@@ -13,9 +13,14 @@
 
   <div class='form-group'>
     <%= f.label :username, class: "form-label" %>
-    <%= f.text_field :username, autocomplete: 'username', class: "form-input", data: { form_validation_target: "username", action: "input->form-validation#validateUsername" } %>
+
+    <div class="relative">
+      <%= inline_svg_tag 'icons/user.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+      <%= f.text_field :username, autocomplete: 'username', class: 'form-input pl-10', data: { form_validation_target: 'username', action: 'input->form-validation#validateUsername' } %>
+    </div>
+
     <p class="my-1 help-text">Your username is unique to you and is used to identify your account.</p>
-    <span class="hidden my-1 error-message" data-form-validation-target="usernameError">Username can only contain lowercase letters, numbers, underscores, and periods and must be at least 3 characters long</span>
+    <p class="hidden my-1 error-message" data-form-validation-target="usernameError">Username can only contain lowercase letters, numbers, underscores, and periods and must be at least 3 characters long</p>
   </div>
 
   <div class="form-group">
@@ -24,9 +29,14 @@
         <span class="help-text">(optional)</span>
       </p>
     <% end %>
-    <%= f.text_field :display_name, class: "form-input", data: { form_validation_target: "displayName", action: "input->form-validation#validateDisplayName" } %>
+
+    <div class="relative">
+      <%= inline_svg_tag 'icons/profile.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+      <%= f.text_field :display_name, class: 'form-input pl-10', data: { form_validation_target: 'displayName', action: 'input->form-validation#validateDisplayName' } %>
+    </div>
+
     <p class="my-1 help-text">Your display name is not unique and can be added to help other users recognize you.</p>
-    <span class="hidden my-1 error-message" data-form-validation-target="displayNameError">Display name must be 100 characters or less</span>
+    <p class="hidden my-1 error-message" data-form-validation-target="displayNameError">Display name must be 100 characters or less</p>
   </div>
 
   <div data-controller="image-preview" class="form-group">
@@ -55,9 +65,14 @@
   </div>
 
   <div class='form-group'>
-    <%= f.label :email, class: "form-label" %>
-    <%= f.email_field :email, autocomplete: "email", class: "form-input", data: { form_validation_target: "email", action: "input->form-validation#validateEmail" } %>
-    <span class="hidden my-1 error-message" data-form-validation-target="emailError">Invalid email address</span>
+    <%= f.label :email, class: 'form-label' %>
+
+    <div class="relative">
+      <%= inline_svg_tag 'icons/envelope.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+      <%= f.email_field :email, autocomplete: 'email', class: 'form-input pl-10', data: { form_validation_target: 'email', action: 'input->form-validation#validateEmail' } %>
+    </div>
+
+    <p class="hidden my-1 error-message" data-form-validation-target="emailError">Invalid email address</p>
     <div class="flex items-center gap-2 mt-2">
       <%= hidden_field_tag 'user[settings][email_visible]', 'false' %>
       <%= f.fields_for :settings do |settings_form| %>
@@ -73,8 +88,13 @@
         <span class="help-text">(optional)</span>
       </p>
     <% end %>
-    <%= f.telephone_field :phone_number, autocomplete: 'tel', class: 'form-input', data: { form_validation_target: "phone", action: "input->form-validation#validatePhone input->form-validation#filterPhoneInput" } %>
-    <span class="hidden my-1 error-message" data-form-validation-target="phoneError">Invalid phone number</span>
+
+    <div class="relative">
+      <%= inline_svg_tag 'icons/phone.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+      <%= f.telephone_field :phone_number, autocomplete: 'tel', class: 'form-input pl-10', data: { form_validation_target: 'phone', action: 'input->form-validation#validatePhone input->form-validation#filterPhoneInput' } %>
+    </div>
+
+    <p class="hidden my-1 error-message" data-form-validation-target="phoneError">Invalid phone number</p>
     <div class="flex items-center gap-2 mt-2">
       <%= hidden_field_tag 'user[settings][phone_visible]', 'false' %>
       <%= f.fields_for :settings do |settings_form| %>
@@ -97,7 +117,11 @@
     <% end %>
 
     <% if resource.any_teams_require_gender? %>
-      <%= f.select :gender, User.genders.keys.map { |gender| [gender.humanize, gender] }, {}, class: 'form-select' %>
+      <div class="relative">
+        <%= inline_svg_tag 'icons/gender.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+        <%= f.select :gender, User.genders.keys.map { |gender| [gender.humanize, gender] }, {}, class: 'form-select pl-10' %>
+      </div>
+
       <p class="my-1 help-text">You are a member of <%= pluralize(resource.teams_requiring_gender.count, 'team that requires its members', 'teams that require their members') %> to specify their gender:</p>
 
       <ul class="pl-4 my-1 list-disc help-text">
@@ -106,7 +130,10 @@
 
       <p class="my-1 help-text">You must leave <%= resource.teams_requiring_gender.count == 1 ? 'this team' : 'these teams' %> to remove your gender.</p>
     <% else %>
-      <%= f.select :gender, [['Prefer not to answer', '']].concat(User.genders.keys.map { |gender| [gender.humanize, gender] }), {}, class: 'form-select' %>
+      <div class="relative">
+        <%= inline_svg_tag 'icons/gender.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+        <%= f.select :gender, [['Prefer not to answer', '']].concat(User.genders.keys.map { |gender| [gender.humanize, gender] }), {}, class: 'form-select pl-10' %>
+      </div>
     <% end %>
   </div>
 
@@ -115,19 +142,23 @@
     <p class="text-sm text-slate-600 dark:text-slate-400">Leave the fields below blank if you don't want to change your password.</p>
   </div>
 
-  <div class='relative form-group'>
-    <%= f.label :password, class: "form-label" do %>
+  <div class="form-group">
+    <%= f.label :password, class: 'form-label' do %>
       <p> New password
         <span class="help-text">(optional)</span>
       </p>
     <% end %>
 
-    <div class="flex items-center" data-controller="password-visibility">
-      <%= f.password_field :password, autocomplete: "new-password", class: 'form-input w-full', data: { form_validation_target: "newPassword", action: "input->form-validation#validateNewPassword input->form-validation#validateNewPasswordConfirmation", password_visibility_target: "password" } %>
-      <button type="button" class="-ml-9" data-action="password-visibility#toggle">
-        <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-6' %>
-        <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-6 hidden' %>
-      </button>
+    <div data-controller="password-visibility">
+      <div class="relative">
+        <%= inline_svg_tag 'icons/lock.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+        <%= f.password_field :password, autocomplete: 'new-password', class: 'form-input pl-10', data: { form_validation_target: 'newPassword', action: 'input->form-validation#validateNewPassword input->form-validation#validateNewPasswordConfirmation', password_visibility_target: 'password' } %>
+
+        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" data-action="password-visibility#toggle">
+          <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-6' %>
+          <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-6 hidden' %>
+        </button>
+      </div>
     </div>
     <p class="my-1 help-text">Leave this blank if you don't want to change your password.</p>
 
@@ -143,30 +174,36 @@
     </div>
   </div>
 
-  <div class='relative form-group'>
-    <%= f.label :password_confirmation, 'Confirm new password', class: "form-label transition duration-300 ease-in-out", data: { form_validation_target: 'newPasswordConfirmationLabel' } %>
-    <div class="flex items-center" data-controller="password-visibility">
-      <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-input transition duration-300 ease-in-out", data: { form_validation_target: "newPasswordConfirmation", action: "input->form-validation#validateNewPasswordConfirmation", password_visibility_target: "password" } %>
+  <div class="form-group">
+    <%= f.label :password_confirmation, 'Confirm new password', class: 'form-label transition duration-300 ease-in-out', data: { form_validation_target: 'newPasswordConfirmationLabel' } %>
+    <div data-controller="password-visibility">
+      <div class="relative">
+        <%= inline_svg_tag 'icons/lock-check.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+        <%= f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-input pl-10 transition duration-300 ease-in-out', data: { form_validation_target: 'newPasswordConfirmation', action: 'input->form-validation#validateNewPasswordConfirmation', password_visibility_target: 'password' } %>
 
-      <button type="button" class="-ml-9" data-action="password-visibility#toggle">
-        <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-6' %>
-        <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-6 hidden' %>
-      </button>
+        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" data-action="password-visibility#toggle">
+          <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-6' %>
+          <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-6 hidden' %>
+        </button>
+      </div>
     </div>
 
-    <span class="hidden my-1 error-message" data-form-validation-target="newPasswordConfirmationError">Passwords do not match</span>
+    <p class="hidden my-1 error-message" data-form-validation-target="newPasswordConfirmationError">Passwords do not match</p>
     <p class="my-1 text-xs transition-opacity duration-300 ease-in-out text-slate-700 dark:text-slate-400" data-form-validation-target="newPasswordConfirmationHint">Enter your new password again to confirm it.</p>
   </div>
 
-  <div class='form-group'>
-    <%= f.label :current_password, 'Current password', class: "form-label" %>
-    <div class="flex items-center" data-controller="password-visibility">
-      <%= f.password_field :current_password, autocomplete: "current-password", class: "form-input w-full", data: { password_visibility_target: "password" } %>
+  <div class="form-group">
+    <%= f.label :current_password, 'Current password', class: 'form-label' %>
+    <div data-controller="password-visibility">
+      <div class="relative">
+        <%= inline_svg_tag 'icons/key.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+        <%= f.password_field :current_password, autocomplete: 'current-password', class: 'form-input pl-10', data: { password_visibility_target: 'password' } %>
 
-      <button type="button" class="-ml-9" data-action="password-visibility#toggle">
-        <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-6' %>
-        <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-6 hidden' %>
-      </button>
+        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" data-action="password-visibility#toggle">
+          <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-6' %>
+          <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-6 hidden' %>
+        </button>
+      </div>
     </div>
     <p class="my-1 text-xs text-slate-700 dark:text-slate-400">Your current password is required to change your password.</p>
   </div>

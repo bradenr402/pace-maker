@@ -49,7 +49,7 @@
           <p><%= user.email %></p>
           <div class="flex items-center justify-center gap-3">
             <%= mail_to user.email, class: 'btn btn-sm btn-white flex items-center gap-2' do %>
-              <%= inline_svg_tag 'icons/envelope.svg', class: 'size-4' %>
+              <%= inline_svg_tag 'icons/envelope-filled.svg', class: 'size-4' %>
               <span>Email</span>
             <% end %>
           </div>
@@ -66,7 +66,7 @@
             <% end %>
 
             <%= phone_to user.phone_number, class: 'btn btn-sm btn-white flex items-center gap-2' do %>
-              <%= inline_svg_tag 'icons/phone.svg', class: 'size-4' %>
+              <%= inline_svg_tag 'icons/phone-arrow-filled.svg', class: 'size-4' %>
               <span>Call</span>
             <% end %>
           </div>
