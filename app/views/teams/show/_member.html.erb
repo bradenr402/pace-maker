@@ -1,18 +1,21 @@
-<div class="py-6">
-  <div class="flex items-center gap-4">
-    <%= link_to team_member_path(team, member), data: { turbo: false }, class: 'group flex gap-4 items-center mr-auto' do %>
-      <%= image_tag member.avatar.variant(resize_to_limit: [100, 100]).processed, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none object-cover' if member.avatar.attached? %>
+<div class="bg-slate-50/85 dark:bg-slate-800/85 divide-y rounded-lg border p-6 shadow backdrop-blur-sm dark:divide-slate-700 dark:border-slate-700 dark:shadow-none">
+  <div class="flex items-start gap-4">
+    <%= link_to team_member_path(team, member), data: { turbo: false }, class: 'group flex items-start gap-4 flex-1' do %>
+      <%= image_tag member.avatar.variant(resize_to_limit: [100, 100]).processed, class: 'size-12 rounded-lg drop-shadow-lg dark:drop-shadow-none object-cover' if member.avatar.attached? %>
 
-      <div>
-        <%= content_tag(:p, member == current_user ? 'You' : 'Coach', class: 'text-soft text-sm') if member.owns?(team) || member == current_user %>
-        <h2 class='transition duration-300 ease-in-out subheading group-hover:text-indigo-600 dark:group-hover:text-indigo-500'><%= member.default_name %></h2>
-        <%= content_tag(:p, member.username, class: 'help-text') if member.display_name.present? %>
+      <div class="flex-1">
+        <p class='text-lg font-bold transition duration-300 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500'>
+          <%= member.default_name %>
+          <%= content_tag(:span, (member == current_user ? '(You)' : (member.owns?(team) ? '(Coach)' : nil)), class: 'text-soft text-xs') if member == current_user || member.owns?(team) %>
+        </p>
+
+        <%= content_tag(:p, member.username, class: 'text-soft text-sm') if member.display_name.present? %>
       </div>
     <% end %>
 
     <% if current_user.owns?(team) && member != current_user %>
-      <div class="text-right">
-        <%= button_to 'Remove from team', remove_member_team_path(team_id: team.id, user_id: member.id), method: :post, class: 'text-xs text-rose-600 font-semibold hover:text-rose-700', data: { confirm: 'Are you sure you want to remove this member?' } %>
+      <div class="shrink-0">
+        <%= button_to 'Remove from team', remove_member_team_path(team_id: team.id, user_id: member.id), method: :post, class: 'btn-link-destructive text-xs', data: { confirm: 'Are you sure you want to remove this member?' } %>
       </div>
     <% end %>
   </div>

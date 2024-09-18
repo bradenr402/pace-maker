@@ -1,21 +1,19 @@
-<div class="pb-6 mt-10 space-y-2">
+<div class="mt-10 space-y-2 pb-6">
   <h1 class="heading">Team Members</h1>
   <p class="text-soft">Find team members by name.</p>
 </div>
 
-<div class="border-b border-slate-200 dark:border-slate-700">
-  <%= form_with url: team, method: :get, html: { novalidate: true }, data: { turbo_frame: 'teamMembers', turbo_action: 'advance', controller: 'search-form' } do |form| %>
-    <%= form.label :query, 'Find a team member by name:', class: 'sr-only' %>
+<%= form_with url: team, method: :get, html: { novalidate: true }, data: { turbo_frame: 'teamMembers', turbo_action: 'advance', controller: 'search-form' } do |form| %>
+  <%= form.label :query, 'Find a team member by name:', class: 'sr-only' %>
 
-    <div class="relative form-group">
-      <%= inline_svg_tag 'icons/search.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= form.search_field :query, placeholder: 'Search...', data: { action: 'input->search-form#search' }, class: 'form-input pl-10' %>
-    </div>
-  <% end %>
-</div>
+  <div class="form-group relative">
+    <%= inline_svg_tag 'icons/search.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+    <%= form.search_field :query, placeholder: 'Search...', data: { action: 'input->search-form#search' }, class: 'form-input pl-10' %>
+  </div>
+<% end %>
 
 <%= turbo_frame_tag 'teamMembers' do %>
-  <div class="mb-10 divide-y dark:divide-slate-700 dark:text-slate-700">
+  <div class="mb-10">
     <% if members.present? %>
       <%= render 'teams/show/member_list', team: team, members: members %>
     <% else %>
