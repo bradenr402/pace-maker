@@ -12,7 +12,7 @@
 
     <!-- Floating run button -->
     <%= link_to new_run_path, aria: { current: current_page?(new_run_path) ? 'page' : nil }, class: 'flex flex-col items-center justify-center text-white text-sm flex-grow p-3 m-2 rounded-full bg-indigo-600 shadow-lg' do %>
-      <%= inline_svg_tag 'icons/runner.svg', class: 'size-7' %>
+      <%= inline_svg_tag 'icons/runner.svg', class: 'size-6' %>
       <span class="sr-only">New Run</span>
     <% end %>
 
