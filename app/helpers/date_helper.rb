@@ -29,7 +29,7 @@ module DateHelper
   end
 
   def format_date(date, separator: '-') =
-    date.strftime("%m#{separator}%d#{separator}%Y")
+    "#{date.strftime('%m')}#{separator}#{date.strftime('%d')}#{separator}#{date.strftime('%Y')}"
 
   def week_range(current_date: Date.today, week_start: :monday)
     # Convert the symbol to a Rails-recognized week start
