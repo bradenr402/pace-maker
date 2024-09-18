@@ -1,19 +1,5 @@
 <%= form_with model: @team, data: { controller: "form-validation" }, html: { novalidate: true } do |form| %>
-  <% if @team.errors.any? %>
-    <div id="error_explanation" data-turbo-cache="false">
-      <h2>
-        <%= I18n.t("errors.messages.not_saved",
-                  count: @team.errors.count,
-                  resource: @team.class.model_name.human.downcase)
-        %>
-      </h2>
-      <ul>
-        <% @team.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render 'shared/error_messages', resource: @team %>
 
   <div class="form-group">
     <%= form.label :name, class: 'form-label' %>

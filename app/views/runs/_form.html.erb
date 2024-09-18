@@ -1,4 +1,6 @@
 <%= form_with model: @run, data: { controller: "form-validation" }, html: { novalidate: true } do |form| %>
+  <%= render 'shared/error_messages', resource: @run %>
+
   <div class="form-group">
     <%= form.label :date, 'What day did you run?', class: 'form-label' %>
     <div class="relative">
