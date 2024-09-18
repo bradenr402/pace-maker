@@ -6,6 +6,8 @@ class SearchController < ApplicationController
     @teams = @query.present? ? search_teams : []
     @users = @query.present? ? search_users : []
 
+    @results = (@teams + @users).sort_by { |result| -result.similarity_score }
+
     respond_to do |format|
       format.html
       format.turbo_stream

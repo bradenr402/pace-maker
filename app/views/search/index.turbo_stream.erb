@@ -1,9 +1,14 @@
 <%= turbo_stream.replace 'searchResults' do %>
   <%= turbo_frame_tag 'searchResults' do %>
-    <% if @teams.present? || @users.present? %>
-      <%= render 'teams/shared/team_list', teams: @teams, show_members: true if @teams.present? %>
-      <div class="border-t dark:border-slate-700">
-        <%= render 'users/user_list', users: @users if @users.present? %>
+    <% if @results.present? %>
+      <div class="space-y-6">
+        <% @results.each do |result| %>
+          <% if result.is_a?(Team) %>
+            <%= render 'teams/shared/team', team: result, show_members: true %>
+          <% elsif result.is_a?(User) %>
+            <%= render 'users/user', user: result %>
+          <% end %>
+        <% end %>
       </div>
     <% else %>
       <div class="flex flex-col items-center justify-center gap-6 py-12">
