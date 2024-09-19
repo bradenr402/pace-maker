@@ -22,7 +22,11 @@
     <% end %>
 
     <%= link_to profile_path, aria: { current: current_page?(profile_path) ? 'page' : nil }, class: "tab-link #{current_page?(profile_path) ? 'tab-link-active' : 'tab-link-inactive'}" do %>
-      <%= inline_svg_tag 'icons/profile.svg', class: 'size-6' %>
+      <% if current_user.avatar.attached? %>
+        <%= image_tag current_user.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-7 rounded-md drop-shadow-md dark:drop-shadow-none object-cover' %>
+      <% else %>
+        <%= inline_svg_tag 'icons/profile.svg', class: 'size-6' %>
+      <% end %>
       <span>Profile</span>
     <% end %>
   </nav>
