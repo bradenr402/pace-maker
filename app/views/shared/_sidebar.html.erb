@@ -32,7 +32,7 @@
     <%= render 'pinned_pages/list' %>
 
     <!-- Pin/Unpin page button -->
-    <%= render 'pinned_pages/pin_unpin_button', page_url: request.fullpath %>
+    <%= render 'pinned_pages/pin_button', page_url: request.fullpath %>
 
     <!-- New run button -->
     <%= link_to new_run_path, aria: { current: current_page?(new_run_path) ? 'page' : nil }, class: 'btn btn-lg btn-primary mt-auto flex gap-3 items-center' do %>

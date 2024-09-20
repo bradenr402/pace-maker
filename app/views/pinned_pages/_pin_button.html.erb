@@ -1,0 +1,12 @@
+<%= turbo_frame_tag 'pin_button' do %>
+  <% excluded_paths = [profile_path, teams_path, search_path, edit_user_registration_path, manage_pinned_pages_path, new_run_path] %>
+
+  <% unless current_user.pinned_pages.exists?(page_url:) || page_url.split('?').first.in?(excluded_paths) %>
+    <div class="border-t dark:border-slate-700 mt-2 pt-2">
+      <%= button_to pinned_pages_path(page_url:, title: content_for(:title) || 'Untitled Page'), method: :post, class: 'btn btn-white gap-2.5 items-center w-full' do %>
+        <%= inline_svg_tag 'icons/pin.svg', class: 'size-5' %>
+        <span>Pin current page</span>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

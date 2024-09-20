@@ -15,8 +15,8 @@ class PinnedPagesController < ApplicationController
           flash.now[:success] = 'Page pinned successfully.'
           render turbo_stream: [
             turbo_stream.replace('pinned_pages_list', partial: 'pinned_pages/list'),
-            turbo_stream.replace('pin_unpin_button', partial: 'pinned_pages/pin_unpin_button',
-                                                     locals: { page_url: @pinned_page.page_url })
+            turbo_stream.replace('pin_button', partial: 'pinned_pages/pin_button',
+                                               locals: { page_url: @pinned_page.page_url })
           ]
         end
       end

@@ -1,6 +1,6 @@
 <%= turbo_frame_tag 'pinned_pages_list' do %>
   <div class="space-y-1.5">
-    <div class="mx-1 mb-2 flex items-end justify-between">
+    <div class="mx-2 my-2 flex items-end justify-between">
       <p class="text-soft text-sm">Pinned pages</p>
       <%= link_to 'Edit', manage_pinned_pages_path, data: { turbo: false }, class: 'btn-link-soft text-xs' if current_user.pinned_pages.any? %>
     </div>
