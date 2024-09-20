@@ -31,6 +31,9 @@ application.register("image-preview", ImagePreviewController)
 import PasswordVisibilityController from "./password_visibility_controller"
 application.register("password-visibility", PasswordVisibilityController)
 
+import PinnedPagesMenuController from "./pinned_pages_menu_controller"
+application.register("pinned-pages-menu", PinnedPagesMenuController)
+
 import RestoreDefaultsController from "./restore_defaults_controller"
 application.register("restore-defaults", RestoreDefaultsController)
 
