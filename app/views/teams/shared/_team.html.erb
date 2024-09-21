@@ -1,6 +1,14 @@
 <div class="bg-slate-50/85 dark:bg-slate-800/85 divide-y rounded-lg border p-6 shadow backdrop-blur-sm dark:divide-slate-700 dark:border-slate-700 dark:shadow-none">
   <div class="flex items-start gap-4">
-    <%= link_to(team, data: { turbo: false }, class: 'shrink-0') { image_tag team.photo.variant(resize_to_limit: [100, 100]).processed, class: 'size-12 rounded-lg drop-shadow-lg dark:drop-shadow-none object-cover' } if team.photo.attached? %>
+    <%= link_to team, data: { turbo: false }, class: 'shrink-0' do %>
+      <% if team.photo.attached? %>
+        <%= image_tag team.photo.variant(resize_to_limit: [100, 100]).processed, class: 'size-12 rounded-lg drop-shadow-lg dark:drop-shadow-none object-cover' %>
+      <% else %>
+        <div class="size-12 bg-slate-200 dark:bg-slate-700 rounded-lg drop-shadow-lg dark:drop-shadow-none grid place-items-center">
+          <%= inline_svg_tag 'icons/team.svg', class: 'size-8 text-soft' %>
+        </div>
+      <% end %>
+    <% end %>
 
     <div class="flex-1">
       <p class="text-lg font-bold">
