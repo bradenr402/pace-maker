@@ -34,12 +34,13 @@ module TimeHelper
     parts = calculate_time_parts(distance, options)
 
     if parts.empty?
-      options[:include_seconds] ? '0 seconds' : '0 minutes'
-    elsif options[:format] == :short
-      parts.join(' ')
-    else
-      parts.join(', ')
+      return options[:include_seconds] ? '0s' : '0m' if options[:format] == :short
+
+      return options[:include_seconds] ? '0 seconds' : '0 minutes'
     end
+
+    separator = options[:format] == :short ? ' ' : ', '
+    parts.join(separator)
   end
 
   private
