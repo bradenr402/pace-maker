@@ -1,31 +1,57 @@
 <% content_for :title, "#{@member.default_name} • #{@team.name}" %>
 
 <div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="infoTab" class="max-w-3xl px-4 mx-auto my-16">
-  <div class="pb-6 text-center">
+  <div class="mb-12">
+    <div class="mb-6 text-center">
+      <h2 class="subheading my-1"><%= @member.default_name %> &amp; <%= @team.name %></h2>
+      <%= simple_format "This page displays details about #{@member == current_user ? 'your' : link_to("#{@member.first_name}'s", @member, class: 'btn-link')} membership in the team #{link_to @team.name, @team, class: 'btn-link'}.", class: 'text-soft text-sm text-balance max-w-[80%] mx-auto' %>
+    </div>
 
-    <%= image_tag @member.avatar.variant(resize_to_limit: [150, 150]).processed, class: 'size-28 sm:size-32 md:size-36 rounded-lg drop-shadow-lg dark:drop-shadow-none mx-auto mb-4 object-cover' if @member.avatar.attached? %>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Team Card -->
+      <%= link_to @team, data: { turbo: false }, class: 'group' do %>
+        <div class="p-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
+          <p class="mb-3 text-lg font-semibold text-slate-700 dark:text-slate-300 md:text-center">Team</p>
+          <div class="flex items-center gap-4 shrink-0">
+            <% if @team.photo.attached? %>
+              <%= image_tag @team.photo.variant(resize_to_limit: [150, 150]).processed, class: 'size-20 rounded-lg drop-shadow-lg dark:drop-shadow-none object-cover' %>
+            <% else %>
+              <div class="size-20 bg-slate-200 dark:bg-slate-700 rounded-lg drop-shadow-lg dark:drop-shadow-none grid place-items-center">
+                <%= inline_svg_tag 'icons/team.svg', class: 'size-14 text-soft' %>
+              </div>
+            <% end %>
+            <div class="flex-1">
+              <p class="text-xl font-bold transition duration-300 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= @team.name %></p>
+              <p class="text-soft text-sm">Coach: <%= @team.owner.default_name %></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
 
-    <h1 class="heading"><%= @member.default_name %></h1>
-    <% if @member.display_name.present? %>
-      <h2 class="my-1 text-lg text-soft"><%= @member.username %></h2>
-    <% end %>
-    <h2 class="my-1 text-lg text-soft">
-      <%= @member.owns?(@team) ? 'Coach' : 'Member' %> of <%= link_to @team.name, @team, class: 'btn-link' %>
-      <%= "for #{time_ago_in_words(@team_membership.created_at)}" unless @member.owns?(@team) %>
-    </h2>
-
-    <% if @member != current_user && @member.any_membered_teams_in_common_except?(current_user, exclude: [@team]) %>
-      <p class="mt-1 help-text">
-        <span>Also a member of:</span>
-        <%= list(items: @member.membered_teams_in_common_except(current_user, exclude: [@team]).map { |team| link_to(@team.name, @team, data: { turbo: false }, class: 'btn-link') }).html_safe %>
-      </p>
-    <% end %>
-
-    <div class="flex items-center justify-center mt-4">
-      <% if @member == current_user %>
-        <%= link_to 'Edit personal goals', edit_team_team_membership_path(@team, @member), data: { turbo: false }, class: 'btn btn-white' %>
-      <% else %>
-        <%= link_to 'View user profile', @member, data: { turbo: false }, class: 'btn btn-white' %>
+      <!-- Member Card -->
+      <%= link_to @member, data: { turbo: false }, class: 'group' do %>
+        <div class="p-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
+          <p class="mb-3 text-lg font-semibold text-slate-700 dark:text-slate-300 md:text-center">Member</p>
+          <div class="flex items-center gap-4 shrink-0">
+            <% if @member.avatar.attached? %>
+              <%= image_tag @member.avatar.variant(resize_to_limit: [150, 150]).processed, class: 'size-20 rounded-lg drop-shadow-lg dark:drop-shadow-none object-cover' %>
+            <% else %>
+              <div class="size-20 bg-slate-200 dark:bg-slate-700 rounded-lg drop-shadow-lg dark:drop-shadow-none grid place-items-center">
+                <%= inline_svg_tag 'icons/user.svg', class: 'size-14 text-soft' %>
+              </div>
+            <% end %>
+            <div class="flex-1">
+              <p class="text-xl font-bold transition duration-300 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500">
+                <%= @member.default_name %>
+                <%= content_tag(:span, '(You)', class: 'text-soft text-xs') if @member == current_user %>
+              </p>
+              <p class="text-soft text-sm">
+                <%= "Coach of #{@team.name}" if @member.owns?(@team) %>
+                <%= "Member since #{pretty_date(@team_membership.created_at.to_date, date_style: :absolute)}" unless @member.owns?(@team) %>
+              </p>
+            </div>
+          </div>
+        </div>
       <% end %>
     </div>
   </div>
