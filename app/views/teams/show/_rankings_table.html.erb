@@ -81,7 +81,7 @@
             <%= member.miles_in_date_range(date_range) %>
           </td>
           <td class="px-6 py-4 font-mono">
-            <%= member.long_runs_in_date_range(team, date_range) %>
+            <%= member.total_long_runs_in_date_range(team, date_range) %>
           </td>
           <td class="px-6 py-4 font-mono">
             <% current_streak = member.current_streak(team)[:streak] %>
