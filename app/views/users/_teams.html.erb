@@ -15,10 +15,10 @@
   <% else %>
     <div class="flex flex-col items-center justify-center gap-6 py-12">
       <% if user == current_user %>
-        <p class="prose dark:prose-invert text-soft">You don't have any teams yet.</p>
+        <p class="text-soft text-center">You don't have any teams yet.</p>
         <%= link_to 'New run', new_run_path, class: 'btn btn-primary' %>
       <% else %>
-        <p class="prose dark:prose-invert text-soft"><%= user.first_name %> doesn't have any teams yet.</p>
+        <p class="text-soft text-center"><%= user.first_name %> doesn't have any teams yet.</p>
       <% end %>
     </div>
   <% end %>
@@ -34,7 +34,7 @@
     <%= render 'teams/shared/team_list', teams: membered_teams %>
   <% else %>
     <div class="flex flex-col items-center justify-center gap-6 py-12">
-      <p class="prose dark:prose-invert text-soft">You're not a member of any teams yet.</p>
+      <p class="text-soft text-center">You're not a member of any teams yet.</p>
       <%= link_to 'Find a team', teams_path, class: 'btn btn-white' %>
     </div>
   <% end %>
