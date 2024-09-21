@@ -7,11 +7,11 @@
       <%= simple_format "This page displays details about #{@member == current_user ? 'your' : link_to("#{@member.first_name}'s", @member, class: 'btn-link')} membership in the team #{link_to @team.name, @team, class: 'btn-link'}.", class: 'text-soft text-sm text-balance max-w-[80%] mx-auto' %>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Team Card -->
       <%= link_to @team, data: { turbo: false }, class: 'group' do %>
         <div class="p-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
-          <p class="mb-3 text-lg font-semibold text-slate-700 dark:text-slate-300 md:text-center">Team</p>
+          <p class="mb-3 text-lg font-semibold text-slate-700 dark:text-slate-300 lg:text-center">Team</p>
           <div class="flex items-center gap-4 shrink-0">
             <% if @team.photo.attached? %>
               <%= image_tag @team.photo.variant(resize_to_limit: [150, 150]).processed, class: 'size-20 rounded-lg drop-shadow-lg dark:drop-shadow-none object-cover' %>
@@ -31,7 +31,7 @@
       <!-- Member Card -->
       <%= link_to @member, data: { turbo: false }, class: 'group' do %>
         <div class="p-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
-          <p class="mb-3 text-lg font-semibold text-slate-700 dark:text-slate-300 md:text-center">Member</p>
+          <p class="mb-3 text-lg font-semibold text-slate-700 dark:text-slate-300 lg:text-center">Member</p>
           <div class="flex items-center gap-4 shrink-0">
             <% if @member.avatar.attached? %>
               <%= image_tag @member.avatar.variant(resize_to_limit: [150, 150]).processed, class: 'size-20 rounded-lg drop-shadow-lg dark:drop-shadow-none object-cover' %>
