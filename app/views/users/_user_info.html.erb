@@ -26,6 +26,53 @@
         <%= precise_time_ago(user.total_duration) %>
       </p>
     </div>
+
+    <!-- Current Streak Card -->
+    <% current_streak_data = user.current_streak_without_team %>
+    <% current_streak = current_streak_data[:streak] %>
+    <% current_streak_start_date = current_streak_data[:start_date] %>
+    <% current_streak_end_date = current_streak_data[:end_date] %>
+
+    <div class="p-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
+      <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Current Streak</h2>
+      <p class="text-3xl font-bold">
+        <%= current_streak %>
+        <span class="text-base font-normal text-soft"><%= 'day'.pluralize(current_streak) %></span>
+      </p>
+      <p class="my-1 text-soft">
+        <% if current_streak_start_date.present? && current_streak_end_date.present? %>
+          <%= pretty_date(current_streak_start_date, date_style: :relative) %> &ndash; <%= pretty_date(current_streak_end_date, date_style: :relative) %>
+        <% elsif current_streak_start_date.present? && current_streak_end_date.blank? %>
+          <%= pretty_date(current_streak_start_date, date_style: :relative) %>
+        <% elsif current_streak.zero? %>
+          No current streak recorded.
+        <% end %>
+      </p>
+    </div>
+
+    <!-- Record Streak Card -->
+    <% longest_streak_data = user.longest_streak_without_team %>
+    <% longest_streak = longest_streak_data[:streak] %>
+    <% longest_streak_start_date = longest_streak_data[:start_date] %>
+    <% longest_streak_end_date = longest_streak_data[:end_date] %>
+
+    <div class="p-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
+      <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Record Streak</h2>
+      <p class="text-3xl font-bold">
+        <%= longest_streak %>
+        <span class="text-base font-normal text-soft"><%= 'day'.pluralize(longest_streak) %></span>
+      </p>
+      <p class="my-1 text-soft">
+        <% if longest_streak_start_date.present? && longest_streak_end_date.present? %>
+          <%= pretty_date(longest_streak_start_date, date_style: :relative) %> &ndash; <%= pretty_date(longest_streak_end_date, date_style: :relative) %>
+        <% elsif longest_streak_start_date.present? && longest_streak_end_date.blank? %>
+          <%= pretty_date(longest_streak_start_date, date_style: :relative) %>
+          <span class="my-1 ml-1 help-text">(Most recent run)</span>
+        <% elsif longest_streak.zero? %>
+          No longest streak recorded.
+        <% end %>
+      </p>
+    </div>
   </div>
 </div>
 
