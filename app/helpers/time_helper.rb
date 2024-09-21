@@ -66,11 +66,11 @@ module TimeHelper
       number = (distance / 1.send(interval)).floor
       distance -= number.send(interval)
 
-      if options[:format] == :short
-        parts << "#{number}#{short_formats[interval]}"
-      else
-        parts << pluralize(number, interval)
-      end
+      parts << if options[:format] == :short
+                 "#{number}#{short_formats[interval]}"
+               else
+                 pluralize(number, interval)
+               end
     end
 
     parts
