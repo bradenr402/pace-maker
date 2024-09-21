@@ -154,8 +154,8 @@
       <%= f.password_field :password, autocomplete: 'new-password', class: 'form-input pl-10', data: { form_validation_target: 'newPassword', action: 'input->form-validation#validateNewPassword input->form-validation#validateNewPasswordConfirmation', password_visibility_target: 'password' } %>
 
       <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" data-action="password-visibility#toggle">
-        <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-6' %>
-        <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-6 hidden' %>
+        <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
+        <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-5 hidden' %>
       </button>
     </div>
     <p class="my-1 help-text">Leave this blank if you don't want to change your password.</p>
@@ -179,8 +179,8 @@
       <%= f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-input pl-10 transition duration-300 ease-in-out', data: { form_validation_target: 'newPasswordConfirmation', action: 'input->form-validation#validateNewPasswordConfirmation', password_visibility_target: 'password' } %>
 
       <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" data-action="password-visibility#toggle">
-        <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-6' %>
-        <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-6 hidden' %>
+        <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
+        <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-5 hidden' %>
       </button>
     </div>
 
@@ -195,8 +195,8 @@
       <%= f.password_field :current_password, autocomplete: 'current-password', class: 'form-input pl-10', data: { password_visibility_target: 'password' } %>
 
       <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" data-action="password-visibility#toggle">
-        <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-6' %>
-        <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-6 hidden' %>
+        <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
+        <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-5 hidden' %>
       </button>
     </div>
     <p class="my-1 text-xs text-slate-700 dark:text-slate-400">Your current password is required to change your password.</p>

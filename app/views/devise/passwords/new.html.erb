@@ -2,7 +2,7 @@
 
 <% content_for :masthead do %>
   <div class="text-center">
-    <h1 class="heading my-3">Forgot your password?</h1>
+    <h1 class="heading my-3">Forgot password?</h1>
     <p class="mb-6 text-slate-700 dark:text-slate-200">
       Don&#8217;t have an account? <%= link_to "Sign up", new_registration_path(resource_name), class: 'btn-link' %>
     </p>
@@ -17,7 +17,10 @@
 
     <div class="form-group">
       <%= f.label :email, class: 'form-label' %>
-      <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-input', data: { form_validation_target: 'email', action: 'input->form-validation#validateEmail' } %>
+      <div class="relative">
+        <%= inline_svg_tag 'icons/envelope.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+        <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-input pl-10', data: { form_validation_target: 'email', action: 'input->form-validation#validateEmail' } %>
+      </div>
       <p class="error-message hidden my-1" data-form-validation-target="emailError">Invalid email address</p>
     </div>
 

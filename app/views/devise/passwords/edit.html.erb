@@ -16,14 +16,15 @@
 
     <p class="mb-6 text-soft text-sm">Enter a new password below to change your password.</p>
 
-    <div class="form-group relative">
+    <div class="form-group">
       <%= f.label :password, 'New password', class: 'form-label' %>
-      <div class="flex items-center" data-controller="password-visibility">
+      <div data-controller="password-visibility" class="relative">
+        <%= inline_svg_tag 'icons/lock.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
         <%= f.password_field :password, autofocus: true, autocomplete: 'new-password', class: 'form-input w-full', data: { form_validation_target: 'password', action: 'input->form-validation#validatePassword input->form-validation#validatePasswordConfirmation input->form-validation#showPasswordRequirements', password_visibility_target: 'password' } %>
 
-        <button type="button" class="-ml-9" data-action="password-visibility#toggle">
-          <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-6' %>
-          <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-6 hidden' %>
+        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" data-action="password-visibility#toggle">
+          <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
+          <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-5 hidden' %>
         </button>
       </div>
 
@@ -39,14 +40,15 @@
       </div>
     </div>
 
-    <div class="form-group relative">
+    <div class="form-group">
       <%= f.label :password_confirmation, 'Confirm new password', class: 'form-label' %>
-      <div class="flex items-center" data-controller="password-visibility">
+      <div data-controller="password-visibility" class="relative">
+        <%= inline_svg_tag 'icons/lock-check.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
         <%= f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-input', data: { form_validation_target: 'passwordConfirmation', action: 'input->form-validation#validatePasswordConfirmation', password_visibility_target: 'password' } %>
 
-        <button type="button" class="-ml-9" data-action="password-visibility#toggle">
-          <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-6' %>
-          <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-6 hidden' %>
+        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" data-action="password-visibility#toggle">
+          <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
+          <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-5 hidden' %>
         </button>
       </div>
 

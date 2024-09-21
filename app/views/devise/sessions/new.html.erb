@@ -15,18 +15,22 @@
 
     <div class="form-group">
       <%= f.label :login, 'Username or email', class: 'form-label' %>
-      <%= f.text_field :login, autofocus: true, class: 'form-input', data: { form_validation_target: 'login', action: 'input->form-validation#validateLogin' } %>
+      <div class="relative">
+        <%= inline_svg_tag 'icons/user.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+        <%= f.text_field :login, autofocus: true, class: 'form-input pl-10', data: { form_validation_target: 'login', action: 'input->form-validation#validateLogin' } %>
+      </div>
       <span class="error-message hidden my-1" data-form-validation-target="loginError">Must be a valid email or username</span>
     </div>
 
-    <div class="form-group relative">
+    <div class="form-group">
       <%= f.label :password, class: 'form-label' %>
-      <div class="flex items-center" data-controller="password-visibility">
-        <%= f.password_field :password, autocomplete: 'current-password', class: 'form-input w-full', data: { password_visibility_target: 'password' } %>
+      <div data-controller="password-visibility" class="relative">
+        <%= inline_svg_tag 'icons/lock.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+        <%= f.password_field :password, autocomplete: 'current-password', class: 'form-input pl-10', data: { password_visibility_target: 'password' } %>
 
-        <button type="button" class="-ml-9" data-action="password-visibility#toggle">
-          <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-6' %>
-          <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-6 hidden' %>
+        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" data-action="password-visibility#toggle">
+          <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
+          <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-5 hidden' %>
         </button>
       </div>
     </div>
@@ -35,7 +39,7 @@
       <div class="form-group">
         <div class="flex items-center gap-2">
           <%= f.check_box :remember_me, class: 'form-input-checkbox' %>
-          <%= f.label :remember_me, class: 'form-check-label ml-2' %>
+          <%= f.label :remember_me, class: 'select-none text-sm text-slate-700 dark:text-slate-300' %>
         </div>
       </div>
     <% end %>
