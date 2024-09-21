@@ -216,7 +216,7 @@
   <div class="flex flex-wrap gap-4 items-center justify-between pb-6 border-b dark:border-slate-700">
     <div class="max-w-md">
       <p class="font-bold">Sign out</p>
-      <p class="help-text">After signing out, you will have to enter your username and password again to access your account.</p>
+      <p class="help-text">Once you sign out, you will have to enter your username and password again to access your account.</p>
     </div>
     <%= button_to 'Sign out', destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: 'btn btn-destructive btn-outline whitespace-nowrap' %>
   </div>
