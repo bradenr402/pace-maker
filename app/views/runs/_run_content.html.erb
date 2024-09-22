@@ -26,15 +26,15 @@
     </div>
   <% end %>
 
-  <div class="flex items-center pt-4 border-t dark:border-slate-700">
+  <div class="flex flex-wrap items-center gap-y-2 pt-4 border-t dark:border-slate-700">
     <div class="flex items-center gap-1">
-      <%= inline_svg_tag 'icons/calendar.svg', class: 'size-4 mr-1.5 text-soft' %>
+      <%= inline_svg_tag 'icons/calendar.svg', class: 'size-4 mr-1.5 text-soft shrink-0' %>
       <time class="help-text" datetime="<%= run.created_at.to_formatted_s(:long) %>">Created: <%= time_ago_in_words(run.created_at) + " ago" %></time>
     </div>
 
     <% if run.edited? %>
-      <div class="flex items-center gap-1 pl-4 ml-4 border-l dark:border-slate-700">
-        <%= inline_svg_tag 'icons/edit.svg', class: 'size-4 mr-1.5 text-soft' %>
+      <div class="flex items-center gap-1 sm:pl-4 sm:ml-4 sm:border-l dark:border-slate-700">
+        <%= inline_svg_tag 'icons/edit.svg', class: 'size-4 mr-1.5 text-soft shrink-0' %>
         <time class="help-text" datetime="<%= run.updated_at.to_formatted_s(:long) %>">Edited: <%= time_ago_in_words(run.updated_at) + " ago" %></time>
       </div>
     <% end %>
