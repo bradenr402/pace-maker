@@ -5,9 +5,7 @@
       <p class="text-soft">Teams <%= user == current_user ? 'you are' : "#{user.first_name} is" %> the coach of.</p>
     </div>
 
-    <% if user == current_user && owned_teams.present? %>
-      <%= link_to 'New team', new_team_path, class: 'btn btn-primary' %>
-    <% end %>
+    <%= link_to 'New team', new_team_path, class: 'btn btn-primary' if user == current_user && owned_teams.present? %>
   </div>
 
   <% if owned_teams.present? %>
