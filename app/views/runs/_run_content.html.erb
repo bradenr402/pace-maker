@@ -19,17 +19,10 @@
 
   <% if run.comments? %>
     <div class="mb-4">
-      <% if current_page?(run_path(run)) %>
-        <div class="flex items-start gap-2">
-          <%= inline_svg_tag 'icons/comment.svg', class: 'size-5 text-soft' %>
-          <%= simple_format run.comments, class: 'mt-0 text-sm text-soft' %>
-        </div>
-      <% else %>
-        <div class="flex items-center gap-2">
-          <%= inline_svg_tag 'icons/comment.svg', class: 'size-5 text-soft' %>
-          <p class="my-0 text-sm text-soft">Comments</p>
-        </div>
-      <% end %>
+      <div class="flex items-start gap-2">
+        <%= inline_svg_tag 'icons/comment.svg', class: 'size-5 text-soft shrink-0' %>
+        <%= simple_format (current_page?(run_path(run)) ? run.comments : truncate(run.comments, length: 80)), class: 'mt-0 text-sm text-soft' %>
+      </div>
     </div>
   <% end %>
 
