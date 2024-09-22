@@ -1,8 +1,12 @@
 <% member_is_current = member == current_user %>
 
-<div class="pb-6 mt-10 mb-6 space-y-2 border-b dark:border-slate-700">
-  <h1 class="heading">Member Info</h1>
-  <p class="text-soft">Information and statistics about <%= member_is_current ? 'your' : "#{member.first_name}'s" %> participation in <%= link_to team.name, team, class: 'btn-link' %>.</p>
+<div class="pb-6 mt-10 mb-6 gap-4 border-b dark:border-slate-700 flex flex-wrap items-end justify-between">
+  <div class="space-y-2">
+    <h1 class="heading">Member Info</h1>
+    <p class="text-soft">Information and statistics about <%= member_is_current ? 'your' : "#{member.first_name}'s" %> participation in <%= link_to team.name, team, class: 'btn-link' %>.</p>
+  </div>
+
+  <%= link_to 'Edit personal goals', edit_team_team_membership_path(@team, current_user), data: { turbo: false }, class: 'btn btn-white' if member == current_user %>
 </div>
 
 <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
