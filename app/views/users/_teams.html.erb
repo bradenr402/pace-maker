@@ -1,5 +1,5 @@
 <div class="mb-24">
-  <div class="flex flex-wrap items-center justify-between gap-6 pb-6 mt-10">
+  <div class="flex flex-wrap items-end justify-between gap-6 pb-6 mt-10">
     <div class="space-y-2">
       <h1 class="heading"><%= user == current_user ? 'Your' : "#{user.first_name}'s" %> Teams</h1>
       <p class="text-soft">Teams <%= user == current_user ? 'you are' : "#{user.first_name} is" %> the coach of.</p>
