@@ -5,7 +5,7 @@
   </div>
 
   <% if run.duration? %>
-    <div class="flex items-center gap-6 mb-4">
+    <div class="flex flex-wrap items-center gap-x-8 gap-y-4 mb-4">
       <div class="flex items-center gap-2">
         <%= inline_svg_tag 'icons/clock.svg', class: 'size-5 text-soft' %>
         <p class="text-sm font-bold"><%= clock_time_display(run.duration) %></p>
