@@ -18,9 +18,8 @@
 
     <%= simple_format @team.description, class: 'text-soft text-sm text-balance max-w-[80%] mx-auto' unless @team.description.blank? %>
 
-    <div class="flex flex-wrap items-center justify-center gap-4 mt-4">
+    <div class="flex flex-wrap items-center justify-center md:justify-end gap-4 mt-4">
       <%= render 'teams/shared/team_buttons', team: @team %>
-      <%= link_to 'Edit personal goals', edit_team_team_membership_path(@team, current_user), data: { turbo: false }, class: 'btn btn-white sm:ml-auto' if current_user.member_of?(@team) %>
     </div>
   </div>
 
