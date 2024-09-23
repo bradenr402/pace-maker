@@ -57,10 +57,10 @@ class Team < ApplicationRecord
   def recent_long_runs
     runs =
       Run
-        .joins(:user)
-        .where(users: { id: members.pluck(:id) })
-        .where('date >= ?', 7.days.ago)
-        .order(date: :desc)
+      .joins(:user)
+      .where(users: { id: members.pluck(:id) })
+      .where('date >= ?', 7.days.ago)
+      .order(date: :desc)
 
     runs.select do |run|
       required_distance = long_run_distance_for_user(run.user)
@@ -71,10 +71,10 @@ class Team < ApplicationRecord
   def streak_runs
     runs =
       Run
-        .joins(:user)
-        .where(users: { id: members.pluck(:id) })
-        .where('date >= ?', Date.current)
-        .order(date: :desc)
+      .joins(:user)
+      .where(users: { id: members.pluck(:id) })
+      .where('date >= ?', Date.current)
+      .order(date: :desc)
 
     runs.select do |run|
       required_distance = streak_distance_for_user(run.user)
@@ -87,9 +87,9 @@ class Team < ApplicationRecord
   def long_runs_in_date_range(range)
     runs =
       Run
-        .joins(:user)
-        .where(users: { id: members.pluck(:id) })
-        .in_date_range(range)
+      .joins(:user)
+      .where(users: { id: members.pluck(:id) })
+      .in_date_range(range)
 
     # Filter runs based on user-specific distance requirements
     runs.select do |run|
@@ -127,7 +127,7 @@ class Team < ApplicationRecord
 
   def season_dates_presence
     if season_start_date.present? && season_end_date.blank? ||
-         season_start_date.blank? && season_end_date.present?
+       season_start_date.blank? && season_end_date.present?
       errors.add(
         :base,
         'Season start date and season end date must both be present or both be absent'
@@ -136,9 +136,9 @@ class Team < ApplicationRecord
   end
 
   def convert_empty_string_season_dates_to_nil
-    unless season_dates?
-      self.season_start_date = nil
-      self.season_end_date = nil
-    end
+    return if season_dates?
+
+    self.season_start_date = nil
+    self.season_end_date = nil
   end
 end
