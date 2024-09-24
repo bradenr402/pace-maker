@@ -2,7 +2,10 @@
   <div class="flex items-center gap-2 mb-4">
     <%= inline_svg_tag 'icons/runner.svg', class: 'size-5 text-soft shrink-0' %>
     <p class="text-lg font-bold text-balance"><%= run.distance %> mi Run <span class="text-sm text-soft">(<%= run.distance_km %> km)</span></p>
-    <p class="text-soft text-xs whitespace-nowrap ml-auto"><%= current_page?(run_path(run)) ? pretty_date(run.date, date_style: :relative) : format_date(run.date) %></p>
+    <div class="bg-slate-200 dark:bg-slate-700/50 rounded-full drop-shadow-sm dark:drop-shadow-none flex items-center justify-center gap-1.5 ml-auto py-1 px-3">
+      <%= inline_svg_tag 'icons/calendar.svg', class: 'size-4 text-soft' %>
+      <p class="text-soft text-xs whitespace-nowrap"><%= current_page?(run_path(run)) ? pretty_date(run.date, date_style: :relative) : format_date(run.date) %></p>
+    </div>
   </div>
 
   <% if run.duration? %>
