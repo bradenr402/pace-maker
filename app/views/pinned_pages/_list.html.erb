@@ -14,20 +14,26 @@
             <% if (member = User.find_by(id: page.page_url.split('/').last)) && page.page_url.match?(/teams\/\d+\/member\/\d+/) %>
               <% if member.avatar.attached? %>
                 <%= image_tag member.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-6 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover' %>
+              <% elsif current_page?(page.page_url) %>
+                <%= inline_svg_tag 'icons/user-filled.svg', class: 'size-5 text-soft dark:group-focus:text-white' %>
               <% else %>
-                <%= inline_svg_tag 'icons/user.svg', class: 'size-5 text-soft' %>
+                <%= inline_svg_tag 'icons/user.svg', class: 'size-5 text-soft dark:group-focus:text-white' %>
               <% end %>
             <% elsif (team = Team.find_by(id: page.page_url.split('/').last)) && page.page_url.match?(/teams\/\d+/) %>
               <% if team.photo.attached? %>
                 <%= image_tag team.photo.variant(resize_to_limit: [50, 50]).processed, class: 'size-6 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover' %>
+              <% elsif current_page?(page.page_url) %>
+                <%= inline_svg_tag 'icons/team-filled.svg', class: 'size-5 text-soft dark:group-focus:text-white' %>
               <% else %>
-                <%= inline_svg_tag 'icons/team.svg', class: 'size-5 text-soft' %>
+                <%= inline_svg_tag 'icons/team.svg', class: 'size-5 text-soft dark:group-focus:text-white' %>
               <% end %>
             <% elsif (user = User.find_by(id: page.page_url.split('/').last)) && page.page_url.match?(/users\/\d+/) %>
               <% if user.avatar.attached? %>
                 <%= image_tag user.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-6 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover' %>
+              <% elsif current_page?(page.page_url) %>
+                <%= inline_svg_tag 'icons/user-filled.svg', class: 'size-5 text-soft dark:group-focus:text-white' %>
               <% else %>
-                <%= inline_svg_tag 'icons/user.svg', class: 'size-5 text-soft' %>
+                <%= inline_svg_tag 'icons/user.svg', class: 'size-5 text-soft dark:group-focus:text-white' %>
               <% end %>
             <% end %>
             <span><%= page.title %></span>

@@ -1,29 +1,49 @@
+<% current_is_edit_user = current_page?(edit_user_registration_path) %>
+<% current_is_search = current_page?(search_path) %>
+<% current_is_new_run = current_page?(new_run_path) %>
+<% current_is_teams = current_page?(teams_path) %>
+<% current_is_profile = current_page?(profile_path) %>
+
 <div class="fixed inset-x-0 bottom-0 z-50 block w-full pb-1 border-t bg-slate-50 dark:bg-slate-800 dark:border-slate-700 md:hidden">
   <nav class="grid w-full grid-cols-5 place-items-center gap-y-4">
-    <%= link_to edit_user_registration_path, aria: { current: current_page?(edit_user_registration_path) ? 'page' : nil }, class: "tab-link #{current_page?(edit_user_registration_path) ? 'tab-link-active' : 'tab-link-inactive'}" do %>
-      <%= inline_svg_tag 'icons/settings.svg', class: 'size-6' %>
+    <%= link_to edit_user_registration_path, aria: { current: current_is_edit_user ? 'page' : nil }, class: "tab-link #{current_is_edit_user ? 'tab-link-active' : 'tab-link-inactive'}" do %>
+      <% if current_is_edit_user %>
+        <%= inline_svg_tag 'icons/settings-filled.svg', class: 'size-6' %>
+      <% else %>
+        <%= inline_svg_tag 'icons/settings.svg', class: 'size-6' %>
+      <% end %>
       <span>Settings</span>
     <% end %>
 
-    <%= link_to search_path, aria: { current: current_page?(search_path) ? 'page' : nil }, class: "tab-link #{current_page?(search_path) ? 'tab-link-active' : 'tab-link-inactive'}" do %>
-      <%= inline_svg_tag 'icons/search.svg', class: 'size-6' %>
+    <%= link_to search_path, aria: { current: current_is_search ? 'page' : nil }, class: "tab-link #{current_is_search ? 'tab-link-active' : 'tab-link-inactive'}" do %>
+      <% if current_is_search %>
+        <%= inline_svg_tag 'icons/search-filled.svg', class: 'size-6' %>
+      <% else %>
+        <%= inline_svg_tag 'icons/search.svg', class: 'size-6' %>
+      <% end %>
       <span>Search</span>
     <% end %>
 
     <!-- Floating run button -->
-    <%= link_to new_run_path, aria: { current: current_page?(new_run_path) ? 'page' : nil }, class: 'flex flex-col items-center justify-center text-white text-sm flex-grow p-3 m-2 rounded-full bg-indigo-600 shadow-lg' do %>
+    <%= link_to new_run_path, aria: { current: current_is_new_run ? 'page' : nil }, class: "flex flex-col items-center justify-center text-white text-sm flex-grow p-3 m-2 rounded-full bg-indigo-600 #{current_is_new_run ? 'shadow-[0_0_15px] shadow-indigo-500/50 scale-110' : 'hover:shadow-[0_0_15px] hover:shadow-indigo-500/50 hover:scale-110 transition duration-200 ease-in-out'}" do %>
       <%= inline_svg_tag 'icons/runner.svg', class: 'size-6' %>
       <span class="sr-only">New Run</span>
     <% end %>
 
-    <%= link_to teams_path, aria: { current: current_page?(teams_path) ? 'page' : nil }, class: "tab-link #{current_page?(teams_path) ? 'tab-link-active' : 'tab-link-inactive'}" do %>
-      <%= inline_svg_tag 'icons/team.svg', class: 'size-6' %>
+    <%= link_to teams_path, aria: { current: current_is_teams ? 'page' : nil }, class: "tab-link #{current_is_teams ? 'tab-link-active' : 'tab-link-inactive'}" do %>
+      <% if current_is_teams %>
+        <%= inline_svg_tag 'icons/team-filled.svg', class: 'size-6' %>
+      <% else %>
+        <%= inline_svg_tag 'icons/team.svg', class: 'size-6' %>
+      <% end %>
       <span>Teams</span>
     <% end %>
 
-    <%= link_to profile_path, aria: { current: current_page?(profile_path) ? 'page' : nil }, class: "tab-link #{current_page?(profile_path) ? 'tab-link-active' : 'tab-link-inactive'}" do %>
+    <%= link_to profile_path, aria: { current: current_is_profile ? 'page' : nil }, class: "tab-link #{current_is_profile ? 'tab-link-active' : 'tab-link-inactive'}" do %>
       <% if current_user.avatar.attached? %>
         <%= image_tag current_user.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-7 rounded-md drop-shadow-md dark:drop-shadow-none object-cover' %>
+      <% elsif current_is_profile %>
+        <%= inline_svg_tag 'icons/profile-filled.svg', class: 'size-6' %>
       <% else %>
         <%= inline_svg_tag 'icons/profile.svg', class: 'size-6' %>
       <% end %>

@@ -1,29 +1,49 @@
+<% current_is_edit_user = current_page?(edit_user_registration_path) %>
+<% current_is_search = current_page?(search_path) %>
+<% current_is_new_run = current_page?(new_run_path) %>
+<% current_is_teams = current_page?(teams_path) %>
+<% current_is_profile = current_page?(profile_path) %>
+
 <div class="hidden h-full flex-[0.25] min-w-72 md:block">
   <nav class="h-full flex flex-col py-8 px-6 backdrop-blur-sm bg-slate-50/85 dark:bg-slate-800/85 border-r dark:border-slate-700">
-    <div class="mb-2 text-xl font-bold">
+    <div class="mb-4 text-xl font-bold">
       <span class="text-indigo-500">Team</span><span>Runner</span>
     </div>
 
     <!-- Main navigation links -->
     <div class="mb-6 space-y-1.5">
-      <%= link_to profile_path, aria: { current: current_page?(profile_path) ? 'page' : nil }, class: "group sidebar-link #{current_page?(profile_path) ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
+      <%= link_to profile_path, aria: { current: current_is_profile ? 'page' : nil }, class: "group sidebar-link #{current_is_profile ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
         <% if current_user.avatar.attached? %>
-          <%= image_tag current_user.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-6 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover' %>
+          <%= image_tag current_user.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-6 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover motion-safe:group-hover:bounce-animation motion-safe:group-focus:bounce-animation' %>
+        <% elsif current_is_profile %>
+          <%= inline_svg_tag 'icons/profile-filled.svg', class: 'size-5 text-soft dark:group-focus:text-white motion-safe:group-hover:bounce-animation motion-safe:group-focus:bounce-animation' %>
         <% else %>
-          <%= inline_svg_tag 'icons/profile.svg', class: 'size-5 text-soft motion-safe:group-hover:bounce-animation motion-safe:group-focus:bounce-animation' %>
+          <%= inline_svg_tag 'icons/profile.svg', class: 'size-5 text-soft dark:group-focus:text-white motion-safe:group-hover:bounce-animation motion-safe:group-focus:bounce-animation' %>
         <% end %>
         <span>Profile</span>
       <% end %>
-      <%= link_to teams_path, aria: { current: current_page?(teams_path) ? 'page' : nil }, class: "group sidebar-link #{current_page?(teams_path) ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
-        <%= inline_svg_tag 'icons/team.svg', class: 'size-5 text-soft motion-safe:group-hover:gelatine-animation motion-safe:group-focus:gelatine-animation' %>
+      <%= link_to teams_path, aria: { current: current_is_teams ? 'page' : nil }, class: "group sidebar-link #{current_is_teams ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
+        <% if current_is_teams %>
+          <%= inline_svg_tag 'icons/team-filled.svg', class: 'size-5 text-soft dark:group-focus:text-white motion-safe:group-hover:gelatine-animation motion-safe:group-focus:gelatine-animation' %>
+        <% else %>
+          <%= inline_svg_tag 'icons/team.svg', class: 'size-5 text-soft dark:group-focus:text-white motion-safe:group-hover:gelatine-animation motion-safe:group-focus:gelatine-animation' %>
+        <% end %>
         <span>Teams</span>
       <% end %>
-      <%= link_to search_path, aria: { current: current_page?(search_path) ? 'page' : nil }, class: "group sidebar-link #{current_page?(search_path) ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
-        <%= inline_svg_tag 'icons/search.svg', class: 'size-5 text-soft motion-safe:group-hover:wiggle-animation motion-safe:group-focus:wiggle-animation' %>
+      <%= link_to search_path, aria: { current: current_is_search ? 'page' : nil }, class: "group sidebar-link #{current_is_search ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
+        <% if current_is_search %>
+          <%= inline_svg_tag 'icons/search-filled.svg', class: 'size-5 text-soft dark:group-focus:text-white motion-safe:group-hover:wiggle-animation motion-safe:group-focus:wiggle-animation' %>
+        <% else %>
+          <%= inline_svg_tag 'icons/search.svg', class: 'size-5 text-soft dark:group-focus:text-white motion-safe:group-hover:wiggle-animation motion-safe:group-focus:wiggle-animation' %>
+        <% end %>
         <span>Search</span>
       <% end %>
-      <%= link_to edit_user_registration_path, aria: { current: current_page?(edit_user_registration_path) ? 'page' : nil }, class: "group sidebar-link #{current_page?(edit_user_registration_path) ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
-        <%= inline_svg_tag 'icons/settings.svg', class: 'size-5 text-soft spin-animation motion-safe:group-hover:spin motion-safe:group-focus:spin' %>
+      <%= link_to edit_user_registration_path, aria: { current: current_is_edit_user ? 'page' : nil }, class: "group sidebar-link #{current_is_edit_user ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
+        <% if current_is_edit_user %>
+          <%= inline_svg_tag 'icons/settings-filled.svg', class: 'size-5 text-soft dark:group-focus:text-white spin-animation motion-safe:group-hover:spin motion-safe:group-focus:spin' %>
+        <% else %>
+          <%= inline_svg_tag 'icons/settings.svg', class: 'size-5 text-soft dark:group-focus:text-white spin-animation motion-safe:group-hover:spin motion-safe:group-focus:spin' %>
+        <% end %>
         <span>Settings</span>
       <% end %>
     </div>
@@ -35,7 +55,7 @@
     <%= render 'pinned_pages/pin_button', page_url: request.fullpath %>
 
     <!-- New run button -->
-    <%= link_to new_run_path, aria: { current: current_page?(new_run_path) ? 'page' : nil }, class: 'btn btn-lg btn-primary mt-auto flex gap-3 items-center' do %>
+    <%= link_to new_run_path, aria: { current: current_is_new_run ? 'page' : nil }, class: 'btn btn-lg btn-primary mt-auto gap-3' do %>
       <%= inline_svg_tag 'icons/runner.svg', class: 'size-5' %>
       <span>New run</span>
     <% end %>

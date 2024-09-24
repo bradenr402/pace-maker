@@ -33,27 +33,27 @@
 }
 
 .sidebar-link {
-  @apply rounded-md px-3 py-2.5 focus:text-indigo-600 text-sm font-medium hover:transition hover:duration-300 hover:ease-in-out dark:focus:text-white flex gap-2.5 items-center;
+  @apply rounded-md px-3 py-2.5 focus:text-indigo-600 text-sm font-medium transition duration-200 ease-in-out dark:focus:text-white flex items-center gap-2.5;
 }
 
 .sidebar-link-active {
-  @apply text-slate-900 dark:text-slate-200 bg-slate-200 dark:bg-slate-700/70;
+  @apply text-normal bg-slate-200 dark:bg-slate-700/70;
 }
 
 .sidebar-link-inactive {
-  @apply text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700/70;
+  @apply text-soft hover:text-normal hover:bg-slate-200 dark:hover:bg-slate-700/70;
 }
 
 .tab-link {
-  @apply rounded-lg px-2 flex flex-col items-center gap-1 text-xs font-medium hover:transition hover:duration-300 hover:ease-in-out dark:focus:text-white;
+  @apply rounded-lg px-2 flex flex-col items-center gap-1 text-xs font-bold hover:transition hover:duration-200 hover:ease-in-out dark:focus:text-white;
 }
 
 .tab-link-active {
-  @apply text-indigo-600 dark:text-indigo-500;
+  @apply text-normal;
 }
 
 .tab-link-inactive {
-  @apply text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-500;
+  @apply text-soft hover:text-normal;
 }
 
 .btn-tab {
