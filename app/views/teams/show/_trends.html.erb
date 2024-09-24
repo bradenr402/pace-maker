@@ -7,9 +7,22 @@
 
 <div>
   <%= form_with url: team_path(team), method: :get, local: true, html: { novalidate: true }, data: { turbo_frame: 'teamTrends', turbo_action: 'advance', turbo_stream: true, controller: 'custom-date-range form-validation search-form' } do %>
+
     <div class="form-group">
       <%= label_tag :trends_date_range, 'Select date range', class: 'form-label' %>
-      <%= select_tag :trends_date_range, options_for_select(['All season', 'This week', 'Last week', 'This month', 'Last month', 'Custom range'], params[:trends_date_range] || 'This week'), data: { custom_date_range_target: 'select', action: 'custom-date-range#update custom-date-range#search' }, class: 'form-select' %>
+
+      <div class="relative flex rounded-md shadow-sm">
+        <!-- Date range select -->
+        <%= select_tag :trends_date_range, options_for_select(['All season', 'This week', 'Last week', 'This month', 'Last month', 'Custom range'], params[:trends_date_range] || 'This week'),
+                        data: { custom_date_range_target: 'select', action: 'custom-date-range#update custom-date-range#search' },
+                        class: 'form-select appearance-none pl-3 pr-10 py-2 border border-r-0 rounded-r-none' %>
+
+        <!-- Group by select -->
+        <%= label_tag :group_by, 'Group by', class: 'sr-only' %>
+        <%= select_tag :group_by, options_for_select([['Group by day', 'day'], ['Group by week', 'week']], params[:group_by] || 'day'),
+                        data: { action: 'input->search-form#searchNow' },
+                        class: 'form-select appearance-none pl-3 pr-10 py-2 border border-l-0 rounded-l-none' %>
+      </div>
     </div>
 
     <div class="hidden form-group" data-custom-date-range-target="startDate">
@@ -21,11 +34,6 @@
       <%= label_tag :trends_end_date, 'End date', class: 'form-label' %>
       <%= date_field_tag :trends_end_date, nil, max: Date.today, class: 'form-input', data: { form_validation_target: 'endDate', custom_date_range_target: 'endDateField', action: 'input->form-validation#validateEndDate custom-date-range#search' } %>
       <span class="hidden my-1 error-message" data-form-validation-target="endDateError">End date must be today or earlier and must be after start date</span>
-    </div>
-
-    <div class="form-group">
-      <%= label_tag :group_by, 'Group by', class: 'form-label' %>
-      <%= select_tag :group_by, options_for_select([['Day', 'day'], ['Week', 'week']], params[:group_by] || 'day'), data: { action: 'input->search-form#searchNow' }, class: 'form-select' %>
     </div>
 
     <div class="form-group">
