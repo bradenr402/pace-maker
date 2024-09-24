@@ -43,6 +43,25 @@ module TimeHelper
     parts.join(separator)
   end
 
+  def precise_time(duration, options = {})
+    options = {
+      include_seconds: true,
+      highest_measure_only: false,
+      format: :long
+    }.merge(options)
+
+    parts = calculate_time_parts(duration, options)
+
+    if parts.empty?
+      return options[:include_seconds] ? '0s' : '0m' if options[:format] == :short
+
+      return options[:include_seconds] ? '0 seconds' : '0 minutes'
+    end
+
+    separator = options[:format] == :short ? ' ' : ', '
+    parts.join(separator)
+  end
+
   private
 
   def calculate_time_parts(distance, options)
