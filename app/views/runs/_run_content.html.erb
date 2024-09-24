@@ -1,22 +1,24 @@
 <div>
-  <div class="flex items-center gap-2 mb-4">
-    <%= inline_svg_tag 'icons/runner.svg', class: 'size-5 text-soft shrink-0' %>
-    <p class="text-lg font-bold text-balance"><%= run.distance %> mi Run <span class="text-sm text-soft">(<%= run.distance_km %> km)</span></p>
-    <div class="bg-slate-200 dark:bg-slate-700/50 rounded-full drop-shadow-sm dark:drop-shadow-none flex items-center justify-center gap-1.5 ml-auto py-1 px-3">
+  <div class="mb-4 flex flex-wrap items-center justify-between gap-2">
+    <div class="flex items-center gap-2">
+      <%= inline_svg_tag 'icons/runner.svg', class: 'size-5 text-soft shrink-0' %>
+      <p class="text-balance text-lg font-bold"><%= run.distance %> mi Run <span class="text-soft text-sm">(<%= run.distance_km %> km)</span></p>
+    </div>
+    <div class="flex items-center gap-2 rounded-full bg-slate-200/50 px-3 py-1 drop-shadow-sm dark:bg-slate-700/50 dark:drop-shadow-none">
       <%= inline_svg_tag 'icons/calendar.svg', class: 'size-4 text-soft' %>
-      <p class="text-soft text-xs whitespace-nowrap"><%= current_page?(run_path(run)) ? pretty_date(run.date, date_style: :relative) : format_date(run.date) %></p>
+      <p class="text-soft whitespace-nowrap text-xs"><%= current_page?(run_path(run)) ? pretty_date(run.date, date_style: :relative) : format_date(run.date) %></p>
     </div>
   </div>
 
   <% if run.duration? %>
-    <div class="flex flex-wrap items-center gap-x-8 gap-y-4 mb-4">
-      <div class="flex items-center gap-2">
+    <div class="mb-4 space-y-2 divide-slate-300 rounded-2xl bg-slate-200/50 p-4 drop-shadow-sm dark:divide-slate-600 dark:bg-slate-700/50 dark:drop-shadow-none md:flex md:flex-wrap md:items-center md:space-y-0 md:divide-x">
+      <div class="flex items-center gap-2 md:pr-6">
         <%= inline_svg_tag 'icons/clock.svg', class: 'size-5 text-soft' %>
-        <p class="text-sm font-bold"><%= clock_time_display(run.duration) %></p>
+        <p class="font-bold"><%= precise_time(run.duration, format: :short) %></p>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 md:pl-6">
         <%= inline_svg_tag 'icons/lightning.svg', class: 'size-5 text-soft' %>
-        <p class="text-sm font-bold"><%= clock_time_display(run.pace_per_mile) %> / mi <span class="text-xs font-normal text-soft">(<%= clock_time_display(run.pace_per_km )%> / km)</span></p>
+        <p class="font-bold"><%= clock_time_display(run.pace_per_mile) %> <span class="text-soft text-sm">/mi</span></p>
       </div>
     </div>
   <% end %>
@@ -30,16 +32,16 @@
     </div>
   <% end %>
 
-  <div class="flex flex-wrap items-center gap-y-2 pt-4 border-t dark:border-slate-700">
-    <div class="flex items-center gap-1">
-      <%= inline_svg_tag 'icons/calendar.svg', class: 'size-4 mr-1.5 text-soft shrink-0' %>
-      <time class="help-text" datetime="<%= run.created_at.to_formatted_s(:long) %>">Created: <%= time_ago_in_words(run.created_at) + " ago" %></time>
+  <div class="flex flex-wrap items-center gap-x-4 gap-y-2 border-t pt-4 dark:border-slate-700">
+    <div class="flex items-center gap-2 rounded-full bg-slate-200/50 px-3 py-1 drop-shadow-sm dark:bg-slate-700/50 dark:drop-shadow-none">
+      <%= inline_svg_tag 'icons/calendar.svg', class: 'size-4 text-soft shrink-0' %>
+      <time class="text-soft text-xs" datetime="<%= run.created_at.to_formatted_s(:long) %>">Created: <%= time_ago_in_words(run.created_at) + " ago" %></time>
     </div>
 
     <% if run.edited? %>
-      <div class="flex items-center gap-1 sm:pl-4 sm:ml-4 sm:border-l dark:border-slate-700">
-        <%= inline_svg_tag 'icons/edit.svg', class: 'size-4 mr-1.5 text-soft shrink-0' %>
-        <time class="help-text" datetime="<%= run.updated_at.to_formatted_s(:long) %>">Edited: <%= time_ago_in_words(run.updated_at) + " ago" %></time>
+      <div class="flex items-center gap-2 rounded-full bg-slate-200/50 px-3 py-1 drop-shadow-sm dark:bg-slate-700/50 dark:drop-shadow-none">
+        <%= inline_svg_tag 'icons/edit.svg', class: 'size-4 text-soft shrink-0' %>
+        <time class="text-soft text-xs" datetime="<%= run.updated_at.to_formatted_s(:long) %>">Edited: <%= time_ago_in_words(run.updated_at) + " ago" %></time>
       </div>
     <% end %>
   </div>
