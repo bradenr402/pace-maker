@@ -8,7 +8,7 @@
 
 <div data-controller="sort-table" class="relative overflow-x-auto border rounded-lg shadow-md dark:shadow-none border-slate-200 dark:border-slate-700">
   <table data-sort-table-target="table" class="w-full overflow-x-auto text-sm text-left table-auto rtl:text-right text-soft row-numbers">
-    <thead class="text-xs uppercase text-slate-800 dark:text-slate-100 bg-slate-200/70 dark:bg-slate-700/70">
+    <thead class="text-xs uppercase text-normal bg-slate-200/70 dark:bg-slate-700/70">
       <tr>
         <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
           <div class="flex items-center">
@@ -54,7 +54,7 @@
     <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
       <% team.members.sort_by { |member| -(member.miles_in_date_range(date_range)) }.each do |member| %>
         <tr data-filter-gender-target="row" class="bg-slate-50/85 dark:bg-slate-800/85 hover:bg-slate-200/70 dark:hover:bg-slate-700/70">
-          <th scope="row" class="px-6 py-4 font-medium text-slate-800 dark:text-slate-100 whitespace-nowrap">
+          <th scope="row" class="px-6 py-4 font-medium text-normal whitespace-nowrap">
             <div class="flex items-center">
               <span class="mr-4 -ml-1 font-mono row-number"></span>
               <%= link_to team_member_path(team, member), data: { turbo: false }, class: 'group flex gap-2 items-center mr-auto' do %>
@@ -96,7 +96,7 @@
     </tbody>
 
     <tfoot>
-      <tr class="text-sm font-semibold text-slate-800 dark:text-slate-100 bg-slate-200/70 dark:bg-slate-700/70">
+      <tr class="text-sm font-semibold text-normal bg-slate-200/70 dark:bg-slate-700/70">
         <th scope="row" class="px-6 py-3">Totals</th>
         <% if team.require_gender? %>
           <td class="px-6 py-3">
