@@ -1,6 +1,6 @@
 <div>
   <div class="flex items-center gap-2 mb-4">
-    <%= inline_svg_tag 'icons/runner.svg', class: 'size-5 text-soft' %>
+    <%= inline_svg_tag 'icons/runner.svg', class: 'size-5 text-soft shrink-0' %>
     <p class="text-lg font-bold text-balance"><%= run.distance %> mi Run <span class="text-sm text-soft">(<%= run.distance_km %> km)</span></p>
     <p class="text-soft text-xs whitespace-nowrap ml-auto"><%= current_page?(run_path(run)) ? pretty_date(run.date, date_style: :relative) : format_date(run.date) %></p>
   </div>
