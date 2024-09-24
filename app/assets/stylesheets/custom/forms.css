@@ -97,7 +97,7 @@
   }
 
   .help-text {
-    @apply text-slate-700 dark:text-slate-400 text-xs;
+    @apply text-soft text-xs;
   }
 
   /* Use for select controls. */
