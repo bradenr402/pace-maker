@@ -59,8 +59,8 @@ class Team < ApplicationRecord
       Run
       .joins(:user)
       .where(users: { id: members.pluck(:id) })
-      .where('date >= ?', 7.days.ago)
       .order(date: :desc)
+      .first(15)
 
     runs.select do |run|
       required_distance = long_run_distance_for_user(run.user)
