@@ -2,7 +2,7 @@
   <article id="<%= dom_id run %>">
     <div class="p-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700 text-slate-800 dark:text-slate-100">
       <% unless current_page?(run_path(run)) || current_page?(user_path(run.user)) || !local_assigns[:team] %>
-        <div class="mb-4 flex flex-wrap-reverse items-end gap-4">
+        <div class="mb-4 flex flex-wrap-reverse items-center gap-4">
           <% unless current_page?(run_path(run)) || current_page?(user_path(run.user)) %>
             <% path = local_assigns[:team] ? team_member_path(team, run.user) : user_path(run.user) %>
 
