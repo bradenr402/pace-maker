@@ -23,7 +23,7 @@
 }
 
 .btn-tab {
-  @apply rounded-lg py-2 px-4 flex items-center gap-2.5 text-sm hover:bg-slate-200 dark:hover:bg-slate-800/70 snap-center;
+  @apply rounded-lg py-2 px-4 flex items-center gap-2.5 text-sm hover:bg-slate-200 dark:hover:bg-slate-700/70 snap-center;
 }
 
 .btn-tab-active {
