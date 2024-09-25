@@ -5,7 +5,14 @@
 <% current_is_profile = current_page?(profile_path) %>
 
 <div class="fixed inset-x-0 bottom-0 z-50 block w-full pb-1 border-t bg-slate-50 dark:bg-slate-800 dark:border-slate-700 md:hidden">
-  <nav class="grid w-full grid-cols-5 place-items-center gap-y-4">
+  <nav
+    data-controller="modal"
+    data-modal-hide-modal-class="opacity-0 scale-75 pointer-events-none"
+    data-modal-show-modal-class="opacity-100 scale-100 pointer-events-auto"
+    data-modal-hide-backdrop-class="opacity-0 pointer-events-none"
+    data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
+    class="grid w-full grid-cols-5 place-items-center gap-y-4"
+  >
     <%= link_to edit_user_registration_path, aria: { current: current_is_edit_user ? 'page' : nil }, class: "tab-link #{'tab-link-active' if current_is_edit_user}" do %>
       <% if current_is_edit_user %>
         <%= inline_svg_tag 'icons/settings-filled.svg', class: 'size-6' %>
@@ -24,11 +31,13 @@
       <span>Search</span>
     <% end %>
 
-    <!-- Floating run button -->
-    <%= link_to new_run_path, aria: { current: current_is_new_run ? 'page' : nil }, class: "flex flex-col items-center justify-center text-white text-sm flex-grow p-3 m-2 rounded-full bg-indigo-600 #{current_is_new_run ? 'shadow-[0_0_15px] shadow-indigo-500/50 scale-110' : 'hover:shadow-[0_0_15px] hover:shadow-indigo-500/50 hover:scale-110 transition duration-200 ease-in-out'}" do %>
+    <!-- Open New Run Modal Button -->
+    <button data-action="click->modal#open" data-modal-id="newRunModal" class="flex flex-col items-center justify-center text-white text-sm flex-grow p-3 m-2 rounded-full bg-indigo-600 <%= current_is_new_run ? 'shadow-[0_0_15px] shadow-indigo-500/50 scale-110' : 'hover:shadow-[0_0_15px] hover:shadow-indigo-500/50 hover:scale-110 transition duration-200 ease-in-out' %>">
       <%= inline_svg_tag 'icons/runner.svg', class: 'size-6' %>
-      <span class="sr-only">New Run</span>
-    <% end %>
+      <span class="sr-only">New run</span>
+    </button>
+
+    <%= render 'runs/new_run_modal' %>
 
     <%= link_to teams_path, aria: { current: current_is_teams ? 'page' : nil }, class: "tab-link #{'tab-link-active' if current_is_teams}" do %>
       <% if current_is_teams %>

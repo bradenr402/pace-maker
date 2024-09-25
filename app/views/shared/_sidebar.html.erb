@@ -68,32 +68,6 @@
       <span>New run</span>
     </button>
 
-    <!-- New Run Modal Backdrop -->
-    <div
-      data-modal-target="backdrop"
-      data-modal-id="newRunModal"
-      data-action="click->modal#backdropClose"
-      class="modal-backdrop opacity-0 pointer-events-none"></div>
-
-    <!-- New Run Modal -->
-    <div
-      id="newRunModal"
-      role="dialog"
-      tabindex="-1"
-      data-modal-target="modal"
-      class="modal opacity-0 pointer-events-none"
-    >
-      <div class="flex flex-col space-y-1.5 text-center sm:text-left mb-6">
-        <h2 class="text-lg font-semibold leading-none tracking-tight">New Run</h2>
-      </div>
-
-      <%= render 'runs/form_modal', run: Run.new %>
-
-      <!-- Close button -->
-      <button data-action="click->modal#close" type="button" data-modal-id="newRunModal" class="absolute right-0 top-0 p-4 rounded-lg opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2">
-        <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
-        <span class="sr-only">Close</span>
-      </button>
-    </div>
+    <%= render 'runs/new_run_modal' %>
   </nav>
 </div>

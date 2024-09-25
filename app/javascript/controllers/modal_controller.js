@@ -29,8 +29,8 @@ export default class extends Controller {
   }
 
   openById(modalId) {
-    const modal = document.getElementById(modalId);
-    const backdrop = document.querySelector(
+    const modal = this.element.querySelector(`#${modalId}`);
+    const backdrop = this.element.querySelector(
       `[data-modal-id="${modalId}"][data-modal-target="backdrop"]`
     );
 
@@ -48,8 +48,8 @@ export default class extends Controller {
   }
 
   closeById(modalId) {
-    const modal = document.getElementById(modalId);
-    const backdrop = document.querySelector(
+    const modal = this.element.querySelector(`#${modalId}`);
+    const backdrop = this.element.querySelector(
       `[data-modal-id="${modalId}"][data-modal-target="backdrop"]`
     );
 
