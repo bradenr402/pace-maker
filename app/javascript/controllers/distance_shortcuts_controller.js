@@ -17,7 +17,7 @@ export default class extends Controller {
     if (this.distanceTarget.value === '') this.distanceTarget.value = 0;
 
     let currentValue = parseFloat(this.distanceTarget.value);
-    currentValue += updateDistanceValue;
+    currentValue = Math.max(0, currentValue + updateDistanceValue);
     this.distanceTarget.value = currentValue.toFixed(1);
   }
 }
