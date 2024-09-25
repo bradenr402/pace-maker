@@ -29,6 +29,7 @@
         <% end %>
         <span>Profile</span>
       <% end %>
+
       <%= link_to teams_path, aria: { current: current_is_teams ? 'page' : nil }, class: "group sidebar-link #{'sidebar-link-active' if current_is_teams}" do %>
         <% if current_is_teams %>
           <%= inline_svg_tag 'icons/team-filled.svg', class: 'size-5 text-soft dark:group-focus:text-white motion-safe:group-hover:gelatine-animation motion-safe:group-focus:gelatine-animation' %>
@@ -37,6 +38,7 @@
         <% end %>
         <span>Teams</span>
       <% end %>
+
       <%= link_to search_path, aria: { current: current_is_search ? 'page' : nil }, class: "group sidebar-link #{'sidebar-link-active' if current_is_search}" do %>
         <% if current_is_search %>
           <%= inline_svg_tag 'icons/search-filled.svg', class: 'size-5 text-soft dark:group-focus:text-white motion-safe:group-hover:wiggle-animation motion-safe:group-focus:wiggle-animation' %>
@@ -45,6 +47,7 @@
         <% end %>
         <span>Search</span>
       <% end %>
+
       <%= link_to edit_user_registration_path, aria: { current: current_is_edit_user ? 'page' : nil }, class: "group sidebar-link #{'sidebar-link-active' if current_is_edit_user}" do %>
         <% if current_is_edit_user %>
           <%= inline_svg_tag 'icons/settings-filled.svg', class: 'size-5 text-soft dark:group-focus:text-white spin-animation motion-safe:group-hover:spin motion-safe:group-focus:spin' %>
