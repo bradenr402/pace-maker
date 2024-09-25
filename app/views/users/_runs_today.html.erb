@@ -3,14 +3,10 @@
     <h1 class="heading">Runs Today</h1>
     <p class="text-soft">Runs <%= user == current_user ? 'you have' : "#{user.first_name} has" %> gone on today.</p>
   </div>
-
-  <% runs_today = user.runs_today %>
-  <% if user == current_user && runs_today.present? %>
-    <%= link_to "New run", new_run_path, class: "btn btn-primary" %>
-  <% end %>
 </div>
 
 <div class="mb-10">
+  <% runs_today = user.runs_today %>
   <% if runs_today.present? %>
     <% runs_today.each do |run| %>
       <%= render run %>
@@ -19,7 +15,6 @@
     <div class="flex flex-col items-center justify-center gap-6 py-12">
       <% if user == current_user %>
         <p class="text-soft">You haven't gone on any runs yet today.</p>
-        <%= link_to 'New run', new_run_path, class: 'btn btn-primary' %>
       <% else %>
         <p class="text-soft"><%= user.default_name %> hasn't gone on any runs yet today.</p>
       <% end %>
