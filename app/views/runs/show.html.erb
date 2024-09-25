@@ -24,20 +24,47 @@
           data-modal-show-modal-class="opacity-100 scale-100 pointer-events-auto"
           data-modal-hide-backdrop-class="opacity-0 pointer-events-none"
           data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
+          class="relative ml-auto"
         >
-          <div class="flex items-center gap-4">
-            <!-- Open Edit Run Modal Button -->
-            <button data-action="click->modal#open" data-modal-id="editRunModal" class="btn btn-primary">
-              Edit run
+
+          <div
+            data-controller="dropdown"
+            data-dropdown-hide-dropdown-class="pointer-events-none scale-75 opacity-0"
+            data-dropdown-show-dropdown-class="pointer-events-auto scale-100 opacity-100"
+            data-dropdown-icon-open-class="rotate-180"
+            data-dropdown-dropdown-open-class="shadow-md"
+            class="text-sm rounded-md transition duration-200 ease-in-out"
+          >
+            <!-- Run Actions Dropdown Trigger -->
+            <button
+              type="button"
+              data-action="click->dropdown#toggle"
+              class="flex items-center gap-3 py-2 px-4 border border-slate-300 shadow bg-white font-normal rounded-md focus:outline-none focus:border-indigo-500 dark:bg-slate-800 dark:border-slate-700 dark:focus:border-slate-600"
+            >
+              <span>Actions</span>
+              <%= inline_svg_tag 'icons/chevron-down.svg', class: 'size-4 text-soft transition duration-200 ease-in-out', data: { dropdown_target: 'arrowIcon' } %>
             </button>
 
-            <%= render 'runs/edit_run_modal', run: @run %>
+            <!-- Run Actions Dropdown Menu -->
+            <div
+              data-dropdown-target="dropdown"
+              class="pointer-events-none absolute right-0 top-12 z-50 w-max origin-top-right scale-75 rounded-md bg-white p-2 opacity-0 shadow-md transition duration-200 ease-in-out dark:bg-slate-800 border border-slate-300 dark:border-slate-700 dark:shadow-none flex flex-col gap-1.5"
+            >
+              <!-- Open Edit Run Modal Button -->
+              <button data-action="click->modal#open" data-modal-id="editRunModal" class="flex items-center gap-2.5 py-2 px-4 rounded transition duration-200 ease-in-out hover:bg-slate-200/60 dark:hover:bg-slate-700/40">
+                <%= inline_svg_tag 'icons/edit.svg', class: 'size-5' %>
+                Edit run
+              </button>
 
-            <!-- Open Delete Run Modal Button -->
-            <button data-action="click->modal#open" data-modal-id="deleteRunModal" class="btn btn-destructive whitespace-nowrap">
-              Delete run
-            </button>
+              <!-- Open Delete Run Modal Button -->
+              <button data-action="click->modal#open" data-modal-id="deleteRunModal" class="flex items-center gap-2.5 py-2 px-4 rounded transition duration-200 ease-in-out hover:bg-rose-200/50 dark:hover:bg-rose-900/25 hover:text-rose-600 dark:hover:text-rose-500">
+                <%= inline_svg_tag 'icons/trash.svg', class: 'size-5' %>
+                Delete run
+              </button>
+            </div>
           </div>
+
+          <%= render 'runs/edit_run_modal', run: @run %>
 
           <!-- Delete Run Modal Backdrop -->
           <div
@@ -78,5 +105,5 @@
       <% end %>
     </div>
   </div>
-    <%= render 'turbo_run', run: @run%>
+  <%= render 'turbo_run', run: @run %>
 </div>

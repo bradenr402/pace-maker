@@ -15,8 +15,7 @@ export default class extends Controller {
     document.removeEventListener('click', this.closeOnOutsideClick);
   }
 
-  toggle(event) {
-    event.stopPropagation();
+  toggle() {
     if (this.menuTarget.classList.contains(...this.hiddenClasses)) this.show();
     else this.hide();
   }
