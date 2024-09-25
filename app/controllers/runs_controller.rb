@@ -34,10 +34,11 @@ class RunsController < ApplicationController
           flash.now[:error] = 'Run could not be created.'
           render turbo_stream: [
             turbo_stream.update('flash', partial: 'shared/flash'),
-            turbo_stream.replace('run_modal', partial: 'runs/form',
+            turbo_stream.replace('run_modal', partial: 'runs/form_modal',
                                               locals: { run: @run, modal_style_buttons: true })
           ]
         end
+        format.html { render :new, status: :unprocessable_entity }
       end
     end
   end
@@ -48,11 +49,35 @@ class RunsController < ApplicationController
     @run.duration = parse_duration(params[:run][:duration_input]) if params[:run][:duration_input].present?
 
     if @run.update(run_params)
-      redirect_to @run, success: 'Run was successfully updated.'
+      respond_to do |format|
+        format.turbo_stream do
+          flash.now[:success] = 'Run was successfully updated.'
+          render turbo_stream: [
+            turbo_stream.update('flash', partial: 'shared/flash'),
+            turbo_stream.replace('run_modal', partial: 'runs/form_modal',
+                                              locals: { run: @run, modal_style_buttons: true }),
+            turbo_stream.replace("turbo_run_#{@run.id}", partial: 'runs/turbo_run', locals: { run: @run })
+          ]
+        end
+        format.html { redirect_to @run, success: 'Run was successfully created.' }
+      end
     else
-      render :edit,
+      render :new,
              status: :unprocessable_entity,
-             error: 'Run could not be updated.'
+             error: 'Run could not be created.'
+
+      respond_to do |format|
+        format.turbo_stream do
+          flash.now[:error] = 'Run could not be updated.'
+          render turbo_stream: [
+            turbo_stream.update('flash', partial: 'shared/flash'),
+            turbo_stream.replace('run_modal', partial: 'runs/form_modal',
+                                              locals: { run: @run, modal_style_buttons: true }),
+            turbo_stream.replace("turbo_run_#{@run.id}", partial: 'runs/turbo_run', locals: { run: @run })
+          ]
+        end
+        format.html { render :edit, status: :unprocessable_entity, error: 'Run could not be updated.' }
+      end
     end
   end
 

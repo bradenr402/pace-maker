@@ -26,7 +26,12 @@
           data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
         >
           <div class="flex items-center gap-4">
-            <%= link_to 'Edit run', edit_run_path(@run), class: 'btn btn-primary' %>
+            <!-- Open Edit Run Modal Button -->
+            <button data-action="click->modal#open" data-modal-id="editRunModal" class="btn btn-primary">
+              Edit run
+            </button>
+
+            <%= render 'runs/edit_run_modal', run: @run %>
 
             <!-- Open Delete Run Modal Button -->
             <button data-action="click->modal#open" data-modal-id="deleteRunModal" class="btn btn-destructive whitespace-nowrap">
@@ -73,5 +78,5 @@
       <% end %>
     </div>
   </div>
-  <%= render @run %>
+    <%= render 'turbo_run', run: @run%>
 </div>
