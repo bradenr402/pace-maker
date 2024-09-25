@@ -22,7 +22,7 @@
             method: :patch,
             class: "btn btn-destructive btn-outline #{'btn-sm' unless current_page_team}",
             data: { turbo: false } %>
-    <% end%>
+    <% end %>
 
   <% elsif current_page_team %>
     <% if request.present? && request.blocked? %>
