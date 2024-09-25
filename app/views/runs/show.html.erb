@@ -39,7 +39,7 @@
             <button
               type="button"
               data-action="click->dropdown#toggle"
-              class="flex items-center gap-3 py-2 px-4 border border-slate-300 shadow bg-white font-normal rounded-md focus:outline-none focus:border-indigo-500 dark:bg-slate-800 dark:border-slate-700 dark:focus:border-slate-600"
+              class="dropdown-toggle"
             >
               <span>Actions</span>
               <%= inline_svg_tag 'icons/chevron-down.svg', class: 'size-4 text-soft transition duration-200 ease-in-out', data: { dropdown_target: 'arrowIcon' } %>
@@ -48,16 +48,16 @@
             <!-- Run Actions Dropdown Menu -->
             <div
               data-dropdown-target="dropdown"
-              class="pointer-events-none absolute right-0 top-12 z-50 w-max origin-top-right scale-75 rounded-md bg-white p-2 opacity-0 shadow-md transition duration-200 ease-in-out dark:bg-slate-800 border border-slate-300 dark:border-slate-700 dark:shadow-none flex flex-col gap-1.5"
+              class="dropdown-menu"
             >
               <!-- Open Edit Run Modal Button -->
-              <button data-action="click->modal#open" data-modal-id="editRunModal" class="flex items-center gap-2.5 py-2 px-4 rounded transition duration-200 ease-in-out hover:bg-slate-200/60 dark:hover:bg-slate-700/40">
+              <button data-action="click->modal#open" data-modal-id="editRunModal" class="dropdown-option">
                 <%= inline_svg_tag 'icons/edit.svg', class: 'size-5' %>
                 Edit run
               </button>
 
               <!-- Open Delete Run Modal Button -->
-              <button data-action="click->modal#open" data-modal-id="deleteRunModal" class="flex items-center gap-2.5 py-2 px-4 rounded transition duration-200 ease-in-out hover:bg-rose-200/50 dark:hover:bg-rose-900/25 hover:text-rose-600 dark:hover:text-rose-500">
+              <button data-action="click->modal#open" data-modal-id="deleteRunModal" class="dropdown-option-destructive">
                 <%= inline_svg_tag 'icons/trash.svg', class: 'size-5' %>
                 Delete run
               </button>
