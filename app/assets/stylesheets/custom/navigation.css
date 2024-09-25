@@ -1,33 +1,25 @@
 .sidebar-link {
-  @apply rounded-md px-3 py-2.5 focus:text-indigo-600 text-sm font-medium transition duration-200 ease-in-out dark:focus:text-white flex items-center gap-2.5;
+  @apply rounded-md px-3 py-2.5 focus:text-indigo-600 text-soft hover:text-normal text-sm font-medium hover:bg-slate-200/60 dark:hover:bg-slate-700/40 transition duration-200 ease-in-out dark:focus:text-white flex items-center gap-2.5;
 }
 
 .sidebar-link-active {
-  @apply text-normal bg-slate-200 dark:bg-slate-700/70;
-}
-
-.sidebar-link-inactive {
-  @apply text-soft hover:text-normal hover:bg-slate-200 dark:hover:bg-slate-700/70;
+  @apply text-normal bg-slate-200 dark:bg-slate-700/75 hover:bg-slate-200 dark:hover:bg-slate-700/75;
 }
 
 .tab-link {
-  @apply rounded-lg px-2 flex flex-col items-center gap-1 text-xs font-bold hover:transition hover:duration-200 hover:ease-in-out dark:focus:text-white;
+  @apply rounded-lg px-2 flex flex-col items-center gap-1 text-soft hover:text-normal text-xs font-bold hover:transition hover:duration-200 hover:ease-in-out dark:focus:text-white;
 }
 
 .tab-link-active {
   @apply text-normal;
 }
 
-.tab-link-inactive {
-  @apply text-soft hover:text-normal;
-}
-
 .btn-tab {
-  @apply rounded-lg py-2 px-4 flex items-center gap-2.5 text-sm hover:bg-slate-200 dark:hover:bg-slate-700/70 snap-center;
+  @apply rounded-lg py-2 px-4 flex items-center gap-2.5 text-sm hover:bg-slate-200/60 dark:hover:bg-slate-700/40 snap-center;
 }
 
 .btn-tab-active {
-  @apply text-slate-900 dark:text-slate-200 bg-slate-200 dark:bg-slate-700/70;
+  @apply text-normal bg-slate-200 dark:bg-slate-700/75 hover:bg-slate-200 dark:hover:bg-slate-700/75;
 }
 
 .tab-container {

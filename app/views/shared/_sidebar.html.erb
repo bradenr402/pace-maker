@@ -12,7 +12,7 @@
 
     <!-- Main navigation links -->
     <div class="mb-6 space-y-1.5">
-      <%= link_to profile_path, aria: { current: current_is_profile ? 'page' : nil }, class: "group sidebar-link #{current_is_profile ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
+      <%= link_to profile_path, aria: { current: current_is_profile ? 'page' : nil }, class: "group sidebar-link #{'sidebar-link-active' if current_is_profile}" do %>
         <% if current_user.avatar.attached? %>
           <%= image_tag current_user.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-6 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover motion-safe:group-hover:bounce-animation motion-safe:group-focus:bounce-animation' %>
         <% elsif current_is_profile %>
@@ -22,7 +22,7 @@
         <% end %>
         <span>Profile</span>
       <% end %>
-      <%= link_to teams_path, aria: { current: current_is_teams ? 'page' : nil }, class: "group sidebar-link #{current_is_teams ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
+      <%= link_to teams_path, aria: { current: current_is_teams ? 'page' : nil }, class: "group sidebar-link #{'sidebar-link-active' if current_is_teams}" do %>
         <% if current_is_teams %>
           <%= inline_svg_tag 'icons/team-filled.svg', class: 'size-5 text-soft dark:group-focus:text-white motion-safe:group-hover:gelatine-animation motion-safe:group-focus:gelatine-animation' %>
         <% else %>
@@ -30,7 +30,7 @@
         <% end %>
         <span>Teams</span>
       <% end %>
-      <%= link_to search_path, aria: { current: current_is_search ? 'page' : nil }, class: "group sidebar-link #{current_is_search ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
+      <%= link_to search_path, aria: { current: current_is_search ? 'page' : nil }, class: "group sidebar-link #{'sidebar-link-active' if current_is_search}" do %>
         <% if current_is_search %>
           <%= inline_svg_tag 'icons/search-filled.svg', class: 'size-5 text-soft dark:group-focus:text-white motion-safe:group-hover:wiggle-animation motion-safe:group-focus:wiggle-animation' %>
         <% else %>
@@ -38,7 +38,7 @@
         <% end %>
         <span>Search</span>
       <% end %>
-      <%= link_to edit_user_registration_path, aria: { current: current_is_edit_user ? 'page' : nil }, class: "group sidebar-link #{current_is_edit_user ? 'sidebar-link-active' : 'sidebar-link-inactive' }" do %>
+      <%= link_to edit_user_registration_path, aria: { current: current_is_edit_user ? 'page' : nil }, class: "group sidebar-link #{'sidebar-link-active' if current_is_edit_user}" do %>
         <% if current_is_edit_user %>
           <%= inline_svg_tag 'icons/settings-filled.svg', class: 'size-5 text-soft dark:group-focus:text-white spin-animation motion-safe:group-hover:spin motion-safe:group-focus:spin' %>
         <% else %>
