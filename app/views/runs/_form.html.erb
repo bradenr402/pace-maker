@@ -61,7 +61,7 @@
 
   <% if modal_style_buttons %>
     <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-      <button data-action="click->modal#close" data-modal-id="newRunModal" type="button" class="btn btn-white mt-2 sm:mt-0">Cancel</button>
+      <button data-action="click->modal#close" data-modal-id="<%= form.object.new_record? ? 'newRunModal' : 'editRunModal' %>" type="button" class="btn btn-white mt-2 sm:mt-0">Cancel</button>
       <%= form.submit  form.object.new_record? ? 'Create run' : 'Update run', class: 'btn btn-primary w-full sm:w-auto', data: { action: 'click->modal#close' } %>
     </div>
   <% else %>
