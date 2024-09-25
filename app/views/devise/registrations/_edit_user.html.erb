@@ -272,7 +272,7 @@
       <%= button_to 'Sign out', destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: 'btn btn-destructive w-full whitespace-nowrap' %>
     </div>
 
-    <button data-action="click->modal#close" type="button" data-modal-id="signOutModal" class="absolute right-0 top-0 p-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2">
+    <button data-action="click->modal#close" type="button" data-modal-id="signOutModal" class="modal-x-btn">
       <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
       <span class="sr-only">Close</span>
     </button>
@@ -308,7 +308,7 @@
       %>
     </div>
 
-    <button data-action="click->modal#close" type="button" data-modal-id="deleteAccountModal" class="absolute right-0 top-0 p-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2">
+    <button data-action="click->modal#close" type="button" data-modal-id="deleteAccountModal" class="modal-x-btn">
       <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
       <span class="sr-only">Close</span>
     </button>
