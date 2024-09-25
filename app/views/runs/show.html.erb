@@ -39,8 +39,7 @@
             data-modal-target="backdrop"
             data-modal-id="deleteRunModal"
             data-action="click->modal#backdropClose"
-            class="modal-backdrop opacity-0 pointer-events-none"
-          ></div>
+            class="modal-backdrop opacity-0 pointer-events-none"></div>
 
           <!-- Delete Run Modal -->
           <div
@@ -53,7 +52,7 @@
               <h2 class="text-lg font-semibold leading-none tracking-tight">Delete Run?</h2>
               <p class="text-soft text-sm">Are you sure? This cannot be undone.</p>
             </div>
-            
+
             <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
               <button data-action="click->modal#close" data-modal-id="deleteRunModal" type="button" class="btn btn-white mt-2 sm:mt-0">Cancel</button>
               <%= button_to 'Delete run',
@@ -64,7 +63,7 @@
               %>
             </div>
 
-            <button data-action="click->modal#close" type="button" data-modal-id="deleteRunModal" class="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2">
+            <button data-action="click->modal#close" type="button" data-modal-id="deleteRunModal" class="absolute right-0 top-0 p-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2">
               <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
               <span class="sr-only">Close</span>
             </button>
