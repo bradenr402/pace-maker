@@ -6,7 +6,7 @@
 <%= content_tag(:p, class: 'mb-2 text-right') { link_to 'View your personal progress', team_member_path(team, current_user), class: 'btn-link text-xs' } if current_user.member_of?(team) %>
 
 <!-- Season Dates Card -->
-<div class="p-6 mb-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
+<div class="card mb-6">
   <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Season Dates</h2>
   <% if team.season_dates? %>
     <div class="block mb-4 space-y-2 lg:space-y-0 lg:flex lg:flex-wrap lg:items-center lg:justify-around lg:gap-4">
@@ -37,9 +37,9 @@
   <% end %>
 </div>
 
-<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+<div class="grid grid-cols-1 gap-6 lg:grid-cols-2 mb-6">
   <!-- Mileage Goal Card -->
-  <div class="p-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
+  <div class="card">
     <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Mileage Goal</h2>
     <% if team.mileage_goal? %>
       <div class="mb-4">
@@ -67,7 +67,7 @@
   </div>
 
   <!-- Long Runs This Season Card -->
-  <div class="p-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
+  <div class="card">
     <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Long Run Goal</h2>
     <% if team.long_run_goal? %>
       <div class="mb-4">
@@ -96,7 +96,7 @@
 </div>
 
 <!-- Season Progress vs. Mileage Goal Card -->
-<div class="p-6 mt-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
+<div class="card mb-6">
   <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Season Progress vs. Mileage Goal</h2>
   <% if team.mileage_goal? && team.season_in_progress? %>
     <p class="mb-4"><%= team.mileage_goal_progress_message %></p>
@@ -122,7 +122,7 @@
 </div>
 
 <!-- Season Progress vs. Long Run Goal Card -->
-<div class="p-6 mt-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
+<div class="card">
   <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Season Progress vs. Long Run Goal</h2>
   <% if team.long_run_goal? && team.season_in_progress? %>
     <p class="mb-4"><%= team.long_run_goal_progress_message %></p>

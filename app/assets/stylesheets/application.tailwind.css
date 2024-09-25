@@ -45,6 +45,10 @@
   .modal-backdrop {
     @apply fixed inset-0 z-50 bg-black/50 backdrop-blur-sm transition duration-200 ease-in-out w-full h-full;
   }
+
+  .card {
+    @apply p-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700;
+  }
 }
 
 @layer base {

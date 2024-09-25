@@ -7,9 +7,9 @@
 
 <%= content_tag(:p, class: 'mb-2 text-right') { link_to 'Edit your personal goals', edit_team_team_membership_path(@team, current_user), class: 'btn-link text-xs' } if member_is_current %>
 
-<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+<div class="grid grid-cols-1 gap-6 lg:grid-cols-2 mb-6">
   <!-- Miles This Season Card -->
-  <div class="p-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
+  <div class="card">
     <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Miles This Season</h2>
     <p class="text-3xl font-bold">
       <%= team_membership.miles_completed_in_goal %>
@@ -24,7 +24,7 @@
   </div>
 
   <!-- Long Runs This Season Card -->
-  <div class="p-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
+  <div class="card">
     <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Long Runs This Season</h2>
     <p class="text-3xl font-bold">
       <%= team_membership.long_runs_completed_in_goal %>
@@ -44,7 +44,7 @@
   <% current_streak_start_date = current_streak_data[:start_date] %>
   <% current_streak_end_date = current_streak_data[:end_date] %>
 
-  <div class="p-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
+  <div class="card">
     <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Current Streak</h2>
     <p class="text-3xl font-bold">
       <%= current_streak %>
@@ -67,7 +67,7 @@
   <% longest_streak_start_date = longest_streak_data[:start_date] %>
   <% longest_streak_end_date = longest_streak_data[:end_date] %>
 
-  <div class="p-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
+  <div class="card">
     <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Record Streak</h2>
     <p class="text-3xl font-bold">
       <%= longest_streak %>
@@ -87,7 +87,7 @@
 </div>
 
 <!-- Personal Mileage Goal Card -->
-<div class="p-6 mt-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
+<div class="card mb-6">
   <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Personal Mileage Goal</h2>
   <% if team_membership.mileage_goal? && team.season_in_progress? %>
     <p class="mb-4"><%= team_membership.mileage_goal_progress_message(current_user) %></p>
@@ -113,7 +113,7 @@
 </div>
 
 <!-- Personal Long Run Goal Card -->
-<div class="p-6 mt-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700">
+<div class="card">
   <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Personal Long Run Goal</h2>
   <% if team_membership.long_run_goal? && team.season_in_progress? %>
     <p class="mb-4"><%= team_membership.long_run_goal_progress_message(current_user) %></p>
