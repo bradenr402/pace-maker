@@ -1,0 +1,42 @@
+<% request = team.join_requests.find_by(user_id: current_user) %>
+<% current_page_team = current_page?(team_path(team)) %>
+
+<% if current_user.owns?(team) %>
+  <%= link_to edit_team_path(team), class: 'dropdown-option-primary', data: { turbo: false } do %>
+    <%= inline_svg_tag 'icons/pencil.svg', class: 'size-5' %>
+    Edit team
+  <% end %>
+
+<% elsif current_user.member_of?(team) %>
+  <%= button_to leave_team_path(team), class: 'dropdown-option-destructive', data: { turbo: false } do %>
+    <%= inline_svg_tag 'icons/arrow-left-out.svg', class: 'size-5' %>
+    Leave team
+  <% end %>
+
+<% else %>
+  <% if team.gender_requirement_met?(current_user) %>
+    <% if request.nil? || request.allowed? %>
+      <%= button_to request.nil? ? join_team_path(team) : team_join_request_path(request),
+            method: request.nil? ? :post : :patch,
+            class: 'dropdown-option-primary',
+            data: { turbo: false } do %>
+        <%= inline_svg_tag 'icons/user-plus.svg', class: 'size-5' %>
+        Join team
+      <% end %>
+
+    <% elsif request.pending? %>
+      <%= button_to 'Cancel request',
+            cancel_team_join_request_path(request),
+            method: :patch,
+            class: 'dropdown-option-destructive',
+            data: { turbo: false } %>
+    <% end %>
+
+  <% elsif current_page_team %>
+    <% if request.present? && request.blocked? %>
+      <p class="text-base error-message">You have been blocked from this team.</p>
+    <% else %>
+      <p class="w-full text-base text-center error-message">You must specify your gender to join this team.</p>
+    <% end %>
+  <% end %>
+<% end %>
