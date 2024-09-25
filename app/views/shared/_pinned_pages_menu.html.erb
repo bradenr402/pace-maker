@@ -5,7 +5,7 @@
   class="fixed right-4 top-4 md:hidden z-50"
 >
   <!-- Button to toggle the menu -->
-  <button type="button" class="btn-white size-10 rounded-full grid place-items-center" data-action="click->pinned-pages-menu#toggle">
+  <button type="button" class="fixed right-4 top-4 btn-white size-10 rounded-full grid place-items-center" data-action="click->pinned-pages-menu#toggle">
     <%= inline_svg_tag 'icons/pin.svg', class: 'size-5 text-soft', data: { pinned_pages_menu_target: 'openIcon' } %>
     <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-6 text-soft hidden', data: { pinned_pages_menu_target: 'closeIcon' } %>
     <span class="sr-only">Toggle pinned menu</span>
@@ -14,11 +14,14 @@
   <!-- Pinned pages menu -->
   <div
     data-pinned-pages-menu-target="menu"
-    class="pointer-events-none absolute right-0 top-12 z-50 w-72 origin-top-right scale-75 rounded-lg bg-white p-2 opacity-0 shadow-md transition duration-200 ease-in-out dark:bg-slate-800 border border-slate-300 dark:border-slate-700 dark:shadow-none"
+    class="pointer-events-none absolute right-0 top-12 z-50 w-72 origin-top-right scale-75 rounded-lg bg-white p-2 pb-0.5 opacity-0 shadow-md transition duration-200 ease-in-out dark:bg-slate-800 border border-slate-300 dark:border-slate-700 dark:shadow-none"
   >
-    <div class="max-h-80 overflow-y-auto">
+    <div class="relative max-h-80 overflow-y-auto pb-4">
       <%= render 'pinned_pages/list' %>
     </div>
+
+    <!-- Gradient overlay to hide the menu when scrolling -->
+    <div class="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white dark:from-slate-800 to-transparent pointer-events-none rounded-b-lg"></div>
 
     <%= render 'pinned_pages/pin_button', page_url: request.fullpath %>
   </div>
