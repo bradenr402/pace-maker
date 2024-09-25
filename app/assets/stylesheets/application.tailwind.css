@@ -37,6 +37,14 @@
   .row-numbers tbody .row-number::before {
     content: counter(rowNumber);
   }
+
+  .modal {
+    @apply fixed left-1/2 top-1/2 z-50 w-[calc(100%-4rem)] sm:w-full -translate-x-[calc(50%+2rem)] sm:-translate-x-1/2 -translate-y-1/2 max-w-lg gap-4 bg-slate-50 dark:bg-slate-800 border dark:border-slate-700 p-6 shadow-md transition duration-200 ease-in-out rounded-lg mx-8 sm:mx-0;
+  }
+
+  .modal-backdrop {
+    @apply fixed inset-0 z-50 bg-black/50 backdrop-blur-sm transition duration-200 ease-in-out w-full h-full;
+  }
 }
 
 @layer base {
