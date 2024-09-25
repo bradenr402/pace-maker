@@ -2,17 +2,17 @@
 
 <div class="max-w-3xl px-4 mx-auto my-16">
   <div class="pb-6 border-b border-slate-200 dark:border-slate-700">
-    <div class="flex flex-wrap items-center gap-4">
+    <div class="flex flex-wrap items-center gap-3">
       <%= link_to @run.user, class: 'group flex gap-4 items-center mr-auto' do %>
         <% if @run.user.avatar.attached? %>
-          <%= image_tag @run.user.avatar.variant(resize_to_limit: [100, 100]).processed, class: 'size-16 rounded-lg drop-shadow-lg dark:drop-shadow-none object-cover' %>
+          <%= image_tag @run.user.avatar.variant(resize_to_limit: [100, 100]).processed, class: 'size-12 rounded-lg drop-shadow-lg dark:drop-shadow-none object-cover' %>
         <% else %>
-          <div class="size-16 bg-slate-200 dark:bg-slate-800 rounded-lg drop-shadow-lg dark:drop-shadow-none grid place-items-center">
-            <%= inline_svg_tag 'icons/user.svg', class: 'size-12 text-soft' %>
+          <div class="size-12 bg-slate-200 dark:bg-slate-800 rounded-lg drop-shadow-lg dark:drop-shadow-none grid place-items-center">
+            <%= inline_svg_tag 'icons/user.svg', class: 'size-8 text-soft' %>
           </div>
         <% end %>
 
-        <h1 class="transition duration-300 ease-in-out heading group-hover:text-indigo-600 dark:group-hover:text-indigo-500">
+        <h1 class="transition duration-300 ease-in-out subheading group-hover:text-indigo-600 dark:group-hover:text-indigo-500">
           <%= @run.user.default_name %>
         </h1>
       <% end %>
