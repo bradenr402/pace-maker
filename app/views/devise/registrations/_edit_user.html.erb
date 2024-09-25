@@ -226,23 +226,35 @@
   <div class="flex flex-wrap gap-4 items-center justify-between pb-6 border-b dark:border-slate-700">
     <div class="max-w-md">
       <p class="font-bold">Sign out</p>
-      <p class="help-text">Once you sign out, you will have to enter your credentials again to access your account.</p>
+      <p class="help-text">Signing out will end your current session. You&#8217;ll need to sign in again to regain access to your account.</p>
     </div>
 
     <!-- Open Sign Out Modal Button -->
-    <button data-action="click->modal#open" data-modal-id="signOutModal" class="btn btn-destructive btn-outline whitespace-nowrap">
+    <button data-action="click->modal#open" data-modal-id="signOutModal" class="btn btn-destructive font-bold btn-outline whitespace-nowrap">
       Sign out
     </button>
   </div>
 
+  <div class="flex flex-wrap gap-4 items-center justify-between py-6 border-b dark:border-slate-700">
+    <div class="max-w-md">
+      <p class="font-bold">End all sessions</p>
+      <p class="help-text">Sign out of all devices except this one. This will log you out from other browsers and devices where your account is active, helping secure your account.</p>
+    </div>
+
+    <!-- Open Sign Out All Modal Button -->
+    <button data-action="click->modal#open" data-modal-id="signOutAllModal" class="btn btn-destructive font-bold btn-outline whitespace-nowrap">
+      End all sessions
+    </button>
+  </div>
+
   <div class="flex flex-wrap gap-4 items-center justify-between pt-6">
-    <div>
+    <div class="max-w-md">
       <p class="font-bold">Delete your account</p>
-      <p class="help-text">Once you delete your account, there is no going back.</p>
+      <p class="help-text">Deleting your account is permanent. All your data will be lost, and this action cannot be undone.</p>
     </div>
 
     <!-- Open Delete Account Modal Button -->
-    <button data-action="click->modal#open" data-modal-id="deleteAccountModal" class="btn btn-destructive whitespace-nowrap">
+    <button data-action="click->modal#open" data-modal-id="deleteAccountModal" class="btn btn-destructive font-bold whitespace-nowrap">
       Delete my account
     </button>
   </div>
@@ -264,15 +276,46 @@
   >
     <div class="flex flex-col space-y-1.5 text-center sm:text-left">
       <h2 class="text-lg font-semibold leading-none tracking-tight">Sign Out?</h2>
-      <p class="text-soft text-sm">You will have to enter your credentials again to access your account.</p>
+      <p class="text-soft text-sm">Are you sure you want to sign out? This will end your current session, and you will need to sign in again to access your account.</p>
     </div>
 
     <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
       <button data-action="click->modal#close" data-modal-id="signOutModal" type="button" class="btn btn-white mt-2 sm:mt-0">Cancel</button>
-      <%= button_to 'Sign out', destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: 'btn btn-destructive w-full whitespace-nowrap' %>
+      <%= button_to 'Sign out', destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: 'btn btn-destructive font-bold w-full whitespace-nowrap' %>
     </div>
 
     <button data-action="click->modal#close" type="button" data-modal-id="signOutModal" class="modal-x-btn">
+      <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
+      <span class="sr-only">Close</span>
+    </button>
+  </div>
+
+  <!-- Sign Out All Modal Backdrop -->
+  <div
+    data-modal-target="backdrop"
+    data-modal-id="signOutAllModal"
+    data-action="click->modal#backdropClose"
+    class="modal-backdrop opacity-0 pointer-events-none"></div>
+
+  <!-- Sign Out All Modal -->
+  <div
+    id="signOutAllModal"
+    role="dialog"
+    tabindex="-1"
+    data-modal-target="modal"
+    class="modal opacity-0 pointer-events-none"
+  >
+    <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+      <h2 class="text-lg font-semibold leading-none tracking-tight">End All Sessions?</h2>
+      <p class="text-soft text-sm">Are you sure you want to sign out of all other devices? This will end your session on all devices except the one you're currently using. You will need to sign in again on any other device.</p>
+    </div>
+
+    <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
+      <button data-action="click->modal#close" data-modal-id="signOutAllModal" type="button" class="btn btn-white mt-2 sm:mt-0">Cancel</button>
+      <%= button_to 'End All Sessions', sign_out_all_devices_path, method: :post, class: 'btn btn-destructive font-bold w-full whitespace-nowrap' %>
+    </div>
+
+    <button data-action="click->modal#close" type="button" data-modal-id="signOutAllModal" class="modal-x-btn">
       <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
       <span class="sr-only">Close</span>
     </button>
@@ -295,7 +338,7 @@
   >
     <div class="flex flex-col space-y-1.5 text-center sm:text-left">
       <h2 class="text-lg font-semibold leading-none tracking-tight">Delete Account?</h2>
-      <p class="text-soft text-sm">Are you sure? This cannot be undone.</p>
+      <p class="text-soft text-sm">Are you sure you want to delete your account? This is permanent. All your data will be lost, and you will no longer be able to access your account. This action cannot be undone.</p>
     </div>
 
     <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
@@ -304,7 +347,7 @@
                     registration_path(resource_name),
                     method: :delete,
                     form: { data: { turbo: false } },
-                    class: 'btn btn-destructive w-full whitespace-nowrap'
+                    class: 'btn btn-destructive font-bold w-full whitespace-nowrap'
       %>
     </div>
 
