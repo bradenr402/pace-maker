@@ -2,8 +2,7 @@ class RunsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_run, only: %i[show edit update destroy]
 
-  def show
-  end
+  def show; end
 
   def new
     @run = current_user.runs.new
@@ -11,9 +10,7 @@ class RunsController < ApplicationController
 
   def create
     @run = current_user.runs.build(run_params)
-    if params[:run][:duration_input].present?
-      @run.duration = parse_duration(params[:run][:duration_input])
-    end
+    @run.duration = parse_duration(params[:run][:duration_input]) if params[:run][:duration_input].present?
 
     if @run.save
       redirect_to @run, success: 'Run was successfully created.'
@@ -24,13 +21,10 @@ class RunsController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
-    if params[:run][:duration_input].present?
-      @run.duration = parse_duration(params[:run][:duration_input])
-    end
+    @run.duration = parse_duration(params[:run][:duration_input]) if params[:run][:duration_input].present?
 
     if @run.update(run_params)
       redirect_to @run, success: 'Run was successfully updated.'
