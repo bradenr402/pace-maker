@@ -5,7 +5,14 @@
 <% current_is_profile = current_page?(profile_path) %>
 
 <div class="hidden h-full flex-[0.3] min-w-72 max-w-[350px] md:block">
-  <nav class="h-[calc(100%-2.5rem)] flex flex-col overflow-y-auto p-4 backdrop-blur-sm bg-slate-50/85 dark:bg-slate-800/85 border dark:border-slate-700 m-5 mr-0 rounded-lg shadow-lg">
+  <nav
+    data-controller="modal"
+    data-modal-hide-modal-class="opacity-0 scale-75 pointer-events-none"
+    data-modal-show-modal-class="opacity-100 scale-100 pointer-events-auto"
+    data-modal-hide-backdrop-class="opacity-0 pointer-events-none"
+    data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
+    class="h-[calc(100%-2.5rem)] flex flex-col overflow-y-auto p-4 bg-slate-50 dark:bg-slate-800 border dark:border-slate-700 m-5 mr-0 rounded-lg shadow-lg"
+  >
     <div class="mb-4 text-xl font-bold">
       <span class="text-indigo-500">Team</span><span>Runner</span>
     </div>
@@ -55,10 +62,38 @@
       <%= render 'pinned_pages/pin_button', page_url: request.fullpath %>
     </div>
 
-    <!-- New run button -->
-    <%= link_to new_run_path, aria: { current: current_is_new_run ? 'page' : nil }, class: 'btn btn-lg btn-primary mt-auto gap-3' do %>
+    <!-- Open New Run Modal Button -->
+    <button data-action="click->modal#open" data-modal-id="newRunModal" class="btn btn-lg btn-primary mt-auto gap-3">
       <%= inline_svg_tag 'icons/runner.svg', class: 'size-5' %>
       <span>New run</span>
-    <% end %>
+    </button>
+
+    <!-- New Run Modal Backdrop -->
+    <div
+      data-modal-target="backdrop"
+      data-modal-id="newRunModal"
+      data-action="click->modal#backdropClose"
+      class="modal-backdrop opacity-0 pointer-events-none"></div>
+
+    <!-- New Run Modal -->
+    <div
+      id="newRunModal"
+      role="dialog"
+      tabindex="-1"
+      data-modal-target="modal"
+      class="modal opacity-0 pointer-events-none"
+    >
+      <div class="flex flex-col space-y-1.5 text-center sm:text-left mb-6">
+        <h2 class="text-lg font-semibold leading-none tracking-tight">New Run</h2>
+      </div>
+
+      <%= render 'runs/form_modal', run: Run.new %>
+
+      <!-- Close button -->
+      <button data-action="click->modal#close" type="button" data-modal-id="newRunModal" class="absolute right-0 top-0 p-4 rounded-lg opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2">
+        <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
+        <span class="sr-only">Close</span>
+      </button>
+    </div>
   </nav>
 </div>

@@ -13,11 +13,32 @@ class RunsController < ApplicationController
     @run.duration = parse_duration(params[:run][:duration_input]) if params[:run][:duration_input].present?
 
     if @run.save
-      redirect_to @run, success: 'Run was successfully created.'
+      respond_to do |format|
+        format.turbo_stream do
+          flash.now[:success] = 'Run was successfully created.'
+          render turbo_stream: [
+            turbo_stream.update('flash', partial: 'shared/flash'),
+            turbo_stream.replace('run_modal', partial: 'runs/form_modal',
+                                              locals: { run: Run.new, modal_style_buttons: true })
+          ]
+        end
+        format.html { redirect_to @run, success: 'Run was successfully created.' }
+      end
     else
       render :new,
              status: :unprocessable_entity,
              error: 'Run could not be created.'
+
+      respond_to do |format|
+        format.turbo_stream do
+          flash.now[:error] = 'Run could not be created.'
+          render turbo_stream: [
+            turbo_stream.update('flash', partial: 'shared/flash'),
+            turbo_stream.replace('run_modal', partial: 'runs/form',
+                                              locals: { run: @run, modal_style_buttons: true })
+          ]
+        end
+      end
     end
   end
 

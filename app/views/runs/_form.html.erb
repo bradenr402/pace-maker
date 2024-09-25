@@ -1,11 +1,13 @@
-<%= form_with model: @run, data: { controller: "form-validation" }, html: { novalidate: true } do |form| %>
-  <%= render 'shared/error_messages', resource: @run %>
+<% modal_style_buttons = defined?(modal_style_buttons) ? modal_style_buttons : true %>
+
+<%= form_with model: run, data: { controller: 'form-validation' }, html: { novalidate: true, turbo_frame: 'run_modal' } do |form| %>
+  <%= render 'shared/error_messages', resource: run %>
 
   <div class="form-group">
     <%= form.label :date, 'What day did you run?', class: 'form-label' %>
     <div class="relative">
       <%= inline_svg_tag 'icons/calendar.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= form.date_field :date, max: Date.today, value: form.object.new_record? ? Date.today : @run.date, class: 'form-input pl-10', data: { form_validation_target: 'date', action: 'input->form-validation#validateDate' } %>
+      <%= form.date_field :date, max: Date.today, value: form.object.new_record? ? Date.today : run.date, class: 'form-input pl-10', data: { form_validation_target: 'date', action: 'input->form-validation#validateDate' } %>
     </div>
     <p class="hidden my-1 error-message" data-form-validation-target="dateError">Date must be today or earlier</p>
   </div>
@@ -43,7 +45,7 @@
     <% end %>
     <div class="relative">
       <%= inline_svg_tag 'icons/clock.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= form.text_field :duration_input, value: form.object.new_record? ? '' : clock_time_display(@run.duration), placeholder: 'MM:SS or HH:MM:SS', class: 'form-input pl-10', data: { form_validation_target: 'duration', action: 'input->form-validation#validateDuration' } %>
+      <%= form.text_field :duration_input, value: form.object.new_record? ? '' : clock_time_display(run.duration), placeholder: 'MM:SS or HH:MM:SS', class: 'form-input pl-10', data: { form_validation_target: 'duration', action: 'input->form-validation#validateDuration' } %>
     </div>
     <p class="hidden my-1 error-message" data-form-validation-target="durationError">Duration must be in MM:SS or HH:MM:SS format and must be less than 24 hours</p>
   </div>
@@ -57,8 +59,15 @@
     <%= form.text_area :comments, placeholder: 'Add comments...', class: 'form-input', data: { controller: 'autogrow', action: 'input->autogrow#grow' } %>
   </div>
 
-  <div class="flex flex-wrap items-center justify-start gap-6">
-    <%= form.submit form.object.new_record? ? 'Create run' : 'Update run', data: { turbo: false }, class: 'btn btn-primary mr-auto' %>
-    <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-white' %>
-  </div>
+  <% if modal_style_buttons %>
+    <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
+      <button data-action="click->modal#close" data-modal-id="newRunModal" type="button" class="btn btn-white mt-2 sm:mt-0">Cancel</button>
+      <%= form.submit 'Create run', class: 'btn btn-primary w-full sm:w-auto', data: { action: 'click->modal#close' } %>
+    </div>
+  <% else %>
+    <div class="flex flex-wrap items-center justify-start gap-6">
+      <%= form.submit form.object.new_record? ? 'Create run' : 'Update run', data: { turbo: false }, class: 'btn btn-primary mr-auto' %>
+      <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-white' %>
+    </div>
+  <% end %>
 <% end %>
