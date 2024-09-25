@@ -55,18 +55,19 @@
   }
 
   .dropdown-menu {
-    @apply pointer-events-none absolute right-0 top-12 z-50 w-max origin-top-right scale-75 rounded-md bg-white p-2 opacity-0 shadow-md transition duration-200 ease-in-out dark:bg-slate-800 border border-slate-300 dark:border-slate-700 dark:shadow-none flex flex-col gap-1.5;
+    @apply pointer-events-none absolute z-50 w-max scale-75 rounded-md bg-white p-2 opacity-0 shadow-md transition duration-200 ease-in-out dark:bg-slate-800 border border-slate-300 dark:border-slate-700 dark:shadow-none flex flex-col gap-1.5;
   }
 
   .dropdown-option {
-    @apply flex items-center gap-2.5 py-2 px-4 rounded transition duration-200 ease-in-out hover:bg-slate-200/60 dark:hover:bg-slate-700/40;
+    @apply flex items-center gap-2.5 py-2 px-4 rounded transition duration-200 ease-in-out w-full hover:bg-slate-200/60 dark:hover:bg-slate-700/40;
   }
 
   .dropdown-option-primary {
+    @apply flex items-center gap-2.5 py-2 px-4 rounded transition duration-200 ease-in-out w-full hover:bg-indigo-200/60 dark:hover:bg-indigo-900/40 hover:text-indigo-600 dark:hover:text-indigo-500;
   }
 
   .dropdown-option-destructive {
-    @apply flex items-center gap-2.5 py-2 px-4 rounded transition duration-200 ease-in-out hover:bg-rose-200/50 dark:hover:bg-rose-900/25 hover:text-rose-600 dark:hover:text-rose-500;
+    @apply flex items-center gap-2.5 py-2 px-4 rounded transition duration-200 ease-in-out w-full hover:bg-rose-200/60 dark:hover:bg-rose-900/40 hover:text-rose-600 dark:hover:text-rose-500;
   }
 }
 
