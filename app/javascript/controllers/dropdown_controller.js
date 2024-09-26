@@ -6,9 +6,6 @@ export default class extends Controller {
   static classes = ['hideDropdown', 'showDropdown', 'iconOpen', 'dropdownOpen'];
 
   connect() {
-    console.log('dropdown controller connected');
-
-
     this.closeOnOutsideClick = this._closeOnOutsideClick.bind(this);
     document.addEventListener('click', this.closeOnOutsideClick);
 
