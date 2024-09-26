@@ -2,7 +2,7 @@ module UserCalculations
   # Mileage calculations
   def total_miles = runs.sum(:distance)
 
-  def total_km = (total_miles * 1.609344).round(3)
+  def total_km = (total_miles * 1.609344).round(1)
 
   def miles_this_season(team) = runs_this_season(team).sum(:distance)
 

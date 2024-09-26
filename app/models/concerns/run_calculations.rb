@@ -5,7 +5,7 @@ module RunCalculations
 
   def seconds = (duration % 60).to_i
 
-  def distance_km = (distance * 1.609344).round(3)
+  def distance_km = (distance * 1.609344).round(1)
 
   def pace_per_mile = (duration / distance).round
 
