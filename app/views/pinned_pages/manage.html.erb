@@ -7,7 +7,7 @@
     </div>
   </div>
 
-  <%= form_with url: update_all_pinned_pages_path, method: :patch do |f| %>
+  <%= form_with url: update_all_pinned_pages_path, method: :patch, id: 'pinned_pages_form' do |f| %>
     <ul
       data-controller="pinned-pages-reorder modal"
       data-pinned-pages-reorder-url="<%= reorder_pinned_pages_path %>"

@@ -19,7 +19,7 @@ export default class extends Controller {
   }
 
   open(event) {
-    if (event.target.closest('form')) {
+    if (event.target.closest('form#pinned_pages_form')) {
       event.preventDefault();
       event.stopPropagation();
     }
@@ -28,7 +28,7 @@ export default class extends Controller {
   }
 
   close(event) {
-    if (event.target.closest('form')) {
+    if (event.target.closest('form#pinned_pages_form')) {
       event.preventDefault();
       event.stopPropagation();
     }
