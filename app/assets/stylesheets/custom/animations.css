@@ -75,32 +75,6 @@
     animation: bounce 700ms cubic-bezier(0.28, 0.84, 0.42, 1);
   }
 
-  @keyframes swing {
-    15% {
-      transform: translateY(5px);
-    }
-    30% {
-      transform: translateY(-5px);
-    }
-    50% {
-      transform: translateY(3px);
-    }
-    65% {
-      transform: translateY(-3px);
-    }
-    80% {
-      transform: translateY(2px);
-    }
-    100% {
-      transform: translateY(0);
-    }
-  }
-
-  .swing-animation {
-    animation: swing 1000ms ease;
-    animation-iteration-count: 1;
-  }
-
   /* Initial (hidden) state: start above and slightly smaller */
   .notification--hidden {
     transform: translateY(-15px) scale(0.9);
