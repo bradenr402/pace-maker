@@ -23,6 +23,8 @@
     <!-- Gradient overlay to hide the menu when scrolling -->
     <div class="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white dark:from-slate-800 to-transparent pointer-events-none rounded-b-lg"></div>
 
-    <%= render 'pinned_pages/pin_button', page_url: request.fullpath %>
+    <div class="pb-1.5">
+      <%= render 'pinned_pages/pin_button', page_url: request.fullpath %>
+    </div>
   </div>
 </div>
