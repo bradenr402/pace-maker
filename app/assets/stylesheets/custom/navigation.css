@@ -15,7 +15,7 @@
 }
 
 .btn-tab {
-  @apply rounded-lg py-2 px-4 flex items-center gap-2.5 text-sm hover:bg-slate-200/60 dark:hover:bg-slate-700/40 snap-center;
+  @apply rounded-md py-2 px-6 flex items-center gap-2.5 text-sm hover:bg-slate-200/60 dark:hover:bg-slate-700/40 snap-center;
 }
 
 .btn-tab-active {
@@ -23,5 +23,5 @@
 }
 
 .tab-container {
-  @apply flex items-center gap-1.5 bg-slate-50/85 dark:bg-slate-800/85 p-1.5 rounded-md mb-6 border dark:border-slate-700 overflow-x-auto whitespace-nowrap max-w-max mx-auto sticky top-4 backdrop-blur-sm z-40 snap-x;
+  @apply flex items-center gap-1 bg-slate-50/85 dark:bg-slate-800/85 p-1 rounded-lg mb-6 border dark:border-slate-700 overflow-x-auto whitespace-nowrap max-w-max mx-auto sticky top-4 backdrop-blur-sm z-40 snap-x;
 }
