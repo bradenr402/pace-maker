@@ -75,7 +75,7 @@ class Team < ApplicationRecord
       Run
       .joins(:user)
       .where(users: { id: members.pluck(:id) })
-      .where('date >= ?', Date.current)
+      .where('date >= ?', Date.current.yesterday)
       .order(date: :desc)
 
     runs.select do |run|
