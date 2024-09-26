@@ -43,6 +43,9 @@ application.register("password-visibility", PasswordVisibilityController)
 import PinnedPagesMenuController from "./pinned_pages_menu_controller"
 application.register("pinned-pages-menu", PinnedPagesMenuController)
 
+import PinnedPagesReorderController from "./pinned_pages_reorder_controller"
+application.register("pinned-pages-reorder", PinnedPagesReorderController)
+
 import RestoreDefaultsController from "./restore_defaults_controller"
 application.register("restore-defaults", RestoreDefaultsController)
 

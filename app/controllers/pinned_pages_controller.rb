@@ -39,6 +39,12 @@ class PinnedPagesController < ApplicationController
 
   def update_all
     ActiveRecord::Base.transaction do
+      # Update the order of pinned pages
+      params[:order].split(', ').each_with_index do |id, index|
+        current_user.pinned_pages.find(id).update!(position: index + 1)
+      end
+
+      # Update the title of pinned pages
       params[:pinned_pages].each do |id, attributes|
         pinned_page = current_user.pinned_pages.find(id)
         pinned_page.update!(attributes.permit(:title))

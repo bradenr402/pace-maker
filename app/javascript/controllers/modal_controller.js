@@ -19,11 +19,19 @@ export default class extends Controller {
   }
 
   open(event) {
+    if (event.target.closest('form')) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
     const modalId = event.currentTarget.dataset.modalId;
     this.openById(modalId);
   }
 
   close(event) {
+    if (event.target.closest('form')) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
     const modalId = event.currentTarget.dataset.modalId;
     this.closeById(modalId);
   }

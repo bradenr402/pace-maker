@@ -53,6 +53,7 @@ Rails.application.routes.draw do
     collection do
       get :manage
       patch :update_all
+      patch :reorder
     end
   end
 
