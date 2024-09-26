@@ -82,7 +82,10 @@
                             'bg-indigo-200/60 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-500'
                           else
                             'bg-slate-200/60 dark:bg-slate-700/60'
-                          end %>">
+                          end %>
+
+                          <%= 'opacity-35' if (date.saturday? && team.exclude_saturday_from_streak?) || (date.sunday? && team.exclude_sunday_from_streak?) %>
+                          ">
                       <%= date.strftime('%e') %>
                     </div>
                   <% end %>
