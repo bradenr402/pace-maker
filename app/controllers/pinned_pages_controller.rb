@@ -6,8 +6,6 @@ class PinnedPagesController < ApplicationController
     @pinned_page = current_user.pinned_pages.find_or_initialize_by(page_url: params[:page_url])
     @pinned_page.title = params[:title]
 
-    Rails.logger.debug "Pinning page URL: #{@pinned_page.page_url}"
-
     if @pinned_page.save
       respond_to do |format|
         format.html { redirect_back fallback_location: root_path, notice: 'Page pinned successfully.' }
@@ -60,5 +58,5 @@ class PinnedPagesController < ApplicationController
 
   def set_pinned_page = @pinned_page = current_user.pinned_pages.find_by(id: params[:id])
 
-  def pinned_page_params = params.require(:pinned_page).permit(:title, :position)
+  def pinned_page_params = params.require(:pinned_page).permit(:title)
 end
