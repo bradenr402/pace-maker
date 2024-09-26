@@ -28,16 +28,18 @@ export default class extends Controller {
 
   search() {
     if (this.selectTarget.value === 'Custom range') {
+      const startDate = Date.parse(this.startDateFieldTarget.value);
+      const endDate = Date.parse(this.endDateFieldTarget.value);
+      const today = new Date();
+
       if (
         this.startDateFieldTarget.value &&
         this.endDateFieldTarget.value &&
-        Date.parse(this.endDateFieldTarget.value) >=
-          Date.parse(this.startDateFieldTarget.value)
+        startDate >= endDate &&
+        endDate >= today
       ) {
         clearTimeout(this.timeout);
-        this.timeout = setTimeout(() => {
-          this.element.requestSubmit();
-        }, 200);
+        this.timeout = setTimeout(() => this.element.requestSubmit(), 200);
       }
     } else this.element.requestSubmit();
   }
