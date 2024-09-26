@@ -101,7 +101,7 @@
     <div class="form-group">
       <%= settings_form.label :week_start, 'Start week on', class: 'form-label' %>
       <%= settings_form.select :week_start, options_for_select([['Sunday', :sunday], ['Monday', :monday], ['Tuesday', :tuesday], ['Wednesday', :wednesday], ['Thursday', :thursday], ['Friday', :friday], ['Saturday', :saturday]], @team.settings(:general).week_start), {}, data: { restore_defaults_target: 'weekStart' }, class: 'form-select' %>
-      <p class="my-1 help-text">Choose what day is considered the start of the week.</p>
+      <p class="my-1 help-text">Choose what day is considered the start of the week. This setting affects the calendar view on the team page.</p>
     </div>
   <% end %>
 

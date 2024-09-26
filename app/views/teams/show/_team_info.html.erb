@@ -6,8 +6,19 @@
 <%= content_tag(:p, class: 'mb-2 text-right') { link_to 'View your personal progress', team_member_path(team, current_user), class: 'btn-link text-xs' } if current_user.member_of?(team) %>
 
 <!-- Season Dates Card -->
-<div class="card mb-6">
-  <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Season Dates</h2>
+<div
+  data-controller="calendar"
+  data-calendar-hidden-class="hidden"
+  data-calendar-visible-class="grid grid-cols-1 lg:grid-cols-2 gap-4"
+  class="card mb-6"
+>
+  <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
+    <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300">Season Dates</h2>
+    <button data-calendar-target="toggleButton" data-action="click->calendar#toggleCalendar" class="btn btn-white btn-sm gap-1.5">
+      <%= inline_svg_tag 'icons/calendar.svg', class: 'size-4' %>
+      <span data-calendar-target="toggleButtonText">Show Calendar</span>
+    </button>
+  </div>
   <% if team.season_dates? %>
     <div class="block mb-4 space-y-2 lg:space-y-0 lg:flex lg:flex-wrap lg:items-center lg:justify-around lg:gap-4">
       <div class="lg:text-center">
@@ -31,6 +42,56 @@
       <%= render 'shared/progress_bar', percentage: team.season_progress, label: 'Season Progress', size: :lg %>
 
       <p class='my-1 text-xs text-soft'><%= team.season_over? ? 'Season is over.' : "#{pluralize(team.days_remaining_in_season, 'days')} remaining in season." %></p>
+
+      <div
+        data-calendar-target="calendarContainer"
+        class="hidden mt-6"
+      >
+        <div class="col-span-1 lg:col-span-2">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <% team.season_range.group_by { |date| date.beginning_of_month }.each_with_index do |(month, dates), index| %>
+              <div class="p-4 bg-white dark:bg-slate-700/40 shadow border border:slate-200 dark:border-slate-600 rounded-lg">
+                <h3 class="text-md font-semibold text-slate-700 dark:text-slate-300 mb-2"><%= month.strftime("%B %Y") %></h3>
+                <div class="grid grid-cols-7 gap-1.5 text-sm">
+                  <!-- Week days -->
+                  <% week_days = %w[Sun Mon Tue Wed Thu Fri Sat] %>
+                  <% week_days = week_days.rotate(week_days.index(team.week_start.to_s.capitalize.first(3))) %>
+                  <% week_days.each do |day| %>
+                    <div class="font-semibold text-slate-700 dark:text-slate-300 text-center w-full"><%= day %></div>
+                  <% end %>
+                  <!-- Calculates the start offset for the calendar grid based on the start of the month and the week start day. -->
+                  <!-- The start offset is the number of empty cells needed to align the first day of the month with the first day of the week. -->
+                  <!-- This ensures the calendar grid is properly aligned with the days of the week. -->
+                  <% start_of_month = month.beginning_of_month %>
+                  <% end_of_month = month.end_of_month %>
+                  <% week_start_index = Date::DAYNAMES.index(team.week_start.to_s.capitalize) %>
+                  <% start_offset = (start_of_month.wday - week_start_index + 7) % 7 %>
+                  <% start_offset.times do %>
+                    <div></div>
+                  <% end %>
+                  <% (start_of_month..end_of_month).each do |date| %>
+                    <div class="w-full h-8 aspect-square p-1 rounded-lg flex items-center justify-center
+                      <%= case
+                          when !dates.include?(date)
+                            'text-soft'
+                          when date == team.season_start_date || date == team.season_end_date
+                            'bg-yellow-100 dark:bg-yellow-700/40 text-yellow-800 dark:text-yellow-400 border border-yellow-400 dark:border-none'
+                          when date == Date.current
+                            'bg-indigo-500 dark:bg-indigo-600 text-white'
+                          when date < Date.current
+                            'bg-indigo-200/60 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-500'
+                          else
+                            'bg-slate-200/60 dark:bg-slate-700/60'
+                          end %>">
+                      <%= date.strftime('%e') %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
     <% end %>
   <% else %>
     <p class="text-soft">No season dates have been set for this team.</p>

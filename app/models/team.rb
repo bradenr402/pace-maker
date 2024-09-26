@@ -39,6 +39,8 @@ class Team < ApplicationRecord
 
   def season_not_started_yet? = season_dates? && season_start_date.future?
 
+  def season_range = season_start_date..season_end_date
+
   def gender_requirement_met?(user)
     return true unless require_gender?
 

@@ -7,6 +7,9 @@ import { application } from "./application"
 import AutogrowController from "./autogrow_controller"
 application.register("autogrow", AutogrowController)
 
+import CalendarController from "./calendar_controller"
+application.register("calendar", CalendarController)
+
 import ConfirmationController from "./confirmation_controller"
 application.register("confirmation", ConfirmationController)
 
