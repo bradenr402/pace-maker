@@ -27,7 +27,7 @@
             </div>
           <%= f.text_field "pinned_pages[#{page.id}][title]", value: page.title, class: 'form-input' %>
 
-          <button data-action="click->modal#open" data-modal-id="deletePage_<%= page.id %>" class="text-red-700 dark:text-red-400">
+          <button type="button" data-action="click->modal#open" data-modal-id="deletePage_<%= page.id %>" class="text-red-700 dark:text-red-400">
             <%= inline_svg_tag 'icons/trash.svg', class: 'size-5' %>
             <span class="sr-only">Delete page</span>
           </button>
