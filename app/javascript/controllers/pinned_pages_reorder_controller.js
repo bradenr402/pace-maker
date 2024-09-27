@@ -8,6 +8,8 @@ export default class extends Controller {
   connect() {
     this.sortable = Sortable.create(this.listTarget, {
       handle: '.drag-handle',
+      swapThreshold: 0.75,
+      animation: 200,
       onEnd: this.reorder.bind(this),
     });
   }
