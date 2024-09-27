@@ -32,7 +32,7 @@ class PinnedPagesController < ApplicationController
   end
 
   def manage
-    @pinned_pages = current_user.pinned_pages
+    @pinned_pages = current_user.pinned_pages.order(:position)
   end
 
   def update_all
