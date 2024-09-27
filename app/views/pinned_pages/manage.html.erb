@@ -1,6 +1,13 @@
 <% content_for :title, 'Edit Pinned Pages' %>
 
-<div class="max-w-3xl px-4 mx-auto my-16">
+<div
+  data-controller="modal"
+  data-modal-hide-modal-class="opacity-0 scale-75 pointer-events-none"
+  data-modal-show-modal-class="opacity-100 scale-100 pointer-events-auto"
+  data-modal-hide-backdrop-class="opacity-0 pointer-events-none"
+  data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
+  class="max-w-3xl px-4 mx-auto my-16"
+>
   <div class="pb-6 mb-4 border-b border-slate-200 dark:border-slate-700">
     <div class="flex items-center justify-between">
       <h1 class="heading">Edit Pinned Pages</h1>
@@ -9,39 +16,36 @@
 
   <%= form_with url: update_all_pinned_pages_path, method: :patch, id: 'pinned_pages_form' do |f| %>
     <ul
-      data-controller="pinned-pages-reorder modal"
-      data-pinned-pages-reorder-url="<%= reorder_pinned_pages_path %>"
+      data-controller="pinned-pages-reorder"
       data-pinned-pages-reorder-target="list"
-      data-modal-hide-modal-class="opacity-0 scale-75 pointer-events-none"
-      data-modal-show-modal-class="opacity-100 scale-100 pointer-events-auto"
-      data-modal-hide-backdrop-class="opacity-0 pointer-events-none"
-      data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
     >
-      <% @pinned_pages.order(:position).each do |page| %>
+      <% @pinned_pages.each do |page| %>
         <li
           data-id="<%= page.id %>"
           class="flex items-center gap-3 mb-3"
         >
-          <div class="drag-handle p-2 cursor-move">
+          <div class="drag-handle p-2 cursor-grab">
             <%= inline_svg_tag 'icons/drag-handle.svg', class: 'size-5' %>
-            </div>
+          </div>
           <%= f.text_field "pinned_pages[#{page.id}][title]", value: page.title, class: 'form-input' %>
 
-          <button type="button" data-action="click->modal#open" data-modal-id="deletePage_<%= page.id %>" class="text-red-700 dark:text-red-400">
+          <button type="button" data-action="click->modal#open" data-modal-id="deletePage_<%= page.id %>" class="p-2 rounded-full text-rose-600 dark:text-rose-500 hover:bg-rose-200/60 dark:hover:bg-rose-900/40">
             <%= inline_svg_tag 'icons/trash.svg', class: 'size-5' %>
             <span class="sr-only">Delete page</span>
           </button>
-
-          <%= render 'delete_page_modal', page: page %>
         </li>
       <% end %>
 
       <!-- Hidden input to store the order of pinned pages -->
-      <%= f.hidden_field :order, value: @pinned_pages.order(:position).pluck(:id).join(','), data: { pinned_pages_reorder_target: 'orderInput' } %>
+      <%= f.hidden_field :order, value: @pinned_pages.pluck(:id).join(','), data: { pinned_pages_reorder_target: 'orderInput' } %>
     </ul>
 
     <div class="pt-6 mt-4 border-t border-slate-200 dark:border-slate-700">
       <%= f.submit 'Save changes', class: 'btn btn-primary' %>
     </div>
+  <% end %>
+  
+  <% @pinned_pages.each do |page| %>
+    <%= render 'delete_page_modal', page: page %>
   <% end %>
 </div>
