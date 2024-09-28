@@ -63,15 +63,15 @@
   }
 
   .dropdown-option {
-    @apply flex items-center gap-2.5 py-2 px-4 rounded transition duration-200 ease-in-out w-full hover:bg-slate-200/60 dark:hover:bg-slate-700/40;
+    @apply flex items-center gap-2.5 py-2 px-4 rounded transition duration-200 ease-in-out w-full hover:bg-slate-200/80 dark:hover:bg-slate-700/80;
   }
 
   .dropdown-option-primary {
-    @apply flex items-center gap-2.5 py-2 px-4 rounded transition duration-200 ease-in-out w-full hover:bg-indigo-200/60 dark:hover:bg-indigo-800/40 hover:text-indigo-600 dark:hover:text-indigo-500;
+    @apply flex items-center gap-2.5 py-2 px-4 rounded transition duration-200 ease-in-out w-full hover:bg-indigo-100 dark:hover:bg-indigo-900/80 hover:text-indigo-700 dark:hover:text-indigo-200;
   }
 
   .dropdown-option-destructive {
-    @apply flex items-center gap-2.5 py-2 px-4 rounded transition duration-200 ease-in-out w-full hover:bg-rose-200/60 dark:hover:bg-rose-900/40 hover:text-rose-600 dark:hover:text-rose-500;
+    @apply flex items-center gap-2.5 py-2 px-4 rounded transition duration-200 ease-in-out w-full hover:bg-rose-100 dark:hover:bg-rose-900/80 hover:text-rose-700 dark:hover:text-rose-200;
   }
 }
 
