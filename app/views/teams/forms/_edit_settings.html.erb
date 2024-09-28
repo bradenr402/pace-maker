@@ -109,7 +109,9 @@
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
       <%= form.label :copy_from_team_id, 'Copy settings from:', class: 'form-label' %>
       <%= form.collection_select :copy_from_team_id, current_user.owned_teams.reject { |team| team == @team }, :id, :name, { prompt: 'Select a team' }, { class: 'form-select' } %>
-      <p class="my-1 help-text">Copy settings from one of your other teams.</p>
+      <p class="my-1 help-text">Choose another team from the dropdown and click 'Copy settings' to apply its configuration here.</p>
+
+      <%= button_tag 'Copy settings', type: 'submit', class: 'btn btn-primary btn-muted mt-2', name: 'commit_action', value: 'copy_settings', data: { turbo: false } %>
     </div>
   <% end %>
 
@@ -122,7 +124,7 @@
   </div>
 
   <div class="sticky bottom-0 flex items-center gap-4 pt-6 pb-6 bg-white border-t dark:bg-slate-900 border-slate-200 dark:border-slate-700">
-    <%= form.submit 'Save settings', class: 'btn btn-primary', data: { turbo: false } %>
+    <%= button_tag 'Save settings', type: 'submit', class: 'btn btn-primary', name: 'commit_action', value: 'save_settings', data: { turbo: false } %>
     <%= link_to 'Cancel', :back, class: 'btn btn-white btn-muted', data: { turbo: false } %>
   </div>
 <% end %>

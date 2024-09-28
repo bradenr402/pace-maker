@@ -5,28 +5,34 @@ class TeamSettingsController < ApplicationController
   def update
     @team = Team.find(params[:team_id])
 
-    if params[:team][:copy_from_team_id].present?
+    case params[:commit_action]
+    when 'copy_settings'
+      unless params[:team][:copy_from_team_id].present?
+        return(
+          redirect_to edit_team_path(@team, tab: 'settingsTab'),
+                      error: 'No team selected for copying settings.'
+        )
+      end
+
       source_team =
         current_user.owned_teams.find(params[:team][:copy_from_team_id])
 
       copy_settings_from_team(source_team)
-      return(
-        redirect_to @team,
-                    success:
-                      "Team settings successfully copied from #{source_team.name}."
-      )
-    end
 
-    settings_params =
-      team_settings_params.transform_values do |value|
-        %w[true false].include?(value) ? value == 'true' : value
-      end
+      redirect_to @team,
+                  success:
+                    "Team settings successfully copied from #{source_team.name}."
+    when 'save_settings'
+      settings_params =
+        team_settings_params.transform_values do |value|
+          %w[true false].include?(value) ? value == 'true' : value
+        end
 
-    settings_params[:require_gender] = false if @team.owner.gender.blank?
+      settings_params[:require_gender] = false if @team.owner.gender.blank?
 
-    if @team.settings(:join_requirements).update(
-         settings_params.slice(:require_gender, :max_allowed_requests)
-       ) &&
+      if @team.settings(:join_requirements).update(
+        settings_params.slice(:require_gender, :max_allowed_requests)
+      ) &&
          @team.settings(:long_runs).update(
            settings_params.slice(
              :long_run_distance_male,
@@ -34,7 +40,9 @@ class TeamSettingsController < ApplicationController
              :long_run_distance_neutral
            )
          ) &&
-         @team.settings(:general).update(settings_params.slice(:week_start)) &&
+         @team.settings(:general).update(
+           settings_params.slice(:week_start)
+         ) &&
          @team.settings(:streaks).update(
            settings_params.slice(
              :include_saturday,
@@ -44,9 +52,10 @@ class TeamSettingsController < ApplicationController
              :streak_distance_neutral
            )
          )
-      redirect_to @team, success: 'Team settings updated successfully.'
-    else
-      redirect_to @team, error: 'Unable to update team settings.'
+        redirect_to @team, success: 'Team settings updated successfully.'
+      else
+        redirect_to @team, error: 'Unable to update team settings.'
+      end
     end
   end
 
@@ -67,8 +76,8 @@ class TeamSettingsController < ApplicationController
         :include_sunday,
         :streak_distance_male,
         :streak_distance_female,
-        :streak_distance_neutral,
-        :copy_from_team_id
+        :streak_distance_neutral
+        # :copy_from_team_id is omitted here, since we don't want to include it for the save action
       )
 
   def copy_settings_from_team(source_team)
