@@ -75,10 +75,10 @@
                 <div class="grid grid-cols-7 gap-1.5 text-sm">
 
                   <!-- Week days -->
-                  <% week_days = %w[Sun Mon Tue Wed Thu Fri Sat] %>
-                  <% week_days = week_days.rotate(week_days.index(team.week_start.to_s.capitalize.first(3))) %>
+                  <% week_days = Date::DAYNAMES %>
+                  <% week_days = week_days.rotate(week_days.index(team.week_start.to_s.capitalize)) %>
                   <% week_days.each do |day| %>
-                    <div class="font-semibold text-slate-700 dark:text-slate-300 text-center w-full"><%= day %></div>
+                    <div class="font-semibold text-slate-700 dark:text-slate-300 text-center w-full"><%= day.first(3) %></div>
                   <% end %>
 
                   <!-- Calculates the start offset for the calendar grid based on the start of the month and the week start day. -->
