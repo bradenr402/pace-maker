@@ -4,6 +4,7 @@ class User < ApplicationRecord
 
   USERNAME_FORMAT = /\A[a-z0-9_.]{3,}\z/
   PHONE_NUMBER_FORMAT = /\A\+?\d{10,15}\z/
+  PASSWORD_FORMAT = /\A(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[#?!@$%^&*-])/
 
   before_validation :convert_empty_string_phone_number_to_nil
 
@@ -158,15 +159,11 @@ class User < ApplicationRecord
   private
 
   def password_complexity
-    return if password.blank?
+    return if password.blank? || password =~ PASSWORD_FORMAT
 
-    password_regex = /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[#?!@$%^&*-])/
-
-    unless password =~ password_regex
-      errors.add :password,
-                 'Complexity requirement not met. Password must include at least ' \
-                   '1 uppercase letter, 1 lowercase letter, 1 digit, and 1 special character (#?!@$%^&*-)'
-    end
+    errors.add :password,
+               'Complexity requirement not met. Password must include at least ' \
+                 '1 uppercase letter, 1 lowercase letter, 1 digit, and 1 special character (#?!@$%^&*-)'
   end
 
   def convert_empty_string_phone_number_to_nil =
