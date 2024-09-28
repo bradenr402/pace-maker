@@ -16,9 +16,9 @@ class UserSettingsController < ApplicationController
     ].include?(user_settings_params[:theme])
 
     if @user.settings(:privacy).update(
-         settings_params.slice(:email_visible, :phone_visible)
-       ) && @user.settings(:appearance).update(settings_params.slice(:theme)) &&
-         @user.settings(:notifications).update(settings_params.slice(:in_app))
+      settings_params.slice(:email_visible, :phone_visible)
+    ) && @user.settings(:appearance).update(settings_params.slice(:theme)) &&
+       @user.settings(:notifications).update(settings_params.slice(:in_app))
       redirect_to edit_user_registration_path,
                   success: 'Settings updated successfully.'
     else

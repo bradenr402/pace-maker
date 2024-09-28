@@ -99,8 +99,8 @@ class TeamSettingsController < ApplicationController
 
   def authorize_owner!
     team = Team.find(params[:team_id])
-    unless current_user.owns?(team)
-      redirect_to team, alert: 'You are not authorized to perform this action.'
-    end
+    return if current_user.owns?(team)
+
+    redirect_to team, alert: 'You are not authorized to perform this action.'
   end
 end
