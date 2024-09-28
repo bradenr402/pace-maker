@@ -33,7 +33,7 @@
 
     <div class="form-group">
       <%= settings_form.label :theme, 'Theme preference', class: 'form-label' %>
-      <%= settings_form.select :theme, options_for_select([['System default', 'system'], ['Light', 'light'], ['Dark', 'dark']], @user.settings(:appearance).theme), {}, data: { theme_target: 'input', action: 'theme#change', restore_defaults_target: 'theme' }, class: 'form-select' %>
+      <%= settings_form.select :theme, options_for_select([['System default', 'system'], ['Light mode', 'light'], ['Dark mode', 'dark']], @user.settings(:appearance).theme), {}, data: { theme_target: 'input', action: 'theme#change', restore_defaults_target: 'theme' }, class: 'form-select' %>
     </div>
 
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
