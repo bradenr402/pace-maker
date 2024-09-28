@@ -106,8 +106,8 @@
     <p class="my-1 help-text">Set a goal for how many long runs you want your team to run collectively during the season.</p>
   </div>
 
-  <div class="sticky bottom-0 flex items-center gap-6 pt-6 pb-6 bg-white border-t dark:bg-slate-900 border-slate-200 dark:border-slate-700 flex-wrap justify-start">
-    <%= form.submit form.object.new_record? ? 'Create team' : 'Save changes', data: { turbo: false }, class: 'btn btn-primary mr-auto' %>
-    <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-white' %>
+  <div class="sticky bottom-0 flex items-center gap-4 pt-6 pb-6 bg-white border-t dark:bg-slate-900 border-slate-200 dark:border-slate-700 flex-wrap justify-start">
+    <%= form.submit form.object.new_record? ? 'Create team' : 'Save changes', data: { turbo: false }, class: 'btn btn-primary' %>
+    <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-white btn-muted' %>
   </div>
 <% end %>

@@ -35,9 +35,9 @@
         <p class="my-1 help-text">Set a personal goal for how many long runs you want to run during this team's season.</p>
       </div>
 
-      <div class="flex items-center gap-6 mt-10">
-        <%= form.submit 'Update goals', data: { turbo: false }, class: 'btn btn-primary mr-auto' %>
-        <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-white' %>
+      <div class="flex flex-wrap items-center gap-4 pt-6 border-t border-slate-200 dark:border-slate-700">
+        <%= form.submit 'Update goals', data: { turbo: false }, class: 'btn btn-primary' %>
+        <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-white btn-muted' %>
       </div>
     <% end %>
   </div>

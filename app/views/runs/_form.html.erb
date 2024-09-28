@@ -65,9 +65,9 @@
       <%= form.submit  form.object.new_record? ? 'Create run' : 'Update run', class: 'btn btn-primary w-full sm:w-auto', data: { action: 'click->modal#close' } %>
     </div>
   <% else %>
-    <div class="flex flex-wrap items-center justify-start gap-6">
-      <%= form.submit form.object.new_record? ? 'Create run' : 'Update run', data: { turbo: false }, class: 'btn btn-primary mr-auto' %>
-      <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-white' %>
+    <div class="flex flex-wrap items-center gap-4 pt-6 border-t border-slate-200 dark:border-slate-700">
+      <%= form.submit form.object.new_record? ? 'Create run' : 'Save changes', data: { turbo: false }, class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-white btn-muted' %>
     </div>
   <% end %>
 <% end %>

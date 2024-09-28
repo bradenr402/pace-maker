@@ -118,8 +118,8 @@
     <p class="my-1 help-text">Reset all settings to their defaults for a fresh start.</p>
   </div>
 
-  <div class="sticky bottom-0 flex items-center gap-6 pt-6 pb-6 bg-white border-t dark:bg-slate-900 border-slate-200 dark:border-slate-700">
-    <%= form.submit 'Save settings', class: 'btn btn-primary mr-auto', data: { turbo: false } %>
-    <%= link_to 'Cancel', :back, class: 'btn btn-white', data: { turbo: false } %>
+  <div class="sticky bottom-0 flex items-center gap-4 pt-6 pb-6 bg-white border-t dark:bg-slate-900 border-slate-200 dark:border-slate-700">
+    <%= form.submit 'Save settings', class: 'btn btn-primary', data: { turbo: false } %>
+    <%= link_to 'Cancel', :back, class: 'btn btn-white btn-muted', data: { turbo: false } %>
   </div>
 <% end %>
