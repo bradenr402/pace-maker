@@ -36,12 +36,5 @@
             class: 'dropdown-option-destructive',
             data: { turbo: false } %>
     <% end %>
-
-  <% elsif current_page_team %>
-    <% if request.present? && request.blocked? %>
-      <p class="text-base error-message">You have been blocked from this team.</p>
-    <% else %>
-      <p class="w-full text-base text-center error-message">You must specify your gender to join this team.</p>
-    <% end %>
   <% end %>
 <% end %>

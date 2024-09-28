@@ -2,26 +2,36 @@
 <% current_page_team = current_page?(team_path(team)) %>
 
 <% if current_user.owns?(team) %>
-  <%= link_to 'Edit team', edit_team_path(team), class: "btn #{current_page_team ? 'btn-primary' : 'btn-white btn-sm'}", data: { turbo: false } %>
+  <%= link_to 'Edit team',
+                edit_team_path(team),
+                data: { turbo: false },
+                class: 'btn btn-sm btn-dark btn-muted'
+  %>
 
 <% elsif current_user.member_of?(team) %>
-  <%= button_to 'Leave team', leave_team_path(team), class: "btn btn-destructive btn-outline #{'btn-sm' unless current_page_team}", data: { turbo: false } %>
+  <%= button_to 'Leave team',
+                leave_team_path(team),
+                data: { turbo: false },
+                class: 'btn btn-sm btn-destructive btn-muted'
+  %>
 
 <% else %>
   <% if team.gender_requirement_met?(current_user) %>
     <% if request.nil? || request.allowed? %>
       <%= button_to 'Join team',
-            request.nil? ? join_team_path(team) : team_join_request_path(request),
-            method: request.nil? ? :post : :patch,
-            class: "btn btn-primary #{'btn-sm' unless current_page_team}",
-            data: { turbo: false } %>
+                    request.nil? ? join_team_path(team) : team_join_request_path(request),
+                    method: request.nil? ? :post : :patch,
+                    data: { turbo: false },
+                    class: 'btn btn-sm btn-primary btn-muted'
+      %>
 
     <% elsif request.pending? %>
       <%= button_to 'Cancel request',
-            cancel_team_join_request_path(request),
-            method: :patch,
-            class: "btn btn-destructive btn-outline #{'btn-sm' unless current_page_team}",
-            data: { turbo: false } %>
+                    cancel_team_join_request_path(request),
+                    method: :patch,
+                    data: { turbo: false },
+                    class: 'btn btn-sm btn-destructive btn-outline'
+      %>
     <% end %>
 
   <% elsif current_page_team %>
