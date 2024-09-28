@@ -49,9 +49,12 @@
     </div>
   <% end %>
 
-  <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
-    <button type="button" data-action="restore-defaults#restore" class="btn btn-sm btn-white">Restore defaults</button>
-    <p class="my-1 help-text">Reset all settings to their defaults for a fresh start.</p>
+  <div class="flex items-end justify-between flex-wrap gap-2 pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
+    <div>
+      <p class="form-label">Restore default settings</p>
+      <p class="my-1 help-text">Reset all settings to their defaults for a fresh start.</p>
+    </div>
+    <button type="button" data-action="restore-defaults#restore" class="btn btn-sm btn-destructive btn-muted ml-auto">Reset settings</button>
   </div>
 
   <div class="sticky bottom-0 flex items-center gap-4 pt-6 pb-6 bg-white border-t dark:bg-slate-900 border-slate-200 dark:border-slate-700">
