@@ -11,17 +11,17 @@ export default class extends Controller {
   }
 
   showNotifications() {
-    this.notificationTargets.forEach((notification) => {
+    this.notificationTargets.forEach((notification, index) => {
       notification.classList.add(this.hiddenClass);
 
       setTimeout(() => {
         notification.classList.remove(this.hiddenClass);
         notification.classList.add(this.visibleClass);
-      }, 100);
+      }, 100 + index * 200);
 
       setTimeout(() => {
         this.hideNotification(notification);
-      }, this.durationValue);
+      }, this.durationValue + index * 500);
     });
   }
 
