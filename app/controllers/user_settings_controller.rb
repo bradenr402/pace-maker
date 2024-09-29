@@ -19,10 +19,10 @@ class UserSettingsController < ApplicationController
       settings_params.slice(:email_visible, :phone_visible)
     ) && @user.settings(:appearance).update(settings_params.slice(:theme)) &&
        @user.settings(:notifications).update(settings_params.slice(:in_app))
-      redirect_to edit_user_registration_path,
+      redirect_to edit_user_registration_path(tab: 'settingsTab'),
                   success: 'Settings updated successfully.'
     else
-      redirect_to edit_user_registration_path,
+      redirect_to edit_user_registration_path(tab: 'settingsTab'),
                   error: 'Unable to update settings.'
     end
   end
