@@ -22,16 +22,19 @@
                     request.nil? ? join_team_path(team) : team_join_request_path(request),
                     method: request.nil? ? :post : :patch,
                     data: { turbo: false },
-                    class: 'btn btn-sm btn-primary btn-muted'
+                    class: "btn #{'btn-sm' unless current_page_team} btn-primary btn-muted"
       %>
 
     <% elsif request.pending? %>
-      <%= button_to 'Cancel request',
-                    cancel_team_join_request_path(request),
-                    method: :patch,
-                    data: { turbo: false },
-                    class: 'btn btn-sm btn-destructive btn-outline'
-      %>
+      <div class="<%= 'text-center w-full space-y-2 mt-4' if current_page_team %>">
+        <%= content_tag :p, 'You have requested to join this team.', class: 'text-soft text-sm' if current_page_team %>
+        <%= button_to 'Cancel request',
+                      cancel_team_join_request_path(request),
+                      method: :patch,
+                      data: { turbo: false },
+                      class: "btn #{'btn-sm' unless current_page_team} btn-destructive btn-muted"
+        %>
+      </div>
     <% end %>
 
   <% elsif current_page_team %>
