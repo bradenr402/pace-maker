@@ -59,6 +59,13 @@
                   <%= inline_svg_tag 'icons/user-pencil.svg', class: 'size-5' %>
                   Edit personal goals
                 <% end %>
+
+                <% unless current_user.owns?(@team) %>
+                  <%= link_to team_settings_path(@team), class: 'dropdown-option' do %>
+                    <%= inline_svg_tag 'icons/settings.svg', class: 'size-5' %>
+                    View team settings
+                  <% end %>
+                <% end %>
               <% end %>
 
               <!-- Open Delete Team Modal Button -->

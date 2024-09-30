@@ -24,7 +24,7 @@ Rails.application.routes.draw do
 
   resources :teams do
     resource :team_settings,
-             only: %i[update],
+             only: %i[update show],
              path: 'settings',
              as: :settings,
              controller: 'team_settings'

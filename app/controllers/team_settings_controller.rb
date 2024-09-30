@@ -1,10 +1,10 @@
 class TeamSettingsController < ApplicationController
   before_action :authenticate_user!
-  before_action :authorize_owner!
+  before_action :set_team, only: %i[update show]
+  before_action :authorize_owner!, only: %i[update]
+  before_action :authorize_member!, only: %i[show]
 
   def update
-    @team = Team.find(params[:team_id])
-
     case params[:commit_action]
     when 'copy_settings'
       unless params[:team][:copy_from_team_id].present?
@@ -59,7 +59,22 @@ class TeamSettingsController < ApplicationController
     end
   end
 
+  def show
+    # Here we simply render the team settings
+    @settings = {
+      join_requirements: @team.settings(:join_requirements).value,
+      long_runs: @team.settings(:long_runs).value,
+      streaks: @team.settings(:streaks).value,
+      general: @team.settings(:general).value
+    }
+
+    render :show
+  end
+
+
   private
+
+  def set_team = @team = Team.find(params[:team_id])
 
   def team_settings_params =
     params
@@ -98,9 +113,14 @@ class TeamSettingsController < ApplicationController
   end
 
   def authorize_owner!
-    team = Team.find(params[:team_id])
-    return if current_user.owns?(team)
+    return if current_user.owns?(@team)
 
-    redirect_to team, alert: 'You are not authorized to perform this action.'
+    redirect_to @team, alert: 'You are not authorized to perform this action.'
+  end
+
+  def authorize_member!
+    return if @team.members.include?(current_user)
+
+    redirect_to @team, alert: 'You are not authorized to view this page.'
   end
 end
