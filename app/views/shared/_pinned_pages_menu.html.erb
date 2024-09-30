@@ -2,10 +2,10 @@
   data-controller="pinned-pages-menu"
   data-pinned-pages-menu-hidden-class="pointer-events-none scale-75 opacity-0"
   data-pinned-pages-menu-visible-class="pointer-events-auto scale-100 opacity-100"
-  class="fixed right-4 top-4 md:hidden z-50"
+  class="flex justify-end mt-4 mr-4 relative md:hidden z-50"
 >
   <!-- Button to toggle the menu -->
-  <button type="button" class="fixed right-4 top-4 btn-white size-10 rounded-full grid place-items-center" data-action="click->pinned-pages-menu#toggle">
+  <button type="button" class="btn-dark btn-muted size-10 rounded-full grid place-items-center" data-action="click->pinned-pages-menu#toggle">
     <%= inline_svg_tag 'icons/pin.svg', class: 'size-5 text-soft', data: { pinned_pages_menu_target: 'openIcon' } %>
     <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-6 text-soft hidden', data: { pinned_pages_menu_target: 'closeIcon' } %>
     <span class="sr-only">Toggle pinned menu</span>
