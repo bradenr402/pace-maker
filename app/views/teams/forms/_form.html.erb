@@ -12,7 +12,7 @@
       <%= inline_svg_tag 'icons/team.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
       <%= form.text_field :name, autofocus: true, placeholder: 'Enter team name', class: 'form-input pl-10', data: { form_validation_target: 'teamName', action: 'input->form-validation#validateTeamName' } %>
     </div>
-    <p class="hidden my-1 error-message" data-form-validation-target="teamNameError">Name cannot be blank</p>
+    <p class="hidden my-1 error-message" data-form-validation-target="teamNameError">Team name cannot be blank</p>
   </div>
 
   <div class="form-group">
