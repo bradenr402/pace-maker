@@ -9,7 +9,7 @@
 
   <%= link_to edit_team_path(team, tab: 'settingsTab'), class: 'dropdown-option', data: { turbo: false } do %>
     <%= inline_svg_tag 'icons/settings.svg', class: 'size-5' %>
-    Team settings
+    Edit team settings
   <% end %>
 
 <% elsif current_user.member_of?(team) %>

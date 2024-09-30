@@ -161,4 +161,36 @@
       }
     }
   }
+
+  .form-input-toggle {
+    @apply relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 shrink-0;
+
+    &:has(input[type="checkbox"]:disabled) {
+      @apply opacity-50 cursor-not-allowed;
+    }
+
+    &:not(:has(input[type="checkbox"]:disabled)) {
+      @apply cursor-pointer;
+    }
+
+    &:has(input[type="checkbox"]:checked) {
+      @apply bg-indigo-500 dark:bg-indigo-600;
+    }
+
+    &:not(:has(input[type="checkbox"]:checked)) {
+      @apply bg-slate-200 dark:bg-slate-700;
+    }
+  }
+
+  .form-input-toggle-switch {
+    @apply inline-block size-5 transform rounded-full bg-white transition duration-200 ease-in-out;
+
+    &:has(+ input:checked) {
+      @apply translate-x-5.5;
+    }
+
+    &:not(:has(+ input:checked)) {
+      @apply translate-x-0.5;
+    }
+  }
 }
