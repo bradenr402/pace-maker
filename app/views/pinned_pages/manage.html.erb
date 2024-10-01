@@ -10,7 +10,7 @@
 >
   <div class="pb-6 mb-4 border-b border-slate-200 dark:border-slate-700">
     <div class="flex items-center justify-between">
-      <h1 class="heading">Edit Pinned Pages</h1>
+      <h1 class="heading">Edit Pinned Shortcuts</h1>
     </div>
   </div>
 
@@ -18,20 +18,26 @@
     <ul
       data-controller="pinned-pages-reorder"
       data-pinned-pages-reorder-target="list"
-      class="my-6"
+      class="my-6 space-y-4"
     >
       <% @pinned_pages.each do |page| %>
         <li
           data-id="<%= page.id %>"
-          class="flex items-center gap-3 mb-3"
+          class="flex items-center gap-2"
         >
-          <div class="drag-handle p-2 cursor-grab">
-            <%= inline_svg_tag 'icons/drag-handle.svg', class: 'size-5' %>
+          <div class="drag-handle btn btn-transparent p-2 cursor-grab shrink-0">
+            <%= inline_svg_tag 'icons/drag-handle.svg', class: 'size-4 sm:size-5' %>
           </div>
+
           <%= f.text_field "pinned_pages[#{page.id}][title]", value: page.title, class: 'form-input' %>
 
-          <button type="button" data-action="click->modal#open" data-modal-id="deletePage_<%= page.id %>" class="p-2 rounded-full text-rose-600 dark:text-rose-500 hover:bg-rose-200/60 dark:hover:bg-rose-900/40">
-            <%= inline_svg_tag 'icons/trash.svg', class: 'size-5' %>
+          <%= link_to page.page_url, target: :_blank, class: 'btn btn-transparent p-2 shrink-0' do %>
+            <%= inline_svg_tag 'icons/external-link.svg', class: 'size-4 sm:size-5' %>
+            <span class="sr-only">View page</span>
+          <% end %>
+
+          <button type="button" data-action="click->modal#open" data-modal-id="deletePage_<%= page.id %>" class="btn p-2 text-rose-600 dark:text-rose-500 hover:bg-rose-100 dark:hover:bg-rose-900/80 hover:text-rose-700 dark:hover:text-rose-300 shrink-0">
+            <%= inline_svg_tag 'icons/unpin.svg', class: 'size-4 sm:size-5' %>
             <span class="sr-only">Delete page</span>
           </button>
         </li>
