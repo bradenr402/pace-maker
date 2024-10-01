@@ -207,7 +207,7 @@
 
   <div class="sticky bottom-0 flex items-center gap-4 pt-6 pb-6 bg-white border-t dark:bg-slate-900 border-slate-200 dark:border-slate-700">
     <%= f.submit 'Save changes', data: { turbo: false }, class: 'btn btn-primary' %>
-    <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-white btn-muted' %>
+    <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-dark btn-muted' %>
   </div>
 <% end %>
 
@@ -280,7 +280,7 @@
     </div>
 
     <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-      <button data-action="click->modal#close" data-modal-id="signOutModal" type="button" class="btn btn-white mt-2 sm:mt-0">Cancel</button>
+      <button data-action="click->modal#close" data-modal-id="signOutModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
       <%= button_to 'Sign out', destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: 'btn btn-destructive font-bold w-full whitespace-nowrap' %>
     </div>
 
@@ -311,7 +311,7 @@
     </div>
 
     <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-      <button data-action="click->modal#close" data-modal-id="signOutAllModal" type="button" class="btn btn-white mt-2 sm:mt-0">Cancel</button>
+      <button data-action="click->modal#close" data-modal-id="signOutAllModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
       <%= button_to 'End All Sessions', sign_out_all_devices_path, method: :post, class: 'btn btn-destructive font-bold w-full whitespace-nowrap' %>
     </div>
 
@@ -342,7 +342,7 @@
     </div>
 
     <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-      <button data-action="click->modal#close" data-modal-id="deleteAccountModal" type="button" class="btn btn-white mt-2 sm:mt-0">Cancel</button>
+      <button data-action="click->modal#close" data-modal-id="deleteAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
       <%= button_to 'Delete my account',
                     registration_path(resource_name),
                     method: :delete,
