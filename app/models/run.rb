@@ -21,16 +21,7 @@ class Run < ApplicationRecord
   def long_run_for?(team)
     return false unless team.present?
 
-    required_distance =
-      if team.require_gender?
-        if user.male?
-          team.long_run_distance_male.to_i
-        else
-          team.long_run_distance_female.to_i
-        end
-      else
-        team.long_run_distance_neutral.to_i
-      end
+    required_distance = team.long_run_distance_for_user(user)
 
     distance >= required_distance
   end

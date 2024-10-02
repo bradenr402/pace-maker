@@ -114,15 +114,15 @@ class Team < ApplicationRecord
   def neutral_gender_members = members.where(gender: '')
 
   def long_run_distance_for_user(user)
-    return long_run_distance_neutral.to_i unless require_gender?
+    return long_run_distance_neutral unless require_gender?
 
-    user.male? ? long_run_distance_male.to_i : long_run_distance_female.to_i
+    user.male? ? long_run_distance_male : long_run_distance_female
   end
 
   def streak_distance_for_user(user)
-    return streak_distance_neutral.to_i unless require_gender?
+    return streak_distance_neutral unless require_gender?
 
-    user.male? ? streak_distance_male.to_i : streak_distance_female.to_i
+    user.male? ? streak_distance_male : streak_distance_female
   end
 
   private
