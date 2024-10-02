@@ -1,23 +1,25 @@
 <div class="bg-slate-50/85 dark:bg-slate-800/85 divide-y rounded-lg border p-4 shadow backdrop-blur-sm dark:divide-slate-700 dark:border-slate-700 dark:shadow-none">
-  <%= link_to request.user, class: 'group flex items-center gap-3 flex-1' do %>
-    <% if request.user.avatar.attached? %>
-      <%= image_tag request.user.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'shrink-0 size-8 rounded-lg drop-shadow-lg dark:drop-shadow-none object-cover' %>
-    <% else %>
-      <div class="size-8 bg-slate-200 dark:bg-slate-700 rounded-lg drop-shadow-lg dark:drop-shadow-none grid place-items-center">
-        <%= inline_svg_tag 'icons/user.svg', class: 'size-5 text-soft' %>
+  <div class="flex items-center gap-3">
+    <%= link_to request.user, class: 'group flex items-center gap-3 flex-1' do %>
+      <% if request.user.avatar.attached? %>
+        <%= image_tag request.user.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'shrink-0 size-8 rounded-lg drop-shadow-lg dark:drop-shadow-none object-cover' %>
+      <% else %>
+        <div class="size-8 bg-slate-200 dark:bg-slate-700 rounded-lg drop-shadow-lg dark:drop-shadow-none grid place-items-center">
+          <%= inline_svg_tag 'icons/user.svg', class: 'size-5 text-soft' %>
+        </div>
+      <% end %>
+
+      <div class="flex-1">
+        <p class="font-bold transition duration-200 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= request.user.default_name %></p>
+        <%= content_tag(:p, request.user.username, class: 'text-soft text-sm') if request.user.display_name.present? %>
       </div>
     <% end %>
-
-    <div class="flex-1">
-      <p class="font-bold transition duration-200 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= request.user.default_name %></p>
-      <%= content_tag(:p, request.user.username, class: 'text-soft text-sm') if request.user.display_name.present? %>
-    </div>
 
     <div class="flex shrink-0 items-center gap-3">
       <%= button_to 'Approve', approve_team_join_request_path(request), method: :patch, class: 'btn btn-sm btn-primary', data: { turbo: false } %>
       <%= button_to 'Reject', reject_team_join_request_path(request), method: :patch, class: 'btn btn-sm btn-destructive btn-muted', data: { turbo: false } %>
     </div>
-  <% end %>
+  </div>
 
   <% if request.user.any_membered_teams_in_common?(current_user) %>
     <div class="mt-4 space-y-2 border-t pt-4 dark:border-slate-700">
