@@ -114,7 +114,7 @@
 
       <% if current_user.member_of?(@team) %>
         <button type="button" id="rankingsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'rankingsTab' ? 'btn-tab-active' : '' %>">
-          <%= inline_svg_tag 'icons/chart-bar.svg', class: 'size-5 text-soft' %>
+          <%= inline_svg_tag 'icons/arrow-transfer-vertical.svg', class: 'size-5 text-soft' %>
           <span>Rankings</span>
         </button>
 
