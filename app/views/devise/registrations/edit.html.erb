@@ -1,15 +1,27 @@
 <% content_for :title, 'Settings' %>
 
 <div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="accountTab" class="max-w-3xl mx-auto px-4 my-16">
-  <div class="tab-container">
-    <button type="button" id="accountTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'accountTab' ? 'btn-tab-active' : '' %>">
-      <%= inline_svg_tag 'icons/profile.svg', class: 'size-5 text-soft' %>
-      <span>Account</span>
+  <div class="relative flex items-center mb-6">
+    <!-- Left Arrow -->
+    <button type="button" data-action="click->tabs#scrollLeft" data-tabs-target="leftArrow" class="tab-container-scroll-left transition duration-300">
+      <%= inline_svg_tag 'icons/chevron-left.svg', class: 'size-5 text-soft' %>
     </button>
 
-    <button type="button" id="settingsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'settingsTab' ? 'btn-tab-active' : '' %>">
-      <%= inline_svg_tag 'icons/settings.svg', class: 'size-5 text-soft' %>
-      <span>Settings</span>
+    <div class="tab-container" data-tabs-target="container">
+      <button type="button" id="accountTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'accountTab' ? 'btn-tab-active' : '' %>">
+        <%= inline_svg_tag 'icons/profile.svg', class: 'size-5 text-soft' %>
+        <span>Account</span>
+      </button>
+
+      <button type="button" id="settingsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'settingsTab' ? 'btn-tab-active' : '' %>">
+        <%= inline_svg_tag 'icons/settings.svg', class: 'size-5 text-soft' %>
+        <span>Settings</span>
+      </button>
+    </div>
+
+    <!-- Right Arrow -->
+    <button type="button" data-action="click->tabs#scrollRight" data-tabs-target="rightArrow" class="tab-container-scroll-right transition duration-300">
+      <%= inline_svg_tag 'icons/chevron-right.svg', class: 'size-5 text-soft' %>
     </button>
   </div>
 

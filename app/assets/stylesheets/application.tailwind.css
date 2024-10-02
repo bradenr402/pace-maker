@@ -81,4 +81,14 @@
     -webkit-appearance: none;
     margin: 0;
   }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    @apply hidden;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 }

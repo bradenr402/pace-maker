@@ -1,27 +1,37 @@
-.sidebar-link {
-  @apply rounded-md px-3 py-2.5 focus:text-indigo-600 text-soft hover:text-normal text-sm font-medium hover:bg-slate-200/60 dark:hover:bg-slate-700/40 transition duration-200 ease-in-out dark:focus:text-white flex items-center gap-2.5;
-}
+@layer components {
+  .sidebar-link {
+    @apply rounded-md px-3 py-2.5 focus:text-indigo-600 text-soft hover:text-normal text-sm font-medium hover:bg-slate-200/60 dark:hover:bg-slate-700/40 transition duration-200 ease-in-out dark:focus:text-white flex items-center gap-2.5;
+  }
 
-.sidebar-link-active {
-  @apply text-normal bg-slate-200 dark:bg-slate-700/75 hover:bg-slate-200 dark:hover:bg-slate-700/75;
-}
+  .sidebar-link-active {
+    @apply text-normal bg-slate-200 dark:bg-slate-700/75 hover:bg-slate-200 dark:hover:bg-slate-700/75;
+  }
 
-.tab-link {
-  @apply rounded-lg px-2 flex flex-col items-center gap-1 text-soft hover:text-normal text-xs font-bold hover:transition hover:duration-200 hover:ease-in-out dark:focus:text-white;
-}
+  .tab-link {
+    @apply rounded-lg px-2 flex flex-col items-center gap-1 text-soft hover:text-normal text-xs font-bold hover:transition hover:duration-200 hover:ease-in-out dark:focus:text-white;
+  }
 
-.tab-link-active {
-  @apply text-normal;
-}
+  .tab-link-active {
+    @apply text-normal;
+  }
 
-.btn-tab {
-  @apply rounded-md py-2 px-6 flex items-center gap-2.5 text-sm hover:bg-slate-200/60 dark:hover:bg-slate-700/40 snap-center;
-}
+  .btn-tab {
+    @apply rounded-md py-2 px-6 flex items-center gap-2.5 text-sm hover:bg-slate-200/60 dark:hover:bg-slate-700/40 snap-center;
+  }
 
-.btn-tab-active {
-  @apply text-normal bg-slate-200 dark:bg-slate-700/75 hover:bg-slate-200 dark:hover:bg-slate-700/75;
-}
+  .btn-tab-active {
+    @apply text-normal bg-slate-200 dark:bg-slate-700/75 hover:bg-slate-200 dark:hover:bg-slate-700/75;
+  }
 
-.tab-container {
-  @apply flex items-center gap-1 bg-slate-50/85 dark:bg-slate-800/85 p-1 rounded-lg mb-6 border dark:border-slate-700 overflow-x-auto whitespace-nowrap max-w-max mx-auto sticky top-4 backdrop-blur-sm z-40 snap-x;
+  .tab-container {
+    @apply flex items-center gap-0.5 bg-slate-50/85 dark:bg-slate-800/85 p-0.5 rounded-lg shadow-md dark:shadow-none overflow-x-auto whitespace-nowrap max-w-max mx-auto sticky top-4 backdrop-blur-sm z-30 snap-x hide-scrollbar;
+  }
+
+  .tab-container-scroll-left {
+    @apply bg-gradient-to-r from-slate-50 dark:from-slate-800 via-slate-50/90 dark:via-slate-800/90 to-transparent px-4 h-full rounded-l-lg absolute top-1/2 left-0 transform -translate-y-1/2 z-40;
+  }
+
+  .tab-container-scroll-right {
+    @apply bg-gradient-to-l from-slate-50 dark:from-slate-800 via-slate-50/90 dark:via-slate-800/90 to-transparent px-4 h-full rounded-r-lg absolute top-1/2 right-0 transform -translate-y-1/2 z-40;
+  }
 }

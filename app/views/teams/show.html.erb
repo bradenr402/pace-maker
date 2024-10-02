@@ -86,45 +86,57 @@
     </div>
   </div>
 
-  <div class="tab-container">
-    <button type="button" id="infoTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'infoTab' ? 'btn-tab-active' : '' %>">
-      <%= inline_svg_tag 'icons/info.svg', class: 'size-5 text-soft' %>
-      <span>Team Info</span>
+  <div class="relative flex items-center mb-6">
+    <!-- Left Arrow -->
+    <button type="button" data-action="click->tabs#scrollLeft" data-tabs-target="leftArrow" class="tab-container-scroll-left transition duration-300">
+      <%= inline_svg_tag 'icons/chevron-left.svg', class: 'size-5 text-soft' %>
     </button>
 
-    <button type="button" id="membersTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'membersTab' ? 'btn-tab-active' : '' %>">
-      <%= inline_svg_tag 'icons/team.svg', class: 'size-5 text-soft' %>
-      <span>Team Members</span>
+    <div class="tab-container" data-tabs-target="container">
+      <button type="button" id="infoTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'infoTab' ? 'btn-tab-active' : '' %>">
+        <%= inline_svg_tag 'icons/info.svg', class: 'size-5 text-soft' %>
+        <span>Team Info</span>
+      </button>
+
+      <button type="button" id="membersTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'membersTab' ? 'btn-tab-active' : '' %>">
+        <%= inline_svg_tag 'icons/team.svg', class: 'size-5 text-soft' %>
+        <span>Team Members</span>
+      </button>
+
+      <% if current_user.owns?(@team) %>
+        <button type="button" id="joinRequestsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'joinRequestsTab' ? 'btn-tab-active' : '' %>">
+          <%= inline_svg_tag 'icons/user-plus.svg', class: 'size-5 text-soft' %>
+          <span>Join Requests</span>
+        </button>
+      <% end %>
+
+      <% if current_user.member_of?(@team) %>
+        <button type="button" id="rankingsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'rankingsTab' ? 'btn-tab-active' : '' %>">
+          <%= inline_svg_tag 'icons/chart-bar.svg', class: 'size-5 text-soft' %>
+          <span>Rankings</span>
+        </button>
+
+        <button type="button" id="trendsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'trendsTab' ? 'btn-tab-active' : '' %>">
+          <%= inline_svg_tag 'icons/arrow-trending-up.svg', class: 'size-5 text-soft' %>
+          <span>Trends</span>
+        </button>
+
+        <button type="button" id="featuredTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'featuredTab' ? 'btn-tab-active' : '' %>">
+          <%= inline_svg_tag 'icons/star.svg', class: 'size-5 text-soft' %>
+          <span>Featured</span>
+        </button>
+
+        <button type="button" id="recentActivityTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'recentActivityTab' ? 'btn-tab-active' : '' %>">
+          <%= inline_svg_tag 'icons/clock.svg', class: 'size-5 text-soft' %>
+          <span>Recent Activity</span>
+        </button>
+      <% end %>
+    </div>
+
+    <!-- Right Arrow -->
+    <button type="button" data-action="click->tabs#scrollRight" data-tabs-target="rightArrow" class="tab-container-scroll-right transition duration-300">
+      <%= inline_svg_tag 'icons/chevron-right.svg', class: 'size-5 text-soft' %>
     </button>
-
-    <% if current_user.owns?(@team) %>
-      <button type="button" id="joinRequestsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'joinRequestsTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/user-plus.svg', class: 'size-5 text-soft' %>
-        <span>Join Requests</span>
-      </button>
-    <% end %>
-
-    <% if current_user.member_of?(@team) %>
-      <button type="button" id="rankingsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'rankingsTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/chart-bar.svg', class: 'size-5 text-soft' %>
-        <span>Rankings</span>
-      </button>
-
-      <button type="button" id="trendsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'trendsTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/arrow-trending-up.svg', class: 'size-5 text-soft' %>
-        <span>Trends</span>
-      </button>
-
-      <button type="button" id="featuredTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'featuredTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/star.svg', class: 'size-5 text-soft' %>
-        <span>Featured</span>
-      </button>
-
-      <button type="button" id="recentActivityTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'recentActivityTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/clock.svg', class: 'size-5 text-soft' %>
-        <span>Recent Activity</span>
-      </button>
-    <% end %>
   </div>
 
   <div id="infoTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'infoTab' ? '' : 'hidden' %>">
