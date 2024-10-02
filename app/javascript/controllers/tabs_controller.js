@@ -4,122 +4,74 @@ import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
   static classes = ['active'];
   static targets = ['btn', 'tab', 'container', 'leftArrow', 'rightArrow'];
-  static values = { defaultTab: String };
+  static values = {
+    defaultTab: String,
+    scrollFraction: { type: Number, default: 0.3 },
+  };
 
   connect() {
     if (this.hasLeftArrowTarget && this.hasRightArrowTarget)
-      this.updateArrows();
+      this._updateArrows();
 
     if (this.hasContainerTarget)
       this.containerTarget.addEventListener(
         'scroll',
-        this.updateArrows.bind(this)
+        this._debounce(this._updateArrows.bind(this))
       );
 
-    this.selectInitialTab();
-  }
-
-  selectInitialTab() {
-    // Get the initial tab from the URL tab parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    const tabParam = urlParams.get('tab');
-    const initialTab = tabParam || this.defaultTabValue;
-
-    this.tabTargets.forEach((tab) => {
-      tab.hidden = true;
-      tab.classList.add('hidden');
-    });
-
-    const selectedTab = this.tabTargets.find((tab) => tab.id === initialTab);
-    if (selectedTab) {
-      selectedTab.hidden = false;
-      selectedTab.classList.remove('hidden');
-    }
-
-    const selectedBtn = this.btnTargets.find((btn) => btn.id === initialTab);
-    if (selectedBtn) {
-      selectedBtn.classList.add(...this.activeClasses);
-
-      this.scrollToTab(selectedBtn);
-    }
+    this._selectInitialTab();
   }
 
   scrollLeft() {
-    const scrollAmount = this.containerTarget.offsetWidth * 0.3;
+    const scrollAmount =
+      this.containerTarget.offsetWidth * this.scrollFractionValue;
     this.containerTarget.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
   }
 
   scrollRight() {
-    const scrollAmount = this.containerTarget.offsetWidth * 0.3;
+    const scrollAmount =
+      this.containerTarget.offsetWidth * this.scrollFractionValue;
     this.containerTarget.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   }
 
-  updateArrows() {
-    const { scrollLeft, scrollWidth, clientWidth } = this.containerTarget;
-
-    if (scrollLeft <= 10) {
-      this.hideLeftArrow();
-    } else {
-      this.showLeftArrow();
-    }
-
-    if (scrollLeft + clientWidth >= scrollWidth - 10) {
-      this.hideRightArrow();
-    } else {
-      this.showRightArrow();
-    }
-
-    if (scrollLeft > 10 && scrollLeft + clientWidth < scrollWidth - 10) {
-      this.showLeftArrow();
-      this.showRightArrow();
-    }
-  }
-
-  hideLeftArrow() {
-    this.leftArrowTarget.classList.add('opacity-0', 'pointer-events-none');
-  }
-
-  showLeftArrow() {
-    this.leftArrowTarget.classList.remove('opacity-0', 'pointer-events-none');
-  }
-
-  hideRightArrow() {
-    this.rightArrowTarget.classList.add('opacity-0', 'pointer-events-none');
-  }
-
-  showRightArrow() {
-    this.rightArrowTarget.classList.remove('opacity-0', 'pointer-events-none');
-  }
-
   select(event) {
-    const selectedTab = this.tabTargets.find(
-      (tab) => tab.id === event.currentTarget.id
-    );
+    const selectedTabId = event.currentTarget.id;
+    const selectedTab = this.tabTargets.find((tab) => tab.id === selectedTabId);
 
-    if (selectedTab.hidden) {
-      this.tabTargets.forEach((tab) => {
-        tab.hidden = true;
-        tab.classList.add('hidden');
-      });
-
-      this.btnTargets.forEach((btn) =>
-        btn.classList.remove(...this.activeClasses)
-      );
-
-      selectedTab.hidden = false;
-      selectedTab.classList.remove('hidden');
-      event.currentTarget.classList.add(...this.activeClasses);
-
-      // Update URL with the selected tab parameter
-      const url = new URL(window.location);
-      url.searchParams.set('tab', event.currentTarget.id);
-      window.history.replaceState({}, '', url);
-
-      this.scrollToTab(event.currentTarget);
+    if (selectedTab?.hidden) {
+      this._updateTabVisibility(selectedTabId);
+      this._updateUrlWithTab(selectedTabId);
+      this._scrollToTab(event.currentTarget);
     }
   }
 
-  scrollToTab(tab) {
+  _selectInitialTab() {
+    // Get the initial tab from the URL tab parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    const initialTab = tabParam || this.defaultTabValue;
+    this._updateUrlWithTab(initialTab);
+
+    this._updateTabVisibility(initialTab);
+
+    const selectedBtn = this.btnTargets.find((btn) => btn.id === initialTab);
+    this._scrollToTab(selectedBtn);
+  }
+
+  _updateTabVisibility(selectedTabId) {
+    this.tabTargets.forEach((tab) => {
+      const isSelected = tab.id === selectedTabId;
+      tab.hidden = !isSelected;
+      tab.classList.toggle('hidden', !isSelected);
+    });
+
+    this.btnTargets.forEach((btn) => {
+      const isSelected = btn.id === selectedTabId;
+      btn.classList.toggle(this.activeClasses, isSelected);
+    });
+  }
+
+  _scrollToTab(tab) {
     if (!this.hasContainerTarget || !tab) return;
 
     const container = this.containerTarget;
@@ -141,5 +93,58 @@ export default class extends Controller {
       left: scrollLeft,
       behavior: 'smooth',
     });
+  }
+
+  _updateArrows() {
+    const { scrollLeft, scrollWidth, clientWidth } = this.containerTarget;
+
+    if (scrollLeft <= 10) {
+      this._hideLeftArrow();
+    } else {
+      this._showLeftArrow();
+    }
+
+    if (scrollLeft + clientWidth >= scrollWidth - 10) {
+      this._hideRightArrow();
+    } else {
+      this._showRightArrow();
+    }
+
+    if (scrollLeft > 10 && scrollLeft + clientWidth < scrollWidth - 10) {
+      this._showLeftArrow();
+      this._showRightArrow();
+    }
+  }
+
+  _hideLeftArrow() {
+    this.leftArrowTarget.classList.add('opacity-0', 'pointer-events-none');
+  }
+
+  _showLeftArrow() {
+    this.leftArrowTarget.classList.remove('opacity-0', 'pointer-events-none');
+  }
+
+  _hideRightArrow() {
+    this.rightArrowTarget.classList.add('opacity-0', 'pointer-events-none');
+  }
+
+  _showRightArrow() {
+    this.rightArrowTarget.classList.remove('opacity-0', 'pointer-events-none');
+  }
+
+  _updateUrlWithTab(tabId) {
+    const url = new URL(window.location);
+    url.searchParams.set('tab', tabId);
+    window.history.replaceState({}, '', url);
+  }
+
+  _debounce(func, timeout = 200) {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        func.apply(this, args);
+      }, timeout);
+    };
   }
 }
