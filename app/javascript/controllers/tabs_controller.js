@@ -76,19 +76,19 @@ export default class extends Controller {
   }
 
   hideLeftArrow() {
-    this.leftArrowTarget.classList.add('opacity-0');
+    this.leftArrowTarget.classList.add('opacity-0', 'pointer-events-none');
   }
 
   showLeftArrow() {
-    this.leftArrowTarget.classList.remove('opacity-0');
+    this.leftArrowTarget.classList.remove('opacity-0', 'pointer-events-none');
   }
 
   hideRightArrow() {
-    this.rightArrowTarget.classList.add('opacity-0');
+    this.rightArrowTarget.classList.add('opacity-0', 'pointer-events-none');
   }
 
   showRightArrow() {
-    this.rightArrowTarget.classList.remove('opacity-0');
+    this.rightArrowTarget.classList.remove('opacity-0', 'pointer-events-none');
   }
 
   select(event) {
