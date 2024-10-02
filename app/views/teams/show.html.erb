@@ -78,7 +78,9 @@
             </div>
           </div>
 
-          <%= render 'teams/shared/delete_team_modal', team: @team %>
+          <%= render 'teams/shared/leave_team_modal', team: @team if current_user.member_of?(@team) && !current_user.owns?(@team) %>
+
+          <%= render 'teams/shared/delete_team_modal', team: @team if current_user.owns?(@team) %>
         </div>
       <% else %>
         <%= render 'teams/shared/team_buttons', team: @team %>

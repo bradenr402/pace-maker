@@ -13,10 +13,10 @@
   <% end %>
 
 <% elsif current_user.member_of?(team) %>
-  <%= button_to leave_team_path(team), class: 'dropdown-option-destructive', data: { turbo: false } do %>
-    <%= inline_svg_tag 'icons/arrow-left-out.svg', class: 'size-5' %>
+  <button data-action="click->modal#open" data-modal-id="leaveTeam" class="dropdown-option-destructive">
+    <%= inline_svg_tag 'icons/trash.svg', class: 'size-5' %>
     Leave team
-  <% end %>
+  </button>
 
 <% else %>
   <% if team.gender_requirement_met?(current_user) %>
