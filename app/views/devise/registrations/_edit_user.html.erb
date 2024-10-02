@@ -165,12 +165,32 @@
 
     <div class="hidden" data-form-validation-target="passwordRequirements">
       <p class="my-1 help-text">Password must contain:</p>
-      <div class="ml-3">
-        <p class="my-1 help-text" data-form-validation-target="passwordLength"><span class="hidden" data-form-validation-target="lengthCheck">&#10004;</span> <span class="hidden" data-form-validation-target="lengthCross">&times;</span> At least 6 characters</p>
-        <p class="my-1 help-text" data-form-validation-target="passwordUppercase"><span class="hidden" data-form-validation-target="uppercaseCheck">&#10004;</span> <span class="hidden" data-form-validation-target="uppercaseCross">&times;</span> At least 1 uppercase letter</p>
-        <p class="my-1 help-text" data-form-validation-target="passwordLowercase"><span class="hidden" data-form-validation-target="lowercaseCheck">&#10004;</span> <span class="hidden" data-form-validation-target="lowercaseCross">&times;</span> At least 1 lowercase letter</p>
-        <p class="my-1 help-text" data-form-validation-target="passwordDigit"><span class="hidden" data-form-validation-target="digitCheck">&#10004;</span> <span class="hidden" data-form-validation-target="digitCross">&times;</span> At least 1 digit</p>
-        <p class="my-1 help-text" data-form-validation-target="passwordSpecial"><span class="hidden" data-form-validation-target="specialCheck">&#10004;</span> <span class="hidden" data-form-validation-target="specialCross">&times;</span> At least 1 special character (#?!@$%^&*-)</p>
+      <div class="ml-2">
+        <p class="help-text my-1 flex items-center gap-1.5" data-form-validation-target="passwordLength">
+          <%= inline_svg_tag 'icons/check.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'lengthCheck' } %>
+          <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'lengthCross' } %>
+          <span>At least 6 characters</span>
+        </p>
+        <p class="help-text my-1 flex items-center gap-1.5" data-form-validation-target="passwordUppercase">
+          <%= inline_svg_tag 'icons/check.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'uppercaseCheck' } %>
+          <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'uppercaseCross' } %>
+          <span>At least 1 uppercase letter</span>
+        </p>
+        <p class="help-text my-1 flex items-center gap-1.5" data-form-validation-target="passwordLowercase">
+          <%= inline_svg_tag 'icons/check.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'lowercaseCheck' } %>
+          <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'lowercaseCross' } %>
+          <span>At least 1 lowercase letter</span>
+        </p>
+        <p class="help-text my-1 flex items-center gap-1.5" data-form-validation-target="passwordDigit">
+          <%= inline_svg_tag 'icons/check.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'digitCheck' } %>
+          <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'digitCross' } %>
+          <span>At least 1 digit</span>
+        </p>
+        <p class="help-text my-1 flex items-center gap-1.5" data-form-validation-target="passwordSpecial">
+          <%= inline_svg_tag 'icons/check.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'specialCheck' } %>
+          <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'specialCross' } %>
+          <span>At least 1 special character (#?!@$%^&*-)</span>
+        </p>
       </div>
     </div>
   </div>
