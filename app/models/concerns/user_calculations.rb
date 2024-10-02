@@ -89,7 +89,7 @@ module UserCalculations
     end
 
     # Return most recent run date if current streak is 1
-    return { streak: 1, start_date: filtered_runs.first, end_date: nil } if streak == 1
+    return { streak: 1, start_date: filtered_runs.first, end_date: filtered_runs.first } if streak == 1
 
     { streak:, start_date:, end_date: filtered_runs.first }
   end
@@ -138,7 +138,7 @@ module UserCalculations
     end
 
     # Return most recent run date if longest streak is 1
-    return { streak: 1, start_date: filtered_runs.first, end_date: nil } if longest_streak == 1
+    return { streak: 1, start_date: filtered_runs.first, end_date: filtered_runs.first } if longest_streak == 1
 
     {
       streak: longest_streak,
@@ -178,7 +178,7 @@ module UserCalculations
     end
 
     # Return most recent run date if current streak is 1
-    return { streak: 1, start_date: filtered_runs.first, end_date: nil } if streak == 1
+    return { streak: 1, start_date: filtered_runs.first, end_date: filtered_runs.first } if streak == 1
 
     { streak:, start_date:, end_date: filtered_runs.first }
   end
@@ -222,7 +222,7 @@ module UserCalculations
     end
 
     # Return most recent run date if longest streak is 1
-    return { streak: 1, start_date: filtered_runs.first, end_date: nil } if longest_streak == 1
+    return { streak: 1, start_date: filtered_runs.first, end_date: filtered_runs.first } if longest_streak == 1
 
     {
       streak: longest_streak,

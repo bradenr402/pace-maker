@@ -40,12 +40,12 @@
         <span class="text-base font-normal text-soft"><%= 'day'.pluralize(current_streak) %></span>
       </p>
       <p class="my-1 text-soft">
-        <% if current_streak_start_date.present? && current_streak_end_date.present? %>
-          <%= pretty_date(current_streak_start_date, date_style: :relative) %> &ndash; <%= pretty_date(current_streak_end_date, date_style: :relative) %>
-        <% elsif current_streak_start_date.present? && current_streak_end_date.blank? %>
-          <%= pretty_date(current_streak_start_date, date_style: :relative) %>
-        <% elsif current_streak.zero? %>
+        <% if current_streak.zero? %>
           No current streak recorded.
+        <% elsif current_streak_start_date == current_streak_end_date %>
+          <%= pretty_date(current_streak_start_date, date_style: :relative) %>
+        <% else %>
+          <%= pretty_date(current_streak_start_date, date_style: :relative) %> &ndash; <%= pretty_date(current_streak_end_date, date_style: :relative) %>
         <% end %>
       </p>
     </div>
@@ -63,13 +63,13 @@
         <span class="text-base font-normal text-soft"><%= 'day'.pluralize(longest_streak) %></span>
       </p>
       <p class="my-1 text-soft">
-        <% if longest_streak_start_date.present? && longest_streak_end_date.present? %>
-          <%= pretty_date(longest_streak_start_date, date_style: :relative) %> &ndash; <%= pretty_date(longest_streak_end_date, date_style: :relative) %>
-        <% elsif longest_streak_start_date.present? && longest_streak_end_date.blank? %>
+        <% if longest_streak.zero? %>
+          No longest streak recorded.
+        <% elsif longest_streak_start_date == longest_streak_end_date %>
           <%= pretty_date(longest_streak_start_date, date_style: :relative) %>
           <span class="my-1 ml-1 help-text">(Most recent run)</span>
-        <% elsif longest_streak.zero? %>
-          No longest streak recorded.
+        <% else %>
+          <%= pretty_date(longest_streak_start_date, date_style: :relative) %> &ndash; <%= pretty_date(longest_streak_end_date, date_style: :relative) %>
         <% end %>
       </p>
     </div>

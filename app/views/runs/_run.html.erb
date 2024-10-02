@@ -26,11 +26,10 @@
             <div class="flex flex-wrap items-center gap-2">
               <%= render 'runs/long_run_badge' if local_assigns[:team] && run.long_run_for?(team) %>
               <% if local_assigns[:team] && streak.positive? %>
-                <% if run.date.today? && streak_end_date&.today? %>
+                <% if (run.date.today? && streak_end_date&.today?) || (run.date.yesterday? && streak_end_date&.yesterday?) %>
                   <%= render 'runs/streak_badge', streak: streak %>
-                <% elsif run.date.yesterday? %>
-                  <%= render 'runs/streak_badge', streak: streak if streak_end_date&.yesterday? %>
-                  <%= render 'runs/streak_badge', streak: streak - 1 if streak_end_date&.today? %>
+                <% elsif run.date.yesterday? && streak_end_date&.today? %>
+                  <%= render 'runs/streak_badge', streak: streak - 1 %>
                 <% end %>
               <% end %>
             </div>
