@@ -1,10 +1,10 @@
 @layer components {
   .sidebar-link {
-    @apply rounded-md px-3 py-2.5 focus:text-indigo-600 text-soft hover:text-normal text-sm font-medium hover:bg-slate-200/60 dark:hover:bg-slate-700/40 transition duration-200 ease-in-out dark:focus:text-white flex items-center gap-2.5;
-  }
+    @apply rounded-lg px-3 py-2.5 focus:text-indigo-600 text-soft hover:text-normal text-sm font-medium hover:bg-slate-200/60 dark:hover:bg-slate-700/40 transition duration-200 ease-in-out dark:focus:text-white flex items-center gap-2.5;
 
-  .sidebar-link-active {
-    @apply text-normal bg-slate-200 dark:bg-slate-700/75 hover:bg-slate-200 dark:hover:bg-slate-700/75;
+    &.sidebar-link-active {
+      @apply text-normal bg-white border dark:border-none shadow-md dark:shadow-none dark:bg-slate-700/75 hover:bg-white dark:hover:bg-slate-700/75;
+    }
   }
 
   .tab-link {
