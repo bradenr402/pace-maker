@@ -3,7 +3,7 @@
   <p class="text-soft">Recent trends in <%= member == current_user ? 'your' : "#{member.first_name}'s" %> participation in <%= link_to team.name, team_path(team, tab: 'trendsTab'), class: 'btn-link' %>.</p>
 </div>
 
-<div>
+<div class="mb-24">
   <%= form_with url: team_member_path(team, member), method: :get, local: true, html: { novalidate: true }, data: { turbo_frame: 'memberTrends', turbo_action: 'advance', turbo_stream: true, controller: 'custom-date-range form-validation search-form' } do %>
     <div class="form-group">
       <%= label_tag :trends_date_range, 'Select date range', class: 'form-label' %>
@@ -32,14 +32,9 @@
       <%= date_field_tag :trends_end_date, nil, max: Date.today, class: 'form-input', data: { form_validation_target: 'endDate', custom_date_range_target: 'endDateField', action: 'input->form-validation#validateEndDate custom-date-range#search' } %>
       <span class="hidden my-1 error-message" data-form-validation-target="endDateError">End date must be today or earlier and must be after start date</span>
     </div>
-
-    <div class="form-group">
-      <%= label_tag :chart_type, 'Chart type', class: 'form-label' %>
-      <%= select_tag :chart_type, options_for_select([['Column', 'column'], ['Line', :line], ['Bar', 'bar']], @chart_type || 'column'), data: { action: 'input->search-form#searchNow' }, class: 'form-select' %>
-    </div>
-  <% end %>
-
-  <%= turbo_frame_tag 'memberTrends' do %>
-    <%= render 'teams/member/trends_graphs', team: team, date_range_description: @trends_date_range_description %>
   <% end %>
 </div>
+
+<%= turbo_frame_tag 'memberTrends' do %>
+  <%= render 'teams/member/trends_graphs', team: team, date_range_description: @trends_date_range_description %>
+<% end %>

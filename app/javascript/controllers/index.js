@@ -10,6 +10,9 @@ application.register("autogrow", AutogrowController)
 import CalendarController from "./calendar_controller"
 application.register("calendar", CalendarController)
 
+import ChartTypeController from "./chart_type_controller"
+application.register("chart-type", ChartTypeController)
+
 import ConfirmationController from "./confirmation_controller"
 application.register("confirmation", ConfirmationController)
 
