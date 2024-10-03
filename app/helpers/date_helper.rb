@@ -11,17 +11,11 @@ module DateHelper
 
     case date_style
     when :relative
-      if date.today?
-        return 'Today'
-      elsif date.yesterday?
-        return 'Yesterday'
-      end
+      return 'Today' if date.today?
+      return 'Yesterday' if date.yesterday?
     when :combined
-      if date.today?
-        return "Today, #{month} #{day_of_month}#{year}"
-      elsif date.yesterday?
-        return "Yesterday, #{month} #{day_of_month}#{year}"
-      end
+      return "Today, #{month} #{day_of_month}#{year}" if date.today?
+      return "Yesterday, #{month} #{day_of_month}#{year}" if date.yesterday?
     end
 
     # Default to absolute style if none of the special cases apply
