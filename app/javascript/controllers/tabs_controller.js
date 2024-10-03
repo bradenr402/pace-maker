@@ -3,7 +3,7 @@ import { Controller } from '@hotwired/stimulus';
 // Connects to data-controller="tabs"
 export default class extends Controller {
   static classes = ['active'];
-  static targets = ['btn', 'tab', 'container', 'leftArrow', 'rightArrow'];
+  static targets = ['btn', 'tab', 'container', 'leftArrow', 'rightArrow', 'indicator'];
   static values = {
     defaultTab: String,
     scrollFraction: { type: Number, default: 0.3 },
@@ -43,6 +43,8 @@ export default class extends Controller {
       this._updateUrlWithTab(selectedTabId);
       this._scrollToTab(event.currentTarget);
     }
+
+    this._updateTabIndicator(event.currentTarget);
   }
 
   _selectInitialTab() {
@@ -56,6 +58,15 @@ export default class extends Controller {
 
     const selectedBtn = this.btnTargets.find((btn) => btn.id === initialTab);
     this._scrollToTab(selectedBtn);
+    this._updateTabIndicator(selectedBtn);
+  }
+
+  _updateTabIndicator(tab) {
+    if (!this.hasIndicatorTarget || !tab) return;
+
+    const indicator = this.indicatorTarget;
+    indicator.style.left = `${tab.offsetLeft}px`;
+    indicator.style.width = `${tab.offsetWidth}px`;
   }
 
   _updateTabVisibility(selectedTabId) {

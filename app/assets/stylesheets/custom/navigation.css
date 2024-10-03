@@ -16,11 +16,11 @@
   }
 
   .btn-tab {
-    @apply rounded-md py-2 px-6 flex items-center gap-2.5 text-sm hover:bg-slate-200/60 dark:hover:bg-slate-700/40 snap-center;
+    @apply rounded-md py-2 px-6 flex items-center gap-2.5 text-sm text-normal hover:text-soft snap-center z-10;
   }
 
   .btn-tab-active {
-    @apply text-normal bg-slate-200 dark:bg-slate-700/75 hover:bg-slate-200 dark:hover:bg-slate-700/75;
+    @apply text-normal hover:text-normal;
   }
 
   .tab-container {
@@ -33,5 +33,9 @@
 
   .tab-container-scroll-right {
     @apply bg-gradient-to-l from-slate-50 dark:from-slate-800 via-slate-50/90 dark:via-slate-800/90 to-transparent px-4 h-full rounded-r-lg absolute top-1/2 right-0 transform -translate-y-1/2 z-40;
+  }
+
+  .sliding-tab-indicator {
+    @apply absolute top-1/2 -translate-y-1/2 bg-slate-200/50 dark:bg-slate-700/50 rounded-md transition-all duration-300 w-0 h-[calc(100%-0.25rem)];
   }
 }

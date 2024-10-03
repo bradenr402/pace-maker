@@ -28,6 +28,9 @@
     </button>
 
     <div class="tab-container" data-tabs-target="container">
+      <!-- Tab Indicator -->
+      <span data-tabs-target="indicator" class="sliding-tab-indicator"></span>
+
       <button type="button" id="infoTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'infoTab' ? 'btn-tab-active' : '' %>">
         <%= inline_svg_tag 'icons/info.svg', class: 'size-5 text-soft' %>
         <span>User Info</span>
