@@ -35,8 +35,9 @@ export default class extends Controller {
       if (
         this.startDateFieldTarget.value &&
         this.endDateFieldTarget.value &&
-        startDate >= endDate &&
-        endDate >= today
+        startDate <= endDate &&
+        endDate <= today.getTime() &&
+        (endDate - startDate) <= (2 * 365 * 24 * 60 * 60 * 1000)
       ) {
         clearTimeout(this.timeout);
         this.timeout = setTimeout(() => this.element.requestSubmit(), 200);
