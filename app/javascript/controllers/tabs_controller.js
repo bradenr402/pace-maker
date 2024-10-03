@@ -78,7 +78,7 @@ export default class extends Controller {
 
     this.btnTargets.forEach((btn) => {
       const isSelected = btn.id === selectedTabId;
-      btn.classList.toggle(this.activeClasses, isSelected);
+      btn.classList.toggle(this.activeClass, isSelected);
     });
   }
 
