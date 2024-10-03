@@ -18,28 +18,28 @@
     <ul
       data-controller="pinned-pages-reorder"
       data-pinned-pages-reorder-target="list"
-      class="my-6 space-y-4"
+      class="my-6 space-y-3"
     >
       <% @pinned_pages.each do |page| %>
         <li
           data-id="<%= page.id %>"
-          class="flex items-center gap-2"
+          class="flex items-center gap-2 p-1 border rounded-lg shadow-md bg-slate-50 dark:bg-slate-700/80 dark:shadow-none dark:border-slate-700"
         >
-          <div class="drag-handle btn btn-transparent p-2 cursor-grab shrink-0">
-            <%= inline_svg_tag 'icons/drag-handle.svg', class: 'size-4 sm:size-5' %>
-          </div>
-
           <%= f.text_field "pinned_pages[#{page.id}][title]", value: page.title, class: 'form-input' %>
 
-          <%= link_to page.page_url, target: :_blank, class: 'btn btn-transparent p-2 shrink-0' do %>
-            <%= inline_svg_tag 'icons/external-link.svg', class: 'size-4 sm:size-5' %>
+          <button type="button" data-action="click->modal#open" data-modal-id="deletePage_<%= page.id %>" class="btn p-1.5 text-rose-600 dark:text-rose-500 hover:bg-rose-100 dark:hover:bg-rose-900/80 hover:text-rose-700 dark:hover:text-rose-300 shrink-0">
+            <%= inline_svg_tag 'icons/unpin.svg', class: 'size-3.5 sm:size-5' %>
+            <span class="sr-only">Delete page</span>
+          </button>
+
+          <%= link_to page.page_url, target: :_blank, class: 'btn btn-transparent p-1.5 shrink-0' do %>
+            <%= inline_svg_tag 'icons/external-link.svg', class: 'size-3.5 sm:size-5' %>
             <span class="sr-only">View page</span>
           <% end %>
 
-          <button type="button" data-action="click->modal#open" data-modal-id="deletePage_<%= page.id %>" class="btn p-2 text-rose-600 dark:text-rose-500 hover:bg-rose-100 dark:hover:bg-rose-900/80 hover:text-rose-700 dark:hover:text-rose-300 shrink-0">
-            <%= inline_svg_tag 'icons/unpin.svg', class: 'size-4 sm:size-5' %>
-            <span class="sr-only">Delete page</span>
-          </button>
+          <div class="drag-handle p-1.5 cursor-grab shrink-0">
+            <%= inline_svg_tag 'icons/drag-handle.svg', class: 'size-4 sm:size-5' %>
+          </div>
         </li>
       <% end %>
 
