@@ -9,10 +9,10 @@
 
   .tab-link {
     @apply rounded-lg px-2 flex flex-col items-center gap-1 text-soft hover:text-normal text-xs font-bold hover:transition hover:duration-200 hover:ease-in-out dark:focus:text-white;
-  }
 
-  .tab-link-active {
-    @apply text-normal;
+    &.tab-link-active {
+      @apply text-normal;
+    }
   }
 
   .btn-tab {
