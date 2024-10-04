@@ -51,7 +51,7 @@ class Team < ApplicationRecord
 
   def recent_runs =
     Run
-      .joins(:user)
+      .includes(:user)
       .where(users: { id: members.pluck(:id) })
       .order(date: :desc)
       .first(15)
@@ -59,7 +59,7 @@ class Team < ApplicationRecord
   def recent_long_runs
     runs =
       Run
-      .joins(:user)
+      .includes(:user)
       .where(users: { id: members.pluck(:id) })
       .order(date: :desc)
       .first(15)
@@ -73,7 +73,7 @@ class Team < ApplicationRecord
   def streak_runs
     runs =
       Run
-      .joins(:user)
+      .includes(:user)
       .where(users: { id: members.pluck(:id) })
       .where('date >= ?', Date.current.yesterday)
       .order(date: :desc)
@@ -89,7 +89,7 @@ class Team < ApplicationRecord
   def long_runs_in_date_range(range)
     runs =
       Run
-      .joins(:user)
+      .includes(:user)
       .where(users: { id: members.pluck(:id) })
       .in_date_range(range)
 
