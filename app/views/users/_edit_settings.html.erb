@@ -67,7 +67,7 @@
     <button type="button" data-action="restore-defaults#restore" class="btn btn-sm btn-destructive btn-muted ml-auto">Reset settings</button>
   </div>
 
-  <div class="sticky bottom-0 flex items-center gap-4 pt-6 pb-6 bg-white border-t dark:bg-slate-900 border-slate-200 dark:border-slate-700">
+  <div class="md:sticky bottom-0 flex items-center gap-4 pt-6 pb-6 bg-white border-t dark:bg-slate-900 border-slate-200 dark:border-slate-700">
     <%= form.submit 'Save settings', data: { turbo: false }, class: 'btn btn-primary' %>
     <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-dark btn-muted' %>
   </div>

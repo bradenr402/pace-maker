@@ -227,7 +227,7 @@
     <p class="my-1 text-xs text-slate-700 dark:text-slate-400">Your current password is required to change your password.</p>
   </div>
 
-  <div class="sticky bottom-0 flex items-center gap-4 pt-6 pb-6 bg-white border-t dark:bg-slate-900 border-slate-200 dark:border-slate-700">
+  <div class="md:sticky bottom-0 flex items-center gap-4 pt-6 pb-6 bg-white border-t dark:bg-slate-900 border-slate-200 dark:border-slate-700">
     <%= f.submit 'Save changes', data: { turbo: false }, class: 'btn btn-primary' %>
     <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-dark btn-muted' %>
   </div>
