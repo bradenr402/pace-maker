@@ -6,13 +6,24 @@ class TeamsController < ApplicationController
   before_action :authorize_owner!, only: %i[remove_member]
 
   def index
-    @owned_teams = current_user.owned_teams
-    @membered_teams = current_user.membered_teams
+    @owned_teams =
+      current_user.owned_teams.includes(
+        :photo_attachment,
+        :owner,
+        :setting_objects
+      )
+    @membered_teams =
+      current_user.membered_teams.includes(
+        :photo_attachment,
+        :owner,
+        :setting_objects
+      )
 
     @other_teams =
       if params[:query].present?
         sanitized_query = ActiveRecord::Base.connection.quote(params[:query])
         Team
+          .includes(:photo_attachment, :owner, :setting_objects)
           .joins(:owner)
           .where(
             'LOWER(teams.name) LIKE LOWER(:query) OR
@@ -36,7 +47,11 @@ class TeamsController < ApplicationController
             )
           )
       else
-        current_user.other_teams
+        current_user.other_teams.includes(
+          :photo_attachment,
+          :owner,
+          :setting_objects
+        )
       end
 
     respond_to do |format|
