@@ -1,8 +1,8 @@
 <div class="mb-24">
-  <div class="flex flex-wrap items-end justify-between gap-6 pb-6 mt-10">
+  <div class="flex flex-wrap items-end justify-between gap-6 pb-6 mt-10 mb-6 border-b dark:border-slate-700">
     <div class="space-y-2">
-      <h1 class="heading"><%= user == current_user ? 'Your' : "#{user.first_name}'s" %> Teams</h1>
-      <p class="text-soft">Teams <%= user == current_user ? 'you are' : "#{user.first_name} is" %> the coach of.</p>
+      <h1 class="heading"><%= user == current_user ? 'Your' : "#{user.first_name}’s" %> Teams</h1>
+      <p class="text-soft">Teams <%= user == current_user ? 'you coach' : "#{user.first_name} coaches" %>.</p>
     </div>
 
     <%= link_to 'New team', new_team_path, class: 'btn btn-primary' if user == current_user && owned_teams.present? %>
@@ -23,8 +23,8 @@
 </div>
 
 <div class="mb-24">
-  <div class="pb-6 mt-10 space-y-2">
-    <h1 class="heading"><%= user == current_user ? 'Your' : "#{user.first_name}'s" %> Team Memberships</h1>
+  <div class="pb-6 mt-10 mb-6 space-y-2 border-b dark:border-slate-700">
+    <h1 class="heading"><%= user == current_user ? 'Your' : "#{user.first_name}’s" %> Team Memberships</h1>
     <p class="text-soft">Teams <%= user == current_user ? 'you are' : "#{user.first_name} is" %> a member of.</p>
   </div>
 
