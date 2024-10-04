@@ -69,7 +69,14 @@ class TeamsController < ApplicationController
     @miles_data = get_team_miles_data
     @long_runs_data = get_team_long_runs_data
 
-    @join_requests = @team.join_requests.pending.order(updated_at: :desc) if current_user.owns?(@team)
+    if current_user.owns?(@team)
+      @join_requests =
+        @team
+        .join_requests
+        .includes(user: :avatar_attachment)
+        .pending
+        .order(updated_at: :desc)
+    end
 
     respond_to do |format|
       format.html
@@ -237,6 +244,7 @@ class TeamsController < ApplicationController
       sanitized_query = ActiveRecord::Base.connection.quote(params[:query])
       @team
         .members
+        .includes(:avatar_attachment)
         .where(
           'LOWER(users.username) LIKE LOWER(:query) OR
             LOWER(users.display_name) LIKE LOWER(:query) OR
@@ -256,7 +264,7 @@ class TeamsController < ApplicationController
           )
         )
     else
-      @team.members
+      @team.members.includes(:avatar_attachment)
     end
   end
 
