@@ -32,17 +32,17 @@
       <span data-tabs-target="indicator" class="sliding-tab-indicator"></span>
 
       <button type="button" id="infoTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'infoTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/info.svg', class: 'size-5 text-soft' %>
+        <%= inline_svg_tag 'icons/info.svg', class: 'size-5' %>
         <span>User Info</span>
       </button>
 
       <button type="button" id="teamsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'teamsTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/team.svg', class: 'size-5 text-soft' %>
+        <%= inline_svg_tag 'icons/team.svg', class: 'size-5' %>
         <span>Teams</span>
       </button>
 
       <button type="button" id="runsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'runsTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/runner.svg', class: 'size-5 text-soft' %>
+        <%= inline_svg_tag 'icons/runner.svg', class: 'size-5' %>
         <span>Runs</span>
       </button>
     </div>

@@ -67,12 +67,12 @@
       <span data-tabs-target="indicator" class="sliding-tab-indicator"></span>
 
       <button type="button" id="infoTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'infoTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/info.svg', class: 'size-5 text-soft' %>
+        <%= inline_svg_tag 'icons/info.svg', class: 'size-5' %>
         <span>Member Info</span>
       </button>
 
       <button type="button" id="trendsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'trendsTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/arrow-trending-up.svg', class: 'size-5 text-soft' %>
+        <%= inline_svg_tag 'icons/arrow-trending-up.svg', class: 'size-5' %>
         <span>Trends</span>
       </button>
     </div>
