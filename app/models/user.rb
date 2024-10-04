@@ -127,7 +127,7 @@ class User < ApplicationRecord
     { allowed?: true, message: 'You meet the requirements to join this team.' }
   end
 
-  def teams_requiring_gender = teams.select(&:require_gender?)
+  def teams_requiring_gender = teams.includes(:setting_objects).select(&:require_gender?)
 
   def any_teams_require_gender? = teams_requiring_gender.any?
 

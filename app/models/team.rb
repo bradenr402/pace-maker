@@ -101,7 +101,7 @@ class Team < ApplicationRecord
   end
 
   def members_in_common(user) =
-    members.select do |member|
+    members.includes(:teams).select do |member|
       member != user && member != owner && (member.teams & user.teams).any?
     end
 
