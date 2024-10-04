@@ -4,6 +4,8 @@ class UsersController < ApplicationController
 
   def show
     @runs, @date_range = get_runs_and_date_range
+    @owned_teams = @user.owned_teams.includes(:photo_attachment, :owner)
+    @membered_teams = @user.membered_teams.includes(:photo_attachment, :owner)
 
     respond_to do |format|
       format.html
