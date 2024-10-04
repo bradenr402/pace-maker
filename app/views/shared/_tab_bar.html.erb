@@ -4,59 +4,59 @@
 <% current_is_teams = current_page?(teams_path) %>
 <% current_is_profile = current_page?(profile_path) %>
 
-<div class="fixed inset-x-0 bottom-0 z-50 block w-full pb-1 border-t bg-slate-50 dark:bg-slate-800 dark:border-slate-700 md:hidden">
-  <nav
-    data-controller="modal"
-    data-modal-hide-modal-class="opacity-0 scale-75 pointer-events-none"
-    data-modal-show-modal-class="opacity-100 scale-100 pointer-events-auto"
-    data-modal-hide-backdrop-class="opacity-0 pointer-events-none"
-    data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
-    class="grid w-full grid-cols-5 place-items-center gap-y-4"
-  >
-    <%= link_to edit_user_registration_path, aria: { current: current_is_edit_user ? 'page' : nil }, class: "tab-link #{'tab-link-active' if current_is_edit_user}" do %>
-      <% if current_is_edit_user %>
-        <%= inline_svg_tag 'icons/settings-filled.svg', class: 'size-6' %>
+<div
+  data-controller="modal"
+  data-modal-hide-modal-class="opacity-0 scale-75 pointer-events-none"
+  data-modal-show-modal-class="opacity-100 scale-100 pointer-events-auto"
+  data-modal-hide-backdrop-class="opacity-0 pointer-events-none"
+  data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
+  class="fixed inset-x-4 bottom-4 z-50 w-[calc(100%-2rem)] bg-transparent flex items-center justify-center gap-6 md:hidden"
+>
+  <nav class="flex items-center justify-between gap-4 w-full max-w-sm rounded-full p-1 bg-slate-50 dark:bg-slate-700 border dark:border-slate-600 shadow-md dark:shadow-none">
+    <%= link_to profile_path, aria: { current: current_is_profile ? 'page' : nil }, class: "tab-link #{current_is_profile ? 'tab-link-active' : 'ml-1.5'}" do %>
+      <% if current_user.avatar.attached? %>
+        <%= image_tag current_user.avatar.variant(resize_to_limit: [50, 50]).processed, class: "#{current_is_profile ? 'size-6' : 'size-7'} rounded-md drop-shadow-md dark:drop-shadow-none object-cover shrink-0" %>
+      <% elsif current_is_profile %>
+        <%= inline_svg_tag 'icons/profile-filled.svg', class: 'size-6 shrink-0' %>
       <% else %>
-        <%= inline_svg_tag 'icons/settings.svg', class: 'size-6' %>
+        <%= inline_svg_tag 'icons/profile.svg', class: 'size-6 shrink-0' %>
       <% end %>
-      <span>Settings</span>
+      <span>Profile</span>
     <% end %>
-
-    <%= link_to search_path, aria: { current: current_is_search ? 'page' : nil }, class: "tab-link #{'tab-link-active' if current_is_search}" do %>
-      <% if current_is_search %>
-        <%= inline_svg_tag 'icons/search-filled.svg', class: 'size-6' %>
-      <% else %>
-        <%= inline_svg_tag 'icons/search.svg', class: 'size-6' %>
-      <% end %>
-      <span>Search</span>
-    <% end %>
-
-    <!-- Open New Run Modal Button -->
-    <button data-action="click->modal#open" data-modal-id="newRunModal" class="flex flex-col items-center justify-center text-white text-sm flex-grow p-3 m-2 rounded-full bg-indigo-600 <%= current_is_new_run ? 'shadow-[0_0_15px] shadow-indigo-500/50 scale-110' : 'hover:shadow-[0_0_15px] hover:shadow-indigo-500/50 hover:scale-110 transition duration-200 ease-in-out' %>">
-      <%= inline_svg_tag 'icons/runner.svg', class: 'size-6' %>
-      <span class="sr-only">New run</span>
-    </button>
-
-    <%= render 'runs/new_run_modal' %>
 
     <%= link_to teams_path, aria: { current: current_is_teams ? 'page' : nil }, class: "tab-link #{'tab-link-active' if current_is_teams}" do %>
       <% if current_is_teams %>
-        <%= inline_svg_tag 'icons/team-filled.svg', class: 'size-6' %>
+        <%= inline_svg_tag 'icons/team-filled.svg', class: 'size-6 shrink-0' %>
       <% else %>
-        <%= inline_svg_tag 'icons/team.svg', class: 'size-6' %>
+        <%= inline_svg_tag 'icons/team.svg', class: 'size-6 shrink-0' %>
       <% end %>
       <span>Teams</span>
     <% end %>
 
-    <%= link_to profile_path, aria: { current: current_is_profile ? 'page' : nil }, class: "tab-link #{'tab-link-active' if current_is_profile}" do %>
-      <% if current_user.avatar.attached? %>
-        <%= image_tag current_user.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-7 rounded-md drop-shadow-md dark:drop-shadow-none object-cover' %>
-      <% elsif current_is_profile %>
-        <%= inline_svg_tag 'icons/profile-filled.svg', class: 'size-6' %>
+    <%= link_to search_path, aria: { current: current_is_search ? 'page' : nil }, class: "tab-link #{'tab-link-active' if current_is_search}" do %>
+      <% if current_is_search %>
+        <%= inline_svg_tag 'icons/search-filled.svg', class: 'size-6 shrink-0' %>
       <% else %>
-        <%= inline_svg_tag 'icons/profile.svg', class: 'size-6' %>
+        <%= inline_svg_tag 'icons/search.svg', class: 'size-6 shrink-0' %>
       <% end %>
-      <span>Profile</span>
+      <span>Search</span>
+    <% end %>
+
+    <%= link_to edit_user_registration_path, aria: { current: current_is_edit_user ? 'page' : nil }, class: "tab-link #{current_is_edit_user ? 'tab-link-active' : 'mr-1'}" do %>
+      <% if current_is_edit_user %>
+        <%= inline_svg_tag 'icons/settings-filled.svg', class: 'size-6 shrink-0' %>
+      <% else %>
+        <%= inline_svg_tag 'icons/settings.svg', class: 'size-6 shrink-0' %>
+      <% end %>
+      <span>Settings</span>
     <% end %>
   </nav>
+
+  <!-- Open New Run Modal Button -->
+  <button data-action="click->modal#open" data-modal-id="newRunModal" class="grid place-items-center grow-0 shrink-0 bg-gradient-to-b from-indigo-400 to-indigo-500 dark:from-indigo-500 dark:to-indigo-600 text-white text-sm p-3 rounded-full">
+    <%= inline_svg_tag 'icons/runner.svg', class: 'size-5' %>
+    <span class="sr-only">New run</span>
+  </button>
+
+  <%= render 'runs/new_run_modal' %>
 </div>

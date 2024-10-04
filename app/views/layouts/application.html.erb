@@ -9,15 +9,15 @@
     <div class="flex w-full h-svh max-h-svh">
       <%= render 'shared/sidebar' if user_signed_in? %>
       <div class="flex flex-col flex-1 h-full min-w-0">
-        <div class="flex flex-col justify-between h-full min-w-0 overflow-y-scroll">
+        <div class="h-full min-w-0 overflow-y-scroll">
           <%= render 'shared/pinned_pages_menu' if user_signed_in? %>
           <main class="container px-5 mx-auto my-24">
             <%= yield %>
           </main>
         </div>
-        <%= render 'shared/tab_bar' if user_signed_in? %>
       </div>
     </div>
+    <%= render 'shared/tab_bar' if user_signed_in? %>
 
     <%= turbo_stream_from 'pinned_pages_list' %>
   </body>

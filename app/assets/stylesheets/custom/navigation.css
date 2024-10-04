@@ -8,10 +8,18 @@
   }
 
   .tab-link {
-    @apply rounded-lg px-2 flex flex-col items-center gap-1 text-soft hover:text-normal text-xs font-bold hover:transition hover:duration-200 hover:ease-in-out dark:focus:text-white;
+    @apply flex items-center gap-1 text-normal text-xs font-bold hover:text-indigo-500 dark:hover:text-soft transition duration-200 ease-in-out dark:focus:text-white;
+
+    & span {
+      @apply sr-only;
+    }
 
     &.tab-link-active {
-      @apply text-normal;
+      @apply py-1 px-3 rounded-full bg-gradient-to-b from-indigo-400 to-indigo-500 dark:from-indigo-500 dark:to-indigo-600 text-white hover:text-white dark:hover:text-white;
+
+      & span {
+        @apply not-sr-only;
+      }
     }
   }
 
