@@ -125,13 +125,15 @@
         <%= f.select :gender, User.genders.keys.map { |gender| [gender.humanize, gender] }, {}, class: 'form-select pl-10' %>
       </div>
 
-      <p class="my-1 help-text">You are a member of <%= pluralize(resource.teams_requiring_gender.count, 'team that requires its members', 'teams that require their members') %> to specify their gender:</p>
+      <% teams_requiring_gender = resource.teams_requiring_gender %>
+
+      <p class="my-1 help-text">You are a member of <%= pluralize(teams_requiring_gender.count, 'team that requires its members', 'teams that require their members') %> to specify their gender:</p>
 
       <ul class="pl-4 my-1 list-disc help-text">
-        <%= resource.teams_requiring_gender.map { |team| content_tag(:li, link_to(team.name, team, class: 'btn-link')) }.join.html_safe %>
+        <%= teams_requiring_gender.map { |team| content_tag(:li, link_to(team.name, team, class: 'btn-link')) }.join.html_safe %>
       </ul>
 
-      <p class="my-1 help-text">You must leave <%= resource.teams_requiring_gender.count == 1 ? 'this team' : 'these teams' %> to remove your gender.</p>
+      <p class="my-1 help-text">You must leave <%= teams_requiring_gender.count == 1 ? 'this team' : 'these teams' %> to remove your gender.</p>
     <% else %>
       <div class="relative">
         <%= inline_svg_tag 'icons/gender.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
