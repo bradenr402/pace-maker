@@ -63,8 +63,8 @@ class TeamsController < ApplicationController
   def show
     @members = get_members
 
-    @rankings_date_range, @rankings_date_range_description = get_rankings_date_range_and_description
-    @trends_date_range, @trends_date_range_description = get_trends_date_range_and_description
+    @rankings_date_range, @rankings_date_range_description = get_rankings_data
+    @trends_date_range, @trends_date_range_description = get_trends_data
 
     @miles_data = get_team_miles_data
     @long_runs_data = get_team_long_runs_data
@@ -211,7 +211,7 @@ class TeamsController < ApplicationController
     @member = @team.members.find(params[:user_id])
     @team_membership = @team.team_memberships.find_by(user: @member)
 
-    @trends_date_range, @trends_date_range_description = get_trends_date_range_and_description
+    @trends_date_range, @trends_date_range_description = get_trends_data
 
     @miles_data = get_member_miles_data
     @long_runs_data = get_member_long_runs_data
@@ -268,7 +268,7 @@ class TeamsController < ApplicationController
     end
   end
 
-  def get_rankings_date_range_and_description
+  def get_rankings_data
     if params[:rankings_date_range].present?
       today = Date.today
 
@@ -279,18 +279,20 @@ class TeamsController < ApplicationController
         [today.beginning_of_week(@team.week_start)..today, 'this week']
       when 'Last week'
         one_week_ago = today - 1.week
+        beginning_of_week = one_week_ago.beginning_of_week(@team.week_start)
+        end_of_week = one_week_ago.end_of_week(@team.week_start)
         [
-          one_week_ago.beginning_of_week(
-            @team.week_start
-          )..one_week_ago.end_of_week(@team.week_start),
+          beginning_of_week..end_of_week,
           'last week'
         ]
       when 'This month'
         [today.beginning_of_month..today, 'this month']
       when 'Last month'
         one_month_ago = today - 1.month
+        beginning_of_month = one_month_ago.beginning_of_month
+        end_of_month = one_month_ago.end_of_month
         [
-          one_month_ago.beginning_of_month..one_month_ago.end_of_month,
+          beginning_of_month..end_of_month,
           'last month'
         ]
       when 'Custom range'
@@ -306,7 +308,7 @@ class TeamsController < ApplicationController
     end
   end
 
-  def get_trends_date_range_and_description
+  def get_trends_data
     today = Date.today
 
     if params[:trends_date_range].present?
@@ -314,32 +316,39 @@ class TeamsController < ApplicationController
       when 'All season'
         [@team.season_start_date..@team.season_end_date, 'this season']
       when 'This week'
-        [week_range(
-          current_date: today,
-          week_start: @team.week_start
-        ), 'this week']
+        [
+          week_range(current_date: today, week_start: @team.week_start),
+          'this week'
+        ]
       when 'Last week'
-        [week_range(
-          current_date: today - 1.week,
-          week_start: @team.week_start
-        ), 'last week']
+        [
+          week_range(current_date: today - 1.week, week_start: @team.week_start),
+          'last week'
+        ]
       when 'This month'
-        [month_range(current_date: today), 'this month']
+        [
+          month_range(current_date: today),
+          'this month'
+        ]
       when 'Last month'
-        [month_range(current_date: today - 1.month), 'last month']
-
+        [
+          month_range(current_date: today - 1.month),
+          'last month'
+        ]
       when 'Custom range'
         start_date = params[:trends_start_date].to_date
         end_date = params[:trends_end_date].to_date
 
-        [start_date..end_date,
-         "between #{format_date(start_date, separator: '.')} and #{format_date(end_date, separator: '.')}"]
+        [
+          start_date..end_date,
+          "between #{format_date(start_date, separator: '.')} and #{format_date(end_date, separator: '.')}"
+        ]
       end
     else
-      [week_range(
-        current_date: today,
-        week_start: @team.week_start
-      ), 'this week']
+      [
+        week_range(current_date: today, week_start: @team.week_start),
+        'this week'
+      ]
     end
   end
 
@@ -347,12 +356,14 @@ class TeamsController < ApplicationController
     group_by = params[:group_by] || 'day'
 
     if group_by == 'week'
-      @trends_date_range.group_by { |date| date.beginning_of_week(@team.week_start) }.map do |week_start, dates|
-        [
-          pretty_date(week_start, month_format: :short, date_style: :absolute),
-          dates.sum { |date| @team.miles_in_date_range(date) }
-        ]
-      end
+      @trends_date_range
+        .group_by { |date| date.beginning_of_week(@team.week_start) }
+        .map do |week_start, dates|
+          [
+            pretty_date(week_start, month_format: :short, date_style: :absolute),
+            dates.sum { |date| @team.miles_in_date_range(date) }
+          ]
+        end
     else # group_by == 'day'
       @trends_date_range.map do |date|
         [
@@ -367,12 +378,14 @@ class TeamsController < ApplicationController
     group_by = params[:group_by] || 'day'
 
     if group_by == 'week'
-      @trends_date_range.group_by { |date| date.beginning_of_week(@team.week_start) }.map do |week_start, dates|
-        [
-          pretty_date(week_start, month_format: :short, date_style: :absolute),
-          dates.sum { |date| @team.long_runs_in_date_range(date).count }
-        ]
-      end
+      @trends_date_range
+        .group_by { |date| date.beginning_of_week(@team.week_start) }
+        .map do |week_start, dates|
+          [
+            pretty_date(week_start, month_format: :short, date_style: :absolute),
+            dates.sum { |date| @team.long_runs_in_date_range(date).count }
+          ]
+        end
     else # group_by == 'day'
       @trends_date_range.map do |date|
         [
@@ -387,12 +400,14 @@ class TeamsController < ApplicationController
     group_by = params[:group_by] || 'day'
 
     if group_by == 'week'
-      @trends_date_range.group_by { |date| date.beginning_of_week(@team.week_start) }.map do |week_start, dates|
-        [
-          pretty_date(week_start, month_format: :short, date_style: :absolute),
-          dates.sum { |date| @member.miles_in_date_range(date) }
-        ]
-      end
+      @trends_date_range
+        .group_by { |date| date.beginning_of_week(@team.week_start) }
+        .map do |week_start, dates|
+          [
+            pretty_date(week_start, month_format: :short, date_style: :absolute),
+            dates.sum { |date| @member.miles_in_date_range(date) }
+          ]
+        end
     else # group_by == 'day'
       @trends_date_range.map do |date|
         [
@@ -407,12 +422,16 @@ class TeamsController < ApplicationController
     group_by = params[:group_by] || 'day'
 
     if group_by == 'week'
-      @trends_date_range.group_by { |date| date.beginning_of_week(@team.week_start) }.map do |week_start, dates|
-        [
-          pretty_date(week_start, month_format: :short, date_style: :absolute),
-          dates.sum { |date| @member.long_runs_in_date_range(@team, date).count }
-        ]
-      end
+      @trends_date_range
+        .group_by { |date| date.beginning_of_week(@team.week_start) }
+        .map do |week_start, dates|
+          [
+            pretty_date(week_start, month_format: :short, date_style: :absolute),
+            dates.sum do |date|
+              @member.long_runs_in_date_range(@team, date).count
+            end
+          ]
+        end
     else # group_by == 'day'
       @trends_date_range.map do |date|
         [
