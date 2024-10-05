@@ -71,6 +71,11 @@
         <span>Member Info</span>
       </button>
 
+      <button type="button" id="badgesTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'badgesTab' ? 'btn-tab-active' : '' %>">
+        <%= inline_svg_tag 'icons/medal.svg', class: 'size-5' %>
+        <span>Badges</span>
+      </button>
+
       <button type="button" id="trendsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'trendsTab' ? 'btn-tab-active' : '' %>">
         <%= inline_svg_tag 'icons/arrow-trending-up.svg', class: 'size-5' %>
         <span>Trends</span>
@@ -85,6 +90,10 @@
 
   <div id="infoTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'infoTab' ? '' : 'hidden' %>">
     <%= render 'teams/member/member_info', member: @member, team: @team, team_membership: @team_membership %>
+  </div>
+
+  <div id="badgesTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'badgesTab' ? '' : 'hidden' %>">
+    <%= render 'teams/member/badges', member: @member, team: @team, team_membership: @team_membership %>
   </div>
 
   <div id="trendsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'trendsTab' ? '' : 'hidden' %>">
