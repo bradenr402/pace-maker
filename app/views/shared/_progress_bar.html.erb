@@ -10,13 +10,13 @@
 <div>
   <div class="flex items-end justify-between gap-4 my-1">
     <span class="text-sm text-soft"><%= label %></span>
-    <span class="text-sm text-right text-soft text-balance">
-      <%= "#{percentage}%".concat(local_assigns[:marker] ? ' of goal met' : '') %>
+    <div class="text-sm text-right text-soft md:flex gap-1.5">
+      <p class="whitespace-nowrap"><%= "#{percentage}%".concat(local_assigns[:marker] ? ' of goal met' : '') %></p>
       <% if local_assigns[:marker] %>
-        <%= " / #{(marker - percentage).abs.round(2)}%" %>
-        <%= percentage < marker ? 'behind' : 'ahead' %>
+        <span class="max-md:hidden">/</span>
+        <p class="whitespace-nowrap"><%= "#{(marker - percentage).abs.round(2)}%".concat(percentage < marker ? ' behind' : ' ahead') %></p>
       <% end %>
-    </span>
+    </div>
   </div>
   <div class="<%= size_classes[size] %> w-full bg-gray-200 dark:bg-gray-700 relative"
        role="progressbar"
