@@ -51,7 +51,7 @@
   }
 
   .card {
-    @apply p-6 border rounded-xl shadow-md bg-slate-50/85 dark:bg-slate-800/85 backdrop-blur-sm dark:shadow-none dark:border-slate-700;
+    @apply p-6 rounded-xl bg-slate-50 dark:bg-slate-800/60 shadow-md dark:shadow-none border dark:border-slate-700;
   }
 
   .dropdown-toggle {
