@@ -10,20 +10,22 @@ class TeamsController < ApplicationController
       current_user.owned_teams.includes(
         :photo_attachment,
         :owner,
-        :setting_objects
+        :setting_objects,
+        :members
       )
     @membered_teams =
       current_user.membered_teams.includes(
         :photo_attachment,
         :owner,
-        :setting_objects
+        :setting_objects,
+        :members
       )
 
     @other_teams =
       if params[:query].present?
         sanitized_query = ActiveRecord::Base.connection.quote(params[:query])
         Team
-          .includes(:photo_attachment, :owner, :setting_objects)
+          .includes(:photo_attachment, :owner, :setting_objects, :members)
           .joins(:owner)
           .where(
             'LOWER(teams.name) LIKE LOWER(:query) OR
@@ -50,7 +52,8 @@ class TeamsController < ApplicationController
         current_user.other_teams.includes(
           :photo_attachment,
           :owner,
-          :setting_objects
+          :setting_objects,
+          :members
         )
       end
 
@@ -219,7 +222,11 @@ class TeamsController < ApplicationController
 
   private
 
-  def set_team = @team = Team.find(params[:id])
+  def set_team =
+    @team =
+      Team.includes(:members, :join_requests, :team_memberships).find(
+        params[:id]
+      )
 
   def team_params =
     params.require(:team).permit(
