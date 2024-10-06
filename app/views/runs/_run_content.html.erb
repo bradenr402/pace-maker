@@ -11,13 +11,23 @@
   </div>
 
   <% if run.duration? %>
-    <div class="mb-4 space-y-2 divide-slate-300 rounded-2xl bg-slate-200/50 p-4 drop-shadow-sm dark:divide-slate-600 dark:bg-slate-700/50 dark:drop-shadow-none md:flex md:flex-wrap md:items-center md:space-y-0 md:divide-x">
-      <div class="flex items-center gap-2 md:pr-6">
-        <%= inline_svg_tag 'icons/clock.svg', class: 'size-5 text-soft' %>
-        <p class="font-bold"><%= precise_time(run.duration, format: :short) %></p>
+    <div class="mb-4 space-y-2 divide-slate-300 rounded-2xl bg-slate-200/50 p-4 drop-shadow-sm dark:divide-slate-600 dark:bg-slate-700/50 dark:drop-shadow-none lg:flex lg:flex-wrap lg:items-center lg:space-y-0 lg:divide-x">
+      <div class="flex items-center gap-2 lg:pr-4">
+        <%= inline_svg_tag 'icons/ruler.svg', class: 'size-5 text-soft shrink-0' %>
+        <p class="font-bold"><%= run.distance %> <span class="text-soft text-sm">mi</span></p>
       </div>
-      <div class="flex items-center gap-2 md:pl-6">
-        <%= inline_svg_tag 'icons/lightning.svg', class: 'size-5 text-soft' %>
+
+      <div class="flex items-center gap-2 lg:px-4">
+        <%= inline_svg_tag 'icons/clock.svg', class: 'size-5 text-soft shrink-0' %>
+        <p class="font-bold">
+          <% precise_time(run.duration, format: :short).split(' ').each do |time_part| %>
+            <%= time_part.chop %><span class="text-soft text-sm"><%= time_part.last %></span>
+          <% end %>
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2 lg:pl-4">
+        <%= inline_svg_tag 'icons/lightning.svg', class: 'size-5 text-soft shrink-0' %>
         <p class="font-bold"><%= clock_time_display(run.pace_per_mile) %> <span class="text-soft text-sm">/mi</span></p>
       </div>
     </div>
