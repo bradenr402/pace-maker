@@ -1,13 +1,13 @@
 module UserCalculations
   # Mileage calculations
-  def total_miles = runs.sum(:distance)
+  def total_miles = runs.sum(:distance).round(1)
 
   def total_km = (total_miles * 1.609344).round(1)
 
-  def miles_this_season(team) = runs_this_season(team).sum(:distance)
+  def miles_this_season(team) = runs_this_season(team).sum(:distance).round(1)
 
   def miles_in_date_range(date_range) =
-    runs_in_date_range(date_range).sum(:distance)
+    runs_in_date_range(date_range).sum(:distance).round(1)
 
   # Duration calculations
   def total_duration = runs.where.not(duration: nil).sum(:duration)
