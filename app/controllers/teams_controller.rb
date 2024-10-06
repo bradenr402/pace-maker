@@ -290,20 +290,14 @@ class TeamsController < ApplicationController
         one_week_ago = today - 1.week
         beginning_of_week = one_week_ago.beginning_of_week(@team.week_start)
         end_of_week = one_week_ago.end_of_week(@team.week_start)
-        [
-          beginning_of_week..end_of_week,
-          'last week'
-        ]
+        [beginning_of_week..end_of_week, 'last week']
       when 'This month'
         [today.beginning_of_month..today, 'this month']
       when 'Last month'
         one_month_ago = today - 1.month
         beginning_of_month = one_month_ago.beginning_of_month
         end_of_month = one_month_ago.end_of_month
-        [
-          beginning_of_month..end_of_month,
-          'last month'
-        ]
+        [beginning_of_month..end_of_month, 'last month']
       when 'Custom range'
         start_date = params[:rankings_start_date].to_date
         end_date = params[:rankings_end_date].to_date
@@ -335,15 +329,9 @@ class TeamsController < ApplicationController
           'last week'
         ]
       when 'This month'
-        [
-          month_range(current_date: today),
-          'this month'
-        ]
+        [month_range(current_date: today), 'this month']
       when 'Last month'
-        [
-          month_range(current_date: today - 1.month),
-          'last month'
-        ]
+        [month_range(current_date: today - 1.month), 'last month']
       when 'Custom range'
         start_date = params[:trends_start_date].to_date
         end_date = params[:trends_end_date].to_date
