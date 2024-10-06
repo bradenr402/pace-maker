@@ -1,85 +1,81 @@
-<div class="mb-24">
-  <div class="pt-6 mb-6 space-y-1 border-t border-slate-200 dark:border-slate-700">
-    <h2 class="subheading">Miles <%= date_range_description.titlecase %></h2>
-    <p class="text-sm text-soft">This graph shows how many miles <%= @member == current_user ? 'you' : @member.first_name %> ran <%= date_range_description %>.</p>
+<div data-controller="chart-type" data-chart-type-active-class="btn-tab-active" data-chart-type-default-tab-value="columnChart" class="mb-24">
+  <div class="pt-6 mb-4 border-t border-slate-200 dark:border-slate-700 flex flex-wrap items-end gap-x-4 gap-y-1">
+    <div class="space-y-1">
+      <h2 class="subheading">Miles <%= date_range_description.titlecase %></h2>
+      <p class="text-sm text-soft">This graph shows how many miles <%= @member == current_user ? 'you' : @member.first_name %> ran <%= date_range_description %>.</p>
+    </div>
+
+    <div class="tab-container ml-auto shrink-0" data-chart-type-target="container">
+      <!-- Tab Indicator -->
+      <span data-chart-type-target="indicator" class="sliding-tab-indicator"></span>
+
+      <button type="button" id="columnChart" data-chart-type-target="btn" data-action="click->chart-type#select" class="btn-tab btn-tab-icon-only btn-tab-active">
+        <%= inline_svg_tag 'icons/chart-column.svg', class: 'size-5' %>
+        <span class="sr-only">Column Chart</span>
+      </button>
+
+      <button type="button" id="lineChart" data-chart-type-target="btn" data-action="click->chart-type#select" class="btn-tab btn-tab-icon-only">
+        <%= inline_svg_tag 'icons/chart-line.svg', class: 'size-5' %>
+        <span class="sr-only">Line Chart</span>
+      </button>
+
+      <button type="button" id="barChart" data-chart-type-target="btn" data-action="click->chart-type#select" class="btn-tab btn-tab-icon-only">
+        <%= inline_svg_tag 'icons/chart-bar.svg', class: 'size-5' %>
+        <span class="sr-only">Bar Chart</span>
+      </button>
+    </div>
   </div>
 
-  <div data-controller="chart-type" data-chart-type-active-class="btn-tab-active" data-chart-type-default-tab-value="columnChart">
-    <div class="relative flex items-center justify-end mb-3">
-      <div class="tab-container" data-chart-type-target="container">
-        <!-- Tab Indicator -->
-        <span data-chart-type-target="indicator" class="sliding-tab-indicator"></span>
+  <div id="columnChart" data-chart-type-target="tab" class="card">
+    <%= render 'shared/column_chart', data:  @miles_data, precision: 3, xtitle: 'Date', ytitle: '# of miles' %>
+  </div>
 
-        <button type="button" id="columnChart" data-chart-type-target="btn" data-action="click->chart-type#select" class="btn-tab btn-tab-icon-only btn-tab-active">
-          <%= inline_svg_tag 'icons/chart-column.svg', class: 'size-5' %>
-          <span class="sr-only">Column Chart</span>
-        </button>
+  <div id="lineChart" data-chart-type-target="tab" class="card hidden">
+    <%= render 'shared/line_chart', data:  @miles_data, precision: 3, xtitle: 'Date', ytitle: '# of miles' %>
+  </div>
 
-        <button type="button" id="lineChart" data-chart-type-target="btn" data-action="click->chart-type#select" class="btn-tab btn-tab-icon-only">
-          <%= inline_svg_tag 'icons/chart-line.svg', class: 'size-5' %>
-          <span class="sr-only">Line Chart</span>
-        </button>
-
-        <button type="button" id="barChart" data-chart-type-target="btn" data-action="click->chart-type#select" class="btn-tab btn-tab-icon-only">
-          <%= inline_svg_tag 'icons/chart-bar.svg', class: 'size-5' %>
-          <span class="sr-only">Bar Chart</span>
-        </button>
-      </div>
-    </div>
-
-    <div id="columnChart" data-chart-type-target="tab" class="card">
-      <%= render 'shared/column_chart', data:  @miles_data, precision: 3, xtitle: 'Date', ytitle: '# of miles' %>
-    </div>
-
-    <div id="lineChart" data-chart-type-target="tab" class="card hidden">
-      <%= render 'shared/line_chart', data:  @miles_data, precision: 3, xtitle: 'Date', ytitle: '# of miles' %>
-    </div>
-
-    <div id="barChart" data-chart-type-target="tab" class="card hidden">
-      <%= render 'shared/bar_chart', data:  @miles_data, precision: 3, xtitle: '# of miles', ytitle: 'Date' %>
-    </div>
+  <div id="barChart" data-chart-type-target="tab" class="card hidden">
+    <%= render 'shared/bar_chart', data:  @miles_data, precision: 3, xtitle: '# of miles', ytitle: 'Date' %>
   </div>
 </div>
 
-<div class="mb-24">
-  <div class="pt-6 my-6 space-y-1 border-t border-slate-200 dark:border-slate-700">
-    <h2 class="subheading">Long Runs <%= date_range_description.titlecase %></h2>
-    <p class="text-sm text-soft">This graph shows how many long runs <%= @member == current_user ? 'you' : @member.first_name %> ran <%= date_range_description %>.</p>
+<div data-controller="chart-type" data-chart-type-active-class="btn-tab-active" data-chart-type-default-tab-value="columnChart" class="mb-24">
+  <div class="pt-6 mb-4 border-t border-slate-200 dark:border-slate-700 flex flex-wrap items-end gap-x-4 gap-y-1">
+    <div class="space-y-1">
+      <h2 class="subheading">Long Runs <%= date_range_description.titlecase %></h2>
+      <p class="text-sm text-soft">This graph shows how many long runs <%= @member == current_user ? 'you' : @member.first_name %> ran <%= date_range_description %>.</p>
+    </div>
+
+    <div class="tab-container ml-auto shrink-0" data-chart-type-target="container">
+      <!-- Tab Indicator -->
+      <span data-chart-type-target="indicator" class="sliding-tab-indicator"></span>
+
+      <button type="button" id="columnChart" data-chart-type-target="btn" data-action="click->chart-type#select" class="btn-tab btn-tab-icon-only btn-tab-active">
+        <%= inline_svg_tag 'icons/chart-column.svg', class: 'size-5' %>
+        <span class="sr-only">Column Chart</span>
+      </button>
+
+      <button type="button" id="lineChart" data-chart-type-target="btn" data-action="click->chart-type#select" class="btn-tab btn-tab-icon-only">
+        <%= inline_svg_tag 'icons/chart-line.svg', class: 'size-5' %>
+        <span class="sr-only">Line Chart</span>
+      </button>
+
+      <button type="button" id="barChart" data-chart-type-target="btn" data-action="click->chart-type#select" class="btn-tab btn-tab-icon-only">
+        <%= inline_svg_tag 'icons/chart-bar.svg', class: 'size-5' %>
+        <span class="sr-only">Bar Chart</span>
+      </button>
+    </div>
   </div>
 
-  <div data-controller="chart-type" data-chart-type-active-class="btn-tab-active" data-chart-type-default-tab-value="columnChart">
-    <div class="relative flex items-center justify-end mb-3">
-      <div class="tab-container" data-chart-type-target="container">
-        <!-- Tab Indicator -->
-        <span data-chart-type-target="indicator" class="sliding-tab-indicator"></span>
+  <div id="columnChart" data-chart-type-target="tab" class="card">
+    <%= render 'shared/column_chart', data:  @long_runs_data, precision: 3, xtitle: 'Date', ytitle: '# of miles' %>
+  </div>
 
-        <button type="button" id="columnChart" data-chart-type-target="btn" data-action="click->chart-type#select" class="btn-tab btn-tab-icon-only btn-tab-active">
-          <%= inline_svg_tag 'icons/chart-column.svg', class: 'size-5' %>
-          <span class="sr-only">Column Chart</span>
-        </button>
+  <div id="lineChart" data-chart-type-target="tab" class="card hidden">
+    <%= render 'shared/line_chart', data:  @long_runs_data, precision: 3, xtitle: 'Date', ytitle: '# of miles' %>
+  </div>
 
-        <button type="button" id="lineChart" data-chart-type-target="btn" data-action="click->chart-type#select" class="btn-tab btn-tab-icon-only">
-          <%= inline_svg_tag 'icons/chart-line.svg', class: 'size-5' %>
-          <span class="sr-only">Line Chart</span>
-        </button>
-
-        <button type="button" id="barChart" data-chart-type-target="btn" data-action="click->chart-type#select" class="btn-tab btn-tab-icon-only">
-          <%= inline_svg_tag 'icons/chart-bar.svg', class: 'size-5' %>
-          <span class="sr-only">Bar Chart</span>
-        </button>
-      </div>
-    </div>
-
-    <div id="columnChart" data-chart-type-target="tab" class="card">
-      <%= render 'shared/column_chart', data:  @long_runs_data, precision: 3, xtitle: 'Date', ytitle: '# of miles' %>
-    </div>
-
-    <div id="lineChart" data-chart-type-target="tab" class="card hidden">
-      <%= render 'shared/line_chart', data:  @long_runs_data, precision: 3, xtitle: 'Date', ytitle: '# of miles' %>
-    </div>
-
-    <div id="barChart" data-chart-type-target="tab" class="card hidden">
-      <%= render 'shared/bar_chart', data:  @long_runs_data, precision: 3, xtitle: '# of miles', ytitle: 'Date' %>
-    </div>
+  <div id="barChart" data-chart-type-target="tab" class="card hidden">
+    <%= render 'shared/bar_chart', data:  @long_runs_data, precision: 3, xtitle: '# of miles', ytitle: 'Date' %>
   </div>
 </div>
