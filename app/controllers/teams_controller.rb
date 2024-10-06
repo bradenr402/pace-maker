@@ -64,7 +64,8 @@ class TeamsController < ApplicationController
   end
 
   def show
-    @members = get_members
+    @members =
+      Rails.cache.fetch([@team, 'members', params[:query]]) { get_members }
 
     @rankings_date_range, @rankings_date_range_description = get_rankings_data
     @trends_date_range, @trends_date_range_description = get_trends_data
@@ -247,32 +248,33 @@ class TeamsController < ApplicationController
   end
 
   def get_members
-    if params[:query].present?
-      sanitized_query = ActiveRecord::Base.connection.quote(params[:query])
-      @team
-        .members
-        .includes(:avatar_attachment)
-        .where(
-          'LOWER(users.username) LIKE LOWER(:query) OR
-            LOWER(users.display_name) LIKE LOWER(:query) OR
-            similarity(users.username, :query) > 0.3 OR
-            similarity(users.display_name, :query) > 0.3',
-          query: "%#{params[:query]}%"
-        )
-        .order(
-          Arel.sql(
-            "GREATEST(similarity(users.username, #{sanitized_query}),
+    @members ||=
+      if params[:query].present?
+        sanitized_query = ActiveRecord::Base.connection.quote(params[:query])
+        @team
+          .members
+          .includes(:avatar_attachment)
+          .where(
+            'LOWER(users.username) LIKE LOWER(:query) OR
+                        LOWER(users.display_name) LIKE LOWER(:query) OR
+                        similarity(users.username, :query) > 0.3 OR
+                        similarity(users.display_name, :query) > 0.3',
+            query: "%#{params[:query]}%"
+          )
+          .order(
+            Arel.sql(
+              "GREATEST(similarity(users.username, #{sanitized_query}),
                           similarity(users.display_name, #{sanitized_query}),
                           CASE
                             WHEN LOWER(users.username) LIKE LOWER(#{sanitized_query})
                             THEN 1
                             ELSE 0
                           END) DESC"
+            )
           )
-        )
-    else
-      @team.members.includes(:avatar_attachment)
-    end
+      else
+        @team.members.includes(:avatar_attachment)
+      end
   end
 
   def get_rankings_data
