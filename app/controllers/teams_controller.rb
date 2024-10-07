@@ -6,6 +6,8 @@ class TeamsController < ApplicationController
   before_action :authorize_owner!, only: %i[remove_member]
 
   def index
+    add_breadcrumb 'Teams', teams_path
+
     @owned_teams =
       current_user.owned_teams.includes(
         :photo_attachment,
@@ -64,6 +66,9 @@ class TeamsController < ApplicationController
   end
 
   def show
+    add_breadcrumb 'Teams', teams_path
+    add_breadcrumb @team.name, team_path(@team)
+
     @members =
       Rails.cache.fetch([@team, 'members', params[:query]]) { get_members }
 
@@ -108,6 +113,9 @@ class TeamsController < ApplicationController
   end
 
   def new
+    add_breadcrumb 'Teams', teams_path
+    add_breadcrumb 'New team', new_team_path
+
     @team = Team.new
   end
 
@@ -124,7 +132,11 @@ class TeamsController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+    add_breadcrumb 'Teams', teams_path
+    add_breadcrumb @team.name, team_path(@team)
+    add_breadcrumb 'Edit team', edit_team_path(@team)
+  end
 
   def update
     @team.photo.attach(params[:photo])
@@ -214,6 +226,10 @@ class TeamsController < ApplicationController
     @team = Team.find(params[:team_id])
     @member = @team.members.find(params[:user_id])
     @team_membership = @team.team_memberships.find_by(user: @member)
+
+    add_breadcrumb 'Teams', teams_path
+    add_breadcrumb @team.name, team_path(@team)
+    add_breadcrumb @member.default_name, team_member_path(@team, @member)
 
     @trends_date_range, @trends_date_range_description = get_trends_data
 

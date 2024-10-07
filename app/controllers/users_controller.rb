@@ -3,6 +3,8 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[show]
 
   def show
+    add_breadcrumb @user.default_name, user_path(@user)
+
     @runs, @date_range = get_runs_and_date_range
     @owned_teams = @user.owned_teams.includes(:photo_attachment, :owner)
     @membered_teams = @user.membered_teams.includes(:photo_attachment, :owner)

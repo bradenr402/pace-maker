@@ -73,6 +73,23 @@
   .dropdown-option-destructive {
     @apply flex items-center gap-2.5 py-2 px-4 rounded transition duration-200 ease-in-out w-full hover:bg-rose-100 dark:hover:bg-rose-900/80 hover:text-rose-700 dark:hover:text-rose-200;
   }
+
+  /* Add this in your Tailwind CSS config or custom styles */
+  .breadcrumbs {
+    @apply text-sm text-slate-500 mb-4;
+  }
+
+  .breadcrumb-list {
+    @apply flex space-x-2;
+  }
+
+  .breadcrumb-item {
+    @apply text-indigo-600 hover:text-indigo-800;
+  }
+
+  .breadcrumb-item.active {
+    @apply font-semibold text-slate-900;
+  }
 }
 
 @layer base {

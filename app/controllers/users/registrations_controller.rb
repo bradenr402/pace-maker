@@ -17,9 +17,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   # GET /resource/edit
-  # def edit
-  #   super
-  # end
+  def edit
+    add_breadcrumb current_user.default_name, user_path(current_user)
+    add_breadcrumb 'Settings', edit_user_registration_path
+
+    super
+  end
 
   # PUT /resource
 

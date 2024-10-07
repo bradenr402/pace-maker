@@ -12,6 +12,7 @@
         <div class="h-full min-w-0 overflow-y-scroll">
           <%= render 'shared/pinned_pages_menu' if user_signed_in? %>
           <main class="container px-5 mx-auto my-24">
+            <%= render 'shared/breadcrumbs' if user_signed_in? %>
             <%= yield %>
           </main>
         </div>

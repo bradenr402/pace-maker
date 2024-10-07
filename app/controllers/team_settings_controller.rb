@@ -60,7 +60,9 @@ class TeamSettingsController < ApplicationController
   end
 
   def show
-    # Here we simply render the team settings
+    add_breadcrumb @team.name, team_path(@team)
+    add_breadcrumb 'View settings', team_settings_path(@team)
+
     @settings = {
       join_requirements: @team.settings(:join_requirements).value,
       long_runs: @team.settings(:long_runs).value,

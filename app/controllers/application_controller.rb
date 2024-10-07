@@ -1,7 +1,14 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :set_breadcrumbs
 
   add_flash_types :success, :error
+
+  def add_breadcrumb(name, url = '') = @breadcrumbs << { name:, url: }
+
+  private
+
+  def set_breadcrumbs = @breadcrumbs = []
 
   protected
 

@@ -2,9 +2,14 @@ class RunsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_run, only: %i[show edit update destroy]
 
-  def show; end
+  def show
+    add_breadcrumb "Runs by #{@run.user.default_name}", user_path(@run.user, tab: 'runsTab')
+    add_breadcrumb "#{@run.distance} mi run by #{@run.user.default_name}", run_path(@run)
+  end
 
   def new
+    add_breadcrumb 'New run', new_run_path
+
     @run = current_user.runs.new
   end
 
@@ -43,7 +48,11 @@ class RunsController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+    add_breadcrumb "Runs by #{@run.user.default_name}", user_path(@run.user, tab: 'runsTab')
+    add_breadcrumb "#{@run.distance} mi run by #{@run.user.default_name}", run_path(@run)
+    add_breadcrumb 'Edit run', edit_run_path(@run)
+  end
 
   def update
     @run.duration = parse_duration(params[:run][:duration_input]) if params[:run][:duration_input].present?
