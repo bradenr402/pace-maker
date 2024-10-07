@@ -246,38 +246,38 @@
   data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
   class="p-6 border rounded-lg shadow-md bg-slate-50/85 dark:bg-slate-800/85 dark:shadow-none dark:border-slate-700"
 >
-  <div class="flex flex-wrap gap-4 items-center justify-between pb-6 border-b dark:border-slate-700">
+  <div class="flex flex-wrap gap-x-4 gap-y-2 items-center justify-between pb-6 border-b dark:border-slate-700">
     <div class="max-w-md">
       <p class="font-bold">Sign out</p>
       <p class="help-text">Signing out will end your current session. You&#8217;ll need to sign in again to regain access to your account.</p>
     </div>
 
     <!-- Open Sign Out Modal Button -->
-    <button data-action="click->modal#open" data-modal-id="signOutModal" class="btn btn-destructive font-bold btn-muted whitespace-nowrap">
+    <button data-action="click->modal#open" data-modal-id="signOutModal" class="btn btn-destructive font-bold btn-muted whitespace-nowrap ml-auto">
       Sign out
     </button>
   </div>
 
-  <div class="flex flex-wrap gap-4 items-center justify-between py-6 border-b dark:border-slate-700">
+  <div class="flex flex-wrap gap-x-4 gap-y-2 items-center justify-between py-6 border-b dark:border-slate-700">
     <div class="max-w-md">
       <p class="font-bold">End all sessions</p>
       <p class="help-text">Sign out of all devices except this one. This will log you out from other browsers and devices where your account is active, helping secure your account.</p>
     </div>
 
     <!-- Open Sign Out All Modal Button -->
-    <button data-action="click->modal#open" data-modal-id="signOutAllModal" class="btn btn-destructive font-bold btn-muted whitespace-nowrap">
+    <button data-action="click->modal#open" data-modal-id="signOutAllModal" class="btn btn-destructive font-bold btn-muted whitespace-nowrap ml-auto">
       End all sessions
     </button>
   </div>
 
-  <div class="flex flex-wrap gap-4 items-center justify-between pt-6">
+  <div class="flex flex-wrap gap-x-4 gap-y-2 items-center justify-between pt-6">
     <div class="max-w-md">
       <p class="font-bold">Delete your account</p>
       <p class="help-text">Deleting your account is permanent. All your data will be lost, and this action cannot be undone.</p>
     </div>
 
     <!-- Open Delete Account Modal Button -->
-    <button data-action="click->modal#open" data-modal-id="deleteAccountModal" class="btn btn-destructive font-bold whitespace-nowrap">
+    <button data-action="click->modal#open" data-modal-id="deleteAccountModal" class="btn btn-destructive font-bold whitespace-nowrap ml-auto">
       Delete my account
     </button>
   </div>
