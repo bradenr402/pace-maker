@@ -127,6 +127,15 @@
     @apply rounded-full border border-slate-400 focus:ring-2 checked:ring-indigo-200 checked:border-indigo-600 checked:accent-indigo-600 checked:shadow-indigo-600 text-indigo-600 focus-visible:text-indigo-600 focus-visible:ring-indigo-200 focus-visible:outline-none dark:bg-slate-700 dark:border-slate-600 dark:checked:border-indigo-400 dark:checked:accent-indigo-400;
   }
 
+  .form-check-label,
+  .form-radio-label {
+    @apply select-none text-slate-700 dark:text-slate-300;
+  }
+
+  .form-radio-card-label {
+    @apply p-3 rounded-lg shadow-sm hover:shadow-md dark:shadow-none dark:hover:shadow-none bg-white hover:bg-slate-100 dark:bg-slate-800/60 dark:hover:bg-slate-700/70 border dark:border-slate-700 peer-checked:border-indigo-600 dark:peer-checked:border-indigo-600 text-soft peer-checked:text-indigo-600 dark:peer-checked:text-indigo-500 inline-flex items-center gap-4 w-full cursor-pointer transition duration-200 ease-in-out;
+  }
+
   /* Used to turn a checkbox input into a sliding switch control. */
   .form-input-switch {
     @apply hidden;
@@ -165,19 +174,19 @@
   .form-input-toggle {
     @apply relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 shrink-0;
 
-    &:has(input[type="checkbox"]:disabled) {
+    &:has(input[type='checkbox']:disabled) {
       @apply opacity-50 cursor-not-allowed;
     }
 
-    &:not(:has(input[type="checkbox"]:disabled)) {
+    &:not(:has(input[type='checkbox']:disabled)) {
       @apply cursor-pointer;
     }
 
-    &:has(input[type="checkbox"]:checked) {
+    &:has(input[type='checkbox']:checked) {
       @apply bg-indigo-500 dark:bg-indigo-600;
     }
 
-    &:not(:has(input[type="checkbox"]:checked)) {
+    &:not(:has(input[type='checkbox']:checked)) {
       @apply bg-slate-200 dark:bg-slate-700;
     }
   }

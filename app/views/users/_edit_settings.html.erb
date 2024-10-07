@@ -40,7 +40,50 @@
 
     <div class="form-group">
       <%= settings_form.label :theme, 'Theme preference', class: 'form-label' %>
-      <%= settings_form.select :theme, options_for_select([['System default', 'system'], ['Light mode', 'light'], ['Dark mode', 'dark']], @user.settings(:appearance).theme), {}, data: { theme_target: 'input', action: 'theme#change', restore_defaults_target: 'theme' }, class: 'form-select' %>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div>
+          <%= settings_form.radio_button :theme, 'system', checked: (@user.settings(:appearance).theme == 'system'), data: { theme_target: 'input', action: 'theme#change', restore_defaults_target: 'theme' }, class: 'hidden peer' %>
+          <%= settings_form.label :theme_system, class: 'form-radio-card-label peer-checked:*:bg-indigo-100 dark:peer-checked:*:bg-indigo-900' do %>
+            <div class="p-2 rounded-md bg-slate-200 dark:bg-slate-700 shrink-0">
+              <%= inline_svg_tag 'icons/computer.svg', class: 'size-5 peer-checked:text-indigo-500' %>
+            </div>
+
+            <div class="block !bg-transparent">
+              <p class="w-full font-semibold">System default</p>
+              <p class="w-full text-xs">Automatically adjusts based on device settings</p>
+            </div>
+          <% end %>
+        </div>
+
+        <div>
+          <%= settings_form.radio_button :theme, 'light', checked: (@user.settings(:appearance).theme == 'light'), data: { theme_target: 'input', action: 'theme#change', restore_defaults_target: 'theme' }, class: 'hidden peer' %>
+          <%= settings_form.label :theme_light, class: 'form-radio-card-label peer-checked:*:bg-indigo-100 dark:peer-checked:*:bg-indigo-900' do %>
+          <div class="p-2 rounded-md bg-slate-200 dark:bg-slate-700 shrink-0">
+            <%= inline_svg_tag 'icons/sun.svg', class: 'size-5 peer-checked:text-indigo-500' %>
+          </div>
+
+            <div class="block !bg-transparent">
+              <p class="w-full font-semibold">Light mode</p>
+              <p class="w-full text-xs">Clean, bright interface for well-lit environments</p>
+            </div>
+          <% end %>
+        </div>
+
+        <div>
+          <%= settings_form.radio_button :theme, 'dark', checked: (@user.settings(:appearance).theme == 'dark'), data: { theme_target: 'input', action: 'theme#change', restore_defaults_target: 'theme' }, class: 'hidden peer' %>
+          <%= settings_form.label :theme_dark, class: 'form-radio-card-label peer-checked:*:bg-indigo-100 dark:peer-checked:*:bg-indigo-900' do %>
+          <div class="p-2 rounded-md bg-slate-200 dark:bg-slate-700 shrink-0">
+            <%= inline_svg_tag 'icons/moon.svg', class: 'size-5 peer-checked:text-indigo-500' %>
+          </div>
+
+            <div class="block !bg-transparent">
+              <p class="w-full font-semibold">Dark mode</p>
+              <p class="w-full text-xs">Easy on the eyes in low-light environments</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
     </div>
 
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">

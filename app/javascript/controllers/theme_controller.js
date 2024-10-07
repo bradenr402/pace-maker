@@ -3,20 +3,21 @@ import { Controller } from '@hotwired/stimulus';
 
 // Connects to data-controller="theme"
 export default class extends Controller {
-  static targets = ['themeSelect'];
+  static targets = ['input'];
   static values = { userTheme: String };
 
   connect() {
-    this.setTheme(this.userThemeValue);
+    this.applyTheme();
   }
 
   applyTheme() {
     let theme;
-    if (this.hasThemeSelectTarget) {
-      theme = this.themeSelectTarget.value;
-    } else {
-      theme = this.userThemeValue;
-    }
+
+    this.inputTargets.forEach((input) => {
+      if (input.checked) theme = input.value;
+    });
+
+    if (!theme) theme = this.userThemeValue;
 
     this.setTheme(theme);
   }
