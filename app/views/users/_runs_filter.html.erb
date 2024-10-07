@@ -1,7 +1,7 @@
 <div class="mb-24">
-  <div class="pb-6 mt-10 mb-6 space-y-2 border-b dark:border-slate-700">
-    <h1 id="runs_title" class="heading">Filter Runs</h1>
-    <p class="text-soft">Filter <%= user == current_user ? 'your' : "#{user.first_name}'s" %> runs by date.</p>
+  <div class="pb-6 my-6 border-b border-slate-200 dark:border-slate-700">
+    <h2 id="runs_title" class="subheading">Filter Runs</h2>
+    <p class="text-sm text-soft">Filter <%= user == current_user ? 'your' : "#{user.first_name}'s" %> runs by date.</p>
   </div>
 
   <%= form_with url: user_path(user), method: :get, local: true, html: { novalidate: true }, data: { turbo_frame: 'runs', controller: 'custom-date-range form-validation' } do %>
@@ -24,9 +24,10 @@
 </div>
 
 <%= turbo_frame_tag 'runs' do %>
-  <div class="pb-6 mt-10 space-y-2 border-b dark:border-slate-700">
-    <h1 class="heading">Runs <%= @date_range.titlecase %></h1>
+  <div class="pb-6 my-6 border-b border-slate-200 dark:border-slate-700">
+    <h2 class="subheading">Runs <%= @date_range.titlecase %></h2>
   </div>
+
   <div class="mb-10">
     <% if @runs.present? %>
       <%= render @runs %>

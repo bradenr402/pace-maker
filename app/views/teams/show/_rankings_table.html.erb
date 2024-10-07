@@ -1,6 +1,6 @@
-<div class="flex flex-wrap items-end justify-between mt-10 mb-3 space-y-2">
+<div class="flex flex-wrap items-end justify-between mt-10 mb-4 space-y-2">
   <h2 class="subheading">Rankings <%= date_range_description.titlecase %></h2>
-  <%= link_to team_path(@team, format: :xlsx, rankings_date_range: params[:rankings_date_range], rankings_start_date: params[:rankings_start_date], rankings_end_date: params[:rankings_end_date]), class: 'btn btn-white gap-2' do %>
+  <%= link_to team_path(@team, format: :xlsx, rankings_date_range: params[:rankings_date_range], rankings_start_date: params[:rankings_start_date], rankings_end_date: params[:rankings_end_date]), class: 'btn btn-dark btn-muted gap-2' do %>
     <%= inline_svg_tag 'icons/download.svg', class: 'size-5 shrink-0' %>
     <span>Download as Excel</span>
   <% end %>

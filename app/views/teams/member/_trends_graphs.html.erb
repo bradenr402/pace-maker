@@ -1,6 +1,6 @@
 <div data-controller="chart-type" data-chart-type-active-class="btn-tab-active" data-chart-type-default-tab-value="columnChart" class="mb-24">
   <div class="pt-6 mb-4 border-t border-slate-200 dark:border-slate-700 flex flex-wrap items-end gap-x-4 gap-y-1">
-    <div class="space-y-1">
+    <div>
       <h2 class="subheading">Miles <%= date_range_description.titlecase %></h2>
       <p class="text-sm text-soft">This graph shows how many miles <%= @member == current_user ? 'you' : @member.first_name %> ran <%= date_range_description %>.</p>
     </div>
@@ -41,7 +41,7 @@
 
 <div data-controller="chart-type" data-chart-type-active-class="btn-tab-active" data-chart-type-default-tab-value="columnChart" class="mb-24">
   <div class="pt-6 mb-4 border-t border-slate-200 dark:border-slate-700 flex flex-wrap items-end gap-x-4 gap-y-1">
-    <div class="space-y-1">
+    <div>
       <h2 class="subheading">Long Runs <%= date_range_description.titlecase %></h2>
       <p class="text-sm text-soft">This graph shows how many long runs <%= @member == current_user ? 'you' : @member.first_name %> ran <%= date_range_description %>.</p>
     </div>

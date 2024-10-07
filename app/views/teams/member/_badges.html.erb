@@ -1,6 +1,6 @@
 <% member_is_current = member == current_user %>
 
-<div class="pb-6 mt-10 mb-6 space-y-2 border-b dark:border-slate-700">
+<div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
   <h1 class="heading">Badges</h1>
   <p class="text-soft">Badges <%= member_is_current ? 'you have' : "#{member.first_name} has" %> earned by reaching streak and long run milestones.</p>
 </div>

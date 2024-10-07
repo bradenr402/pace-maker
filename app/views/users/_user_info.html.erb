@@ -1,5 +1,5 @@
 <div class="mb-24">
-  <div class="pb-6 mt-10 mb-6 space-y-2 border-b dark:border-slate-700">
+  <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
     <h1 class="heading">User Info</h1>
     <p class="text-soft">Information and statistics about <%= user == current_user ? 'you' : "#{user.first_name}" %>.</p>
   </div>
@@ -78,10 +78,9 @@
 
 <% if user.show_email? || (user.phone_number? && user.show_phone?) %>
   <div class="mb-24">
-    <div class="pb-6 mt-10 mb-6 space-y-2 border-b dark:border-slate-700">
-      <h1 class="heading">Contact</h1>
-
-      <p class="text-soft">
+    <div class="pb-6 my-6 border-b border-slate-200 dark:border-slate-700">
+      <h2 class="subheading">Contact</h2>
+      <p class="text-sm text-soft">
         <% if user == current_user %>
           Your contact information. You can hide this in <%= link_to 'settings', edit_user_registration_path(tab: 'settingsTab'), class: 'btn-link transition duration-200 ease-in-out' %>.
         <% else %>
