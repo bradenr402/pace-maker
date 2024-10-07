@@ -260,13 +260,13 @@
 
   <div class="flex flex-wrap gap-x-4 gap-y-2 items-center justify-between py-6 border-b dark:border-slate-700">
     <div class="max-w-md">
-      <p class="font-bold">End all sessions</p>
+      <p class="font-bold">End all other sessions</p>
       <p class="help-text">Sign out of all devices except this one. This will log you out from other browsers and devices where your account is active, helping secure your account.</p>
     </div>
 
     <!-- Open Sign Out All Modal Button -->
     <button data-action="click->modal#open" data-modal-id="signOutAllModal" class="btn btn-destructive font-bold btn-muted whitespace-nowrap ml-auto">
-      End all sessions
+      End all other sessions
     </button>
   </div>
 
@@ -303,7 +303,7 @@
     </div>
 
     <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-      <button data-action="click->modal#close" data-modal-id="signOutModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+      <button data-action="click->modal#close" data-modal-id="signOutModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Stay signed in</button>
       <%= button_to 'Sign out', destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: 'btn btn-destructive font-bold w-full whitespace-nowrap' %>
     </div>
 
@@ -329,13 +329,13 @@
     class="modal opacity-0 pointer-events-none"
   >
     <div class="flex flex-col space-y-1.5 text-center sm:text-left">
-      <h2 class="text-lg font-semibold leading-none tracking-tight">End All Sessions?</h2>
-      <p class="text-soft text-sm">Are you sure you want to sign out of all other devices? This will end your session on all devices except the one you're currently using. You will need to sign in again on any other device.</p>
+      <h2 class="text-lg font-semibold leading-none tracking-tight">End All Other Sessions?</h2>
+      <p class="text-soft text-sm">Are you sure you want to sign out of all other devices? This will end your session on all devices except the one you're currently using. You will need to sign in again on all of your other devices.</p>
     </div>
 
     <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-      <button data-action="click->modal#close" data-modal-id="signOutAllModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
-      <%= button_to 'End All Sessions', sign_out_all_devices_path, method: :post, class: 'btn btn-destructive font-bold w-full whitespace-nowrap' %>
+      <button data-action="click->modal#close" data-modal-id="signOutAllModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Nevermind</button>
+      <%= button_to 'End all other sessions', sign_out_all_devices_path, method: :post, class: 'btn btn-destructive font-bold w-full whitespace-nowrap' %>
     </div>
 
     <button data-action="click->modal#close" type="button" data-modal-id="signOutAllModal" class="modal-x-btn">
@@ -361,11 +361,11 @@
   >
     <div class="flex flex-col space-y-1.5 text-center sm:text-left">
       <h2 class="text-lg font-semibold leading-none tracking-tight">Delete Account?</h2>
-      <p class="text-soft text-sm">Are you sure you want to delete your account? This is permanent. All your data will be lost, and you will no longer be able to access your account. <span class="underline underline-offset-2 font-semibold">This action cannot be undone</span>.</p>
+      <p class="text-soft text-sm">Are you sure you want to delete your account? All your data will be permanently deleted, and you will no longer be able to access your account. <span class="underline underline-offset-2 font-semibold">This action cannot be undone</span>.</p>
     </div>
 
     <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-      <button data-action="click->modal#close" data-modal-id="deleteAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+      <button data-action="click->modal#close" data-modal-id="deleteAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Nevermind</button>
       <%= button_to 'Delete my account',
                     registration_path(resource_name),
                     method: :delete,
