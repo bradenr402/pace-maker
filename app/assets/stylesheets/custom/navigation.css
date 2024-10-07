@@ -8,18 +8,10 @@
   }
 
   .tab-link {
-    @apply flex items-center gap-1 text-normal text-xs font-bold hover:text-indigo-500 dark:hover:text-soft transition duration-200 ease-in-out dark:focus:text-white;
-
-    & span {
-      @apply sr-only;
-    }
+    @apply flex flex-col items-center gap-1 text-normal text-xs font-bold hover:text-indigo-500 dark:hover:text-soft transition duration-200 ease-in-out dark:focus:text-white;
 
     &.tab-link-active {
-      @apply py-1 px-3 rounded-full bg-gradient-to-b from-indigo-400 to-indigo-500 dark:from-indigo-500 dark:to-indigo-600 text-white hover:text-white dark:hover:text-white;
-
-      & span {
-        @apply not-sr-only;
-      }
+      @apply py-1 px-3 rounded-lg bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400;
     }
   }
 

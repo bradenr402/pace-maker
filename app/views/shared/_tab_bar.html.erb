@@ -10,12 +10,12 @@
   data-modal-show-modal-class="opacity-100 scale-100 pointer-events-auto"
   data-modal-hide-backdrop-class="opacity-0 pointer-events-none"
   data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
-  class="fixed inset-x-4 bottom-4 z-50 w-[calc(100%-2rem)] bg-transparent flex items-center justify-center gap-6 md:hidden"
+  class="fixed z-50 inset-x-4 bottom-6 w-[calc(100%-2rem)] bg-transparent flex items-center justify-center gap-4 md:hidden"
 >
-  <nav class="flex items-center justify-between gap-4 w-full max-w-sm rounded-full p-1 bg-slate-50 dark:bg-slate-700 border dark:border-slate-600 shadow-md dark:shadow-none">
-    <%= link_to profile_path, aria: { current: current_is_profile ? 'page' : nil }, class: "tab-link #{current_is_profile ? 'tab-link-active' : 'ml-1.5'}" do %>
+  <nav class="flex items-center justify-between gap-4 w-full max-w-sm rounded-xl p-1 bg-slate-50 dark:bg-slate-700 border dark:border-slate-600 shadow-md dark:shadow-none">
+    <%= link_to profile_path, aria: { current: current_is_profile ? 'page' : nil }, class: "tab-link #{current_is_profile ? 'tab-link-active' : 'ml-2.5'}" do %>
       <% if current_user.avatar.attached? %>
-        <%= image_tag current_user.avatar.variant(resize_to_limit: [50, 50]).processed, class: "#{current_is_profile ? 'size-6' : 'size-7'} rounded-md drop-shadow-md dark:drop-shadow-none object-cover shrink-0" %>
+        <%= image_tag current_user.avatar.variant(resize_to_limit: [50, 50]).processed, class: "size-6 rounded-md drop-shadow-md dark:drop-shadow-none object-cover shrink-0" %>
       <% elsif current_is_profile %>
         <%= inline_svg_tag 'icons/profile-filled.svg', class: 'size-6 shrink-0' %>
       <% else %>
@@ -42,7 +42,7 @@
       <span>Search</span>
     <% end %>
 
-    <%= link_to edit_user_registration_path, aria: { current: current_is_edit_user ? 'page' : nil }, class: "tab-link #{current_is_edit_user ? 'tab-link-active' : 'mr-1'}" do %>
+    <%= link_to edit_user_registration_path, aria: { current: current_is_edit_user ? 'page' : nil }, class: "tab-link #{current_is_edit_user ? 'tab-link-active' : 'mr-2.5'}" do %>
       <% if current_is_edit_user %>
         <%= inline_svg_tag 'icons/settings-filled.svg', class: 'size-6 shrink-0' %>
       <% else %>
@@ -53,8 +53,8 @@
   </nav>
 
   <!-- Open New Run Modal Button -->
-  <button data-action="click->modal#open" data-modal-id="newRunModal" class="grid place-items-center grow-0 shrink-0 bg-gradient-to-b from-indigo-400 to-indigo-500 dark:from-indigo-500 dark:to-indigo-600 text-white text-sm p-3 rounded-full">
-    <%= inline_svg_tag 'icons/runner.svg', class: 'size-5' %>
+  <button data-action="click->modal#open" data-modal-id="newRunModal" class="grid place-items-center grow-0 shrink-0 btn btn-primary p-4 rounded-full">
+    <%= inline_svg_tag 'icons/runner.svg', class: 'size-7' %>
     <span class="sr-only">New run</span>
   </button>
 
