@@ -28,12 +28,12 @@ export default class extends Controller {
   }
 
   setTheme(theme) {
-    if (theme === 'dark') {
+    const isDarkTheme = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+    if (isDarkTheme) {
       document.documentElement.classList.add('dark');
-    } else if (theme === 'light') {
+    } else {
       document.documentElement.classList.remove('dark');
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.documentElement.classList.add('dark');
     }
   }
 }
