@@ -20,6 +20,6 @@
     </div>
     <%= render 'shared/tab_bar' if user_signed_in? %>
 
-    <%= turbo_stream_from 'pinned_pages_list' %>
+    <%= turbo_stream_from 'pinned_pages_list' if user_signed_in?%>
   </body>
 </html>
