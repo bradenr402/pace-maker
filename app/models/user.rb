@@ -33,6 +33,8 @@ class User < ApplicationRecord
          :recoverable,
          :rememberable,
          :validatable,
+         :omniauthable,
+         omniauth_providers: [:google_oauth2],
          authentication_keys: [:login]
 
   attr_writer :login
@@ -66,6 +68,63 @@ class User < ApplicationRecord
               in: genders.keys + ['']
             },
             if: -> { gender.present? }
+
+  def self.from_omniauth(auth)
+    user = where(provider: auth.provider, uid: auth.uid).first_or_initialize do |user|
+      user.email = auth.info.email
+      user.password = generate_valid_password
+
+      # Ensure the username is unique
+      base_username = auth.info.email.split('@').first
+      user.username = generate_unique_username(base_username)
+
+      user.display_name = auth.info.name
+      user.avatar_url = auth.info.image
+
+      # If you are using confirmable and the provider(s) you use validate emails,
+      # uncomment the line below to skip the confirmation emails.
+      # user.skip_confirmation!
+    end
+
+    user.save!
+    user
+  end
+
+  def self.generate_unique_username(base_username)
+    username = base_username
+    count = 1
+
+    while User.exists?(username:)
+      username = "#{base_username}_#{count}"
+      count += 1
+    end
+
+    username
+  end
+
+  def self.generate_valid_password(length = 20)
+    # Define character sets for different requirements
+    # Refer to the PASSWORD_FORMAT constant for the password requirements
+    upper = ('A'..'Z').to_a
+    lower = ('a'..'z').to_a
+    digits = ('0'..'9').to_a
+    special = %w[# ? ! @ $ % ^ & * -]
+
+    password = [
+      upper.sample,   # At least one uppercase letter
+      lower.sample,   # At least one lowercase letter
+      digits.sample,  # At least one digit
+      special.sample  # At least one special character
+    ]
+
+    # Fill the rest of the password length with random characters from all sets
+    (length - password.length).times do
+      password << (upper + lower + digits + special).sample
+    end
+
+    # Shuffle the password to make it more random
+    password.shuffle.join
+  end
 
   def login = @login || username || email
 

@@ -83,3 +83,7 @@ gem 'caxlsx'
 gem 'caxlsx_rails'
 
 gem 'chartkick'
+
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-rails_csrf_protection'

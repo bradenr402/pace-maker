@@ -4,16 +4,25 @@
 <% omniauth_check = devise_mapping.omniauthable? %>
 
 <%- if forgot_password_check || confirmation_instructions_check || unlock_instructions_check || omniauth_check %>
-  <div class="mt-4 text-center">
+  <div class="mt-4 space-y-4 text-center">
     <%= link_to 'Forgot password?', new_password_path(resource_name), class: 'btn-link text-sm' if forgot_password_check %>
 
-    <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name), class: 'btn-link text-sm' if confirmation_instructions_check %>
+    <%= link_to 'Didn\'t receive confirmation instructions?', new_confirmation_path(resource_name), class: 'btn-link text-sm' if confirmation_instructions_check %>
 
-    <%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name), class: 'btn-link text-sm' if unlock_instructions_check %>
+    <%= link_to 'Didn\'t receive unlock instructions?', new_unlock_path(resource_name), class: 'btn-link text-sm' if unlock_instructions_check %>
+
+    <div class="flex items-center">
+      <hr class="flex-grow border-t dark:border-slate-700">
+      <span class="px-3 text-soft text-sm">
+        OR
+      </span>
+      <hr class="flex-grow border-t dark:border-slate-700">
+    </div>
 
     <%- if omniauth_check %>
-      <%- resource_class.omniauth_providers.each do |provider| %>
-        <%= button_to "Sign in with #{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider), data: { turbo: false } %>
+      <%= button_to user_google_oauth2_omniauth_authorize_path, data: { turbo: 'false' }, class: 'btn btn-white btn-outline gap-2 w-full' do %>
+        <%= inline_svg_tag 'icons/google-logo.svg', class: 'size-5' %>
+        <%= current_page?(new_user_session_path) ? 'Sign in' : 'Sign up' %> with Google
       <% end %>
     <% end %>
   </div>

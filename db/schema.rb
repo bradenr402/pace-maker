@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_06_023837) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_08_201030) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
@@ -171,6 +171,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_06_023837) do
     t.string "display_name"
     t.string "phone_number"
     t.string "gender"
+    t.string "uid"
+    t.string "avatar_url"
+    t.string "provider"
     t.index ["display_name"], name: "index_users_on_display_name"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["phone_number"], name: "index_users_on_phone_number", unique: true, where: "(phone_number IS NOT NULL)"
@@ -180,6 +183,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_06_023837) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "feedbacks", "users"
+  add_foreign_key "notifications", "users"
   add_foreign_key "pinned_pages", "users"
   add_foreign_key "runs", "users"
   add_foreign_key "team_join_requests", "teams"
