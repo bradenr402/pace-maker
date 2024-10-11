@@ -66,6 +66,11 @@
                     View team settings
                   <% end %>
                 <% end %>
+
+                <%= link_to team_member_path(@team, current_user), class: 'dropdown-option' do %>
+                  <%= inline_svg_tag 'icons/user.svg', class: 'size-5' %>
+                  View my member page
+                <% end %>
               <% end %>
 
               <!-- Open Delete Team Modal Button -->
