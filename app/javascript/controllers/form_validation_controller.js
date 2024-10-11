@@ -74,11 +74,14 @@ export default class extends Controller {
       if (this.newPasswordTarget.value) {
         this.newPasswordConfirmationTarget.disabled = false;
         this.newPasswordConfirmationLabelTarget.classList.remove('opacity-60');
-        this.newPasswordConfirmationHintTarget.classList.remove('opacity-0');
+        this.newPasswordConfirmationHintTarget.classList.remove('opacity-0', 'pointer-events-none');
       } else {
         this.newPasswordConfirmationTarget.disabled = true;
         this.newPasswordConfirmationLabelTarget.classList.add('opacity-60');
-        this.newPasswordConfirmationHintTarget.classList.add('opacity-0');
+        this.newPasswordConfirmationHintTarget.classList.add(
+          'opacity-0',
+          'pointer-events-none'
+        );
       }
     }
   }
@@ -319,7 +322,8 @@ export default class extends Controller {
     if (newPassword) {
       this.newPasswordConfirmationTarget.disabled = false;
       this.newPasswordConfirmationLabelTarget.classList.remove('opacity-60');
-      this.newPasswordConfirmationHintTarget.classList.remove('opacity-0');
+      this.newPasswordConfirmationHintTarget.classList.remove('opacity-0', 'pointer-events-none');
+
       if (
         newPassword !== newPasswordConfirmation &&
         event.target !== this.newPasswordTarget
@@ -331,7 +335,7 @@ export default class extends Controller {
     } else {
       this.newPasswordConfirmationTarget.disabled = true;
       this.newPasswordConfirmationLabelTarget.classList.add('opacity-60');
-      this.newPasswordConfirmationHintTarget.classList.add('opacity-0');
+      this.newPasswordConfirmationHintTarget.classList.add('opacity-0', 'pointer-events-none');
       this.newPasswordConfirmationErrorTarget.classList.add('hidden');
     }
   }
