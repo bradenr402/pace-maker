@@ -1,6 +1,6 @@
 <% content_for :title, 'Teams' %>
 
-<div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="ownedTeamsTab" class="max-w-3xl px-4 mx-auto my-16">
+<div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="teamMembershipsTab" class="max-w-3xl px-4 mx-auto my-16">
   <div class="relative flex items-center mb-6">
     <!-- Left Arrow -->
     <button type="button" data-action="click->tabs#scrollLeft" data-tabs-target="leftArrow" class="opacity-0 pointer-events-none tab-container-scroll-left transition duration-300">
@@ -11,12 +11,12 @@
       <!-- Tab Indicator -->
       <span data-tabs-target="indicator" class="sliding-tab-indicator"></span>
 
-      <button type="button" id="ownedTeamsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'ownedTeamsTab' ? 'btn-tab-active' : '' %>">
+      <button type="button" id="ownedTeamsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'ownedTeamsTab' ? 'btn-tab-active' : '' %>">
         <%= inline_svg_tag 'icons/team.svg', class: 'size-5' %>
         <span>My Teams</span>
       </button>
 
-      <button type="button" id="teamMembershipsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'teamMembershipsTab' ? 'btn-tab-active' : '' %>">
+      <button type="button" id="teamMembershipsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'teamMembershipsTab' ? 'btn-tab-active' : '' %>">
         <%= inline_svg_tag 'icons/id-card.svg', class: 'size-5' %>
         <span>My Team Memberships</span>
       </button>
