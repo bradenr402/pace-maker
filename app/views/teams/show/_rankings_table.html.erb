@@ -52,44 +52,42 @@
     </thead>
 
     <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
-      <% team.members.sort_by { |member| -(member.miles_in_date_range(date_range)) }.each do |member| %>
+      <% @all_members.sort_by { |member| -(member[:total_miles]) }.each do |data| %>
         <tr data-filter-gender-target="row" class="bg-slate-50/85 dark:bg-slate-800/85 hover:bg-slate-200/70 dark:hover:bg-slate-700/70">
           <th scope="row" class="px-6 py-4 font-medium text-normal whitespace-nowrap">
             <div class="flex items-center">
               <span class="mr-4 -ml-1 font-mono row-number"></span>
-              <%= link_to team_member_path(team, member), data: { turbo: false }, class: 'group flex gap-2 items-center mr-auto' do %>
-                <% if member.avatar.attached? %>
-                  <%= image_tag member.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-8 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover' %>
+              <%= link_to team_member_path(team, data[:member]), data: { turbo: false }, class: 'group flex gap-2 items-center mr-auto' do %>
+                <% if data[:member].avatar.attached? %>
+                  <%= image_tag data[:member].avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-8 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover' %>
                 <% else %>
                   <div class="size-8 bg-slate-200 dark:bg-slate-700 rounded-lg drop-shadow-lg dark:drop-shadow-none grid place-items-center">
                     <%= inline_svg_tag 'icons/user.svg', class: 'size-5 text-soft' %>
                   </div>
                 <% end %>
                 <div class="flex flex-col-reverse">
-                  <p class="transition duration-300 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= member.default_name %></p>
-                  <%= content_tag(:p, member == current_user ? 'You' : 'Coach', class: 'help-text') if member.owns?(team) || member == current_user %>
+                  <p class="transition duration-300 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= data[:member].default_name %></p>
+                  <%= content_tag(:p, data[:member] == current_user ? 'You' : 'Coach', class: 'help-text') if data[:member].owns?(team) || data[:member] == current_user %>
                 </div>
               <% end %>
             </div>
           </th>
           <% if team.require_gender? %>
             <td data-filter-gender-target="genderCell" class="px-6 py-4">
-              <%= member.gender.present? ? member.gender.capitalize : '—' %>
+              <%= data[:member].gender.present? ? data[:member].gender.capitalize : '—' %>
             </td>
           <% end %>
           <td class="px-6 py-4 font-mono">
-            <%= member.miles_in_date_range(date_range) %>
+            <%= data[:total_miles] %>
           </td>
           <td class="px-6 py-4 font-mono">
-            <%= member.total_long_runs_in_date_range(team, date_range) %>
+            <%= data[:total_long_runs] %>
           </td>
           <td class="px-6 py-4 font-mono">
-            <% current_streak = member.current_streak(team)[:streak] %>
-            <%= current_streak %> <span class="font-sans text-xs"><%= 'day'.pluralize(current_streak) %></span>
+            <%= data[:current_streak] %> <span class="font-sans text-xs"><%= 'day'.pluralize(data[:current_streak]) %></span>
           </td>
           <td class="px-6 py-4 font-mono">
-            <% longest_streak = member.longest_streak(team)[:streak] %>
-            <%= longest_streak %> <span class="font-sans text-xs"><%= 'day'.pluralize(longest_streak) %></span>
+            <%= data[:longest_streak] %> <span class="font-sans text-xs"><%= 'day'.pluralize(data[:longest_streak]) %></span>
           </td>
         </tr>
       <% end %>
@@ -100,8 +98,8 @@
         <th scope="row" class="px-6 py-3">Totals</th>
         <% if team.require_gender? %>
           <td class="px-6 py-3">
-            <p data-filter-gender-target="maleTotal" class="text-xs whitespace-nowrap"><%= team.members.where(gender: 'male').count %> male</p>
-            <p data-filter-gender-target="femaleTotal" class="text-xs whitespace-nowrap"><%= team.members.where(gender: 'female').count %> female</p>
+            <p data-filter-gender-target="maleTotal" class="text-xs whitespace-nowrap"><%= @all_members.count { |data| data[:member].gender == 'male' } %> male</p>
+            <p data-filter-gender-target="femaleTotal" class="text-xs whitespace-nowrap"><%= @all_members.count { |data| data[:member].gender == 'female' } %> female</p>
           </td>
         <% end %>
         <td class="px-6 py-3 font-mono"><%= team.miles_in_date_range(date_range) %> <span class="text-xs">mi</span></td>

@@ -27,25 +27,20 @@ module UserCalculations
   end
 
   # Long run calculations
-  def long_runs_this_season(team)
-    long_run_distance = team.long_run_distance_for_user(self)
+  def long_runs_this_season(team) =
+    runs.where(data: team.season_range, distance: team.long_run_distance_for_user(self)..Float::INFINITY)
 
-    runs_this_season(team).where('distance > ?', long_run_distance)
-  end
-
-  def total_long_runs_this_season(team) = long_runs_this_season(team).count
+  def total_long_runs_this_season(team) =
+    runs.where(date: team.season_range, distance: team.long_run_distance_for_user(self)..Float::INFINITY).count
 
   def total_long_runs(team) =
-    runs.where('distance >= ?', team.long_run_distance_for_user(self)).count
+    runs.where(distance: team.long_run_distance_for_user(self)..Float::INFINITY).count
 
   def long_runs_in_date_range(team, date_range) =
-    runs_in_date_range(date_range).where(
-      'distance >= ?',
-      team.long_run_distance_for_user(self)
-    )
+    runs.where(date: date_range, distance: team.long_run_distance_for_user(self)..Float::INFINITY)
 
   def total_long_runs_in_date_range(team, date_range) =
-    long_runs_in_date_range(team, date_range).count
+    runs.where(date: date_range, distance: team.long_run_distance_for_user(self)..Float::INFINITY).count
 
   # Streak calculations
   def current_streak(team)

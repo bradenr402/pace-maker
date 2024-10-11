@@ -4,9 +4,8 @@
 </div>
 
 <div class="mb-10">
-  <% featured_runs = team.featured_runs %>
-  <% if featured_runs.present? %>
-    <% featured_runs.each do |run| %>
+  <% if @featured_runs.present? %>
+    <% @featured_runs.each do |run| %>
       <%= render run, team: team %>
     <% end %>
   <% else %>

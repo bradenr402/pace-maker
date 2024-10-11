@@ -93,4 +93,8 @@ Rails.application.configure do
 
   config.assets.debug = true
   config.assets.check_precompiled_asset = false
+
+  # Set up logger
+  config.logger = ActiveSupport::Logger.new(Rails.root.join('log/development.log'))
+  config.log_level = :debug
 end

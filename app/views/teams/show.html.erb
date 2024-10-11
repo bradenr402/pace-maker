@@ -19,7 +19,7 @@
     <%= simple_format @team.description, class: 'text-soft text-sm md:max-w-[80%] md:mx-auto md:text-balance' unless @team.description.blank? %>
 
     <div class="flex items-center justify-center md:justify-end mt-4">
-      <% if current_user.member_of?(@team) %>
+      <% if @current_user_member_of_team %>
         <div
           data-controller="modal"
           data-modal-hide-modal-class="opacity-0 scale-75 pointer-events-none"
@@ -54,27 +54,8 @@
               <!-- Edit/Join/Leave/Cancel Request Button -->
               <%= render 'teams/shared/team_links', team: @team %>
 
-              <% if current_user.member_of?(@team) %>
-                <% unless current_user.owns?(@team) %>
-                  <%= link_to team_settings_path(@team), class: 'dropdown-option' do %>
-                    <%= inline_svg_tag 'icons/settings.svg', class: 'size-5' %>
-                    View team settings
-                  <% end %>
-                <% end %>
-
-                <%= link_to team_member_path(@team, current_user), class: 'dropdown-option' do %>
-                  <%= inline_svg_tag 'icons/user.svg', class: 'size-5' %>
-                  View my member page
-                <% end %>
-
-                <%= link_to edit_team_team_membership_path(@team, current_user), class: 'dropdown-option-primary' do %>
-                  <%= inline_svg_tag 'icons/user-pencil.svg', class: 'size-5' %>
-                  Edit my personal goals
-                <% end %>
-              <% end %>
-
               <!-- Open Delete Team Modal Button -->
-              <% if current_user.owns?(@team) %>
+              <% if @current_user_owns_team %>
                 <button data-action="click->modal#open" data-modal-id="deleteTeam" class="dropdown-option-destructive">
                   <%= inline_svg_tag 'icons/trash.svg', class: 'size-5' %>
                   Delete team
@@ -83,9 +64,9 @@
             </div>
           </div>
 
-          <%= render 'teams/shared/leave_team_modal', team: @team if current_user.member_of?(@team) && !current_user.owns?(@team) %>
+          <%= render 'teams/shared/leave_team_modal', team: @team if @current_user_member_of_team && !@current_user_owns_team %>
 
-          <%= render 'teams/shared/delete_team_modal', team: @team if current_user.owns?(@team) %>
+          <%= render 'teams/shared/delete_team_modal', team: @team if @current_user_owns_team %>
         </div>
       <% else %>
         <%= render 'teams/shared/team_buttons', team: @team %>
@@ -113,14 +94,14 @@
         <span>Team Members</span>
       </button>
 
-      <% if current_user.owns?(@team) %>
+      <% if @current_user_owns_team %>
         <button type="button" id="joinRequestsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'joinRequestsTab' ? 'btn-tab-active' : '' %>">
           <%= inline_svg_tag 'icons/user-plus.svg', class: 'size-5' %>
           <span>Join Requests</span>
         </button>
       <% end %>
 
-      <% if current_user.member_of?(@team) %>
+      <% if @current_user_member_of_team %>
         <button type="button" id="rankingsTab" data-tabs-target="btn" data-action="click->tabs#select" class="btn-tab <%= params[:tab] == 'rankingsTab' ? 'btn-tab-active' : '' %>">
           <%= inline_svg_tag 'icons/arrow-transfer-vertical.svg', class: 'size-5' %>
           <span>Rankings</span>
@@ -149,35 +130,49 @@
     </button>
   </div>
 
-  <div id="infoTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'infoTab' ? '' : 'hidden' %>">
-    <%= render 'teams/show/team_info', team: @team %>
-  </div>
-
-  <div id="membersTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'membersTab' ? '' : 'hidden' %>">
-    <%= render 'teams/show/members', team: @team, members: @members %>
-  </div>
-
-  <% if current_user.owns?(@team) %>
-    <div id="joinRequestsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'joinRequestsTab' ? '' : 'hidden' %>">
-      <%= render 'teams/show/join_requests', join_requests: @join_requests %>
+  <% cache [@team, 'info_tab'] do %>
+    <div id="infoTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'infoTab' ? '' : 'hidden' %>">
+      <%= render 'teams/show/team_info', team: @team %>
     </div>
   <% end %>
 
-  <% if current_user.member_of?(@team) %>
-    <div id="rankingsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'rankingsTab' ? '' : 'hidden' %>">
-      <%= render 'teams/show/rankings', team: @team %>
+  <% cache [@team, 'members_tab'] do %>
+    <div id="membersTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'membersTab' ? '' : 'hidden' %>">
+      <%= render 'teams/show/members', team: @team, members: @members %>
     </div>
+  <% end %>
 
-    <div id="trendsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'trendsTab' ? '' : 'hidden' %>">
-      <%= render 'teams/show/trends', team: @team %>
-    </div>
+  <% if @current_user_owns_team %>
+    <% cache [@team, 'join_requests_tab'] do %>
+      <div id="joinRequestsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'joinRequestsTab' ? '' : 'hidden' %>">
+        <%= render 'teams/show/join_requests', join_requests: @join_requests %>
+      </div>
+    <% end %>
+  <% end %>
 
-    <div id="featuredTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'featuredTab' ? '' : 'hidden' %>">
-      <%= render 'teams/show/featured', team: @team %>
-    </div>
+  <% if @current_user_member_of_team %>
+    <% cache [@team, 'rankings_tab'] do %>
+      <div id="rankingsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'rankingsTab' ? '' : 'hidden' %>">
+        <%= render 'teams/show/rankings', team: @team %>
+      </div>
+    <% end %>
 
-    <div id="recentActivityTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'recentActivityTab' ? '' : 'hidden' %>">
-      <%= render 'teams/show/recent_activity', team: @team %>
-    </div>
+    <% cache [@team, 'trends_tab'] do %>
+      <div id="trendsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'trendsTab' ? '' : 'hidden' %>">
+        <%= render 'teams/show/trends', team: @team %>
+      </div>
+    <% end %>
+
+    <% cache [@team, 'featured_tab'] do %>
+      <div id="featuredTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'featuredTab' ? '' : 'hidden' %>">
+        <%= render 'teams/show/featured', team: @team %>
+      </div>
+    <% end %>
+
+    <% cache [@team, 'recent_activity_tab'] do %>
+      <div id="recentActivityTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'recentActivityTab' ? '' : 'hidden' %>">
+        <%= render 'teams/show/recent_activity', team: @team %>
+      </div>
+    <% end %>
   <% end %>
 </div>

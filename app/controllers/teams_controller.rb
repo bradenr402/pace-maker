@@ -21,9 +21,10 @@ class TeamsController < ApplicationController
         :members
       )
 
+    query_param = params[:query]
     @other_teams =
-      if params[:query].present?
-        sanitized_query = ActiveRecord::Base.connection.quote(params[:query])
+      if query_param.present?
+        sanitized_query = ActiveRecord::Base.connection.quote(query_param)
         Team
           .with_attached_photo
           .includes(:owner, :setting_objects, :members)
@@ -35,18 +36,18 @@ class TeamsController < ApplicationController
             similarity(teams.name, :query) > 0.3 OR
             similarity(users.username, :query) > 0.3 OR
             similarity(users.display_name, :query) > 0.3',
-            query: "%#{params[:query]}%"
+            query: "%#{query_param}%"
           )
           .order(
             Arel.sql(
               "GREATEST(similarity(teams.name, #{sanitized_query}),
-                          similarity(users.username, #{sanitized_query}),
-                          similarity(users.display_name, #{sanitized_query}),
-                          CASE
-                            WHEN LOWER(teams.name) LIKE LOWER(#{sanitized_query})
-                            THEN 1
-                            ELSE 0
-                          END) DESC"
+                        similarity(users.username, #{sanitized_query}),
+                        similarity(users.display_name, #{sanitized_query}),
+                        CASE
+                          WHEN LOWER(teams.name) LIKE LOWER(#{sanitized_query})
+                          THEN 1
+                          ELSE 0
+                        END) DESC"
             )
           )
       else
@@ -68,13 +69,38 @@ class TeamsController < ApplicationController
     add_breadcrumb @team.name, team_path(@team)
 
     @members =
-      Rails.cache.fetch([@team, 'members', params[:query]]) { get_members }
+      Rails
+      .cache
+      .fetch([@team, 'members', params[:query]], expires_in: 1.hour) do
+        get_members
+      end
 
-    @rankings_date_range, @rankings_date_range_description = get_rankings_data
-    @trends_date_range, @trends_date_range_description = get_trends_data
+    @rankings_date_range, @rankings_date_range_description =
+      Rails
+      .cache
+      .fetch([@team, 'rankings_data'], expires_in: 1.hour) do
+        get_rankings_data
+      end
 
-    @miles_data = get_team_miles_data
-    @long_runs_data = get_team_long_runs_data
+    @trends_date_range, @trends_date_range_description =
+      Rails
+      .cache
+      .fetch([@team, 'trends_data'], expires_in: 1.hour) { get_trends_data }
+
+    @miles_data =
+      Rails
+      .cache
+      .fetch([@team, 'miles_data', @trends_date_range], expires_in: 1.hour) do
+        get_team_miles_data
+      end
+
+    @long_runs_data =
+      Rails
+      .cache
+      .fetch(
+        [@team, 'long_runs_data', @trends_date_range],
+        expires_in: 1.hour
+      ) { get_team_long_runs_data }
 
     if current_user.owns?(@team)
       @join_requests =
@@ -83,6 +109,44 @@ class TeamsController < ApplicationController
         .includes(user: :avatar_attachment)
         .pending
         .order(updated_at: :desc)
+
+      @current_user_owns_team = true
+    end
+
+    if current_user.member_of?(@team)
+      @current_user_member_of_team = true
+      @featured_runs =
+        Rails
+        .cache
+        .fetch([@team, 'featured_runs'], expires_in: 1.hour) do
+          @team.featured_runs
+        end
+
+      @recent_runs =
+        Rails
+        .cache
+        .fetch([@team, 'recent_runs'], expires_in: 1.hour) do
+          @team.recent_runs
+        end
+
+      @all_members =
+        @team
+        .members
+        .with_attached_avatar
+        .includes(:runs)
+        .map do |member|
+          {
+            member:,
+            total_miles: member.miles_in_date_range(@rankings_date_range),
+            total_long_runs:
+              member.total_long_runs_in_date_range(
+                @team,
+                @rankings_date_range
+              ),
+            current_streak: member.current_streak(@team)[:streak],
+            longest_streak: member.longest_streak(@team)[:streak]
+          }
+        end
     end
 
     respond_to do |format|
@@ -221,27 +285,86 @@ class TeamsController < ApplicationController
   end
 
   def member
-    @team = Team.find(params[:team_id])
-    @member = @team.members.find(params[:user_id])
-    @team_membership = @team.team_memberships.find_by(user: @member)
+    @team =
+      Team
+      .with_attached_photo
+      .includes(
+        :owner,
+        :join_requests,
+        :team_memberships,
+        members: {
+          avatar_attachment: {
+            blob: :variant_records
+          }
+        }
+      )
+      .find(params[:team_id])
+
+    @team_membership =
+      @team
+      .team_memberships
+      .includes(user: [:runs, { avatar_attachment: { blob: :variant_records } }])
+      .find_by(user_id: params[:user_id])
+
+    return redirect_back fallback_location: @team, error: 'Member not found.' unless @team_membership
+
+    @member = @team_membership.user
 
     add_breadcrumb 'Teams', teams_path
     add_breadcrumb @team.name, team_path(@team)
     add_breadcrumb @member.default_name, team_member_path(@team, @member)
 
-    @trends_date_range, @trends_date_range_description = get_trends_data
+    @trends_date_range, @trends_date_range_description =
+      Rails
+      .cache
+      .fetch(
+        "#{@team.cache_key}/#{@member.cache_key}/trends_data",
+        expires_in: 1.hour
+      ) { get_trends_data }
 
-    @miles_data = get_member_miles_data
-    @long_runs_data = get_member_long_runs_data
+    @miles_data =
+      Rails
+      .cache
+      .fetch(
+        "#{@team.cache_key}/#{@member.cache_key}/miles_data",
+        expires_in: 1.hour
+      ) { get_member_miles_data }
+
+    @long_runs_data =
+      Rails
+      .cache
+      .fetch(
+        "#{@team.cache_key}/#{@member.cache_key}/long_runs_data",
+        expires_in: 1.hour
+      ) { get_member_long_runs_data }
+
+    @runs_by_date =
+      @member.runs_in_date_range(@team.season_range).group_by(&:date)
+
+    @long_runs_by_date =
+      @member.long_runs_in_date_range(@team, @team.season_range).group_by(
+        &:date
+      )
   end
 
   private
 
-  def set_team =
+  def set_team
     @team =
-      Team.with_attached_photo.includes(:join_requests, :team_memberships, members: { avatar_attachment: :blob }).find(
-        params[:id]
+      Team
+      .with_attached_photo
+      .includes(
+        :owner,
+        :join_requests,
+        :team_memberships,
+        members: {
+          avatar_attachment: {
+            blob: :variant_records
+          }
+        }
       )
+      .find(params[:id])
+  end
 
   def team_params =
     params.require(:team).permit(
@@ -292,6 +415,10 @@ class TeamsController < ApplicationController
   end
 
   def get_rankings_data
+    if @rankings_date_range.present? && @rankings_date_range_description.present?
+      return @rankings_date_range, @rankings_date_range_description
+    end
+
     if params[:rankings_date_range].present?
       today = Date.today
 
@@ -326,6 +453,10 @@ class TeamsController < ApplicationController
   end
 
   def get_trends_data
+    if @trends_date_range.present? && @trends_date_range_description.present?
+      return @trends_date_range, @trends_date_range_description
+    end
+
     today = Date.today
 
     if params[:trends_date_range].present?
@@ -366,90 +497,110 @@ class TeamsController < ApplicationController
   def get_team_miles_data
     group_by = params[:group_by] || 'day'
 
-    if group_by == 'week'
-      @trends_date_range
-        .group_by { |date| date.beginning_of_week(@team.week_start) }
-        .map do |week_start, dates|
+    @miles_data ||=
+      if group_by == 'week'
+        @trends_date_range
+          .group_by { |date| date.beginning_of_week(@team.week_start) }
+          .map do |week_start, dates|
+            [
+              pretty_date(
+                week_start,
+                month_format: :short,
+                date_style: :absolute
+              ),
+              dates.sum { |date| @team.miles_in_date_range(date) }
+            ]
+          end
+      else # group_by == 'day'
+        @trends_date_range.map do |date|
           [
-            pretty_date(week_start, month_format: :short, date_style: :absolute),
-            dates.sum { |date| @team.miles_in_date_range(date) }
+            pretty_date(date, month_format: :short, date_style: :absolute),
+            @team.miles_in_date_range(date)
           ]
         end
-    else # group_by == 'day'
-      @trends_date_range.map do |date|
-        [
-          pretty_date(date, month_format: :short, date_style: :absolute),
-          @team.miles_in_date_range(date)
-        ]
       end
-    end
   end
 
   def get_team_long_runs_data
     group_by = params[:group_by] || 'day'
 
-    if group_by == 'week'
-      @trends_date_range
-        .group_by { |date| date.beginning_of_week(@team.week_start) }
-        .map do |week_start, dates|
+    @long_runs_data ||=
+      if group_by == 'week'
+        @trends_date_range
+          .group_by { |date| date.beginning_of_week(@team.week_start) }
+          .map do |week_start, dates|
+            [
+              pretty_date(
+                week_start,
+                month_format: :short,
+                date_style: :absolute
+              ),
+              dates.sum { |date| @team.long_runs_in_date_range(date).count }
+            ]
+          end
+      else # group_by == 'day'
+        @trends_date_range.map do |date|
           [
-            pretty_date(week_start, month_format: :short, date_style: :absolute),
-            dates.sum { |date| @team.long_runs_in_date_range(date).count }
+            pretty_date(date, month_format: :short, date_style: :absolute),
+            @team.long_runs_in_date_range(date).count
           ]
         end
-    else # group_by == 'day'
-      @trends_date_range.map do |date|
-        [
-          pretty_date(date, month_format: :short, date_style: :absolute),
-          @team.long_runs_in_date_range(date).count
-        ]
       end
-    end
   end
 
   def get_member_miles_data
     group_by = params[:group_by] || 'day'
 
-    if group_by == 'week'
-      @trends_date_range
-        .group_by { |date| date.beginning_of_week(@team.week_start) }
-        .map do |week_start, dates|
+    @miles_data ||=
+      if group_by == 'week'
+        @trends_date_range
+          .group_by { |date| date.beginning_of_week(@team.week_start) }
+          .map do |week_start, dates|
+            [
+              pretty_date(
+                week_start,
+                month_format: :short,
+                date_style: :absolute
+              ),
+              dates.sum { |date| @member.miles_in_date_range(date) }
+            ]
+          end
+      else # group_by == 'day'
+        @trends_date_range.map do |date|
           [
-            pretty_date(week_start, month_format: :short, date_style: :absolute),
-            dates.sum { |date| @member.miles_in_date_range(date) }
+            pretty_date(date, month_format: :short, date_style: :absolute),
+            @member.miles_in_date_range(date)
           ]
         end
-    else # group_by == 'day'
-      @trends_date_range.map do |date|
-        [
-          pretty_date(date, month_format: :short, date_style: :absolute),
-          @member.miles_in_date_range(date)
-        ]
       end
-    end
   end
 
   def get_member_long_runs_data
     group_by = params[:group_by] || 'day'
 
-    if group_by == 'week'
-      @trends_date_range
-        .group_by { |date| date.beginning_of_week(@team.week_start) }
-        .map do |week_start, dates|
+    @long_runs_data ||=
+      if group_by == 'week'
+        @trends_date_range
+          .group_by { |date| date.beginning_of_week(@team.week_start) }
+          .map do |week_start, dates|
+            [
+              pretty_date(
+                week_start,
+                month_format: :short,
+                date_style: :absolute
+              ),
+              dates.sum do |date|
+                @member.long_runs_in_date_range(@team, date).count
+              end
+            ]
+          end
+      else # group_by == 'day'
+        @trends_date_range.map do |date|
           [
-            pretty_date(week_start, month_format: :short, date_style: :absolute),
-            dates.sum do |date|
-              @member.long_runs_in_date_range(@team, date).count
-            end
+            pretty_date(date, month_format: :short, date_style: :absolute),
+            @member.long_runs_in_date_range(@team, date).count
           ]
         end
-    else # group_by == 'day'
-      @trends_date_range.map do |date|
-        [
-          pretty_date(date, month_format: :short, date_style: :absolute),
-          @member.long_runs_in_date_range(@team, date).count
-        ]
       end
-    end
   end
 end

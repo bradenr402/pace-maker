@@ -57,7 +57,10 @@ group :development do
   gem 'web-console'
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
-  # gem 'rack-mini-profiler'
+  gem 'rack-mini-profiler'
+
+  # Add the number of SQL queries to your log [https://github.com/comboy/sql_queries_count]
+  gem 'sql_queries_count'
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem 'spring'

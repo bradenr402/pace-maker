@@ -1,6 +1,6 @@
 <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
   <h1 class="heading">Team Rankings</h1>
-  <p class="text-soft"><%= current_user.owns?(@team) ? "View your team's rankings to see how your athletes stack up against each other." : 'View the rankings for this team to see how you stack up against the other members.' %></p>
+  <p class="text-soft"><%= @current_user_owns_team ? "View your team's rankings to see how your athletes stack up against each other." : 'View the rankings for this team to see how you stack up against the other members.' %></p>
 </div>
 
 <div data-controller="filter-gender">
