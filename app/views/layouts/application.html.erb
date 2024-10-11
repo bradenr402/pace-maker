@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html data-controller="theme" data-theme-user-theme-value="<%= user_signed_in? ? current_user.settings(:appearance).theme : 'system' %>">
   <head>
-    <%= render "layouts/head" %>
+    <%= render 'layouts/head' %>
   </head>
 
   <body class='relative antialiased font-normal leading-normal bg-white text-slate-800 dark:text-slate-100 selection:bg-indigo-500/40 dark:bg-slate-900'>
@@ -20,6 +20,6 @@
     </div>
     <%= render 'shared/tab_bar' if user_signed_in? %>
 
-    <%= turbo_stream_from 'pinned_pages_list' if user_signed_in?%>
+    <%= turbo_stream_from 'pinned_pages_list' if user_signed_in? %>
   </body>
 </html>
