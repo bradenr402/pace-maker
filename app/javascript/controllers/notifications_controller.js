@@ -3,7 +3,7 @@ import { Controller } from '@hotwired/stimulus';
 // Connects to data-controller="notifications"
 export default class extends Controller {
   static targets = ['notification'];
-  static values = { duration: { type: Number, default: 5000 } };
+  static values = { duration: { type: Number, default: 10000 } };
   static classes = ['hidden', 'visible', 'exit'];
 
   connect() {
