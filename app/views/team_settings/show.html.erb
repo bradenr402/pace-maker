@@ -11,8 +11,8 @@
 
   <div class="card">
     <div class="mb-6">
-      <div class="flex items-center gap-4 mb-3">
-        <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-lg drop-shadow-md dark:drop-shadow-none grid place-items-center shrink-0">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-lg grid place-items-center shrink-0">
           <%= inline_svg_tag 'icons/settings.svg', class: 'size-6 text-soft' %>
         </div>
         <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 leading-none">General</h2>
@@ -21,7 +21,7 @@
     </div>
     <div class="flex flex-wrap items-center justify-between gap-4">
       <p>Week Start</p>
-      <div class="flex items-center gap-2 rounded-full bg-slate-200/50 pl-3 pr-4 py-1 drop-shadow-sm dark:bg-slate-700/50 dark:drop-shadow-none w-max">
+      <div class="flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-3 pr-4 py-1 w-max">
         <%= inline_svg_tag 'icons/calendar.svg', class: 'size-4.5 text-soft shrink-0' %>
         <p class="text-soft text-sm whitespace-nowrap"><%= @team.settings(:general).week_start.to_s.titleize %></p>
       </div>
@@ -30,8 +30,8 @@
 
   <div class="card">
     <div class="mb-6">
-      <div class="flex items-center gap-4 mb-3">
-        <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-lg drop-shadow-md dark:drop-shadow-none grid place-items-center shrink-0">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-lg grid place-items-center shrink-0">
           <%= inline_svg_tag 'icons/user.svg', class: 'size-6 text-soft' %>
         </div>
         <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 leading-none">Membership Requirements</h2>
@@ -41,12 +41,12 @@
     <div class="flex flex-wrap items-center justify-between gap-4">
       <p>Gender Required?</p>
       <% if @team.require_gender? %>
-        <div class="flex items-center gap-2 bg-green-100 dark:bg-green-900/80 text-green-700 dark:text-green-300 font-bold rounded-full pl-3 pr-4 py-1 drop-shadow-sm dark:drop-shadow-none w-max">
+        <div class="flex items-center gap-2 bg-green-100 dark:bg-green-900/80 text-green-700 dark:text-green-300 font-bold rounded-full pl-3 pr-4 py-1 w-max">
           <%= inline_svg_tag 'icons/check.svg', class: 'size-4.5 shrink-0' %>
           <span class="text-sm">Yes</span>
         </div>
       <% else %>
-        <div class="flex items-center gap-2 bg-rose-100 dark:bg-rose-900/80 text-rose-700 dark:text-rose-300 font-bold rounded-full pl-3 pr-4 py-1 drop-shadow-sm dark:drop-shadow-none w-max">
+        <div class="flex items-center gap-2 bg-rose-100 dark:bg-rose-900/80 text-rose-700 dark:text-rose-300 font-bold rounded-full pl-3 pr-4 py-1 w-max">
           <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4.5 shrink-0' %>
           <span class="text-sm">No</span>
         </div>
@@ -56,8 +56,8 @@
 
   <div class="card">
     <div class="mb-6">
-      <div class="flex items-center gap-4 mb-3">
-        <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-lg drop-shadow-md dark:drop-shadow-none grid place-items-center shrink-0">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-lg grid place-items-center shrink-0">
           <%= inline_svg_tag 'icons/runner.svg', class: 'size-5 text-soft' %>
         </div>
         <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 leading-none">Long Runs</h2>
@@ -68,14 +68,14 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div class="flex flex-wrap items-center justify-between gap-4">
           <p>Male Long Run Distance</p>
-          <div class="flex items-center gap-2 rounded-full bg-slate-200/50 pl-3 pr-4 py-1 drop-shadow-sm dark:bg-slate-700/50 dark:drop-shadow-none w-max">
+          <div class="flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-3 pr-4 py-1 w-max">
             <%= inline_svg_tag 'icons/ruler.svg', class: 'size-4.5 text-soft shrink-0' %>
             <p class="text-soft text-sm whitespace-nowrap"><%= @team.long_run_distance_male %> miles</p>
           </div>
         </div>
         <div class="flex flex-wrap items-center justify-between gap-4">
           <p>Female Long Run Distance</p>
-          <div class="flex items-center gap-2 rounded-full bg-slate-200/50 pl-3 pr-4 py-1 drop-shadow-sm dark:bg-slate-700/50 dark:drop-shadow-none w-max">
+          <div class="flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-3 pr-4 py-1 w-max">
             <%= inline_svg_tag 'icons/ruler.svg', class: 'size-4.5 text-soft shrink-0' %>
             <p class="text-soft text-sm whitespace-nowrap"><%= @team.long_run_distance_female %> miles</p>
           </div>
@@ -84,7 +84,7 @@
     <% else %>
       <div class="flex flex-wrap items-center justify-between gap-4">
         <p>Long Run Distance</p>
-        <div class="flex items-center gap-2 rounded-full bg-slate-200/50 pl-3 pr-4 py-1 drop-shadow-sm dark:bg-slate-700/50 dark:drop-shadow-none w-max">
+        <div class="flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-3 pr-4 py-1 w-max">
           <%= inline_svg_tag 'icons/ruler.svg', class: 'size-4.5 text-soft shrink-0' %>
           <p class="text-soft text-sm whitespace-nowrap"><%= @team.long_run_distance_neutral %> miles</p>
         </div>
@@ -94,8 +94,8 @@
 
   <div class="card">
     <div class="mb-6">
-      <div class="flex items-center gap-4 mb-3">
-        <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-lg drop-shadow-md dark:drop-shadow-none grid place-items-center shrink-0">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-lg grid place-items-center shrink-0">
           <%= inline_svg_tag 'icons/lightning.svg', class: 'size-6 text-soft' %>
         </div>
         <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 leading-none">Streaks</h2>
@@ -106,14 +106,14 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div class="flex flex-wrap items-center justify-between gap-4">
           <p>Male Streak Distance</p>
-          <div class="flex items-center gap-2 rounded-full bg-slate-200/50 pl-3 pr-4 py-1 drop-shadow-sm dark:bg-slate-700/50 dark:drop-shadow-none w-max">
+          <div class="flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-3 pr-4 py-1 w-max">
             <%= inline_svg_tag 'icons/lightning.svg', class: 'size-4.5 text-soft shrink-0' %>
             <p class="text-soft text-sm whitespace-nowrap"><%= @team.streak_distance_male %> miles</p>
           </div>
         </div>
         <div class="flex flex-wrap items-center justify-between gap-4">
           <p>Female Streak Distance</p>
-          <div class="flex items-center gap-2 rounded-full bg-slate-200/50 pl-3 pr-4 py-1 drop-shadow-sm dark:bg-slate-700/50 dark:drop-shadow-none w-max">
+          <div class="flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-3 pr-4 py-1 w-max">
             <%= inline_svg_tag 'icons/lightning.svg', class: 'size-4.5 text-soft shrink-0' %>
             <p class="text-soft text-sm whitespace-nowrap"><%= @team.streak_distance_female %> miles</p>
           </div>
@@ -122,7 +122,7 @@
     <% else %>
       <div class="flex flex-wrap items-center justify-between gap-4">
         <p>Streak Distance</p>
-        <div class="flex items-center gap-2 rounded-full bg-slate-200/50 pl-3 pr-4 py-1 drop-shadow-sm dark:bg-slate-700/50 dark:drop-shadow-none w-max">
+        <div class="flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-3 pr-4 py-1 w-max">
           <%= inline_svg_tag 'icons/lightning.svg', class: 'size-4.5 text-soft shrink-0' %>
           <p class="text-soft text-sm whitespace-nowrap"><%= @team.streak_distance_neutral %> miles</p>
         </div>
@@ -132,8 +132,8 @@
 
   <div class="card">
     <div class="mb-6">
-      <div class="flex items-center gap-4 mb-3">
-        <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-lg drop-shadow-md dark:drop-shadow-none grid place-items-center shrink-0">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-lg grid place-items-center shrink-0">
           <%= inline_svg_tag 'icons/reload.svg', class: 'size-6 text-soft' %>
         </div>
         <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 leading-none">Streak Resets</h2>
@@ -144,12 +144,12 @@
       <div class="flex flex-wrap items-center justify-between gap-4">
         <p>Saturdays Reset Streaks?</p>
         <% if @team.include_saturday_in_streak? %>
-          <div class="flex items-center gap-2 bg-green-100 dark:bg-green-900/80 text-green-700 dark:text-green-300 font-bold rounded-full pl-3 pr-4 py-1 drop-shadow-sm dark:drop-shadow-none w-max">
+          <div class="flex items-center gap-2 bg-green-100 dark:bg-green-900/80 text-green-700 dark:text-green-300 font-bold rounded-full pl-3 pr-4 py-1 w-max">
             <%= inline_svg_tag 'icons/check.svg', class: 'size-4.5 shrink-0' %>
             <span class="text-sm">Yes</span>
           </div>
         <% else %>
-          <div class="flex items-center gap-2 bg-rose-100 dark:bg-rose-900/80 text-rose-700 dark:text-rose-300 font-bold rounded-full pl-3 pr-4 py-1 drop-shadow-sm dark:drop-shadow-none w-max">
+          <div class="flex items-center gap-2 bg-rose-100 dark:bg-rose-900/80 text-rose-700 dark:text-rose-300 font-bold rounded-full pl-3 pr-4 py-1 w-max">
             <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4.5 shrink-0' %>
             <span class="text-sm">No</span>
           </div>
@@ -158,12 +158,12 @@
       <div class="flex flex-wrap items-center justify-between gap-4">
         <p>Sundays Reset Streaks?</p>
         <% if @team.include_sunday_in_streak? %>
-          <div class="flex items-center gap-2 bg-green-100 dark:bg-green-900/80 text-green-700 dark:text-green-300 font-bold rounded-full pl-3 pr-4 py-1 drop-shadow-sm dark:drop-shadow-none w-max">
+          <div class="flex items-center gap-2 bg-green-100 dark:bg-green-900/80 text-green-700 dark:text-green-300 font-bold rounded-full pl-3 pr-4 py-1 w-max">
             <%= inline_svg_tag 'icons/check.svg', class: 'size-4.5 shrink-0' %>
             <span class="text-sm">Yes</span>
           </div>
         <% else %>
-          <div class="flex items-center gap-2 bg-rose-100 dark:bg-rose-900/80 text-rose-700 dark:text-rose-300 font-bold rounded-full pl-3 pr-4 py-1 drop-shadow-sm dark:drop-shadow-none w-max">
+          <div class="flex items-center gap-2 bg-rose-100 dark:bg-rose-900/80 text-rose-700 dark:text-rose-300 font-bold rounded-full pl-3 pr-4 py-1 w-max">
             <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4.5 shrink-0' %>
             <span class="text-sm">No</span>
           </div>
