@@ -6,8 +6,8 @@ class UsersController < ApplicationController
     add_breadcrumb @user.default_name, user_path(@user)
 
     @runs, @date_range = get_runs_and_date_range
-    @owned_teams = @user.owned_teams.includes(:photo_attachment, :owner)
-    @membered_teams = @user.membered_teams.includes(:photo_attachment, :owner)
+    @owned_teams = @user.owned_teams.with_attached_photo.includes(:owner)
+    @membered_teams = @user.membered_teams.with_attached_photo.includes(:owner)
 
     respond_to do |format|
       format.html
@@ -32,7 +32,7 @@ class UsersController < ApplicationController
 
   private
 
-  def set_user = @user = User.find(params[:id])
+  def set_user = @user = User.with_attached_avatar.find(params[:id])
 
   def get_runs_and_date_range
     today = Date.today

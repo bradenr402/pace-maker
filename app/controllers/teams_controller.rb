@@ -9,15 +9,13 @@ class TeamsController < ApplicationController
     add_breadcrumb 'Teams', teams_path
 
     @owned_teams =
-      current_user.owned_teams.includes(
-        :photo_attachment,
+      current_user.owned_teams.with_attached_photo.includes(
         :owner,
         :setting_objects,
         :members
       )
     @membered_teams =
-      current_user.membered_teams.includes(
-        :photo_attachment,
+      current_user.membered_teams.with_attached_photo.includes(
         :owner,
         :setting_objects,
         :members
@@ -27,7 +25,8 @@ class TeamsController < ApplicationController
       if params[:query].present?
         sanitized_query = ActiveRecord::Base.connection.quote(params[:query])
         Team
-          .includes(:photo_attachment, :owner, :setting_objects, :members)
+          .with_attached_photo
+          .includes(:owner, :setting_objects, :members)
           .joins(:owner)
           .where(
             'LOWER(teams.name) LIKE LOWER(:query) OR
@@ -51,8 +50,7 @@ class TeamsController < ApplicationController
             )
           )
       else
-        current_user.other_teams.includes(
-          :photo_attachment,
+        current_user.other_teams.with_attached_photo.includes(
           :owner,
           :setting_objects,
           :members
@@ -241,7 +239,7 @@ class TeamsController < ApplicationController
 
   def set_team =
     @team =
-      Team.includes(:members, :join_requests, :team_memberships).find(
+      Team.with_attached_photo.includes(:join_requests, :team_memberships, members: { avatar_attachment: :blob }).find(
         params[:id]
       )
 
@@ -269,7 +267,7 @@ class TeamsController < ApplicationController
         sanitized_query = ActiveRecord::Base.connection.quote(params[:query])
         @team
           .members
-          .includes(:avatar_attachment)
+          .with_attached_avatar
           .where(
             'LOWER(users.username) LIKE LOWER(:query) OR
                         LOWER(users.display_name) LIKE LOWER(:query) OR
@@ -289,7 +287,7 @@ class TeamsController < ApplicationController
             )
           )
       else
-        @team.members.includes(:avatar_attachment)
+        @team.members.with_attached_avatar
       end
   end
 
