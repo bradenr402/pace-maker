@@ -55,11 +55,6 @@
               <%= render 'teams/shared/team_links', team: @team %>
 
               <% if current_user.member_of?(@team) %>
-                <%= link_to edit_team_team_membership_path(@team, current_user), class: 'dropdown-option' do %>
-                  <%= inline_svg_tag 'icons/user-pencil.svg', class: 'size-5' %>
-                  Edit personal goals
-                <% end %>
-
                 <% unless current_user.owns?(@team) %>
                   <%= link_to team_settings_path(@team), class: 'dropdown-option' do %>
                     <%= inline_svg_tag 'icons/settings.svg', class: 'size-5' %>
@@ -70,6 +65,11 @@
                 <%= link_to team_member_path(@team, current_user), class: 'dropdown-option' do %>
                   <%= inline_svg_tag 'icons/user.svg', class: 'size-5' %>
                   View my member page
+                <% end %>
+
+                <%= link_to edit_team_team_membership_path(@team, current_user), class: 'dropdown-option-primary' do %>
+                  <%= inline_svg_tag 'icons/user-pencil.svg', class: 'size-5' %>
+                  Edit my personal goals
                 <% end %>
               <% end %>
 
