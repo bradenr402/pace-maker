@@ -25,6 +25,7 @@ class User < ApplicationRecord
   attr_accessor :remove_avatar
 
   before_save :purge_avatar, if: -> { remove_avatar == '1' }
+  before_update :set_password_changed_at, if: :will_save_change_to_encrypted_password?
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -70,20 +71,22 @@ class User < ApplicationRecord
             if: -> { gender.present? }
 
   def self.from_omniauth(auth)
-    user = where(provider: auth.provider, uid: auth.uid).first_or_initialize do |user|
-      user.email = auth.info.email
-      user.password = generate_valid_password
+    return nil if User.exists?(email: auth.info.email, provider: nil, uid: nil)
+
+    user = where(provider: auth.provider, uid: auth.uid).first_or_initialize do |u|
+      u.email = auth.info.email
+      u.password = generate_valid_password
 
       # Ensure the username is unique
       base_username = auth.info.email.split('@').first
-      user.username = generate_unique_username(base_username)
+      u.username = generate_unique_username(base_username)
 
-      user.display_name = auth.info.name
-      user.avatar_url = auth.info.image
+      u.display_name = auth.info.name
+      u.avatar_url = auth.info.image
 
       # If you are using confirmable and the provider(s) you use validate emails,
       # uncomment the line below to skip the confirmation emails.
-      # user.skip_confirmation!
+      # u.skip_confirmation!
     end
 
     user.save!
@@ -215,6 +218,10 @@ class User < ApplicationRecord
   def any_membered_teams_in_common_except?(other_user, exclude: []) =
     membered_teams_in_common_except(other_user, exclude:).any?
 
+  def password_ever_changed? = password_changed_at.present?
+
+  def password_never_changed? = !password_ever_changed?
+
   private
 
   def password_complexity
@@ -229,6 +236,8 @@ class User < ApplicationRecord
     (self.phone_number = nil if phone_number.blank?)
 
   def purge_avatar = avatar.purge_later
+
+  def set_password_changed_at = self.password_changed_at = Time.current
 
   class << self
     def find_for_database_authentication(warden_conditions)

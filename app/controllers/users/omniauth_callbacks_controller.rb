@@ -13,7 +13,20 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def google_oauth2
     @user = User.from_omniauth(auth)
 
-    if @user.persisted?
+    if @user.nil? # account already exists with email
+      if user_signed_in?
+        if current_user.update(provider: auth.provider, uid: auth.uid)
+          flash[:success] = 'Your Google account was linked successfully.'
+        else
+          flash[:error] = 'There was an issue linking your Google account.'
+        end
+        redirect_to edit_user_registration_path
+      else # account already exists with email, but user is not signed in
+        flash[:alert] = "An account already exists with the email <b>#{auth.info.email}</b>. Please sign in to link your Google account."
+        store_location_for(:user, edit_user_registration_path)
+        redirect_to new_user_session_path
+      end
+    elsif @user.persisted? # not new_record? (i.e., account created and saved without errors)
       sign_out_all_scopes
       flash[:success] = t 'devise.omniauth_callbacks.success', kind: 'Google'
       sign_in_and_redirect @user, event: :authentication

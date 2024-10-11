@@ -1,12 +1,77 @@
 <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
   <h1 class="heading">Account</h1>
-  <p class="text-soft">Edit your account details.</p>
+  <p class="text-soft">Manage and update your account information and personal details.</p>
+</div>
+
+<div class="my-6">
+  <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Linked Accounts</h2>
+  <p class="text-sm text-slate-600 dark:text-slate-400">Manage your linked accounts for easier sign-in.</p>
+</div>
+
+<div
+  data-controller="modal"
+  data-modal-hide-modal-class="opacity-0 scale-75 pointer-events-none"
+  data-modal-show-modal-class="opacity-100 scale-100 pointer-events-auto"
+  data-modal-hide-backdrop-class="opacity-0 pointer-events-none"
+  data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
+  class="form-group"
+>
+  <% if current_user.provider.present? %>
+    <button data-action="click->modal#open" data-modal-id="unlinkGoogleAccountModal" class="btn btn-white btn-outline gap-2" <%= 'disabled' unless resource.password_ever_changed? %>>
+      <%= inline_svg_tag 'icons/google-logo.svg', class: 'size-5' %>
+      Unlink Google Account
+    </button>
+    <% unless resource.password_ever_changed? %>
+      <p class="error-message my-1">You must set a password to unlink your Google account.</p>
+    <% end %>
+  <% else %>
+    <%= button_to user_google_oauth2_omniauth_authorize_path, data: { turbo: 'false' }, class: 'btn btn-white btn-outline gap-2' do %>
+      <%= inline_svg_tag 'icons/google-logo.svg', class: 'size-5' %>
+      Link Google Account
+    <% end %>
+    <p class="help-text my-1">The email on your Google account must match the email on your TeamRunner account.</p>
+  <% end %>
+
+  <!-- Unlink Google Account Modal Backdrop -->
+  <div
+    data-modal-target="backdrop"
+    data-modal-id="unlinkGoogleAccountModal"
+    data-action="click->modal#backdropClose"
+    class="modal-backdrop opacity-0 pointer-events-none"></div>
+
+  <!-- Unlink Google Account Modal -->
+  <div
+    id="unlinkGoogleAccountModal"
+    role="dialog"
+    tabindex="-1"
+    data-modal-target="modal"
+    class="modal opacity-0 pointer-events-none"
+  >
+    <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+      <h2 class="text-lg font-semibold leading-none tracking-tight">Unlink Google Account?</h2>
+      <p class="text-soft text-sm">Are you sure you want to unlink your Google account? You will no longer be sign in with your Google account.</p>
+    </div>
+
+    <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
+      <button data-action="click->modal#close" data-modal-id="unlinkGoogleAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Nevermind</button>
+      <%= button_to unlink_google_account_user_path(current_user), method: :delete, class: 'btn btn-white btn-outline gap-2' do %>
+        <%= inline_svg_tag 'icons/google-logo.svg', class: 'size-5' %>
+        Unlink Google Account
+      <% end %>
+    </div>
+
+    <button data-action="click->modal#close" type="button" data-modal-id="unlinkGoogleAccountModal" class="modal-x-btn">
+      <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
+      <span class="sr-only">Close</span>
+    </button>
+  </div>
+
 </div>
 
 <%= form_for resource, as: resource_name, url: registration_path(resource_name), data: { controller: "form-validation" }, html: { method: :put, novalidate: true } do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="my-6">
+  <div class="py-6 mt-6 border-t border-slate-200 dark:border-slate-700">
     <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Profile</h2>
     <p class="text-sm text-slate-600 dark:text-slate-400">This information will be visible to other users.</p>
   </div>
@@ -213,19 +278,21 @@
     <p class="my-1 text-xs transition-opacity duration-300 ease-in-out text-slate-700 dark:text-slate-400" data-form-validation-target="newPasswordConfirmationHint">Enter your new password again to confirm it.</p>
   </div>
 
-  <div class="form-group">
-    <%= f.label :current_password, 'Current password', class: 'form-label' %>
-    <div data-controller="password-visibility" class="relative">
-      <%= inline_svg_tag 'icons/key.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= f.password_field :current_password, autocomplete: 'current-password', class: 'form-input pl-10', data: { password_visibility_target: 'password' } %>
+  <% if resource.password_ever_changed? %>
+    <div class="form-group">
+      <%= f.label :current_password, 'Current password', class: 'form-label' %>
+      <div data-controller="password-visibility" class="relative">
+        <%= inline_svg_tag 'icons/key.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+        <%= f.password_field :current_password, autocomplete: 'current-password', class: 'form-input pl-10', data: { password_visibility_target: 'password' } %>
 
-      <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" data-action="password-visibility#toggle">
-        <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
-        <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-5 hidden' %>
-      </button>
+        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" data-action="password-visibility#toggle">
+          <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
+          <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-5 hidden' %>
+        </button>
+      </div>
+      <p class="my-1 text-xs text-slate-700 dark:text-slate-400">Your current password is required to change your password.</p>
     </div>
-    <p class="my-1 text-xs text-slate-700 dark:text-slate-400">Your current password is required to change your password.</p>
-  </div>
+  <% end %>
 
   <div class="md:sticky bottom-0 flex items-center gap-4 pt-6 pb-6 bg-white border-t dark:bg-slate-900 border-slate-200 dark:border-slate-700">
     <%= f.submit 'Save changes', data: { turbo: false }, class: 'btn btn-primary' %>

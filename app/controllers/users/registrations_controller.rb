@@ -116,17 +116,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
     )
 
     password_present = params['password'].present?
+    password_ever_changed = resource.password_ever_changed?
 
-    # Don't require password if user signed up with Google OAuth
-    if resource.provider == 'google_oauth2'
+    if password_ever_changed && password_present
+      # Require password if user has set their own password and is trying to change password
+      resource.update_with_password(params)
+    elsif resource.provider == 'google_oauth2'
+      # Don't require password if user hasn't set their own password and signed up with Google OAuth
       params.delete('current_password')
-      resource.password = params['password'] if password_present
+      resource.password = params['password']
 
       resource.update_without_password(params)
     else
-      # Require password if user did not sign up with Google OAuth and user is trying to change password
-      resource.update_with_password(params) if password_present
-
       # Don't require password if user is not trying to change password
       resource.update_without_password(params.except('current_password'))
     end

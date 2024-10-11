@@ -21,6 +21,7 @@ Rails.application.routes.draw do
              path: 'settings',
              as: :settings,
              controller: 'user_settings'
+    delete 'unlink_google_account', on: :member
   end
 
   resources :teams do

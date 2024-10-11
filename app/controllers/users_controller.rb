@@ -19,6 +19,17 @@ class UsersController < ApplicationController
     redirect_to current_user
   end
 
+  def unlink_google_account
+    if current_user.password_never_changed?
+      flash[:alert] = 'You must set a password to unlink your Google account.'
+    elsif current_user.update(provider: nil, uid: nil)
+      flash[:success] = 'Your Google account was unlinked successfully.'
+    else
+      flash[:error] = 'There was an issue unlinking your Google account.'
+    end
+    redirect_to edit_user_registration_path
+  end
+
   private
 
   def set_user = @user = User.find(params[:id])
