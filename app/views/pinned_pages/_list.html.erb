@@ -3,45 +3,59 @@
     <div class="p-2 flex items-end justify-between sticky top-0 bg-slate-50 dark:bg-slate-800 border-b dark:border-slate-700">
       <p class="text-soft text-sm">Pinned shorcuts</p>
       <% pinned_pages = current_user.pinned_pages.order(:position) %>
-      <%= link_to 'Edit', manage_pinned_pages_path, data: { turbo: false }, class: 'btn-link-soft text-xs' if pinned_pages.any? %>
+      <%= link_to 'Edit', manage_pinned_pages_path, data: { turbo: false }, class: 'btn-link-soft text-xs' if pinned_pages.present? %>
     </div>
 
-    <% if pinned_pages.any? %>
+    <% if pinned_pages.present? %>
       <% pinned_pages.each do |page| %>
-        <% link_options = { data: { turbo: false }, class: "group sidebar-link #{current_page?(page.page_url) ? 'sidebar-link-active' : 'sidebar-link-inactive' }" } %>
+      <% page_url = page.page_url %>
+        <% link_options = { data: { turbo: false }, class: "group sidebar-link #{current_page?(page_url) ? 'sidebar-link-active' : 'sidebar-link-inactive' }" } %>
 
         <% link_content = capture do %>
           <div class="flex items-center gap-2.5">
-            <% if (member = User.find_by(id: page.page_url.split('/').last)) && page.page_url.match?(/teams\/\d+\/member\/\d+/) %>
-              <% if member.avatar.attached? %>
-                <%= image_tag member.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-6 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover' %>
-              <% elsif current_page?(page.page_url) %>
-                <%= inline_svg_tag 'icons/user-filled.svg', class: 'size-5 dark:group-focus:text-white' %>
-              <% else %>
-                <%= inline_svg_tag 'icons/user.svg', class: 'size-5 dark:group-focus:text-white' %>
+            <% last_id = page_url.split('/').last %>
+
+            <% if page_url.match?(/teams\/\d+\/member\/\d+/) %>
+              <% member = User.find_by(id: last_id) %>
+              <% if member %>
+                <% if member.avatar.attached? %>
+                  <%= image_tag member.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-6 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover' %>
+                <% elsif current_page?(page_url) %>
+                  <%= inline_svg_tag 'icons/user-filled.svg', class: 'size-5 dark:group-focus:text-white' %>
+                <% else %>
+                  <%= inline_svg_tag 'icons/user.svg', class: 'size-5 dark:group-focus:text-white' %>
+                <% end %>
               <% end %>
-            <% elsif (team = Team.find_by(id: page.page_url.split('/').last)) && page.page_url.match?(/teams\/\d+/) %>
-              <% if team.photo.attached? %>
-                <%= image_tag team.photo.variant(resize_to_limit: [50, 50]).processed, class: 'size-6 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover' %>
-              <% elsif current_page?(page.page_url) %>
-                <%= inline_svg_tag 'icons/team-filled.svg', class: 'size-5 dark:group-focus:text-white' %>
-              <% else %>
-                <%= inline_svg_tag 'icons/team.svg', class: 'size-5 dark:group-focus:text-white' %>
+
+            <% elsif page_url.match?(/teams\/\d+/) %>
+              <% team = Team.find_by(id: last_id) %>
+              <% if team %>
+                <% if team.photo.attached? %>
+                  <%= image_tag team.photo.variant(resize_to_limit: [50, 50]).processed, class: 'size-6 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover' %>
+                <% elsif current_page?(page_url) %>
+                  <%= inline_svg_tag 'icons/team-filled.svg', class: 'size-5 dark:group-focus:text-white' %>
+                <% else %>
+                  <%= inline_svg_tag 'icons/team.svg', class: 'size-5 dark:group-focus:text-white' %>
+                <% end %>
               <% end %>
-            <% elsif (user = User.find_by(id: page.page_url.split('/').last)) && page.page_url.match?(/users\/\d+/) %>
-              <% if user.avatar.attached? %>
-                <%= image_tag user.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-6 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover' %>
-              <% elsif current_page?(page.page_url) %>
-                <%= inline_svg_tag 'icons/user-filled.svg', class: 'size-5 dark:group-focus:text-white' %>
-              <% else %>
-                <%= inline_svg_tag 'icons/user.svg', class: 'size-5 dark:group-focus:text-white' %>
+
+            <% elsif page_url.match?(/users\/\d+/) %>
+              <% user = User.find_by(id: last_id) %>
+              <% if user %>
+                <% if user.avatar.attached? %>
+                  <%= image_tag user.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-6 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover' %>
+                <% elsif current_page?(page_url) %>
+                  <%= inline_svg_tag 'icons/user-filled.svg', class: 'size-5 dark:group-focus:text-white' %>
+                <% else %>
+                  <%= inline_svg_tag 'icons/user.svg', class: 'size-5 dark:group-focus:text-white' %>
+                <% end %>
               <% end %>
             <% end %>
             <span><%= page.title %></span>
           </div>
         <% end %>
 
-        <%= link_to link_content, page.page_url, **link_options %>
+        <%= link_to link_content, page_url, **link_options %>
       <% end %>
     <% else %>
       <p class="text-soft text-center text-xs">You have not pinned any pages yet.</p>

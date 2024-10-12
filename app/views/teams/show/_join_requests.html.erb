@@ -1,6 +1,8 @@
 <div class="pb-6 mt-10 space-y-1">
   <h1 class="heading">Join Requests</h1>
-  <p class="text-soft"><%= join_requests.count < 1 ? 'There are currently no pending join requests for this team' : "There #{join_requests.count == 1 ? 'is' : 'are'} #{pluralize(join_requests.count, 'pending join request')}" %>.</p>
+  <p class="text-soft">
+    <%= "There #{join_requests.count == 1 ? 'is' : 'are'} currently #{join_requests.count > 0 ? pluralize(join_requests.count, 'pending join request') : 'no pending join requests'} for this team." %>
+  </p>
 </div>
 
 <% if join_requests.present? %>

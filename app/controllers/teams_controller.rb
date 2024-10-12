@@ -393,20 +393,20 @@ class TeamsController < ApplicationController
           .with_attached_avatar
           .where(
             'LOWER(users.username) LIKE LOWER(:query) OR
-                        LOWER(users.display_name) LIKE LOWER(:query) OR
-                        similarity(users.username, :query) > 0.3 OR
-                        similarity(users.display_name, :query) > 0.3',
+            LOWER(users.display_name) LIKE LOWER(:query) OR
+            similarity(users.username, :query) > 0.3 OR
+            similarity(users.display_name, :query) > 0.3',
             query: "%#{params[:query]}%"
           )
           .order(
             Arel.sql(
               "GREATEST(similarity(users.username, #{sanitized_query}),
-                          similarity(users.display_name, #{sanitized_query}),
-                          CASE
-                            WHEN LOWER(users.username) LIKE LOWER(#{sanitized_query})
-                            THEN 1
-                            ELSE 0
-                          END) DESC"
+                        similarity(users.display_name, #{sanitized_query}),
+                        CASE
+                          WHEN LOWER(users.username) LIKE LOWER(#{sanitized_query})
+                          THEN 1
+                          ELSE 0
+                        END) DESC"
             )
           )
       else
