@@ -133,7 +133,7 @@
   }
 
   .form-radio-card-label {
-    @apply p-3 rounded-lg shadow-sm hover:shadow-md dark:shadow-none dark:hover:shadow-none bg-white hover:bg-slate-100 dark:bg-slate-800/60 dark:hover:bg-slate-700/70 border dark:border-slate-700 peer-checked:border-indigo-600 dark:peer-checked:border-indigo-600 text-soft peer-checked:text-indigo-600 dark:peer-checked:text-indigo-500 inline-flex items-center gap-4 w-full cursor-pointer transition duration-200 ease-in-out;
+    @apply p-3 rounded-lg shadow-sm hover:shadow-md dark:shadow-none dark:hover:shadow-none bg-white dark:bg-slate-800/60 dark:hover:bg-slate-700/70 border dark:border-slate-700 peer-checked:border-indigo-600 dark:peer-checked:border-indigo-600 text-soft peer-checked:text-indigo-600 dark:peer-checked:text-indigo-500 inline-flex items-center gap-4 w-full cursor-pointer transition duration-200 ease-in-out;
   }
 
   /* Used to turn a checkbox input into a sliding switch control. */
