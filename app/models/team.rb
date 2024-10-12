@@ -101,9 +101,11 @@ class Team < ApplicationRecord
   end
 
   def members_in_common(user) =
-    members.includes(:teams).select do |member|
-      member != user && member != owner && (member.teams & user.teams).any?
-    end
+    members
+      .includes(:teams)
+      .select do |member|
+        member != user && member != owner && (member.teams & user.teams).any?
+      end
 
   def any_members_in_common?(user) = members_in_common(user).any?
 

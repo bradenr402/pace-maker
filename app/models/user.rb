@@ -25,7 +25,8 @@ class User < ApplicationRecord
   attr_accessor :remove_avatar
 
   before_save :purge_avatar, if: -> { remove_avatar == '1' }
-  before_update :set_password_changed_at, if: :will_save_change_to_encrypted_password?
+  before_update :set_password_changed_at,
+                if: :will_save_change_to_encrypted_password?
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -73,21 +74,22 @@ class User < ApplicationRecord
   def self.from_omniauth(auth)
     return nil if User.exists?(email: auth.info.email, provider: nil, uid: nil)
 
-    user = where(provider: auth.provider, uid: auth.uid).first_or_initialize do |u|
-      u.email = auth.info.email
-      u.password = generate_valid_password
+    user =
+      where(provider: auth.provider, uid: auth.uid).first_or_initialize do |u|
+        u.email = auth.info.email
+        u.password = generate_valid_password
 
-      # Ensure the username is unique
-      base_username = auth.info.email.split('@').first
-      u.username = generate_unique_username(base_username)
+        # Ensure the username is unique
+        base_username = auth.info.email.split('@').first
+        u.username = generate_unique_username(base_username)
 
-      u.display_name = auth.info.name
-      u.avatar_url = auth.info.image
+        u.display_name = auth.info.name
+        u.avatar_url = auth.info.image
 
-      # If you are using confirmable and the provider(s) you use validate emails,
-      # uncomment the line below to skip the confirmation emails.
-      # u.skip_confirmation!
-    end
+        # If you are using confirmable and the provider(s) you use validate emails,
+        # uncomment the line below to skip the confirmation emails.
+        # u.skip_confirmation!
+      end
 
     user.save!
     user
@@ -114,10 +116,10 @@ class User < ApplicationRecord
     special = %w[# ? ! @ $ % ^ & * -]
 
     password = [
-      upper.sample,   # At least one uppercase letter
-      lower.sample,   # At least one lowercase letter
-      digits.sample,  # At least one digit
-      special.sample  # At least one special character
+      upper.sample, # At least one uppercase letter
+      lower.sample, # At least one lowercase letter
+      digits.sample, # At least one digit
+      special.sample # At least one special character
     ]
 
     # Fill the rest of the password length with random characters from all sets
@@ -161,7 +163,8 @@ class User < ApplicationRecord
 
   def run_on_day?(date) = runs.where(date: date.all_day).exists?
 
-  def long_run_on_day?(date, team) = runs.where(date: date.all_day).any? { |run| run.long_run_for?(team) }
+  def long_run_on_day?(date, team) =
+    runs.where(date: date.all_day).any? { |run| run.long_run_for?(team) }
 
   def member_of?(team) = teams.include?(team)
 
@@ -189,7 +192,8 @@ class User < ApplicationRecord
     { allowed?: true, message: 'You meet the requirements to join this team.' }
   end
 
-  def teams_requiring_gender = teams.includes(:setting_objects).select(&:require_gender?)
+  def teams_requiring_gender =
+    teams.includes(:setting_objects).select(&:require_gender?)
 
   def any_teams_require_gender? = teams_requiring_gender.any?
 

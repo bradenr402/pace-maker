@@ -10,7 +10,9 @@ Rails.application.routes.draw do
              }
 
   devise_scope :user do
-    post 'users/sign_out_all', to: 'users/sessions#sign_out_all_devices', as: :sign_out_all_devices
+    post 'users/sign_out_all',
+         to: 'users/sessions#sign_out_all_devices',
+         as: :sign_out_all_devices
   end
 
   resources :runs, except: %i[index]

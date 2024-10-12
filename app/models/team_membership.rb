@@ -59,24 +59,36 @@ class TeamMembership < ApplicationRecord
         if user_is_current
           ['You\'ve met your mileage goal', 'and you\'ve completed']
         else
-          ["#{user.first_name} met #{user.gender_possessive} mileage goal ", "and #{user.first_name} has completed"]
+          [
+            "#{user.first_name} met #{user.gender_possessive} mileage goal ",
+            "and #{user.first_name} has completed"
+          ]
         end
       elsif meeting_mileage_goal?
         if user_is_current
           ['You\'re on track', 'and you\'ve completed']
         else
-          ["#{user.first_name} is on track", "and #{user.first_name} has completed"]
+          [
+            "#{user.first_name} is on track",
+            "and #{user.first_name} has completed"
+          ]
         end
       elsif ahead_of_mileage_goal?
         if user_is_current
           ['You\'re advancing', 'and you\'ve already completed']
         else
-          ["#{user.first_name} is advancing", "and #{user.first_name} has already completed"]
+          [
+            "#{user.first_name} is advancing",
+            "and #{user.first_name} has already completed"
+          ]
         end
       elsif user_is_current
         ['You\'re falling behind', 'but you\'ve only completed']
       else
-        ["#{user.first_name} is falling behind", "but #{user.first_name} has only completed"]
+        [
+          "#{user.first_name} is falling behind",
+          "but #{user.first_name} has only completed"
+        ]
       end
 
     team_state = user_is_current ? "You're" : 'Your team is'
@@ -93,27 +105,36 @@ class TeamMembership < ApplicationRecord
         if user_is_current
           ['You\'ve met your long run goal', 'and you\'ve completed']
         else
-          ["#{user.first_name} met #{user.gender_possessive} long run goal", "and #{user.first_name} has completed"]
+          [
+            "#{user.first_name} met #{user.gender_possessive} long run goal",
+            "and #{user.first_name} has completed"
+          ]
         end
-
       elsif meeting_long_run_goal?
         if user_is_current
           ['You\'re on track', 'and you\'ve completed']
         else
-          ["#{user.first_name} is on track", "and #{user.first_name} has completed"]
+          [
+            "#{user.first_name} is on track",
+            "and #{user.first_name} has completed"
+          ]
         end
-
       elsif ahead_of_long_run_goal?
         if user_is_current
           ['You\'re advancing', 'and you\'ve already completed']
         else
-          ["#{user.first_name} is advancing", "and #{user.first_name} has already completed"]
+          [
+            "#{user.first_name} is advancing",
+            "and #{user.first_name} has already completed"
+          ]
         end
-
       elsif user_is_current
         ['You\'re falling behind', 'but you\'ve only completed']
       else
-        ["#{user.first_name} is falling behind", "but #{user.first_name} has only completed"]
+        [
+          "#{user.first_name} is falling behind",
+          "but #{user.first_name} has only completed"
+        ]
       end
 
     team_state = user_is_current ? "You're" : 'Your team is'
