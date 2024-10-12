@@ -99,6 +99,29 @@
     margin: 0;
   }
 
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #9ca3af #d1d5db;
+  }
+
+  html.dark * {
+    scrollbar-color: #6b7280 #1f2937;
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  *::-webkit-scrollbar-track {
+    @apply bg-gray-300 dark:bg-gray-800;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    @apply bg-gray-400 active:bg-gray-500 dark:bg-gray-500 dark:active:bg-gray-600;
+  }
+
   .hide-scrollbar::-webkit-scrollbar {
     @apply hidden;
   }
