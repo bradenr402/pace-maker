@@ -2,14 +2,9 @@
 
 <div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="infoTab" class="max-w-3xl px-4 mx-auto my-16">
   <div class="mb-6 text-center">
-
-    <% if @user.avatar.attached? %>
-      <%= image_tag @user.avatar.variant(resize_to_limit: [150, 150]).processed, class: 'size-28 sm:size-32 md:size-36 rounded-lg drop-shadow-lg dark:drop-shadow-none mx-auto mb-4 object-cover' %>
-    <% else %>
-      <div class="size-28 sm:size-32 md:size-36 bg-slate-200 dark:bg-slate-800 rounded-lg drop-shadow-lg dark:drop-shadow-none grid place-items-center mx-auto mb-4">
-        <%= inline_svg_tag 'icons/user.svg', class: 'size-20 sm:size-24 md:size-28 text-soft' %>
-      </div>
-    <% end %>
+    <div class="mb-4 flex justify-center">
+      <%= render 'shared/user_photo', user: @user, size: :lg %>
+    </div>
 
     <h1 class="heading"><%= @user.default_name %></h1>
     <% if @user.display_name.present? %>

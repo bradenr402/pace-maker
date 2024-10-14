@@ -7,13 +7,7 @@
             <% path = local_assigns[:team] ? team_member_path(team, run.user) : user_path(run.user) %>
 
             <%= link_to path, data: { turbo: false }, class: 'group mr-auto flex items-center gap-2 flex-grow' do %>
-              <% if run.user.avatar.attached? %>
-                <%= image_tag run.user.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-10 rounded-lg object-cover drop-shadow-lg dark:drop-shadow-none' %>
-              <% else %>
-                <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-lg drop-shadow-lg dark:drop-shadow-none grid place-items-center">
-                  <%= inline_svg_tag 'icons/user.svg', class: 'size-6 text-soft' %>
-                </div>
-              <% end %>
+              <%= render 'shared/user_photo', user: run.user, size: :sm %>
               <p class="text-lg font-bold transition duration-300 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= run.user.default_name %></p>
             <% end %>
           <% end %>

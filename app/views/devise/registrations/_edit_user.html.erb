@@ -111,7 +111,7 @@
     <% end %>
 
     <div class="flex items-center gap-x-4">
-      <%= image_tag(resource.avatar.attached? ? resource.avatar.variant(resize_to_limit: [100, 100]).processed : '', data: { image_preview_target: 'output' }, class: "size-24 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover #{resource.avatar.blank? ? 'hidden' : ''}") %>
+      <%= render 'shared/user_photo', user: resource, size: :md, image_only: true, image_classes: resource.avatar.blank? ? 'hidden' : '', image_options: { data: { image_preview_target: 'output' } } %>
       <div class="space-y-2">
         <%= f.file_field :avatar, accept: 'image/png, image/jpeg', class: 'form-file', data: { image_preview_target: 'input', action: 'image-preview#readURL' } %>
         <button type="button" class="btn btn-transparent" data-image-preview-target="clearBtn" data-action="image-preview#clearUpload">Clear upload</button>

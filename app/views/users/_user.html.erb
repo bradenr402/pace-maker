@@ -1,13 +1,6 @@
 <div class="card">
   <%= link_to user, data: { turbo: false }, class: 'group flex items-start gap-4 flex-1' do %>
-
-    <% if user.avatar.attached? %>
-      <%= image_tag user.avatar.variant(resize_to_limit: [100, 100]).processed, class: 'shrink-0 size-12 rounded-lg drop-shadow-lg dark:drop-shadow-none object-cover' %>
-    <% else %>
-      <div class="size-12 bg-slate-200 dark:bg-slate-700 rounded-lg drop-shadow-lg dark:drop-shadow-none grid place-items-center">
-        <%= inline_svg_tag 'icons/user.svg', class: 'size-8 text-soft' %>
-      </div>
-    <% end %>
+    <%= render 'shared/user_photo', user: user, size: :sm %>
 
     <div class="flex-1">
       <p class='text-lg font-bold transition duration-300 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500'>

@@ -1,0 +1,58 @@
+<% size ||= :sm %>
+<% image_options ||= {} %>
+<% image_classes ||= '' %>
+<% image_only ||= false %>
+<% icon_background ||= :default %>
+<% icon_filled ||= false %>
+
+<% size_class_map = {
+  thumb: 'size-6 rounded-md',
+  xs: 'size-8 rounded-md',
+  sm: 'size-12 rounded-lg',
+  md: 'size-20 rounded-xl drop-shadow-lg dark:drop-shadow-none',
+  lg: 'size-28 sm:size-32 md:size-36 rounded-2xl drop-shadow-xl dark:drop-shadow-none',
+} %>
+
+<% size_classes = size_class_map[size] %>
+
+<%
+  px_size = case size
+  when :thumb
+    25
+  when :xs, :sm
+    50
+  when :md
+    100
+  when :lg
+    150
+  end
+%>
+
+<% fallback_size_class_map = {
+  thumb: 'size-5',
+  xs: 'size-6',
+  sm: 'size-8',
+  md: 'size-16',
+  lg: 'size-24 sm:size-28 md:size-32',
+} %>
+
+<% fallback_size_class = icon_background == :none ? size_class_map[size] : fallback_size_class_map[size] %>
+
+<% icon_background_class_map = {
+  default: 'bg-slate-200 dark:bg-slate-800',
+  darker: 'bg-slate-300 dark:bg-slate-700',
+  none: '',
+  # indigo: 'bg-indigo-100 dark:bg-indigo-900',
+} %>
+
+<% icon_background_class = icon_background_class_map[icon_background] %>
+
+<% if team.photo.attached? %>
+  <%= image_tag team.photo.variant(resize_to_limit: [px_size, px_size]).processed, class: "#{size_classes} object-cover #{image_classes}", **image_options %>
+<% elsif image_only %>
+  <%= image_tag '', class: "#{size_classes} object-cover #{image_classes}", **image_options if current_page?(edit_team_path(team)) %>
+<% else %>
+  <div class="grid place-items-center <%= size_classes %> <%= icon_background_class %>">
+    <%= inline_svg_tag "icons/team#{icon_filled ? '-filled' : ''}.svg", class: "#{fallback_size_class} text-soft #{image_classes}" %>
+  </div>
+<% end %>

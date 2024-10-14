@@ -34,7 +34,8 @@
     <% end %>
 
     <div class="flex items-center gap-x-4">
-      <%= image_tag(@team.photo.attached? ? @team.photo.variant(resize_to_limit: [100, 100]).processed : '', data: { image_preview_target: 'output' }, class: "size-24 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover #{@team.photo.blank? ? 'hidden' : ''}") %>
+      <%= render 'shared/team_photo', team: @team, size: :md, image_only: true, image_classes: @team.photo.blank? ? 'hidden' : '', image_options: { data: { image_preview_target: 'output' } } %>
+
       <div class="space-y-2">
         <%= form.file_field :photo, accept: 'image/png, image/jpeg', class: 'form-file', data: { image_preview_target: 'input', action: 'image-preview#readURL' } %>
         <button type="button" class="btn btn-transparent" data-image-preview-target="clearBtn" data-action="image-preview#clearUpload">Clear upload</button>

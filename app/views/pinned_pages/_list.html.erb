@@ -17,39 +17,15 @@
 
             <% if page_url.match?(/teams\/\d+\/member\/\d+/) %>
               <% member = User.find_by(id: last_id) %>
-              <% if member %>
-                <% if member.avatar.attached? %>
-                  <%= image_tag member.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-6 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover' %>
-                <% elsif current_page?(page_url) %>
-                  <%= inline_svg_tag 'icons/user-filled.svg', class: 'size-5 dark:group-focus:text-white' %>
-                <% else %>
-                  <%= inline_svg_tag 'icons/user.svg', class: 'size-5 dark:group-focus:text-white' %>
-                <% end %>
-              <% end %>
+              <%= render 'shared/user_photo', user: member, size: :thumb, icon_background: :none, icon_filled: current_page?(page_url), image_classes: 'dark:group-focus:text-white' if member %>
 
             <% elsif page_url.match?(/teams\/\d+/) %>
               <% team = Team.find_by(id: last_id) %>
-              <% if team %>
-                <% if team.photo.attached? %>
-                  <%= image_tag team.photo.variant(resize_to_limit: [50, 50]).processed, class: 'size-6 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover' %>
-                <% elsif current_page?(page_url) %>
-                  <%= inline_svg_tag 'icons/team-filled.svg', class: 'size-5 dark:group-focus:text-white' %>
-                <% else %>
-                  <%= inline_svg_tag 'icons/team.svg', class: 'size-5 dark:group-focus:text-white' %>
-                <% end %>
-              <% end %>
+              <%= render 'shared/team_photo', team: team, size: :thumb, icon_background: :none, icon_filled: current_page?(page_url), image_classes: 'dark:group-focus:text-white' if team %>
 
             <% elsif page_url.match?(/users\/\d+/) %>
               <% user = User.find_by(id: last_id) %>
-              <% if user %>
-                <% if user.avatar.attached? %>
-                  <%= image_tag user.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-6 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover' %>
-                <% elsif current_page?(page_url) %>
-                  <%= inline_svg_tag 'icons/user-filled.svg', class: 'size-5 dark:group-focus:text-white' %>
-                <% else %>
-                  <%= inline_svg_tag 'icons/user.svg', class: 'size-5 dark:group-focus:text-white' %>
-                <% end %>
-              <% end %>
+              <%= render 'shared/user_photo', user: user, size: :thumb, icon_background: :none, icon_filled: current_page?(page_url), image_classes: 'dark:group-focus:text-white' if user %>
             <% end %>
             <span><%= page.title %></span>
           </div>

@@ -14,13 +14,7 @@
 >
   <nav class="flex items-center justify-between gap-4 w-full max-w-sm rounded-xl p-1 bg-slate-50 dark:bg-slate-700 border dark:border-slate-600 shadow-md dark:shadow-none">
     <%= link_to profile_path, aria: { current: current_is_profile ? 'page' : nil }, class: "tab-link #{current_is_profile ? 'tab-link-active' : 'ml-2.5'}" do %>
-      <% if current_user.avatar.attached? %>
-        <%= image_tag current_user.avatar.variant(resize_to_limit: [50, 50]).processed, class: "size-6 rounded-md drop-shadow-md dark:drop-shadow-none object-cover shrink-0" %>
-      <% elsif current_is_profile %>
-        <%= inline_svg_tag 'icons/profile-filled.svg', class: 'size-6 shrink-0' %>
-      <% else %>
-        <%= inline_svg_tag 'icons/profile.svg', class: 'size-6 shrink-0' %>
-      <% end %>
+      <%= render 'shared/user_photo', user: current_user, size: :thumb, icon_background: :none, icon_filled: current_is_profile, icon_name: 'profile', image_classes: 'shrink-0' %>
       <span>Profile</span>
     <% end %>
 

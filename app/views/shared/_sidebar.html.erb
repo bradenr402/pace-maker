@@ -20,13 +20,7 @@
     <!-- Main navigation links -->
     <div class="mb-6 space-y-1.5">
       <%= link_to profile_path, aria: { current: current_is_profile ? 'page' : nil }, class: "group sidebar-link #{'sidebar-link-active' if current_is_profile}" do %>
-        <% if current_user.avatar.attached? %>
-          <%= image_tag current_user.avatar.variant(resize_to_limit: [50, 50]).processed, class: 'size-6 rounded-md drop-shadow-lg dark:drop-shadow-none object-cover' %>
-        <% elsif current_is_profile %>
-          <%= inline_svg_tag 'icons/profile-filled.svg', class: 'size-5 dark:group-focus:text-white' %>
-        <% else %>
-          <%= inline_svg_tag 'icons/profile.svg', class: 'size-5 dark:group-focus:text-white motion-safe:group-hover:bounce-animation motion-safe:group-focus:bounce-animation' %>
-        <% end %>
+        <%= render 'shared/user_photo', user: current_user, size: :thumb, icon_background: :none, icon_filled: current_is_profile, icon_name: 'profile', image_classes: "dark:group-focus:text-white #{'motion-safe:group-hover:bounce-animation motion-safe:group-focus:bounce-animation' unless current_is_profile}" %>
         <span>Profile</span>
       <% end %>
 
