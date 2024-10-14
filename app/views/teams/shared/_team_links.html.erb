@@ -12,28 +12,38 @@
     Edit team settings
   <% end %>
 
+  <%= link_to edit_team_team_membership_path(team, current_user), class: 'dropdown-option' do %>
+    <%= inline_svg_tag 'icons/user-pencil.svg', class: 'size-5' %>
+    Edit my personal goals
+  <% end %>
+
+  <%= link_to team_member_path(team, current_user), class: 'dropdown-option' do %>
+    <%= inline_svg_tag 'icons/user.svg', class: 'size-5' %>
+    View my member page
+  <% end %>
+
 <% elsif @current_user_member_of_team %>
-  <button data-action="click->modal#open" data-modal-id="leaveTeam" class="dropdown-option-destructive">
-    <%= inline_svg_tag 'icons/trash.svg', class: 'size-5' %>
-    Leave team
-  </button>
+  <%= link_to edit_team_team_membership_path(team, current_user), class: 'dropdown-option-primary' do %>
+    <%= inline_svg_tag 'icons/user-pencil.svg', class: 'size-5' %>
+    Edit my personal goals
+  <% end %>
+
+  <%= link_to team_member_path(team, current_user), class: 'dropdown-option' do %>
+    <%= inline_svg_tag 'icons/user.svg', class: 'size-5' %>
+    View my member page
+  <% end %>
 
   <% unless @current_user_owns_team %>
-    <%= link_to team_settings_path(@team), class: 'dropdown-option' do %>
+    <%= link_to team_settings_path(team), class: 'dropdown-option' do %>
       <%= inline_svg_tag 'icons/settings.svg', class: 'size-5' %>
       View team settings
     <% end %>
   <% end %>
 
-  <%= link_to team_member_path(@team, current_user), class: 'dropdown-option' do %>
-    <%= inline_svg_tag 'icons/user.svg', class: 'size-5' %>
-    View my member page
-  <% end %>
-
-  <%= link_to edit_team_team_membership_path(@team, current_user), class: 'dropdown-option-primary' do %>
-    <%= inline_svg_tag 'icons/user-pencil.svg', class: 'size-5' %>
-    Edit my personal goals
-  <% end %>
+  <button data-action="click->modal#open" data-modal-id="leaveTeam" class="dropdown-option-destructive">
+    <%= inline_svg_tag 'icons/trash.svg', class: 'size-5' %>
+    Leave team
+  </button>
 
 <% else %>
   <% if team.gender_requirement_met?(current_user) %>
