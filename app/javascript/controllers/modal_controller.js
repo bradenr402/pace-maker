@@ -6,12 +6,20 @@ export default class extends Controller {
   static classes = ['hideModal', 'showModal', 'hideBackdrop', 'showBackdrop'];
 
   connect() {
-    this.closeAllModals();
-    this.resetTimeout = null;
+    this.clearResetTimeout();
+
+    this.modalTargets.forEach((modal) => this.clearResetTimeout());
 
     document.documentElement.addEventListener('turbo:submit-end', (event) => {
       if (event.detail.success) this.closeAllModals();
     });
+  }
+
+  clearResetTimeout() {
+    if (this.resetTimeout) {
+      clearTimeout(this.resetTimeout);
+      this.resetTimeout = null;
+    }
   }
 
   closeAllModals() {
@@ -41,10 +49,7 @@ export default class extends Controller {
       modal.classList.remove(...this.hideModalClasses);
     }
 
-    if (this.resetTimeout) {
-      clearTimeout(this.resetTimeout);
-      this.resetTimeout = null;
-    }
+    this.clearResetTimeout();
   }
 
   closeById(modalId) {
@@ -59,11 +64,14 @@ export default class extends Controller {
       modal.classList.remove(...this.showModalClasses);
       modal.classList.add(...this.hideModalClasses);
 
+      this.clearResetTimeout();
+
       const forms = modal.querySelectorAll('form');
       if (forms.length > 0) {
-        this.resetTimeout = setTimeout(() => {
-          forms.forEach((form) => form.reset());
-        }, 10000);
+        this.resetTimeout = setTimeout(
+          () => forms.forEach((form) => form.reset()),
+          10000
+        );
       }
     }
   }
