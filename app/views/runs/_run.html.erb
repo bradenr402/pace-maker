@@ -31,7 +31,7 @@
         </div>
       <% end %>
 
-      <% if current_page?(run) %>
+      <% if current_page?(run) || local_assigns[:turbo_frame] %>
         <%= render 'runs/run_content', run: run, team: local_assigns[:team] %>
       <% else %>
         <%= link_to run, data: { turbo: false }, class: 'block' do %>
