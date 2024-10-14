@@ -7,13 +7,13 @@ export default class extends Controller {
 
   connect() {
     this.closeOnOutsideClick = this._closeOnOutsideClick.bind(this);
-    document.addEventListener('click', this.closeOnOutsideClick);
+    document.addEventListener('mousedown', this.closeOnOutsideClick);
 
     this.hide();
   }
 
   disconnect() {
-    document.removeEventListener('click', this.closeOnOutsideClick);
+    document.removeEventListener('mousedown', this.closeOnOutsideClick);
   }
 
   toggle() {

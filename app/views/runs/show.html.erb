@@ -31,9 +31,9 @@
             <!-- Run Actions Dropdown Trigger -->
             <button
               type="button"
-              data-action="click->dropdown#toggle"
+              data-action=" ->dropdown#toggle"
               class="dropdown-toggle"
-            >
+              >
               <span>Actions</span>
               <%= inline_svg_tag 'icons/chevron-down.svg', class: 'size-4 text-soft transition duration-200 ease-in-out', data: { dropdown_target: 'arrowIcon' } %>
             </button>
@@ -44,13 +44,13 @@
               class="dropdown-menu origin-top-right right-0 top-12"
             >
               <!-- Open Edit Run Modal Button -->
-              <button data-action="click->modal#open" data-modal-id="editRunModal" class="dropdown-option-primary">
+              <button data-action="mousedown->modal#open" data-modal-id="editRunModal" class="dropdown-option-primary">
                 <%= inline_svg_tag 'icons/pencil.svg', class: 'size-5' %>
                 Edit run
               </button>
 
               <!-- Open Delete Run Modal Button -->
-              <button data-action="click->modal#open" data-modal-id="deleteRunModal" class="dropdown-option-destructive">
+              <button data-action="mousedown->modal#open" data-modal-id="deleteRunModal" class="dropdown-option-destructive">
                 <%= inline_svg_tag 'icons/trash.svg', class: 'size-5' %>
                 Delete run
               </button>
@@ -63,7 +63,7 @@
           <div
             data-modal-target="backdrop"
             data-modal-id="deleteRunModal"
-            data-action="click->modal#backdropClose"
+            data-action="mousedown->modal#backdropClose"
             class="modal-backdrop opacity-0 pointer-events-none"></div>
 
           <!-- Delete Run Modal -->
@@ -80,7 +80,7 @@
             </div>
 
             <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-              <button data-action="click->modal#close" data-modal-id="deleteRunModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+              <button data-action="mousedown->modal#close" data-modal-id="deleteRunModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
               <%= button_to 'Delete run',
                             @run,
                             method: :delete,
@@ -89,7 +89,7 @@
               %>
             </div>
 
-            <button data-action="click->modal#close" type="button" data-modal-id="deleteRunModal" class="modal-x-btn">
+            <button data-action="mousedown->modal#close" type="button" data-modal-id="deleteRunModal" class="modal-x-btn">
               <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
               <span class="sr-only">Close</span>
             </button>

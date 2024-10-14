@@ -2,7 +2,7 @@
 <div
   data-modal-target="backdrop"
   data-modal-id="leaveTeam"
-  data-action="click->modal#backdropClose"
+  data-action="mousedown->modal#backdropClose"
   class="modal-backdrop opacity-0 pointer-events-none"></div>
 
 <!-- Leave Team Modal -->
@@ -19,7 +19,7 @@
   </div>
 
   <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-    <button data-action="click->modal#close" data-modal-id="leaveTeam" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Stay on team</button>
+    <button data-action="mousedown->modal#close" data-modal-id="leaveTeam" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Stay on team</button>
     <%= button_to 'Leave team',
                   leave_team_path(@team),
                   data: { turbo: false },
@@ -27,7 +27,7 @@
     %>
   </div>
 
-  <button data-action="click->modal#close" type="button" data-modal-id="leaveTeam" class="modal-x-btn">
+  <button data-action="mousedown->modal#close" type="button" data-modal-id="leaveTeam" class="modal-x-btn">
     <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
     <span class="sr-only">Close</span>
   </button>

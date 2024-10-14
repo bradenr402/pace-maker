@@ -5,7 +5,7 @@
   class="flex justify-end mt-4 mr-4 relative md:hidden z-50"
 >
   <!-- Button to toggle the menu -->
-  <button type="button" class="btn-dark btn-muted size-10 rounded-full grid place-items-center" data-action="click->pinned-pages-menu#toggle">
+  <button type="button" class="btn-dark btn-muted size-10 rounded-full grid place-items-center" data-action="mousedown->pinned-pages-menu#toggle">
     <%= inline_svg_tag 'icons/pin.svg', class: 'size-5 text-soft', data: { pinned_pages_menu_target: 'openIcon' } %>
     <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-6 text-soft hidden', data: { pinned_pages_menu_target: 'closeIcon' } %>
     <span class="sr-only">Toggle pinned menu</span>

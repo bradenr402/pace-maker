@@ -2,7 +2,7 @@
 <div
   data-modal-target="backdrop"
   data-modal-id="deletePage_<%= page.id %>"
-  data-action="click->modal#backdropClose"
+  data-action="mousedown->modal#backdropClose"
   class="modal-backdrop opacity-0 pointer-events-none"></div>
 
 <!-- Delete Page Modal -->
@@ -19,7 +19,7 @@
   </div>
 
   <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-    <button data-action="click->modal#close" data-modal-id="deletePage_<%= page.id %>" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+    <button data-action="mousedown->modal#close" data-modal-id="deletePage_<%= page.id %>" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
     <%= button_to 'Unpin shortcut',
                   page,
                   method: :delete,
@@ -28,7 +28,7 @@
     %>
   </div>
 
-  <button data-action="click->modal#close" type="button" data-modal-id="deletePage_<%= page.id %>" class="modal-x-btn">
+  <button data-action="mousedown->modal#close" type="button" data-modal-id="deletePage_<%= page.id %>" class="modal-x-btn">
     <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
     <span class="sr-only">Close</span>
   </button>

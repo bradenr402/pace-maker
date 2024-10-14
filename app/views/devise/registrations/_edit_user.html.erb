@@ -17,7 +17,7 @@
   class="form-group"
 >
   <% if current_user.provider.present? %>
-    <button data-action="click->modal#open" data-modal-id="unlinkGoogleAccountModal" <%= 'disabled' if resource.password_never_changed? %> class="btn btn-white btn-outline gap-2">
+    <button data-action="mousedown->modal#open" data-modal-id="unlinkGoogleAccountModal" <%= 'disabled' if resource.password_never_changed? %> class="btn btn-white btn-outline gap-2">
       <%= inline_svg_tag 'icons/google-logo.svg', class: 'size-5' %>
       Unlink Google Account
     </button>
@@ -28,7 +28,7 @@
       <div
         data-modal-target="backdrop"
         data-modal-id="unlinkGoogleAccountModal"
-        data-action="click->modal#backdropClose"
+        data-action="mousedown->modal#backdropClose"
         class="modal-backdrop opacity-0 pointer-events-none"></div>
 
       <!-- Unlink Google Account Modal -->
@@ -45,14 +45,14 @@
         </div>
 
         <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-          <button data-action="click->modal#close" data-modal-id="unlinkGoogleAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Nevermind</button>
+          <button data-action="mousedown->modal#close" data-modal-id="unlinkGoogleAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Nevermind</button>
           <%= button_to unlink_google_account_user_path(current_user), method: :delete, class: 'btn btn-white btn-outline gap-2' do %>
             <%= inline_svg_tag 'icons/google-logo.svg', class: 'size-5' %>
             Unlink Google Account
           <% end %>
         </div>
 
-        <button data-action="click->modal#close" type="button" data-modal-id="unlinkGoogleAccountModal" class="modal-x-btn">
+        <button data-action="mousedown->modal#close" type="button" data-modal-id="unlinkGoogleAccountModal" class="modal-x-btn">
           <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
           <span class="sr-only">Close</span>
         </button>
@@ -319,7 +319,7 @@
     </div>
 
     <!-- Open Sign Out Modal Button -->
-    <button data-action="click->modal#open" data-modal-id="signOutModal" class="btn btn-destructive font-bold btn-muted whitespace-nowrap ml-auto">
+    <button data-action="mousedown->modal#open" data-modal-id="signOutModal" class="btn btn-destructive font-bold btn-muted whitespace-nowrap ml-auto">
       Sign out
     </button>
   </div>
@@ -331,7 +331,7 @@
     </div>
 
     <!-- Open Sign Out All Modal Button -->
-    <button data-action="click->modal#open" data-modal-id="signOutAllModal" class="btn btn-destructive font-bold btn-muted whitespace-nowrap ml-auto">
+    <button data-action="mousedown->modal#open" data-modal-id="signOutAllModal" class="btn btn-destructive font-bold btn-muted whitespace-nowrap ml-auto">
       End all other sessions
     </button>
   </div>
@@ -343,7 +343,7 @@
     </div>
 
     <!-- Open Delete Account Modal Button -->
-    <button data-action="click->modal#open" data-modal-id="deleteAccountModal" class="btn btn-destructive font-bold whitespace-nowrap ml-auto">
+    <button data-action="mousedown->modal#open" data-modal-id="deleteAccountModal" class="btn btn-destructive font-bold whitespace-nowrap ml-auto">
       Delete my account
     </button>
   </div>
@@ -352,7 +352,7 @@
   <div
     data-modal-target="backdrop"
     data-modal-id="signOutModal"
-    data-action="click->modal#backdropClose"
+    data-action="mousedown->modal#backdropClose"
     class="modal-backdrop opacity-0 pointer-events-none"></div>
 
   <!-- Sign Out Modal -->
@@ -369,11 +369,11 @@
     </div>
 
     <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-      <button data-action="click->modal#close" data-modal-id="signOutModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Stay signed in</button>
+      <button data-action="mousedown->modal#close" data-modal-id="signOutModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Stay signed in</button>
       <%= button_to 'Sign out', destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: 'btn btn-destructive font-bold w-full whitespace-nowrap' %>
     </div>
 
-    <button data-action="click->modal#close" type="button" data-modal-id="signOutModal" class="modal-x-btn">
+    <button data-action="mousedown->modal#close" type="button" data-modal-id="signOutModal" class="modal-x-btn">
       <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
       <span class="sr-only">Close</span>
     </button>
@@ -383,7 +383,7 @@
   <div
     data-modal-target="backdrop"
     data-modal-id="signOutAllModal"
-    data-action="click->modal#backdropClose"
+    data-action="mousedown->modal#backdropClose"
     class="modal-backdrop opacity-0 pointer-events-none"></div>
 
   <!-- Sign Out All Modal -->
@@ -400,11 +400,11 @@
     </div>
 
     <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-      <button data-action="click->modal#close" data-modal-id="signOutAllModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Nevermind</button>
+      <button data-action="mousedown->modal#close" data-modal-id="signOutAllModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Nevermind</button>
       <%= button_to 'End all other sessions', sign_out_all_devices_path, method: :post, class: 'btn btn-destructive font-bold w-full whitespace-nowrap' %>
     </div>
 
-    <button data-action="click->modal#close" type="button" data-modal-id="signOutAllModal" class="modal-x-btn">
+    <button data-action="mousedown->modal#close" type="button" data-modal-id="signOutAllModal" class="modal-x-btn">
       <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
       <span class="sr-only">Close</span>
     </button>
@@ -414,7 +414,7 @@
   <div
     data-modal-target="backdrop"
     data-modal-id="deleteAccountModal"
-    data-action="click->modal#backdropClose"
+    data-action="mousedown->modal#backdropClose"
     class="modal-backdrop opacity-0 pointer-events-none"></div>
 
   <!-- Delete Account Modal -->
@@ -431,7 +431,7 @@
     </div>
 
     <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-      <button data-action="click->modal#close" data-modal-id="deleteAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Nevermind</button>
+      <button data-action="mousedown->modal#close" data-modal-id="deleteAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Nevermind</button>
       <%= button_to 'Delete my account',
                     registration_path(resource_name),
                     method: :delete,
@@ -440,7 +440,7 @@
       %>
     </div>
 
-    <button data-action="click->modal#close" type="button" data-modal-id="deleteAccountModal" class="modal-x-btn">
+    <button data-action="mousedown->modal#close" type="button" data-modal-id="deleteAccountModal" class="modal-x-btn">
       <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
       <span class="sr-only">Close</span>
     </button>

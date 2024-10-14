@@ -2,7 +2,7 @@
 <div
   data-modal-target="backdrop"
   data-modal-id="editRunModal"
-  data-action="click->modal#backdropClose"
+  data-action="mousedown->modal#backdropClose"
   class="modal-backdrop opacity-0 pointer-events-none"></div>
 
 <!-- Edit Run Modal -->
@@ -20,7 +20,7 @@
   <%= render 'runs/form_modal', run: run %>
 
   <!-- Close button -->
-  <button data-action="click->modal#close" type="button" data-modal-id="editRunModal" class="modal-x-btn">
+  <button data-action="mousedown->modal#close" type="button" data-modal-id="editRunModal" class="modal-x-btn">
     <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
     <span class="sr-only">Close</span>
   </button>

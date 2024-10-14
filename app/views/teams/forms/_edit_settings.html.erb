@@ -17,7 +17,7 @@
 
     <div class="form-group">
       <div class="flex gap-x-2.5">
-        <div class="form-input-toggle shrink-0" data-controller="toggle-checkbox" data-action="click->toggle-checkbox#toggle">
+        <div class="form-input-toggle shrink-0" data-controller="toggle-checkbox" data-action="mousedown->toggle-checkbox#toggle">
           <span class="form-input-toggle-switch"></span>
           <%= settings_form.check_box :require_gender, { checked: @team.require_gender?, disabled: @team.owner.gender.blank?, class: 'sr-only', data: { restore_defaults_target: 'requireGender', team_gender_fields_target: 'requireGender', toggle_checkbox_target: 'checkbox', action: 'change->team-gender-fields#toggleFields' } }, true, false %>
         </div>
@@ -82,7 +82,7 @@
 
     <div class="space-y-4 form-group">
       <div class="flex gap-x-2.5">
-        <div class="form-input-toggle shrink-0" data-controller="toggle-checkbox" data-action="click->toggle-checkbox#toggle">
+        <div class="form-input-toggle shrink-0" data-controller="toggle-checkbox" data-action="mousedown->toggle-checkbox#toggle">
           <span class="form-input-toggle-switch"></span>
           <%= settings_form.check_box :include_saturday, { checked: @team.include_saturday_in_streak?, class: 'sr-only', data: { restore_defaults_target: 'includeSaturday', toggle_checkbox_target: 'checkbox' } }, true, false %>
         </div>
@@ -93,7 +93,7 @@
       </div>
 
       <div class="flex gap-x-2.5">
-        <div class="form-input-toggle shrink-0" data-controller="toggle-checkbox" data-action="click->toggle-checkbox#toggle">
+        <div class="form-input-toggle shrink-0" data-controller="toggle-checkbox" data-action="mousedown->toggle-checkbox#toggle">
           <span class="form-input-toggle-switch"></span>
           <%= settings_form.check_box :include_sunday, { checked: @team.include_sunday_in_streak?, class: 'sr-only', data: { restore_defaults_target: 'includeSunday', toggle_checkbox_target: 'checkbox' } }, true, false %>
         </div>

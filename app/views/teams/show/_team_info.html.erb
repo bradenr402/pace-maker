@@ -15,7 +15,7 @@
   <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
     <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300">Season Dates</h2>
     <% if team.season_dates? && team.season_in_progress? %>
-      <button data-action="click->calendar#toggleCalendar" class="btn btn-primary btn-muted btn-sm gap-1.5">
+      <button data-action="mousedown->calendar#toggleCalendar" class="btn btn-primary btn-muted btn-sm gap-1.5">
         <%= inline_svg_tag 'icons/calendar.svg', class: 'size-4' %>
         <span data-calendar-target="toggleButtonText">Show Calendar</span>
       </button>

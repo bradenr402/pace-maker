@@ -17,7 +17,7 @@
 
     <div class="flex items-center gap-2.5">
       <!-- Decrease distance button -->
-      <%= button_tag type: 'button', data: { action: 'click->distance-shortcuts#updateDistance click->form-validation#validateDistance', update_distance_value: '-1' }, class: 'btn btn-white size-10' do %>
+      <%= button_tag type: 'button', data: { action: 'mousedown->distance-shortcuts#updateDistance mousedown->form-validation#validateDistance', update_distance_value: '-1' }, class: 'btn btn-white size-10' do %>
         <%= inline_svg_tag 'icons/minus.svg', class: 'size-5 shrink-0' %>
         <span class="sr-only">Decrease by 1 mile</span>
       <% end %>
@@ -28,7 +28,7 @@
       </div>
 
       <!-- Increase distance button -->
-      <%= button_tag type: 'button', data: { action: 'click->distance-shortcuts#updateDistance click->form-validation#validateDistance', update_distance_value: '1' }, class: 'btn btn-white size-10' do %>
+      <%= button_tag type: 'button', data: { action: 'mousedown->distance-shortcuts#updateDistance mousedown->form-validation#validateDistance', update_distance_value: '1' }, class: 'btn btn-white size-10' do %>
         <%= inline_svg_tag 'icons/plus.svg', class: 'size-5 shrink-0' %>
         <span class="sr-only">Increase by 1 mile</span>
       <% end %>
@@ -61,8 +61,8 @@
 
   <% if modal_style_buttons %>
     <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-      <button data-action="click->modal#close" data-modal-id="<%= form.object.new_record? ? 'newRunModal' : 'editRunModal' %>" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
-      <%= form.submit  form.object.new_record? ? 'Create run' : 'Update run', class: 'btn btn-primary w-full sm:w-auto', data: { action: 'click->modal#close' } %>
+      <button data-action="mousedown->modal#close" data-modal-id="<%= form.object.new_record? ? 'newRunModal' : 'editRunModal' %>" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+      <%= form.submit  form.object.new_record? ? 'Create run' : 'Update run', class: 'btn btn-primary w-full sm:w-auto', data: { action: 'mousedown->modal#close' } %>
     </div>
   <% else %>
     <div class="flex flex-wrap items-center gap-4 pt-6 border-t border-slate-200 dark:border-slate-700">

@@ -10,39 +10,39 @@
   <table data-sort-table-target="table" class="w-full overflow-x-auto text-sm text-left table-auto rtl:text-right text-soft row-numbers">
     <thead class="text-xs uppercase text-normal bg-slate-200/70 dark:bg-slate-700/70">
       <tr>
-        <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
+        <th scope="col" data-action="mousedown->sort-table#sort" data-sort-table-target="th" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
           <div class="flex items-center">
             Team member
             <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
           </div>
         </th>
         <% if team.require_gender? %>
-          <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
+          <th scope="col" data-action="mousedown->sort-table#sort" data-sort-table-target="th" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
             <div class="flex items-center">
               Gender
               <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
             </div>
           </th>
         <% end %>
-        <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th defaultSort" data-numeric="true" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
+        <th scope="col" data-action="mousedown->sort-table#sort" data-sort-table-target="th defaultSort" data-numeric="true" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
           <div class="flex items-center">
             # of miles
             <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 rotate-180' %>
           </div>
         </th>
-        <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th" data-numeric="true" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
+        <th scope="col" data-action="mousedown->sort-table#sort" data-sort-table-target="th" data-numeric="true" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
           <div class="flex items-center">
             # of long runs
             <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
           </div>
         </th>
-        <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th" data-numeric="true" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
+        <th scope="col" data-action="mousedown->sort-table#sort" data-sort-table-target="th" data-numeric="true" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
           <div class="flex items-center">
             Current streak
             <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
           </div>
         </th>
-        <th scope="col" data-action="click->sort-table#sort" data-sort-table-target="th" data-numeric="true" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
+        <th scope="col" data-action="mousedown->sort-table#sort" data-sort-table-target="th" data-numeric="true" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
           <div class="flex items-center">
             Record streak
             <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
