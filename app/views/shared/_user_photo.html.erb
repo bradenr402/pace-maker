@@ -50,6 +50,8 @@
 
 <% if user.avatar.attached? %>
   <%= image_tag user.avatar.variant(resize_to_limit: [px_size, px_size]).processed, class: "#{size_classes} object-cover #{image_classes}", **image_options %>
+<% elsif user.avatar_url %>
+  <%= image_tag user.avatar_url, class: "#{size_classes} object-cover #{image_classes}", **image_options %>
 <% elsif image_only %>
   <%= image_tag '', class: "#{size_classes} object-cover #{image_classes}", **image_options if current_page?(edit_user_registration_path) %>
 <% else %>

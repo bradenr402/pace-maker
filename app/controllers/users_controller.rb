@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   def unlink_google_account
     if current_user.password_never_changed?
       flash[:alert] = 'You must set a password to unlink your Google account.'
-    elsif current_user.update(provider: nil, uid: nil)
+    elsif current_user.update(provider: nil, uid: nil, avatar_url: nil)
       flash[:success] = 'Your Google account was unlinked successfully.'
     else
       flash[:error] = 'There was an issue unlinking your Google account.'

@@ -6,8 +6,6 @@ class User < ApplicationRecord
   PHONE_NUMBER_FORMAT = /\A\+?\d{10,15}\z/
   PASSWORD_FORMAT = /\A(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[#?!@$%^&*-])/
 
-  before_validation :convert_empty_string_phone_number_to_nil
-
   has_many :runs, dependent: :destroy
   has_many :team_memberships, dependent: :destroy
   has_many :teams, through: :team_memberships
@@ -24,9 +22,11 @@ class User < ApplicationRecord
 
   attr_accessor :remove_avatar
 
-  before_save :purge_avatar, if: -> { remove_avatar == '1' }
+  before_validation :convert_empty_string_phone_number_to_nil
   before_update :set_password_changed_at,
                 if: :will_save_change_to_encrypted_password?
+  before_save :purge_avatar, if: -> { remove_avatar == '1' }
+  before_save :clear_avatar_url, if: -> { avatar.attached? }
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -239,7 +239,12 @@ class User < ApplicationRecord
   def convert_empty_string_phone_number_to_nil =
     (self.phone_number = nil if phone_number.blank?)
 
-  def purge_avatar = avatar.purge_later
+  def purge_avatar
+    avatar.purge_later
+    self.avatar_url = nil
+  end
+
+  def clear_avatar_url = (self.avatar_url = nil)
 
   def set_password_changed_at = self.password_changed_at = Time.current
 
