@@ -22,4 +22,7 @@ module.exports = {
     require('@tailwindcss/aspect-ratio'),
     require('@tailwindcss/typography'),
   ],
+  future: {
+    hoverOnlyWhenSupported: true,
+  }
 };
