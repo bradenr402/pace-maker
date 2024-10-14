@@ -8,7 +8,7 @@
 
     <% if pinned_pages.present? %>
       <% pinned_pages.each do |page| %>
-      <% page_url = page.page_url %>
+        <% page_url = page.page_url %>
         <% link_options = { data: { turbo: false }, class: "group sidebar-link #{current_page?(page_url) ? 'sidebar-link-active' : 'sidebar-link-inactive' }" } %>
 
         <% link_content = capture do %>
