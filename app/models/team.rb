@@ -44,7 +44,7 @@ class Team < ApplicationRecord
   def gender_requirement_met?(user)
     return true unless require_gender?
 
-    return true unless user.gender?
+    return true if user.gender?
 
     false
   end
