@@ -19,7 +19,7 @@
       <%= f.label :email, class: 'form-label' %>
       <div class="relative">
         <%= inline_svg_tag 'icons/envelope.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-        <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-input pl-10', data: { form_validation_target: 'email', action: 'input->form-validation#validateEmail' } %>
+        <%= f.email_field :email, autofocus: true, autocomplete: 'email', placeholder: 'Enter your email', class: 'form-input pl-10', data: { form_validation_target: 'email', action: 'input->form-validation#validateEmail' } %>
       </div>
       <p class="error-message hidden my-1" data-form-validation-target="emailError">Invalid email address</p>
     </div>

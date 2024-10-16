@@ -25,7 +25,7 @@
           data-id="<%= page.id %>"
           class="flex items-center gap-2 p-1 border rounded-lg shadow-md bg-slate-50 dark:bg-slate-700/80 dark:shadow-none dark:border-slate-700"
         >
-          <%= f.text_field "pinned_pages[#{page.id}][title]", value: page.title, class: 'form-input' %>
+          <%= f.text_field "pinned_pages[#{page.id}][title]", value: page.title, placeholder: page.title, class: 'form-input' %>
 
           <button type="button" data-action="mousedown->modal#open" data-modal-id="deletePage_<%= page.id %>" class="btn p-1.5 text-rose-600 dark:text-rose-500 hover:bg-rose-100 dark:hover:bg-rose-900/80 hover:text-rose-700 dark:hover:text-rose-300 shrink-0">
             <%= inline_svg_tag 'icons/unpin.svg', class: 'size-3.5 sm:size-5' %>

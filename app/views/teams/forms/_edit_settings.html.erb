@@ -3,6 +3,8 @@
   <p class="text-soft">Set preferences for your team to match your needs.</p>
 </div>
 
+<% default_settings = TeamSettings.defaults %>
+
 <%= form_with model: @team, url: team_settings_path(@team), local: true, data: { controller: 'restore-defaults team-gender-fields' } do |form| %>
   <!-- Hidden fields to ensure that unchecked checkboxes submit 'false' -->
   <%= hidden_field_tag 'team[settings][require_gender]', 'false' %>
@@ -30,7 +32,7 @@
 
     <div class="form-group">
       <%= settings_form.label :max_allowed_requests, 'Maximum allowed requests', class: 'form-label' %>
-      <%= settings_form.number_field :max_allowed_requests, step: 1, min: 1, value: @team.settings(:join_requirements).max_allowed_requests, class: 'form-input', data: { restore_defaults_target: 'maxAllowedRequests' } %>
+      <%= settings_form.number_field :max_allowed_requests, step: 1, min: 1, value: @team.settings(:join_requirements).max_allowed_requests, placeholder: "e.g., #{default_settings.dig(:join_requirements, :max_allowed_requests)}", class: 'form-input', data: { restore_defaults_target: 'maxAllowedRequests' } %>
       <p class="my-1 help-text">Choose how many times a user can request to join your team before being blocked.</p>
     </div>
 
@@ -41,17 +43,17 @@
 
     <div class="form-group <%= @team.require_gender? ? '' : 'hidden' %>" data-team-gender-fields-target="longRunMale">
       <%= settings_form.label :long_run_distance_male, 'Male long run distance', class: 'form-label' %>
-      <%= settings_form.number_field :long_run_distance_male, step: 0.1, min: 0.1, value: @team.long_run_distance_male, class: 'form-input', data: { restore_defaults_target: 'longRunDistanceMale' } %>
+      <%= settings_form.number_field :long_run_distance_male, step: 0.1, min: 0.1, value: @team.long_run_distance_male, placeholder: "e.g., #{default_settings.dig(:long_runs, :long_run_distance_male)}", class: 'form-input', data: { restore_defaults_target: 'longRunDistanceMale' } %>
     </div>
 
     <div class="form-group <%= @team.require_gender? ? '' : 'hidden' %>" data-team-gender-fields-target="longRunFemale">
       <%= settings_form.label :long_run_distance_female, 'Female long run distance', class: 'form-label' %>
-      <%= settings_form.number_field :long_run_distance_female, step: 0.1, min: 0.1, value: @team.long_run_distance_female, class: 'form-input', data: { restore_defaults_target: 'longRunDistanceFemale' } %>
+      <%= settings_form.number_field :long_run_distance_female, step: 0.1, min: 0.1, value: @team.long_run_distance_female, placeholder: "e.g., #{default_settings.dig(:long_runs, :long_run_distance_female)}", class: 'form-input', data: { restore_defaults_target: 'longRunDistanceFemale' } %>
     </div>
 
     <div class="form-group <%= @team.require_gender? ? 'hidden' : '' %>" data-team-gender-fields-target="longRunNeutral">
       <%= settings_form.label :long_run_distance_neutral, 'Long run distance', class: 'form-label' %>
-      <%= settings_form.number_field :long_run_distance_neutral, step: 0.1, min: 0.1, value: @team.long_run_distance_neutral, class: 'form-input', data: { restore_defaults_target: 'longRunDistanceNeutral' } %>
+      <%= settings_form.number_field :long_run_distance_neutral, step: 0.1, min: 0.1, value: @team.long_run_distance_neutral, placeholder: "e.g., #{default_settings.dig(:long_runs, :long_run_distance_neutral)}", class: 'form-input', data: { restore_defaults_target: 'longRunDistanceNeutral' } %>
     </div>
 
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
@@ -61,17 +63,17 @@
 
     <div class="form-group <%= @team.require_gender? ? '' : 'hidden' %>" data-team-gender-fields-target="streakMale">
       <%= settings_form.label :streak_distance_male, 'Male streak distance', class: 'form-label' %>
-      <%= settings_form.number_field :streak_distance_male, step: 0.1, min: 0.1, value: @team.streak_distance_male, class: 'form-input', data: { restore_defaults_target: 'streakDistanceMale' } %>
+      <%= settings_form.number_field :streak_distance_male, step: 0.1, min: 0.1, value: @team.streak_distance_male, placeholder: "e.g., #{default_settings.dig(:streaks, :streak_distance_male)}", class: 'form-input', data: { restore_defaults_target: 'streakDistanceMale' } %>
     </div>
 
     <div class="form-group <%= @team.require_gender? ? '' : 'hidden' %>" data-team-gender-fields-target="streakFemale">
       <%= settings_form.label :streak_distance_female, 'Female streak distance', class: 'form-label' %>
-      <%= settings_form.number_field :streak_distance_female, step: 0.1, min: 0.1, value: @team.streak_distance_female, class: 'form-input', data: { restore_defaults_target: 'streakDistanceFemale' } %>
+      <%= settings_form.number_field :streak_distance_female, step: 0.1, min: 0.1, value: @team.streak_distance_female, placeholder: "e.g., #{default_settings.dig(:streaks, :streak_distance_female)}", class: 'form-input', data: { restore_defaults_target: 'streakDistanceFemale' } %>
     </div>
 
     <div class="form-group <%= @team.require_gender? ? 'hidden' : '' %>" data-team-gender-fields-target="streakNeutral">
       <%= settings_form.label :streak_distance_neutral, 'Streak distance', class: 'form-label' %>
-      <%= settings_form.number_field :streak_distance_neutral, step: 0.1, min: 0.1, value: @team.streak_distance_neutral, class: 'form-input', data: { restore_defaults_target: 'streakDistanceNeutral' } %>
+      <%= settings_form.number_field :streak_distance_neutral, step: 0.1, min: 0.1, value: @team.streak_distance_neutral, placeholder: "e.g., #{default_settings.dig(:streaks, :streak_distance_neutral)}", class: 'form-input', data: { restore_defaults_target: 'streakDistanceNeutral' } %>
     </div>
 
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">

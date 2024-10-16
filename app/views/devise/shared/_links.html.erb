@@ -1,7 +1,7 @@
 <% forgot_password_check = devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
 <% confirmation_instructions_check = devise_mapping.confirmable? && controller_name != 'confirmations' %>
 <% unlock_instructions_check = devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
-<% omniauth_check = devise_mapping.omniauthable? %>
+<% omniauth_check = devise_mapping.omniauthable? && controller_name != 'passwords' %>
 
 <%- if forgot_password_check || confirmation_instructions_check || unlock_instructions_check || omniauth_check %>
   <div class="mt-4 space-y-4 text-center">

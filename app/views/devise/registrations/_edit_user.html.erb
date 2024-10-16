@@ -80,7 +80,7 @@
 
     <div class="relative">
       <%= inline_svg_tag 'icons/user.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= f.text_field :username, autocomplete: 'username', class: 'form-input pl-10', data: { form_validation_target: 'username', action: 'input->form-validation#validateUsername' } %>
+      <%= f.text_field :username, autocomplete: 'username', placeholder: 'e.g., john_doe', class: 'form-input pl-10', data: { form_validation_target: 'username', action: 'input->form-validation#validateUsername' } %>
     </div>
 
     <p class="my-1 help-text">Your username is unique to you and is used to identify your account.</p>
@@ -96,7 +96,7 @@
 
     <div class="relative">
       <%= inline_svg_tag 'icons/profile.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= f.text_field :display_name, class: 'form-input pl-10', data: { form_validation_target: 'displayName', action: 'input->form-validation#validateDisplayName' } %>
+      <%= f.text_field :display_name, placeholder: 'e.g., John Doe', class: 'form-input pl-10', data: { form_validation_target: 'displayName', action: 'input->form-validation#validateDisplayName' } %>
     </div>
 
     <p class="my-1 help-text">Your display name is not unique and can be added to help other users recognize you.</p>
@@ -136,7 +136,7 @@
 
     <div class="relative">
       <%= inline_svg_tag 'icons/envelope.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= f.email_field :email, autocomplete: 'email', class: 'form-input pl-10', data: { form_validation_target: 'email', action: 'input->form-validation#validateEmail' } %>
+      <%= f.email_field :email, autocomplete: 'email', placeholder: 'e.g., example@email.com', class: 'form-input pl-10', data: { form_validation_target: 'email', action: 'input->form-validation#validateEmail' } %>
     </div>
 
     <p class="hidden my-1 error-message" data-form-validation-target="emailError">Invalid email address</p>
@@ -158,7 +158,7 @@
 
     <div class="relative">
       <%= inline_svg_tag 'icons/phone.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= f.telephone_field :phone_number, autocomplete: 'tel', class: 'form-input pl-10', data: { form_validation_target: 'phone', action: 'input->form-validation#validatePhone input->form-validation#filterPhoneInput' } %>
+      <%= f.telephone_field :phone_number, placeholder: 'e.g., 1234567890', autocomplete: 'tel', class: 'form-input pl-10', data: { form_validation_target: 'phone', action: 'input->form-validation#validatePhone input->form-validation#filterPhoneInput' } %>
     </div>
 
     <p class="hidden my-1 error-message" data-form-validation-target="phoneError">Invalid phone number</p>
@@ -220,7 +220,7 @@
 
     <div data-controller="password-visibility" class="relative">
       <%= inline_svg_tag 'icons/lock.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= f.password_field :password, autocomplete: 'new-password', class: 'form-input pl-10', data: { form_validation_target: 'newPassword', action: 'input->form-validation#validateNewPassword input->form-validation#validateNewPasswordConfirmation', password_visibility_target: 'password' } %>
+      <%= f.password_field :password, autocomplete: 'new-password', placeholder: 'Create a new password', class: 'form-input pl-10', data: { form_validation_target: 'newPassword', action: 'input->form-validation#validateNewPassword input->form-validation#validateNewPasswordConfirmation', password_visibility_target: 'password' } %>
 
       <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" data-action="password-visibility#toggle">
         <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
@@ -265,7 +265,7 @@
     <%= f.label :password_confirmation, 'Confirm new password', class: 'form-label transition duration-300 ease-in-out', data: { form_validation_target: 'newPasswordConfirmationLabel' } %>
     <div data-controller="password-visibility" class="relative">
       <%= inline_svg_tag 'icons/lock-check.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-input pl-10 transition duration-300 ease-in-out', data: { form_validation_target: 'newPasswordConfirmation', action: 'input->form-validation#validateNewPasswordConfirmation', password_visibility_target: 'password' } %>
+      <%= f.password_field :password_confirmation, autocomplete: 'new-password', placeholder: 'Confirm your new password', class: 'form-input pl-10 transition duration-300 ease-in-out', data: { form_validation_target: 'newPasswordConfirmation', action: 'input->form-validation#validateNewPasswordConfirmation', password_visibility_target: 'password' } %>
 
       <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" data-action="password-visibility#toggle">
         <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
@@ -282,7 +282,7 @@
       <%= f.label :current_password, 'Current password', class: 'form-label' %>
       <div data-controller="password-visibility" class="relative">
         <%= inline_svg_tag 'icons/key.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-        <%= f.password_field :current_password, autocomplete: 'current-password', class: 'form-input pl-10', data: { password_visibility_target: 'password' } %>
+        <%= f.password_field :current_password, autocomplete: 'current-password', placeholder: 'Enter your current password', class: 'form-input pl-10', data: { password_visibility_target: 'password' } %>
 
         <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" data-action="password-visibility#toggle">
           <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>

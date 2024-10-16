@@ -17,7 +17,7 @@
       <%= f.label :login, 'Username or email', class: 'form-label' %>
       <div class="relative">
         <%= inline_svg_tag 'icons/user.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-        <%= f.text_field :login, autofocus: true, class: 'form-input pl-10', data: { form_validation_target: 'login', action: 'input->form-validation#validateLogin' } %>
+        <%= f.text_field :login, autofocus: true, class: 'form-input pl-10', placeholder: 'Enter your username or email', data: { form_validation_target: 'login', action: 'input->form-validation#validateLogin' } %>
       </div>
       <span class="error-message hidden my-1" data-form-validation-target="loginError">Must be a valid email or username</span>
     </div>
@@ -26,7 +26,7 @@
       <%= f.label :password, class: 'form-label' %>
       <div data-controller="password-visibility" class="relative">
         <%= inline_svg_tag 'icons/lock.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-        <%= f.password_field :password, autocomplete: 'current-password', class: 'form-input pl-10', data: { password_visibility_target: 'password' } %>
+        <%= f.password_field :password, autocomplete: 'current-password', placeholder: 'Enter your password', class: 'form-input pl-10', data: { password_visibility_target: 'password' } %>
 
         <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" data-action="password-visibility#toggle">
           <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
