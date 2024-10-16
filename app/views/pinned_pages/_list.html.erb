@@ -1,40 +1,38 @@
 <%= turbo_frame_tag 'pinned_pages_list' do %>
-  <div class="space-y-1.5">
-    <div class="p-2 flex items-end justify-between sticky top-0 bg-slate-50 dark:bg-slate-800 border-b dark:border-slate-700">
-      <p class="text-soft text-sm">Pinned shortcuts</p>
-      <% pinned_pages = current_user.pinned_pages.order(:position) %>
-      <%= link_to 'Edit', manage_pinned_pages_path, data: { turbo: false }, class: 'btn-link-soft text-xs' if pinned_pages.present? %>
-    </div>
-
-    <% if pinned_pages.present? %>
-      <% pinned_pages.each do |page| %>
-        <% page_url = page.page_url %>
-        <% link_options = { data: { turbo: false }, class: "group sidebar-link #{current_page?(page_url) ? 'sidebar-link-active' : 'sidebar-link-inactive' }" } %>
-
-        <% link_content = capture do %>
-          <div class="flex items-center gap-2.5">
-            <% last_id = page_url.split('/').last %>
-
-            <% if page_url.match?(/teams\/\d+\/member\/\d+/) %>
-              <% member = User.find_by(id: last_id) %>
-              <%= render 'shared/user_photo', user: member, size: :thumb, icon_background: :none, icon_filled: current_page?(page_url), image_classes: 'dark:group-focus:text-white' if member %>
-
-            <% elsif page_url.match?(/teams\/\d+/) %>
-              <% team = Team.find_by(id: last_id) %>
-              <%= render 'shared/team_photo', team: team, size: :thumb, icon_background: :none, icon_filled: current_page?(page_url), image_classes: 'dark:group-focus:text-white' if team %>
-
-            <% elsif page_url.match?(/users\/\d+/) %>
-              <% user = User.find_by(id: last_id) %>
-              <%= render 'shared/user_photo', user: user, size: :thumb, icon_background: :none, icon_filled: current_page?(page_url), image_classes: 'dark:group-focus:text-white' if user %>
-            <% end %>
-            <span><%= page.title %></span>
-          </div>
-        <% end %>
-
-        <%= link_to link_content, page_url, **link_options %>
-      <% end %>
-    <% else %>
-      <p class="text-soft text-center text-xs">You have not pinned any pages yet.</p>
-    <% end %>
+  <div class="p-2 flex items-end justify-between sticky top-0 bg-slate-50 dark:bg-slate-800 border-b dark:border-slate-700">
+    <p class="text-soft text-sm">Pinned shortcuts</p>
+    <% pinned_pages = current_user.pinned_pages.order(:position) %>
+    <%= link_to 'Edit', manage_pinned_pages_path, data: { turbo: false }, class: 'btn-link-soft text-xs' if pinned_pages.present? %>
   </div>
+
+  <% if pinned_pages.present? %>
+    <% pinned_pages.each do |page| %>
+      <% page_url = page.page_url %>
+      <% link_options = { data: { turbo: false }, class: "group sidebar-link #{current_page?(page_url) ? 'sidebar-link-active' : 'sidebar-link-inactive' }" } %>
+
+      <% link_content = capture do %>
+        <div class="flex items-center gap-2.5">
+          <% last_id = page_url.split('/').last %>
+
+          <% if page_url.match?(/teams\/\d+\/member\/\d+/) %>
+            <% member = User.find_by(id: last_id) %>
+            <%= render 'shared/user_photo', user: member, size: :thumb, icon_background: :none, icon_filled: current_page?(page_url), image_classes: 'dark:group-focus:text-white' if member %>
+
+          <% elsif page_url.match?(/teams\/\d+/) %>
+            <% team = Team.find_by(id: last_id) %>
+            <%= render 'shared/team_photo', team: team, size: :thumb, icon_background: :none, icon_filled: current_page?(page_url), image_classes: 'dark:group-focus:text-white' if team %>
+
+          <% elsif page_url.match?(/users\/\d+/) %>
+            <% user = User.find_by(id: last_id) %>
+            <%= render 'shared/user_photo', user: user, size: :thumb, icon_background: :none, icon_filled: current_page?(page_url), image_classes: 'dark:group-focus:text-white' if user %>
+          <% end %>
+          <span><%= page.title %></span>
+        </div>
+      <% end %>
+
+      <%= link_to link_content, page_url, **link_options %>
+    <% end %>
+  <% else %>
+    <p class="text-soft text-center text-xs">You have not pinned any pages yet.</p>
+  <% end %>
 <% end %>
