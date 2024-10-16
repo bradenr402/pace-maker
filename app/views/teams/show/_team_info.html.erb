@@ -8,8 +8,8 @@
 <!-- Season Dates Card -->
 <div
   data-controller="calendar"
-  data-calendar-hidden-class="hidden"
-  data-calendar-visible-class="grid grid-cols-1 lg:grid-cols-2 gap-4"
+  data-calendar-hidden-class="calendar-close"
+  data-calendar-visible-class="calendar-open"
   class="card mb-6"
 >
   <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
@@ -17,7 +17,7 @@
     <% if team.season_dates? && team.season_in_progress? %>
       <button data-action="mousedown->calendar#toggleCalendar" class="btn btn-primary btn-muted btn-sm gap-1.5">
         <%= inline_svg_tag 'icons/calendar.svg', class: 'size-4' %>
-        <span data-calendar-target="toggleButtonText">Show Calendar</span>
+        <span data-calendar-target="toggleButtonText">Calendar</span>
       </button>
     <% end %>
   </div>
@@ -47,7 +47,7 @@
 
       <div
         data-calendar-target="calendarContainer"
-        class="mt-10"
+        class="grid grid-cols-1 lg:grid-cols-2 gap-4 transition-height"
       >
         <div class="col-span-1 lg:col-span-2">
           <div class="flex flex-wrap items-center justify-center gap-3 mb-4 md:max-w-[80%] md:mx-auto">

@@ -107,4 +107,17 @@
       transform: translateY(-100%) scale(0.9);
     }
   }
+
+  .transition-height {
+    transition: max-height 400ms ease-in-out, margin 500ms ease-in-out, opacity 300ms ease-in-out;
+    overflow: hidden;
+  }
+
+  .calendar-open {
+    @apply mt-10 max-h-[3000px] opacity-100;
+  }
+
+  .calendar-close {
+    @apply mt-0 max-h-0 opacity-0;
+  }
 }
