@@ -22,6 +22,11 @@
     View my member page
   <% end %>
 
+  <button data-action="mousedown->modal#open" data-modal-id="deleteTeam" class="dropdown-option-destructive">
+    <%= inline_svg_tag 'icons/trash.svg', class: 'size-5' %>
+    Delete team
+  </button>
+
 <% elsif @current_user_member_of_team %>
   <%= link_to edit_team_team_membership_path(team, current_user), class: 'dropdown-option-primary' do %>
     <%= inline_svg_tag 'icons/user-pencil.svg', class: 'size-5' %>

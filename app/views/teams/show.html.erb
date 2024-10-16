@@ -46,22 +46,11 @@
               data-dropdown-target="dropdown"
               class="dropdown-menu origin-top sm:origin-top-right left-1/2 -translate-x-1/2 top-12 sm:right-0 sm:left-auto sm:-translate-x-0"
             >
-              <!-- Edit/Join/Leave/Cancel Request Button -->
               <%= render 'teams/shared/team_links', team: @team %>
-
-              <!-- Open Delete Team Modal Button -->
-              <% if @current_user_owns_team %>
-                <button data-action="mousedown->modal#open" data-modal-id="deleteTeam" class="dropdown-option-destructive">
-                  <%= inline_svg_tag 'icons/trash.svg', class: 'size-5' %>
-                  Delete team
-                </button>
-              <% end %>
             </div>
           </div>
-
-          <%= render 'teams/shared/leave_team_modal', team: @team if @current_user_member_of_team && !@current_user_owns_team %>
-
           <%= render 'teams/shared/delete_team_modal', team: @team if @current_user_owns_team %>
+          <%= render 'teams/shared/leave_team_modal', team: @team if @current_user_member_of_team && !@current_user_owns_team %>
         </div>
       <% else %>
         <%= render 'teams/shared/team_buttons', team: @team %>
