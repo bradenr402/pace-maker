@@ -22,17 +22,17 @@
     <% end %>
   </div>
   <% if team.season_dates? %>
-    <div class="block mb-4 space-y-2 lg:space-y-0 lg:flex lg:flex-wrap lg:items-center lg:justify-around lg:gap-4">
+    <div class="block mb-4 space-y-3 lg:space-y-0 lg:flex lg:flex-wrap lg:items-center lg:justify-around lg:gap-4">
       <div class="lg:text-center">
-        <p class="text-soft">Start Date</p>
-        <p class="text-2xl font-semibold">
+        <p class="text-soft text-sm leading-none">Start Date</p>
+        <p class="text-2xl font-semibold leading-none">
           <%= pretty_date(team.season_start_date, month_format: :short, date_style: :absolute) %>
         </p>
       </div>
 
       <div class="lg:text-center">
-        <p class="text-soft">End Date</p>
-        <p class="text-2xl font-semibold">
+        <p class="text-soft text-sm leading-none">End Date</p>
+        <p class="text-2xl font-semibold leading-none">
           <%= pretty_date(team.season_end_date, month_format: :short, date_style: :absolute) %>
         </p>
       </div>
