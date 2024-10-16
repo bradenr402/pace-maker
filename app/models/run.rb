@@ -18,12 +18,10 @@ class Run < ApplicationRecord
   scope :today, -> { where(date: Date.today.all_day).order(date: :desc) }
   scope :excluding_date, ->(date) { where.not(date:) }
 
-  def long_run_for?(team)
-    return false unless team.present?
+  def long_run_for?(team = nil)
+    return false if team.nil? || !team.is_a?(Team)
 
-    required_distance = team.long_run_distance_for_user(user)
-
-    distance >= required_distance
+    distance >= team.long_run_distance_for_user(user)
   end
 
   private
