@@ -43,10 +43,18 @@
   default: 'bg-slate-200 dark:bg-slate-800',
   darker: 'bg-slate-300 dark:bg-slate-700',
   none: '',
-  # indigo: 'bg-indigo-100 dark:bg-indigo-900',
 } %>
 
 <% icon_background_class = icon_background_class_map[icon_background] %>
+
+<% icon_color_class_map = {
+  default: 'text-soft',
+  darker: 'text-light',
+  none: 'text-soft',
+} %>
+
+<% icon_color_class = icon_color_class_map[icon_background] %>
+
 
 <% if user.avatar.attached? %>
   <%= image_tag user.avatar.variant(resize_to_limit: [px_size, px_size]).processed, class: "#{size_classes} object-cover #{image_classes}", **image_options %>
@@ -56,6 +64,6 @@
   <%= image_tag '', class: "#{size_classes} object-cover #{image_classes}", **image_options if current_page?(edit_user_registration_path) %>
 <% else %>
   <div class="grid place-items-center <%= size_classes %> <%= icon_background_class %>">
-    <%= inline_svg_tag "icons/#{icon_name}#{icon_filled ? '-filled' : ''}.svg", class: "#{fallback_size_class} text-soft #{image_classes}" %>
+    <%= inline_svg_tag "icons/#{icon_name}#{icon_filled ? '-filled' : ''}.svg", class: "#{fallback_size_class} #{icon_color_class} #{image_classes}" %>
   </div>
 <% end %>
