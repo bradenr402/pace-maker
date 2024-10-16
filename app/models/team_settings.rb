@@ -1,28 +1,36 @@
 module TeamSettings
   extend ActiveSupport::Concern
 
+  def self.defaults
+    {
+      join_requirements: {
+        require_gender: false,
+        max_allowed_requests: 3
+      },
+      long_runs: {
+        long_run_distance_male: 8,
+        long_run_distance_female: 6,
+        long_run_distance_neutral: 7
+      },
+      streaks: {
+        include_saturday: false,
+        include_sunday: false,
+        streak_distance_male: 2,
+        streak_distance_female: 2,
+        streak_distance_neutral: 2
+      },
+      general: {
+        week_start: :monday
+      }
+    }
+  end
+
   included do
     has_settings do |s|
-      s.key :join_requirements,
-            defaults: {
-              require_gender: false,
-              max_allowed_requests: 3
-            }
-      s.key :long_runs,
-            defaults: {
-              long_run_distance_male: 8,
-              long_run_distance_female: 6,
-              long_run_distance_neutral: 7
-            }
-      s.key :streaks,
-            defaults: {
-              include_saturday: false,
-              include_sunday: false,
-              streak_distance_male: 2,
-              streak_distance_female: 2,
-              streak_distance_neutral: 2
-            }
-      s.key :general, defaults: { week_start: :monday }
+      s.key :join_requirements, defaults: TeamSettings.defaults[:join_requirements]
+      s.key :long_runs, defaults: TeamSettings.defaults[:long_runs]
+      s.key :streaks, defaults: TeamSettings.defaults[:streaks]
+      s.key :general, defaults: TeamSettings.defaults[:general]
     end
   end
 
