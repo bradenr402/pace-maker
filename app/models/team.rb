@@ -41,13 +41,7 @@ class Team < ApplicationRecord
 
   def season_range = season_start_date..season_end_date
 
-  def gender_requirement_met?(user)
-    return true unless require_gender?
-
-    return true if user.gender?
-
-    false
-  end
+  def gender_requirement_met?(user) = require_gender? && user.gender?
 
   def recent_runs =
     Run
