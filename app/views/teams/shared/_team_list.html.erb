@@ -1,6 +1,6 @@
 <% show_members = defined?(show_members) ? show_members : false %>
 
-<div class="space-y-6">
+<div class="space-y-4">
   <% teams.each do |team| %>
     <%= render 'teams/shared/team', team: team, show_members: show_members %>
   <% end %>

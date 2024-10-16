@@ -1,7 +1,7 @@
 <%= turbo_stream.replace 'searchResults' do %>
   <%= turbo_frame_tag 'searchResults' do %>
     <% if @results.present? %>
-      <div class="space-y-6">
+      <div class="space-y-4">
         <% @results.each do |result| %>
           <% if result.is_a?(Team) %>
             <%= render 'teams/shared/team', team: result, show_members: true %>
