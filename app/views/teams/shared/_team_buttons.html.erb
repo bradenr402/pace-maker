@@ -9,11 +9,18 @@
   %>
 
 <% elsif current_user.member_of?(team) %>
-  <%= button_to 'Leave team',
-                leave_team_path(team),
-                data: { turbo: false },
-                class: 'btn btn-sm btn-destructive btn-muted'
-  %>
+  <div
+    data-controller="modal"
+    data-modal-hide-modal-class="opacity-0 scale-75 pointer-events-none"
+    data-modal-show-modal-class="opacity-100 scale-100 pointer-events-auto"
+    data-modal-hide-backdrop-class="opacity-0 pointer-events-none"
+    data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
+  >
+    <button data-action="mousedown->modal#open" data-modal-id="leaveTeam" class="btn btn-sm btn-destructive btn-muted">
+      Leave team
+    </button>
+    <%= render 'teams/shared/leave_team_modal', team: team %>
+  </div>
 
 <% else %>
   <% if team.gender_requirement_met?(current_user) %>
@@ -35,7 +42,6 @@
                     data: { turbo: false },
                     class: "btn #{'btn-sm' unless current_page_team} btn-primary btn-muted"
       %>
-
     <% end %>
 
   <% elsif current_page_team %>
