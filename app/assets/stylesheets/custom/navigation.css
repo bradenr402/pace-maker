@@ -8,10 +8,10 @@
   }
 
   .tab-link {
-    @apply flex flex-col items-center gap-1 text-normal text-xs font-bold hover:text-indigo-500 dark:hover:text-soft transition duration-200 ease-in-out dark:focus:text-white;
+    @apply flex flex-col items-center gap-1 py-1 text-normal text-xs font-bold hover:text-indigo-500 dark:hover:text-soft transition duration-200 ease-in-out dark:focus:text-white;
 
     &.tab-link-active {
-      @apply py-1 px-3 rounded-lg bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400;
+      @apply px-3 rounded-lg bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400;
     }
   }
 

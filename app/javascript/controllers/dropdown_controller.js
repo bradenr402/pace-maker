@@ -25,15 +25,17 @@ export default class extends Controller {
   show() {
     this.dropdownTarget.classList.remove(...this.hideDropdownClasses);
     this.dropdownTarget.classList.add(...this.showDropdownClasses);
-    this.arrowIconTarget.classList.add(...this.iconOpenClasses);
     this.element.classList.add(...this.dropdownOpenClasses);
+    if (this.hasArrowIconTarget)
+      this.arrowIconTarget.classList.add(...this.iconOpenClasses);
   }
 
   hide() {
     this.dropdownTarget.classList.remove(...this.showDropdownClasses);
     this.dropdownTarget.classList.add(...this.hideDropdownClasses);
-    this.arrowIconTarget.classList.remove(...this.iconOpenClasses);
     this.element.classList.remove(...this.dropdownOpenClasses);
+    if (this.hasArrowIconTarget)
+      this.arrowIconTarget.classList.remove(...this.iconOpenClasses);
   }
 
   _closeOnOutsideClick(event) {

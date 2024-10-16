@@ -1,43 +1,94 @@
-<div class="my-6">
-  <article id="<%= dom_id run %>">
-    <div class="card text-normal">
-      <% unless current_page?(run_path(run)) || current_page?(user_path(run.user)) || !local_assigns[:team] %>
-        <div class="mb-4 flex flex-wrap-reverse items-center gap-4">
-          <% unless current_page?(run_path(run)) || current_page?(user_path(run.user)) %>
-            <% path = local_assigns[:team] ? team_member_path(team, run.user) : user_path(run.user) %>
+<% run_user = run.user %>
 
-            <%= link_to path, data: { turbo: false }, class: 'group mr-auto flex items-center gap-2 flex-grow' do %>
-              <%= render 'shared/user_photo', user: run.user, size: :sm %>
-              <p class="text-lg font-bold transition duration-300 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= run.user.default_name %></p>
-            <% end %>
-          <% end %>
+<div class="card p-4 my-6">
+  <div class="flex items-start gap-2 mb-4">
+    <%= link_to local_assigns[:team] ? team_member_path(team, run_user) : user_path(run_user), data: { turbo: false }, class: 'group flex items-center gap-3 flex-grow' do %>
+      <%= render 'shared/user_photo', user: run_user, size: :xs %>
+      <div>
+        <p>
+          <span class="font-bold transition duration-200 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500 mr-0.5"><%= run_user.default_name %></span>
+          <%= content_tag(:span, run_user.username, class: 'text-soft text-xs font-normal') if run_user.display_name? %>
+        </p>
+        <p class="text-xs text-soft"><%= pretty_date(run.date, include_weekday: true, month_format: :long, include_year: run.date.year != Date.current.year) %></p>
+      </div>
+    <% end %>
 
-          <% if local_assigns[:team] %>
-            <% streak_data = run.user.current_streak(team) %>
-            <% streak = streak_data[:streak] %>
-            <% streak_end_date = streak_data[:end_date] %>
+    <%= render 'runs/actions_dropdown', run: run if run_user == current_user %>
+  </div>
 
-            <div class="flex flex-wrap items-center gap-2">
-              <%= render 'runs/long_run_badge' if local_assigns[:team] && run.long_run_for?(team) %>
-              <% if local_assigns[:team] && streak.positive? %>
-                <% if (run.date.today? && streak_end_date&.today?) || (run.date.yesterday? && streak_end_date&.yesterday?) %>
-                  <%= render 'runs/streak_badge', streak: streak %>
-                <% elsif run.date.yesterday? && streak_end_date&.today? %>
-                  <%= render 'runs/streak_badge', streak: streak - 1 %>
-                <% end %>
-              <% end %>
-            </div>
-          <% end %>
+  <%= run_content_wrapper(run, local_assigns[:team], local_assigns[:turbo_frame]) do %>
+    <% if run.duration? %>
+      <div class="flex items-center justify-around mt-8 mb-6">
+        <div class="flex flex-col items-center">
+          <%= inline_svg_tag 'icons/ruler.svg', class: 'size-10 text-muted shrink-0 mb-1' %>
+          <p class="font-bold">
+            <span class="text-xl"><%= run.distance %></span>
+            <span class="text-base">mi</span>
+          </p>
+          <p class="text-soft text-xs">Distance</p>
         </div>
-      <% end %>
 
-      <% if current_page?(run) %>
-        <%= render 'runs/run_content', run: run, team: local_assigns[:team] %>
-      <% else %>
-        <%= link_to run, data: { turbo: false }, class: 'block' do %>
-          <%= render 'runs/run_content', run: run, team: local_assigns[:team] %>
+        <div class="flex flex-col items-center">
+          <%= inline_svg_tag 'icons/clock.svg', class: 'size-10 text-muted shrink-0 mb-1' %>
+          <p class="font-bold">
+            <span class="text-xl"><%= clock_time_display(run.duration) %></span>
+            <span class="text-base"></span>
+          </p>
+          <p class="text-soft text-xs">Time</p>
+        </div>
+
+        <div class="flex flex-col items-center">
+          <%= inline_svg_tag 'icons/speedometer.svg', class: 'size-10 text-muted shrink-0 mb-1' %>
+          <p class="font-bold">
+            <span class="text-xl"><%= clock_time_display(run.pace) %> /</span><span class="text-base">mi</span>
+          </p>
+          <p class="text-soft text-xs">Pace</p>
+        </div>
+      </div>
+    <% else %>
+      <div class="flex items-center gap-2 sm:gap-3 my-4">
+        <%= inline_svg_tag 'icons/ruler.svg', class: 'size-5.5 text-soft shrink-0' %>
+        <div class="flex items-end gap-2">
+          <p class="text-light">Distance:</p>
+          <p class="font-bold">
+            <span class="text-xl"><%= run.distance %></span>
+            <span class="text-base">mi</span>
+          </p>
+        </div>
+      </div>
+    <% end %>
+
+    <% if run.comments? %>
+      <% sanitized_comments = sanitize(run.comments, tags: %w(strong em b i p br)) %>
+
+      <div class="flex items-start gap-2 sm:gap-3 mb-4">
+        <%= inline_svg_tag 'icons/comment.svg', class: 'size-5.5 text-soft shrink-0 mt-0.5' %>
+        <div class="text-light text-sm space-y-1.5">
+          <%= simple_format(
+            if current_page?(run) || local_assigns[:turbo_frame]
+              sanitized_comments
+            else
+              truncate(sanitized_comments, length: 80)
+            end
+          ) %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="max-lg:space-y-2 lg:flex items-center justify-between pt-4 border-t dark:border-slate-700">
+      <div class="flex items-center gap-2 text-soft text-xs">
+        <time class="text-soft text-xs whitespace-nowrap" datetime="<%= run.created_at.to_formatted_s(:long) %>">Posted: <%= format_date(run.created_at) %></time>
+        <% if run.edited? %>
+          <span>•</span>
+          <time class="text-soft text-xs whitespace-nowrap" datetime="<%= run.updated_at.to_formatted_s(:long) %>">Edited: <%= format_date(run.updated_at) %></time>
         <% end %>
-      <% end %>
+      </div>
+
+      <% streak = run.streak_value(local_assigns[:team]) %>
+      <div class="flex flex-wrap items-center gap-2">
+        <%= render 'runs/long_run_badge' if run.long_run_for?(local_assigns[:team]) %>
+        <%= render 'runs/streak_badge', streak: streak unless streak.nil? || streak.zero? || streak.negative? || streak == 1 %>
+      </div>
     </div>
-  </article>
+  <% end %>
 </div>

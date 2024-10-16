@@ -7,6 +7,9 @@ import { application } from "./application"
 import AutogrowController from "./autogrow_controller"
 application.register("autogrow", AutogrowController)
 
+import CalculatePaceController from "./calculate_pace_controller"
+application.register("calculate-pace", CalculatePaceController)
+
 import CalendarController from "./calendar_controller"
 application.register("calendar", CalendarController)
 

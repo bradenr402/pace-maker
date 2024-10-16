@@ -1,6 +1,6 @@
 <% modal_style_buttons = defined?(modal_style_buttons) ? modal_style_buttons : true %>
 
-<%= form_with model: run, data: { controller: 'form-validation' }, html: { novalidate: true, turbo_frame: 'run_modal' } do |form| %>
+<%= form_with model: run, data: { controller: 'form-validation calculate-pace' }, html: { novalidate: true, turbo_frame: 'run_modal' } do |form| %>
   <%= render 'shared/error_messages', resource: run %>
 
   <div class="form-group">
@@ -17,24 +17,24 @@
 
     <div class="flex items-center gap-2.5">
       <!-- Decrease distance button -->
-      <%= button_tag type: 'button', data: { action: 'mousedown->distance-shortcuts#updateDistance mousedown->form-validation#validateDistance', update_distance_value: '-1' }, class: 'btn btn-white size-10' do %>
+      <%= button_tag type: 'button', data: { action: 'mousedown->distance-shortcuts#updateDistance mousedown->form-validation#validateDistance mousedown->calculate-pace#update', update_distance_value: '-1' }, class: 'btn btn-white size-10' do %>
         <%= inline_svg_tag 'icons/minus.svg', class: 'size-5 shrink-0' %>
         <span class="sr-only">Decrease by 1 mile</span>
       <% end %>
 
       <div class="relative flex-1">
         <%= inline_svg_tag 'icons/ruler.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-        <%= form.number_field :distance, step: 0.1, min: 0, placeholder: '3.14', class: 'form-input pl-10', data: { form_validation_target: 'distance', action: 'input->form-validation#validateDistance', distance_shortcuts_target: 'distance' } %>
+        <%= form.number_field :distance, step: 0.1, min: 0, placeholder: '0.0', class: 'form-input pl-10', data: { form_validation_target: 'distance', action: 'input->form-validation#validateDistance input->calculate-pace#update', distance_shortcuts_target: 'distance', calculate_pace_target: 'distance' } %>
       </div>
 
       <!-- Increase distance button -->
-      <%= button_tag type: 'button', data: { action: 'mousedown->distance-shortcuts#updateDistance mousedown->form-validation#validateDistance', update_distance_value: '1' }, class: 'btn btn-white size-10' do %>
+      <%= button_tag type: 'button', data: { action: 'mousedown->distance-shortcuts#updateDistance mousedown->form-validation#validateDistance mousedown->calculate-pace#update', update_distance_value: '1' }, class: 'btn btn-white size-10' do %>
         <%= inline_svg_tag 'icons/plus.svg', class: 'size-5 shrink-0' %>
         <span class="sr-only">Increase by 1 mile</span>
       <% end %>
     </div>
 
-    <span class="hidden my-1 error-message" data-form-validation-target="distanceError">Distance must be a positive number</span>
+    <p class="hidden my-1 error-message" data-form-validation-target="distanceError">Distance must be a positive number</p>
   </div>
 
   <div class="form-group">
@@ -45,9 +45,21 @@
     <% end %>
     <div class="relative">
       <%= inline_svg_tag 'icons/clock.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= form.text_field :duration_input, value: form.object.new_record? ? '' : clock_time_display(run.duration), placeholder: 'MM:SS or HH:MM:SS', class: 'form-input pl-10', data: { form_validation_target: 'duration', action: 'input->form-validation#validateDuration' } %>
+      <%= form.text_field :duration_input, value: form.object.new_record? ? '' : clock_time_display(run.duration), placeholder: '00:00:00', class: 'form-input pl-10', data: { form_validation_target: 'duration', action: 'input->form-validation#validateDuration input->calculate-pace#update', calculate_pace_target: 'duration' } %>
     </div>
-    <p class="hidden my-1 error-message" data-form-validation-target="durationError">Duration must be in MM:SS or HH:MM:SS format and must be less than 24 hours</p>
+    <p class="help-text my-1">Enter time as MM:SS or HH:MM:SS (e.g. 30:00 or 1:30:00)</p>
+    <p class="hidden my-1 error-message" data-form-validation-target="durationError">Duration must be formatted as MM:SS or HH:MM:SS and less than 24 hours</p>
+  </div>
+
+  <div class="form-group">
+    <p class="form-label">Calculated pace:</p>
+    <div class="flex items-center gap-2 mx-3">
+      <%= inline_svg_tag 'icons/lightning.svg', class: 'size-5 text-slate-500' %>
+      <span>
+        <span class="font-mono" data-calculate-pace-target="pace"><%= form.object.persisted? && run.duration? ? clock_time_display(run.pace_per_mile) : 'XX:XX' %></span>
+        <span class="text-soft text-sm">/mi</span>
+      </span>
+    </div>
   </div>
 
   <div class="form-group">
