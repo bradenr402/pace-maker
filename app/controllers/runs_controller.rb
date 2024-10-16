@@ -3,7 +3,8 @@ class RunsController < ApplicationController
   before_action :set_run, only: %i[show edit update destroy]
 
   def show
-    add_breadcrumb "Runs by #{@run.user.default_name}", user_path(@run.user, tab: 'runsTab')
+    add_breadcrumb @run.user.default_name, user_path(@run.user)
+    add_breadcrumb 'Runs', user_path(@run.user, tab: 'runsTab')
     add_breadcrumb "#{@run.distance} mi run by #{@run.user.default_name}", run_path(@run)
   end
 
