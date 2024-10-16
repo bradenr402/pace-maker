@@ -152,9 +152,9 @@ class User < ApplicationRecord
   end
 
   def gender_subject
-    return 'he' unless gender?
+    return 'they' unless gender?
 
-    male? ? 'him' : 'her'
+    male? ? 'he' : 'she'
   end
 
   def runs_in_date_range(range) = runs.in_date_range(range)
