@@ -1,7 +1,7 @@
 <%= turbo_frame_tag 'pinned_pages_list' do %>
   <div class="space-y-1.5">
     <div class="p-2 flex items-end justify-between sticky top-0 bg-slate-50 dark:bg-slate-800 border-b dark:border-slate-700">
-      <p class="text-soft text-sm">Pinned shorcuts</p>
+      <p class="text-soft text-sm">Pinned shortcuts</p>
       <% pinned_pages = current_user.pinned_pages.order(:position) %>
       <%= link_to 'Edit', manage_pinned_pages_path, data: { turbo: false }, class: 'btn-link-soft text-xs' if pinned_pages.present? %>
     </div>
