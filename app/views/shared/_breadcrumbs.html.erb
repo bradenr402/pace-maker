@@ -2,17 +2,17 @@
 
 <% if @breadcrumbs.any? %>
   <nav class="inline-flex flex-wrap items-center gap-2 text-soft" aria-label="breadcrumb">
-    <%= link_to home_breadcrumb[:url], class: "inline-flex items-center gap-2 text-sm whitespace-nowrap btn-link" do %>
+    <%= link_to home_breadcrumb[:url], class: "inline-flex items-center gap-2 text-sm whitespace-nowrap btn-link-soft font-normal" do %>
       <%= inline_svg_tag 'icons/home.svg', class: 'size-3.5 shrink-0' %>
       <%= home_breadcrumb[:name] %>
     <% end %>
     <% @breadcrumbs.each_with_index do |breadcrumb, index| %>
       <div class="inline-flex items-center gap-2">
-        <%= inline_svg_tag 'icons/chevron-right-mini.svg', class: 'size-5 shrink-0' %>
+        <%= inline_svg_tag 'icons/chevron-right-mini.svg', class: 'size-4.5 shrink-0' %>
         <% if breadcrumb[:url].present? && index < @breadcrumbs.size - 1 %>
-          <%= link_to breadcrumb[:name], breadcrumb[:url], class: "inline-flex items-center text-sm whitespace-nowrap btn-link" %>
+          <%= link_to breadcrumb[:name], breadcrumb[:url], class: "inline-flex items-center text-sm whitespace-nowrap btn-link-soft font-normal" %>
         <% else %>
-          <span aria-current="page" class="text-sm text-soft">
+          <span aria-current="page" class="text-sm text-light font-bold">
             <%= breadcrumb[:name] %>
           </span>
         <% end %>
