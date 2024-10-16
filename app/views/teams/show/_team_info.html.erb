@@ -147,7 +147,7 @@
         <% if team.mileage_goal_complete? %>
           <p class='my-1 text-xs text-soft'>Your team met its mileage goal!</p>
         <% else %>
-          <p class='my-1 text-xs text-soft'><%= pluralize(team.miles_remaining_in_goal, 'mile') %> remaining</p>
+          <p class='my-1 text-xs text-soft'><%= pluralize(team.miles_remaining_in_goal, 'mile') %> remaining in goal.</p>
         <% end %>
       <% end %>
     <% else %>
@@ -175,7 +175,7 @@
         <% if team.long_run_goal_complete? %>
           <p class='my-1 text-xs text-soft'>Your team met its long run goal!</p>
         <% else %>
-          <p class='my-1 text-xs text-soft'><%= pluralize(team.long_runs_remaining_in_goal, 'long run') %> remaining</p>
+          <p class='my-1 text-xs text-soft'><%= pluralize(team.long_runs_remaining_in_goal, 'long run') %> remaining in goal.</p>
         <% end %>
       <% end %>
     <% else %>
