@@ -1,15 +1,13 @@
 <div class="card">
-  <div class="flex items-start gap-4">
-    <%= render 'shared/team_photo', team: team, size: :sm %>
-
-    <div class="flex-1">
-      <p class="text-lg font-bold">
-        <%= link_to team.name, team, data: { turbo: false }, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %>
-      </p>
-
-      <p class="text-soft text-sm">
-        Coach: <%= link_to team.owner.default_name, team_member_path(team, team.owner), data: { turbo: false }, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %>
-      </p>
+  <div class="flex flex-wrap-reverse items-end gap-3">
+    <div class="flex items-center gap-3 flex-1">
+      <%= render 'shared/team_photo', team: team, size: :xs, icon_background: :darker %>
+      <div class="flex-1 leading-tight">
+        <%= link_to team.name, team, data: { turbo: false }, class: 'font-bold hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %>
+        <p class="text-soft text-xs">
+          Coach: <%= link_to team.owner.default_name, team_member_path(team, team.owner), data: { turbo: false }, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %>
+        </p>
+      </div>
     </div>
 
     <div class="shrink-0">
@@ -22,9 +20,9 @@
   <% member_page_check = @user.present? && !@user.owns?(team) && current_page?(user_path(@user)) %>
 
   <% if season_dates_check || show_members_check || member_page_check %>
-    <div class="mt-4 space-y-2 border-t pt-4 dark:border-slate-700">
+    <div class="mt-4 space-y-2 pt-4 border-t dark:border-slate-700">
       <% if season_dates_check %>
-        <div class="flex items-center gap-1.5">
+        <div class="flex items-start gap-1.5">
           <%= inline_svg_tag 'icons/calendar.svg', class: 'size-4 text-soft shrink-0' %>
           <p class="text-soft text-xs">Season: <%= pretty_date(team.season_start_date, month_format: :short, date_style: :absolute) %> &ndash; <%= pretty_date(team.season_end_date, month_format: :short, date_style: :absolute) %></p>
         </div>
