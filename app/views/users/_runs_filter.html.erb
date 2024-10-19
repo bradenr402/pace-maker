@@ -28,7 +28,7 @@
     <h2 class="subheading">Runs <%= @date_range.titlecase %></h2>
   </div>
 
-  <div class="mb-10">
+  <div class="mb-10 space-y-4 sm:space-y-6">
     <% if @runs.present? %>
       <%= render @runs %>
     <% else %>

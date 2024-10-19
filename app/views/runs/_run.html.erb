@@ -1,6 +1,6 @@
 <% run_user = run.user %>
 
-<div class="card my-4">
+<div class="card">
   <div class="flex items-start gap-2 mb-4">
     <%= link_to local_assigns[:team] ? team_member_path(team, run_user) : user_path(run_user), data: { turbo: false }, class: 'group flex items-center gap-3 flex-grow' do %>
       <%= render 'shared/user_photo', user: run_user, size: :xs %>

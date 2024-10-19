@@ -3,7 +3,7 @@
   <p class="text-soft">Recent runs by members of this team.</p>
 </div>
 
-<div class="mb-10">
+<div class="mb-10 space-y-4 sm:space-y-6">
   <% if @recent_runs.present? %>
     <% @recent_runs.each do |run| %>
       <%= render run, team: team %>
