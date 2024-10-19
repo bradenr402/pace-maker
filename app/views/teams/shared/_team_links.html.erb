@@ -38,11 +38,9 @@
     View my member page
   <% end %>
 
-  <% unless @current_user_owns_team %>
-    <%= link_to team_settings_path(team), class: 'dropdown-option' do %>
-      <%= inline_svg_tag 'icons/settings.svg', class: 'size-5' %>
-      View team settings
-    <% end %>
+  <%= link_to team_settings_path(team), class: 'dropdown-option' do %>
+    <%= inline_svg_tag 'icons/settings.svg', class: 'size-5' %>
+    View team settings
   <% end %>
 
   <button data-action="mousedown->modal#open" data-modal-id="leaveTeam" class="dropdown-option-destructive">
