@@ -176,7 +176,7 @@ class TeamsController < ApplicationController
 
   def new
     add_breadcrumb 'Teams', teams_path
-    add_breadcrumb 'New team', new_team_path
+    add_breadcrumb 'New Team', new_team_path
 
     @team = Team.new
   end
@@ -197,7 +197,7 @@ class TeamsController < ApplicationController
   def edit
     add_breadcrumb 'Teams', teams_path
     add_breadcrumb @team.name, team_path(@team)
-    add_breadcrumb 'Edit team', edit_team_path(@team)
+    add_breadcrumb 'Edit Team', edit_team_path(@team)
   end
 
   def update

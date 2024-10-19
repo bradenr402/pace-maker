@@ -9,7 +9,7 @@ class RunsController < ApplicationController
   end
 
   def new
-    add_breadcrumb 'New run', new_run_path
+    add_breadcrumb 'New Run', new_run_path
 
     @run = current_user.runs.new
   end
@@ -50,9 +50,10 @@ class RunsController < ApplicationController
   end
 
   def edit
-    add_breadcrumb "Runs by #{@run.user.default_name}", user_path(@run.user, tab: 'runsTab')
+    add_breadcrumb @run.user.default_name, user_path(@run.user)
+    add_breadcrumb 'Runs', user_path(@run.user, tab: 'runsTab')
     add_breadcrumb "#{@run.distance} mi run by #{@run.user.default_name}", run_path(@run)
-    add_breadcrumb 'Edit run', edit_run_path(@run)
+    add_breadcrumb 'Edit Run', edit_run_path(@run)
   end
 
   def update
