@@ -15,6 +15,12 @@ export default class extends Controller {
     'weekStart',
     'includeSaturday',
     'includeSunday',
+    'streakDistanceMale',
+    'streakDistanceFemale',
+    'streakDistanceNeutral',
+    'streaksIncrement',
+    'mileageIncrement',
+    'longRunsIncrement',
   ];
 
   connect() {
@@ -34,9 +40,12 @@ export default class extends Controller {
       weekStart: 'monday',
       includeSaturday: false,
       includeSunday: false,
-      streakMale: 2,
-      streakFemale: 2,
-      streakNeutral: 2,
+      streakDistanceMale: 2,
+      streakDistanceFemale: 2,
+      streakDistanceNeutral: 2,
+      streaksIncrement: 10,
+      mileageIncrement: 50,
+      longRunsIncrement: 5,
     };
   }
 
@@ -99,13 +108,22 @@ export default class extends Controller {
     if (this.hasIncludeSundayTarget)
       this.includeSundayTarget.checked = this.defaultValues.includeSunday;
 
-    if (this.hasStreakMaleTarget)
-      this.streakMaleTarget.value = this.defaultValues.streakMale;
+    if (this.hasStreakDistanceMaleTarget)
+      this.streakDistanceMaleTarget.value = this.defaultValues.streakDistanceMale;
 
-    if (this.hasStreakFemaleTarget)
-      this.streakFemaleTarget.value = this.defaultValues.streakFemale;
+    if (this.hasStreakDistanceFemaleTarget)
+      this.streakDistanceFemaleTarget.value = this.defaultValues.streakDistanceFemale;
 
-    if (this.hasStreakNeutralTarget)
-      this.streakNeutralTarget.value = this.defaultValues.streakNeutral;
+    if (this.hasStreakDistanceNeutralTarget)
+      this.streakDistanceNeutralTarget.value = this.defaultValues.streakDistanceNeutral;
+
+    if (this.hasStreaksIncrementTarget)
+      this.streaksIncrementTarget.value = this.defaultValues.streaksIncrement;
+
+    if (this.hasMileageIncrementTarget)
+      this.mileageIncrementTarget.value = this.defaultValues.mileageIncrement;
+
+    if (this.hasLongRunsIncrementTarget)
+      this.longRunsIncrementTarget.value = this.defaultValues.longRunsIncrement;
   }
 }

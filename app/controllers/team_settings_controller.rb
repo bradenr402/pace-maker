@@ -51,6 +51,13 @@ class TeamSettingsController < ApplicationController
              :streak_distance_female,
              :streak_distance_neutral
            )
+         ) &&
+         @team.settings(:milestones).update(
+           settings_params.slice(
+             :streaks_increment,
+             :long_runs_increment,
+             :mileage_increment
+           )
          )
         redirect_to @team, success: 'Team settings updated successfully.'
       else
@@ -73,7 +80,6 @@ class TeamSettingsController < ApplicationController
     render :show
   end
 
-
   private
 
   def set_team = @team = Team.find(params[:team_id])
@@ -93,7 +99,10 @@ class TeamSettingsController < ApplicationController
         :include_sunday,
         :streak_distance_male,
         :streak_distance_female,
-        :streak_distance_neutral
+        :streak_distance_neutral,
+        :streaks_increment,
+        :long_runs_increment,
+        :mileage_increment
         # :copy_from_team_id is omitted here, since we don't want to include it for the save action
       )
 

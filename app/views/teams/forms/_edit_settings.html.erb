@@ -77,6 +77,30 @@
     </div>
 
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
+      <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Milestones</h2>
+      <p class="text-sm text-slate-600 dark:text-slate-400">Set the increments for team members to earn milestone badges.</p>
+      <p class="my-1 help-text">Team members will earn another badge on their team member page at each increment of the values you set.</p>
+    </div>
+
+    <div class="form-group" data-controller="form-help-text">
+      <%= settings_form.label :streaks_increment, 'Streaks milestone increment', class: 'form-label' %>
+      <%= settings_form.number_field :streaks_increment, step: 1, min: 1, value: @team.streaks_increment, placeholder: "e.g., #{default_settings.dig(:milestones, :streaks_increment)}", class: 'form-input', data: { restore_defaults_target: 'streaksIncrement', form_help_text_target: 'input', action: 'input->form-help-text#update' } %>
+      <p class="help-text my-1">Team members will earn another badge for every <span data-form-help-text-target="output"><%= @team.streaks_increment %></span> day<span data-form-help-text-target="plural">s</span> of their current streak.</p>
+    </div>
+
+    <div class="form-group" data-controller="form-help-text">
+      <%= settings_form.label :mileage_increment, 'Mileage milestone increment', class: 'form-label' %>
+      <%= settings_form.number_field :mileage_increment, step: 1, min: 1, value: @team.mileage_increment, placeholder: "e.g., #{default_settings.dig(:milestones, :mileage_increment)}", class: 'form-input', data: { restore_defaults_target: 'mileageIncrement', form_help_text_target: 'input', action: 'input->form-help-text#update' } %>
+      <p class="help-text my-1">Team members will earn another badge for every <span data-form-help-text-target="output"><%= @team.mileage_increment %></span> mile<span data-form-help-text-target="plural">s</span> they run.</p>
+    </div>
+
+    <div class="form-group" data-controller="form-help-text">
+      <%= settings_form.label :long_runs_increment, 'Long runs milestone increment', class: 'form-label' %>
+      <%= settings_form.number_field :long_runs_increment, step: 1, min: 1, value: @team.long_runs_increment, placeholder: "e.g., #{default_settings.dig(:milestones, :long_runs_increment)}", class: 'form-input', data: { restore_defaults_target: 'longRunsIncrement', form_help_text_target: 'input', action: 'input->form-help-text#update' } %>
+      <p class="help-text my-1">Team members will earn another badge for every <span data-form-help-text-target="output"><%= @team.long_runs_increment %></span> long run<span data-form-help-text-target="plural">s</span> they complete.</p>
+    </div>
+
+    <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
       <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Streak Resets</h2>
       <p class="text-sm text-slate-600 dark:text-slate-400">Choose if weekends can reset your team member's run streaks.</p>
       <p class="my-1 help-text">Leave these boxes unchecked if you want to give your team members the weekends off.</p>

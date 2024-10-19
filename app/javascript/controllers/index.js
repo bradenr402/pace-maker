@@ -31,6 +31,9 @@ application.register("dropdown", DropdownController)
 import FilterGenderController from "./filter_gender_controller"
 application.register("filter-gender", FilterGenderController)
 
+import FormHelpTextController from "./form_help_text_controller"
+application.register("form-help-text", FormHelpTextController)
+
 import FormValidationController from "./form_validation_controller"
 application.register("form-validation", FormValidationController)
 
