@@ -2,110 +2,87 @@
 
 <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
   <h1 class="heading">Badges</h1>
-  <p class="text-soft">Badges <%= member_is_current ? 'you have' : "#{member.first_name} has" %> earned by reaching streak and long run milestones.</p>
+  <p class="text-soft">Badges <%= member_is_current ? 'you have' : "#{member.first_name} has" %> earned by reaching streak, mileage, and long run milestones.</p>
 </div>
 
-<!-- Current Streak Card -->
+<!-- Current Streak, Miles, & Long Runs Data -->
 <% current_streak_data = member.current_streak(team) %>
 <% current_streak = current_streak_data[:streak] %>
 <% current_streak_start_date = current_streak_data[:start_date] %>
 <% current_streak_end_date = current_streak_data[:end_date] %>
+
+<% miles = member.total_miles %>
+<% long_runs = member.total_long_runs(team) %>
+
+<!-- Milestone Increments -->
+<% streaks_increment = team.streaks_increment %>
+<% mileage_increment = team.mileage_increment %>
+<% long_runs_increment = team.long_runs_increment %>
 
 <div class="space-y-6">
   <!-- Streak Badges Card -->
   <div class="card">
     <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Streak Milestones</h2>
     <div class="flex flex-wrap items-center gap-2 mb-6">
-      <% if current_streak < 7 %>
+      <% next_streak_milestone = streaks_increment %>
+      <% if current_streak < streaks_increment %>
         <p class="my-1 text-soft">No streak badges earned yet.</p>
-        <% milestone = 7 %>
       <% else %>
-        <% last_milestone = 0 %>
-        <% [7, 14, 21].each do |milestone| %>
-          <%= render 'teams/member/miles_badge', percentage: ((current_streak - last_milestone) / (milestone - last_milestone).to_f * 100).round(1), miles: milestone %>
-          <% last_milestone = milestone %>
-          <% break if current_streak < milestone %>
+        <% last_streak_milestone = 0 %>
+        <% while current_streak >= last_streak_milestone %>
+          <%= render 'teams/member/streak_badge', percentage: ((current_streak - last_streak_milestone) / (next_streak_milestone - last_streak_milestone).to_f * 100).round(1), days: next_streak_milestone %>
+          <% last_streak_milestone = next_streak_milestone %>
+          <% next_streak_milestone += streaks_increment %>
         <% end %>
-
-        <% if current_streak >= last_milestone %>
-          <% milestone = 30 %>
-          <% while current_streak >= milestone %>
-            <%= render 'teams/member/miles_badge', percentage: ((current_streak - last_milestone) / (milestone - last_milestone).to_f * 100).round(1), miles: milestone %>
-            <% last_milestone = milestone %>
-            <% milestone += 30 %>
-          <% end %>
-          <%= render 'teams/member/miles_badge', percentage: ((current_streak - last_milestone) / (milestone - last_milestone).to_f * 100).round(1), miles: milestone %>
-        <% end %>
+        <%= render 'teams/member/streak_badge', percentage: ((current_streak - last_streak_milestone) / (next_streak_milestone - last_streak_milestone).to_f * 100).round(1), days: next_streak_milestone %>
       <% end %>
     </div>
 
-    <%= render 'shared/progress_bar', percentage: (current_streak / milestone.to_f * 100).round(1), label: "Progress towards #{milestone} day streak" %>
-    <p class="my-1 text-soft text-xs"><%= current_streak %>/<%= milestone %> days</p>
+    <%= render 'shared/progress_bar', percentage: (current_streak / next_streak_milestone.to_f * 100).round(1), label: "Progress towards #{next_streak_milestone} day streak" %>
+    <p class="my-1 text-soft text-xs"><%= current_streak %>/<%= next_streak_milestone %> days</p>
   </div>
 
-  <% long_runs = member.total_long_runs(team) %>
+  <!-- Mileage Badges Card -->
+  <div class="card">
+    <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Mileage Milestones</h2>
+    <div class="flex flex-wrap items-center gap-2 mb-6">
+      <% next_mileage_milestone = mileage_increment %>
+      <% if miles < mileage_increment %>
+        <p class="my-1 text-soft">No mileage badges earned yet.</p>
+      <% else %>
+        <% last_mileage_milestone = 0 %>
+        <% while miles >= last_mileage_milestone %>
+          <%= render 'teams/member/miles_badge', percentage: ((miles - last_mileage_milestone) / (next_mileage_milestone - last_mileage_milestone).to_f * 100).round(1), miles: next_mileage_milestone %>
+          <% last_mileage_milestone = next_mileage_milestone %>
+          <% next_mileage_milestone += mileage_increment %>
+        <% end %>
+        <%= render 'teams/member/miles_badge', percentage: ((miles - last_mileage_milestone) / (next_mileage_milestone - last_mileage_milestone).to_f * 100).round(1), miles: next_mileage_milestone %>
+      <% end %>
+    </div>
+
+    <%= render 'shared/progress_bar', percentage: (miles / next_mileage_milestone.to_f * 100).round(1), label: "Progress towards #{next_mileage_milestone} mile milestone" %>
+    <p class="my-1 text-soft text-xs"><%= miles %>/<%= next_mileage_milestone %> miles</p>
+  </div>
 
   <!-- Long Run Badges Card -->
   <div class="card">
     <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Long Run Milestones</h2>
     <div class="flex flex-wrap items-center gap-2 mb-6">
-      <% if long_runs < 5 %>
+      <% next_long_run_milestone = long_runs_increment %>
+      <% if long_runs < long_runs_increment %>
         <p class="my-1 text-soft">No long run badges earned yet.</p>
-        <% milestone = 5 %>
       <% else %>
-        <% last_milestone = 0 %>
-        <% [5, 10, 15].each do |milestone| %>
-          <%= render 'teams/member/long_run_badge', percentage: ((long_runs - last_milestone) / (milestone - last_milestone).to_f * 100).round(1), runs: milestone %>
-          <% last_milestone = milestone %>
-          <% break if long_runs < milestone %>
+        <% last_long_run_milestone = 0 %>
+        <% while long_runs >= last_long_run_milestone %>
+          <%= render 'teams/member/long_run_badge', percentage: ((long_runs - last_long_run_milestone) / (next_long_run_milestone - last_long_run_milestone).to_f * 100).round(1), runs: next_long_run_milestone %>
+          <% last_long_run_milestone = next_long_run_milestone %>
+          <% next_long_run_milestone += long_runs_increment %>
         <% end %>
-
-        <% if long_runs >= last_milestone %>
-          <% milestone = 25 %>
-          <% while long_runs >= milestone %>
-            <%= render 'teams/member/long_run_badge', percentage: (long_runs / milestone.to_f * 100).round(1), runs: milestone %>
-              <% last_milestone = milestone %>
-            <% milestone += 25 %>
-          <% end %>
-          <%= render 'teams/member/long_run_badge', percentage: (long_runs / milestone.to_f * 100).round(1), runs: milestone %>
-        <% end %>
+        <%= render 'teams/member/long_run_badge', percentage: ((long_runs - last_long_run_milestone) / (next_long_run_milestone - last_long_run_milestone).to_f * 100).round(1), runs: next_long_run_milestone %>
       <% end %>
     </div>
 
-    <%= render 'shared/progress_bar', percentage: (long_runs / milestone.to_f * 100).round(2), label: 'Progress towards next milestone' %>
-    <p class="my-1 text-soft text-xs"><%= long_runs %>/<%= milestone %> long runs</p>
-  </div>
-
-  <% miles = member.total_miles %>
-
-    <!-- Streak Badges Card -->
-  <div class="card">
-    <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Mileage Milestones</h2>
-    <div class="flex flex-wrap items-center gap-2 mb-6">
-      <% if miles < 7 %>
-        <p class="my-1 text-soft">No mileage badges earned yet.</p>
-        <% milestone = 7 %>
-      <% else %>
-        <% last_milestone = 0 %>
-        <% [10, 25].each do |milestone| %>
-          <%= render 'teams/member/miles_badge', percentage: ((miles - last_milestone) / (milestone - last_milestone).to_f * 100).round(1), miles: milestone %>
-          <% last_milestone = milestone %>
-          <% break if miles < milestone %>
-        <% end %>
-
-        <% if miles >= last_milestone %>
-          <% milestone = 50 %>
-          <% while miles >= milestone %>
-            <%= render 'teams/member/miles_badge', percentage: ((miles - last_milestone) / (milestone - last_milestone).to_f * 100).round(1), miles: milestone %>
-            <% last_milestone = milestone %>
-            <% milestone += 50 %>
-          <% end %>
-          <%= render 'teams/member/miles_badge', percentage: ((miles - last_milestone) / (milestone - last_milestone).to_f * 100).round(1), miles: milestone %>
-        <% end %>
-      <% end %>
-    </div>
-
-    <%= render 'shared/progress_bar', percentage: (miles / milestone.to_f * 100).round(1), label: "Progress towards #{milestone} day streak" %>
-    <p class="my-1 text-soft text-xs"><%= miles %>/<%= milestone %> days</p>
+    <%= render 'shared/progress_bar', percentage: (long_runs / next_long_run_milestone.to_f * 100).round(1), label: "Progress towards #{next_long_run_milestone} mile long run" %>
+    <p class="my-1 text-soft text-xs"><%= long_runs %>/<%= next_long_run_milestone %> miles</p>
   </div>
 </div>
