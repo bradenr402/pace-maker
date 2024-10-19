@@ -52,9 +52,6 @@ export default class extends Controller {
   restore() {
     this.restoreUserSettings();
     this.restoreTeamSettings();
-
-    // Submit the form
-    this.element.submit();
   }
 
   restoreUserSettings() {
