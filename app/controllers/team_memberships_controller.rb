@@ -1,9 +1,14 @@
 class TeamMembershipsController < ApplicationController
   before_action :set_team
   before_action :set_team_membership
+  before_action :set_member
   before_action :authorize_member!
 
   def edit
+    add_breadcrumb 'Teams', teams_path
+    add_breadcrumb @team.name, team_path(@team)
+    add_breadcrumb @member.default_name, team_member_path(@team, @member)
+    add_breadcrumb 'Edit Team Membership', edit_team_team_membership_path(@team, @member)
   end
 
   def update
@@ -23,6 +28,8 @@ class TeamMembershipsController < ApplicationController
 
   def set_team_membership =
     @team_membership = @team.team_memberships.find_by(user_id: params[:user_id])
+
+  def set_member = @member = @team_membership.user
 
   def team_membership_params =
     params.require(:team_membership).permit(:mileage_goal, :long_run_goal)
