@@ -19,6 +19,11 @@ module TeamSettings
         streak_distance_female: 2,
         streak_distance_neutral: 2
       },
+      milestones: {
+        streaks_increment: 10,
+        mileage_increment: 50,
+        long_runs_increment: 5
+      },
       general: {
         week_start: :monday
       }
@@ -30,6 +35,7 @@ module TeamSettings
       s.key :join_requirements, defaults: TeamSettings.defaults[:join_requirements]
       s.key :long_runs, defaults: TeamSettings.defaults[:long_runs]
       s.key :streaks, defaults: TeamSettings.defaults[:streaks]
+      s.key :milestones, defaults: TeamSettings.defaults[:milestones]
       s.key :general, defaults: TeamSettings.defaults[:general]
     end
   end
@@ -55,4 +61,8 @@ module TeamSettings
   def streak_distance_male = settings(:streaks).streak_distance_male.to_i
   def streak_distance_female = settings(:streaks).streak_distance_female.to_i
   def streak_distance_neutral = settings(:streaks).streak_distance_neutral.to_i
+
+  def streaks_increment = settings(:milestones).streaks_increment.to_i
+  def long_runs_increment = settings(:milestones).long_runs_increment.to_i
+  def mileage_increment = settings(:milestones).mileage_increment.to_i
 end
