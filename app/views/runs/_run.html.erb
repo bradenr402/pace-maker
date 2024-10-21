@@ -68,7 +68,7 @@
             if current_page?(run) || local_assigns[:turbo_frame]
               sanitized_comments
             else
-              truncate(sanitized_comments, length: 80)
+              truncate(sanitized_comments, length: 80, separator: ' ', omission: '') { content_tag(:span, '... (see more)', class: 'text-muted') }
             end
           ) %>
         </div>
