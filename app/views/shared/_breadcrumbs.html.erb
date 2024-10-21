@@ -1,7 +1,7 @@
 <% home_breadcrumb = { name: 'Home', url: root_path } %>
 
 <% if @breadcrumbs.any? %>
-  <nav class="inline-flex flex-wrap items-center gap-2 text-soft" aria-label="breadcrumb">
+  <nav class="p-6 inline-flex flex-wrap items-center gap-2 text-soft" aria-label="breadcrumb">
     <%= link_to home_breadcrumb[:url], class: "inline-flex items-center gap-2 text-sm whitespace-nowrap btn-link-soft font-normal" do %>
       <%= inline_svg_tag 'icons/home.svg', class: 'size-3.5 shrink-0' %>
       <%= home_breadcrumb[:name] %>
