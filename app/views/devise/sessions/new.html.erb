@@ -38,8 +38,8 @@
     <% if devise_mapping.rememberable? %>
       <div class="form-group">
         <div class="flex items-center gap-2">
-          <%= f.check_box :remember_me, class: 'form-input-checkbox' %>
-          <%= f.label :remember_me, class: 'select-none text-sm text-slate-700 dark:text-slate-300' %>
+          <%= f.check_box :remember_me, checked: true, class: 'form-input-checkbox' %>
+          <%= f.label :remember_me, 'Stay signed in', class: 'select-none text-sm text-slate-700 dark:text-slate-300' %>
         </div>
       </div>
     <% end %>
