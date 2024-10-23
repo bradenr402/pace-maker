@@ -196,13 +196,13 @@ export default class extends Controller {
   validatePasswordLength(password) {
     this.passwordLengthTarget.classList.remove('help-text');
     if (password.length >= 6) {
-      this.passwordLengthTarget.classList.remove('error-message');
+      this.passwordLengthTarget.classList.remove('help-text');
       this.passwordLengthTarget.classList.add('valid-message');
       this.lengthCheckTarget.classList.remove('hidden');
       this.lengthCrossTarget.classList.add('hidden');
       return true;
     } else {
-      this.passwordLengthTarget.classList.add('error-message');
+      this.passwordLengthTarget.classList.add('help-text');
       this.passwordLengthTarget.classList.remove('valid-message');
       this.lengthCheckTarget.classList.add('hidden');
       this.lengthCrossTarget.classList.remove('hidden');
@@ -213,13 +213,13 @@ export default class extends Controller {
   validatePasswordUppercase(password) {
     this.passwordUppercaseTarget.classList.remove('help-text');
     if (/[A-Z]/.test(password)) {
-      this.passwordUppercaseTarget.classList.remove('error-message');
+      this.passwordUppercaseTarget.classList.remove('help-text');
       this.passwordUppercaseTarget.classList.add('valid-message');
       this.uppercaseCheckTarget.classList.remove('hidden');
       this.uppercaseCrossTarget.classList.add('hidden');
       return true;
     } else {
-      this.passwordUppercaseTarget.classList.add('error-message');
+      this.passwordUppercaseTarget.classList.add('help-text');
       this.passwordUppercaseTarget.classList.remove('valid-message');
       this.uppercaseCheckTarget.classList.add('hidden');
       this.uppercaseCrossTarget.classList.remove('hidden');
@@ -230,13 +230,13 @@ export default class extends Controller {
   validatePasswordLowercase(password) {
     this.passwordLowercaseTarget.classList.remove('help-text');
     if (/[a-z]/.test(password)) {
-      this.passwordLowercaseTarget.classList.remove('error-message');
+      this.passwordLowercaseTarget.classList.remove('help-text');
       this.passwordLowercaseTarget.classList.add('valid-message');
       this.lowercaseCheckTarget.classList.remove('hidden');
       this.lowercaseCrossTarget.classList.add('hidden');
       return true;
     } else {
-      this.passwordLowercaseTarget.classList.add('error-message');
+      this.passwordLowercaseTarget.classList.add('help-text');
       this.passwordLowercaseTarget.classList.remove('valid-message');
       this.lowercaseCheckTarget.classList.add('hidden');
       this.lowercaseCrossTarget.classList.remove('hidden');
@@ -247,13 +247,13 @@ export default class extends Controller {
   validatePasswordDigit(password) {
     this.passwordDigitTarget.classList.remove('help-text');
     if (/\d/.test(password)) {
-      this.passwordDigitTarget.classList.remove('error-message');
+      this.passwordDigitTarget.classList.remove('help-text');
       this.passwordDigitTarget.classList.add('valid-message');
       this.digitCheckTarget.classList.remove('hidden');
       this.digitCrossTarget.classList.add('hidden');
       return true;
     } else {
-      this.passwordDigitTarget.classList.add('error-message');
+      this.passwordDigitTarget.classList.add('help-text');
       this.passwordDigitTarget.classList.remove('valid-message');
       this.digitCheckTarget.classList.add('hidden');
       this.digitCrossTarget.classList.remove('hidden');
@@ -264,13 +264,13 @@ export default class extends Controller {
   validatePasswordSpecial(password) {
     this.passwordSpecialTarget.classList.remove('help-text');
     if (/[#?!@$%^&*-]/.test(password)) {
-      this.passwordSpecialTarget.classList.remove('error-message');
+      this.passwordSpecialTarget.classList.remove('help-text');
       this.passwordSpecialTarget.classList.add('valid-message');
       this.specialCheckTarget.classList.remove('hidden');
       this.specialCrossTarget.classList.add('hidden');
       return true;
     } else {
-      this.passwordSpecialTarget.classList.add('error-message');
+      this.passwordSpecialTarget.classList.add('help-text');
       this.passwordSpecialTarget.classList.remove('valid-message');
       this.specialCheckTarget.classList.add('hidden');
       this.specialCrossTarget.classList.remove('hidden');
