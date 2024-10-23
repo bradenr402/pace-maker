@@ -72,24 +72,25 @@ class User < ApplicationRecord
             if: -> { gender.present? }
 
   def self.from_omniauth(auth)
-    return nil if User.exists?(email: auth.info.email, provider: nil, uid: nil)
+    return nil if User.exists?(email: auth.info.email)
 
-    user =
-      where(provider: auth.provider, uid: auth.uid).first_or_initialize do |u|
-        u.email = auth.info.email
-        u.password = generate_valid_password
+    user = User.new(
+      provider: auth.provider,
+      uid: auth.uid,
+      email: auth.info.email,
+      password: generate_valid_password
+    )
 
-        # Ensure the username is unique
-        base_username = auth.info.email.split('@').first
-        u.username = generate_unique_username(base_username)
+    # Ensure the username is unique
+    base_username = auth.info.email.split('@').first
+    user.username = generate_unique_username(base_username)
 
-        u.display_name = auth.info.name
-        u.avatar_url = auth.info.image
+    user.display_name = auth.info.name
+    user.avatar_url = auth.info.image
 
-        # If you are using confirmable and the provider(s) you use validate emails,
-        # uncomment the line below to skip the confirmation emails.
-        # u.skip_confirmation!
-      end
+    # If you are using confirmable and the provider(s) you use validate emails,
+    # uncomment the line below to skip the confirmation emails.
+    # user.skip_confirmation!
 
     user.save!
     user
