@@ -49,11 +49,11 @@ class TeamJoinRequestsController < ApplicationController
   end
 
   def cancel
-    unless @join_request.transaction {
+    unless @join_request.transaction do
              raise ActiveRecord::Rollback unless @join_request.canceled!
 
              @join_request.decrement!(:request_number)
-           }
+           end
       return(
         redirect_back fallback_location: @team,
                       error: 'Unable to cancel join request.'
@@ -70,8 +70,8 @@ class TeamJoinRequestsController < ApplicationController
   def set_team = @team = Team.find(@join_request.team_id)
 
   def authorize_owner!
-    unless current_user.owns?(@team)
-      redirect_to @team, alert: 'You are not authorized to perform this action.'
-    end
+    return if current_user.owns?(@team)
+
+    redirect_to @team, alert: 'You are not authorized to perform this action.'
   end
 end
