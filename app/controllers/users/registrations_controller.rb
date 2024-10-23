@@ -115,10 +115,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       end
     )
 
-    password_blank = params['password'].blank?
-    password_never_changed = resource.password_never_changed?
-
-    if password_blank || (resource.provider == 'google_oauth2' && password_never_changed)
+    if (resource.google_account_linked? && resource.password_changed_at.nil?) || params['password'].blank?
       resource.update_without_password(params.except('current_password'))
     else
       resource.update_with_password(params)

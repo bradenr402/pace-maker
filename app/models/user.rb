@@ -223,10 +223,6 @@ class User < ApplicationRecord
   def any_membered_teams_in_common_except?(other_user, exclude: []) =
     membered_teams_in_common_except(other_user, exclude:).any?
 
-  def password_ever_changed? = password_changed_at.present?
-
-  def password_never_changed? = !password_ever_changed?
-
   def google_account_linked? = uid? && provider == 'google_oauth2'
 
   private

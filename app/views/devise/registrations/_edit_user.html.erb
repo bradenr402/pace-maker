@@ -21,8 +21,8 @@
       <%= inline_svg_tag 'icons/google-logo.svg', class: 'size-5' %>
       Unlink Google Account
     </button>
-    <% if resource.password_never_changed? %>
-      <p class="error-message my-1">You must set a password to unlink your Google account.</p>
+    <% if resource.password_changed_at.nil? %>
+      <p class="help-text my-1">You signed up with Google and have not created a password yet. You must create a password to unlink your Google account.</p>
     <% else %>
       <!-- Unlink Google Account Modal Backdrop -->
       <div
@@ -282,7 +282,7 @@
     <p class="my-1 text-xs transition-opacity duration-300 ease-in-out text-slate-700 dark:text-slate-400" data-form-validation-target="newPasswordConfirmationHint">Enter your new password again to confirm it.</p>
   </div>
 
-  <% if resource.password_ever_changed? %>
+  <% if resource.password_changed_at? %>
     <div class="form-group">
       <%= f.label :current_password, 'Current password', class: 'form-label' %>
       <div data-controller="password-visibility" class="relative">
