@@ -220,12 +220,12 @@ class TeamsController < ApplicationController
   end
 
   def join
-    requirement_check = current_user.meets_requirements?(@team)
+    eligibility_check = current_user.eligibility_for_team_membership(@team)
 
-    unless requirement_check[:allowed?]
+    unless eligibility_check[:allowed?]
       return(
         redirect_back fallback_location: teams_path,
-                      alert: requirement_check[:message]
+                      alert: eligibility_check[:message]
       )
     end
 

@@ -178,16 +178,22 @@ class User < ApplicationRecord
 
   def owns?(team) = self == team.owner
 
-  def meets_requirements?(team)
-    return { allowed?: false, message: 'Team not found.' } if team.nil?
+  def eligibility_for_team_membership(team)
+    return ineligible_message('Team not found.') if team.nil?
 
-    if team.require_gender? && gender.blank?
-      return(
-        {
-          allowed?: false,
-          message: 'You must specify your gender to join this team.'
-        }
-      )
+    return ineligible_message('You are the owner of this team.') if owns?(team)
+
+    return ineligible_message('You are already a member of this team.') if member_of?(team)
+
+    existing_request = TeamJoinRequest.find_by(user: self, team:)
+    return ineligible_message('You have already requested to join this team.') if existing_request&.pending?
+
+    if existing_request&.rejected? && existing_request.request_number >= team.max_allowed_requests
+      return ineligible_message('You have been blocked from joining this team.')
+    end
+
+    unless team.gender_requirement_met?(self)
+      return ineligible_message('You must specify your gender to join this team.')
     end
 
     { allowed?: true, message: 'You meet the requirements to join this team.' }
@@ -226,6 +232,8 @@ class User < ApplicationRecord
   def google_account_linked? = uid? && provider == 'google_oauth2'
 
   private
+
+  def ineligible_message(message) = { allowed?: false, message: }
 
   def password_complexity
     return if password.blank? || password =~ PASSWORD_FORMAT

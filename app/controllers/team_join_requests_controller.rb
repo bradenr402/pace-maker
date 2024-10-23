@@ -5,25 +5,18 @@ class TeamJoinRequestsController < ApplicationController
   before_action :authorize_owner!, only: %i[approve reject]
 
   def update
-    requirement_check = current_user.meets_requirements?(@team)
+    eligibility_check = current_user.eligibility_for_team_membership(@team)
 
-    unless requirement_check[:allowed?]
+    unless eligibility_check[:allowed?]
       return(
         redirect_back fallback_location: teams_path,
-                      alert: requirement_check[:message]
+                      alert: eligibility_check[:message]
       )
     end
 
-    unless @join_request.allowed?
-      return(
-        redirect_back fallback_location: teams_path,
-                      error: 'Sorry, you have been blocked from this team.'
-      )
-    end
-
-    if @join_request.transaction {
+    if @join_request.transaction do
          @join_request.pending! && @join_request.increment!(:request_number)
-       }
+       end
       redirect_back fallback_location: teams_path,
                     success: 'Join request was successfully sent.'
     else
