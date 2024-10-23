@@ -227,6 +227,8 @@ class User < ApplicationRecord
 
   def password_never_changed? = !password_ever_changed?
 
+  def google_account_linked? = uid? && provider == 'google_oauth2'
+
   private
 
   def password_complexity

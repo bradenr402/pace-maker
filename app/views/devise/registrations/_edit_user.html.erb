@@ -16,8 +16,8 @@
   data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
   class="form-group"
 >
-  <% if current_user.provider.present? %>
-    <button data-action="mousedown->modal#open" data-modal-id="unlinkGoogleAccountModal" <%= 'disabled' if resource.password_never_changed? %> class="btn btn-white btn-outline gap-2">
+  <% if current_user.google_account_linked? %>
+    <button data-action="mousedown->modal#open" data-modal-id="unlinkGoogleAccountModal" <%= 'disabled' if resource.password_changed_at.nil? %> class="btn btn-white btn-outline gap-2">
       <%= inline_svg_tag 'icons/google-logo.svg', class: 'size-5' %>
       Unlink Google Account
     </button>
@@ -136,10 +136,15 @@
 
     <div class="relative">
       <%= inline_svg_tag 'icons/envelope.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= f.email_field :email, autocomplete: 'email', placeholder: 'e.g., example@email.com', class: 'form-input pl-10', data: { form_validation_target: 'email', action: 'input->form-validation#validateEmail' } %>
+      <%= f.email_field :email, autocomplete: 'email', placeholder: 'e.g., example@email.com', class: 'form-input pl-10', disabled: resource.google_account_linked?, data: { form_validation_target: 'email', action: 'input->form-validation#validateEmail' } %>
     </div>
 
-    <p class="hidden my-1 error-message" data-form-validation-target="emailError">Invalid email address</p>
+    <% if resource.google_account_linked? %>
+      <p class="my-1 help-text">Your email is linked to your Google account. You must unlink your Google account to change it.</p>
+    <% else %>
+      <p class="hidden my-1 error-message" data-form-validation-target="emailError">Invalid email address</p>
+    <% end %>
+
     <div class="flex items-center gap-2 mt-2">
       <%= hidden_field_tag 'user[settings][email_visible]', 'false' %>
       <%= f.fields_for :settings do |settings_form| %>
