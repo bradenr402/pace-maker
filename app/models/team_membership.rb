@@ -1,15 +1,19 @@
 class TeamMembership < ApplicationRecord
+  # Associations
   belongs_to :user
   belongs_to :team
 
+  # Validations
   validates :user_id,
             uniqueness: {
               scope: :team_id,
               message: 'is already a member of the team'
             }
 
+  # Delegations
   delegate :season_progress, to: :team
 
+  # Methods
   def miles_completed_in_goal = user.miles_this_season(team)
 
   def miles_remaining_in_goal = mileage_goal - miles_completed_in_goal

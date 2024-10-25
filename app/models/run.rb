@@ -1,8 +1,11 @@
 class Run < ApplicationRecord
+  # Concerns
   include RunCalculations
 
+  # Associations
   belongs_to :user
 
+  # Validations
   validates :date, presence: true
   validates :distance,
             presence: true,
@@ -12,12 +15,15 @@ class Run < ApplicationRecord
   validate :date_not_in_future
   validate :duration_requirements
 
+  # Attributes
   attr_accessor :duration_input
 
+  # Scopes
   scope :in_date_range, ->(range) { where(date: range).order(date: :desc) }
   scope :today, -> { where(date: Date.today.all_day).order(date: :desc) }
   scope :excluding_date, ->(date) { where.not(date:) }
 
+  # Methods
   def long_run_for_team?(team = nil)
     return false if team.nil? || !team.is_a?(Team)
 

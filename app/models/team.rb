@@ -1,9 +1,11 @@
 class Team < ApplicationRecord
+  # Concerns
   include TeamCalculations
   include TeamSettings
+  include TeamUsersConcern
+  include TeamRunsConcern
 
-  before_validation :convert_empty_string_season_dates_to_nil
-
+  # Associations
   belongs_to :owner, class_name: 'User'
   has_many :team_memberships, dependent: :destroy
   has_many :members, through: :team_memberships, source: :user
@@ -13,6 +15,10 @@ class Team < ApplicationRecord
            dependent: :destroy
   has_one_attached :photo
 
+  # Callbacks
+  before_validation :convert_empty_string_season_dates_to_nil
+
+  # Validations
   validates :name, presence: true
   validates :owner, presence: true
   validates :description, length: { maximum: 500 }
@@ -28,8 +34,10 @@ class Team < ApplicationRecord
             },
             if: -> { mileage_goal.present? }
 
+  # Scopes
   scope :not_included_in, ->(team_ids) { where.not(id: team_ids) }
 
+  # Methods
   def season_dates? = season_start_date.present? && season_end_date.present?
 
   def season_in_progress? =
@@ -40,86 +48,6 @@ class Team < ApplicationRecord
   def season_not_started_yet? = season_dates? && season_start_date.future?
 
   def season_range = season_start_date..season_end_date
-
-  def gender_requirement_met?(user) = require_gender? && user.gender?
-
-  def recent_runs =
-    Run
-      .includes(:user)
-      .where(users: { id: members.pluck(:id) })
-      .order(date: :desc)
-      .first(15)
-
-  def recent_long_runs
-    runs =
-      Run
-      .includes(:user)
-      .where(users: { id: members.pluck(:id) })
-      .order(date: :desc)
-      .first(15)
-
-    runs.select do |run|
-      required_distance = long_run_distance_for_user(run.user)
-      run.distance >= required_distance
-    end
-  end
-
-  def streak_runs
-    runs =
-      Run
-      .includes(:user)
-      .where(users: { id: members.pluck(:id) })
-      .where('date >= ?', Date.current.yesterday)
-      .order(date: :desc)
-
-    runs.select do |run|
-      required_distance = streak_distance_for_user(run.user)
-      run.distance >= required_distance
-    end
-  end
-
-  def featured_runs = (recent_long_runs | streak_runs).sort_by(&:date).reverse
-
-  def long_runs_in_date_range(range)
-    runs =
-      Run
-      .includes(:user)
-      .where(users: { id: members.pluck(:id) })
-      .in_date_range(range)
-
-    # Filter runs based on user-specific distance requirements
-    runs.select do |run|
-      required_distance = long_run_distance_for_user(run.user)
-      run.distance >= required_distance
-    end
-  end
-
-  def members_in_common(user) =
-    members
-      .includes(:teams)
-      .select do |member|
-        member != user && member != owner && (member.teams & user.teams).any?
-      end
-
-  def any_members_in_common?(user) = members_in_common(user).any?
-
-  def male_members = members.where(gender: 'male')
-
-  def female_members = members.where(gender: 'female')
-
-  def neutral_gender_members = members.where(gender: '')
-
-  def long_run_distance_for_user(user)
-    return long_run_distance_neutral unless require_gender?
-
-    user.male? ? long_run_distance_male : long_run_distance_female
-  end
-
-  def streak_distance_for_user(user)
-    return streak_distance_neutral unless require_gender?
-
-    user.male? ? streak_distance_male : streak_distance_female
-  end
 
   private
 

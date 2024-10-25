@@ -21,20 +21,34 @@ module UserCalculations
   def runs_on_day(date) = runs.where(date:)
 
   # Long run calculations
+  def total_long_runs(team) =
+    runs.where(
+      distance: team.long_run_distance_for_user(self)..Float::INFINITY
+    ).count
+
   def long_runs_this_season(team) =
-    runs.where(data: team.season_range, distance: team.long_run_distance_for_user(self)..Float::INFINITY)
+    runs.where(
+      data: team.season_range,
+      distance: team.long_run_distance_for_user(self)..Float::INFINITY
+    )
 
   def total_long_runs_this_season(team) =
-    runs.where(date: team.season_range, distance: team.long_run_distance_for_user(self)..Float::INFINITY).count
-
-  def total_long_runs(team) =
-    runs.where(distance: team.long_run_distance_for_user(self)..Float::INFINITY).count
+    runs.where(
+      date: team.season_range,
+      distance: team.long_run_distance_for_user(self)..Float::INFINITY
+    ).count
 
   def long_runs_in_date_range(team, date_range) =
-    runs.where(date: date_range, distance: team.long_run_distance_for_user(self)..Float::INFINITY)
+    runs.where(
+      date: date_range,
+      distance: team.long_run_distance_for_user(self)..Float::INFINITY
+    )
 
   def total_long_runs_in_date_range(team, date_range) =
-    runs.where(date: date_range, distance: team.long_run_distance_for_user(self)..Float::INFINITY).count
+    runs.where(
+      date: date_range,
+      distance: team.long_run_distance_for_user(self)..Float::INFINITY
+    ).count
 
   # Streak calculations
   def current_streak(team = nil, current_date = Date.current)
