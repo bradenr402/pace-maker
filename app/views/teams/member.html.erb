@@ -4,7 +4,7 @@
   <div class="mb-12">
     <div class="mb-6 text-center">
       <h2 class="subheading my-1"><%= @member.default_name %> &amp; <%= @team.name %></h2>
-      <%= simple_format "This page displays details about #{@member == current_user ? 'your' : link_to("#{@member.first_name}'s", @member, class: 'btn-link')} membership in the team #{link_to @team.name, @team, class: 'btn-link'}.", class: 'text-soft text-sm md:max-w-[80%] md:mx-auto md:text-balance' %>
+      <%= simple_format "This page displays details about #{@member == current_user ? 'your' : link_to("#{@member.first_name}'s", @member, class: 'btn-link')} membership in the team #{link_to @team.name, @team, class: 'btn-link'}.", class: 'text-soft text-sm md:max-w-[80%] md:mx-auto text-pretty' %>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">

@@ -11,7 +11,7 @@
       Coach: <%= link_to @team.owner.default_name, team_member_path(@team, @team.owner), class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %>
     </h2>
 
-    <%= simple_format @team.description, class: 'text-soft text-sm md:max-w-[80%] md:mx-auto md:text-balance' unless @team.description.blank? %>
+    <%= simple_format @team.description, class: 'text-soft text-sm md:max-w-[80%] md:mx-auto text-pretty' unless @team.description.blank? %>;
 
     <div class="flex items-center justify-center md:justify-end mt-4">
       <% if @current_user_member_of_team %>
