@@ -107,7 +107,7 @@
                             'bg-slate-200/30 dark:bg-slate-700/30'
                           end %>
 
-                          <%= 'opacity-40' if team.exclude_from_streak?(date) %>
+                          <%= 'opacity-40' if team.exclude_date_from_streak?(date) %>
                           ">
                       <%= date.strftime('%e') %>
                     </div>
@@ -179,25 +179,25 @@
   </div>
 
   <!-- Record Streak Card -->
-  <% longest_streak_data = member.longest_streak(team) %>
-  <% longest_streak = longest_streak_data[:streak] %>
-  <% longest_streak_start_date = longest_streak_data[:start_date] %>
-  <% longest_streak_end_date = longest_streak_data[:end_date] %>
+  <% record_streak_data = member.record_streak(team) %>
+  <% record_streak = record_streak_data[:streak] %>
+  <% record_streak_start_date = record_streak_data[:start_date] %>
+  <% record_streak_end_date = record_streak_data[:end_date] %>
 
   <div class="card">
     <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Record Streak</h2>
     <p class="text-3xl font-bold">
-      <%= longest_streak %>
-      <span class="text-base font-normal text-soft"><%= 'day'.pluralize(longest_streak) %></span>
+      <%= record_streak %>
+      <span class="text-base font-normal text-soft"><%= 'day'.pluralize(record_streak) %></span>
     </p>
     <p class="my-1 text-soft">
-      <% if longest_streak.zero? %>
-        No longest streak recorded.
-      <% elsif longest_streak_start_date == longest_streak_end_date %>
-        <%= pretty_date(longest_streak_start_date, date_style: :relative) %>
+      <% if record_streak.zero? %>
+        No record streak recorded.
+      <% elsif record_streak_start_date == record_streak_end_date %>
+        <%= pretty_date(record_streak_start_date, date_style: :relative) %>
         <span class="my-1 ml-1 help-text">(Most recent run)</span>
       <% else %>
-        <%= pretty_date(longest_streak_start_date, date_style: :relative) %> &ndash; <%= pretty_date(longest_streak_end_date, date_style: :relative) %>
+        <%= pretty_date(record_streak_start_date, date_style: :relative) %> &ndash; <%= pretty_date(record_streak_end_date, date_style: :relative) %>
       <% end %>
     </p>
   </div>

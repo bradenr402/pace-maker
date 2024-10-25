@@ -86,7 +86,7 @@
 
       <% streak = run.streak_value(local_assigns[:team]) %>
       <div class="flex flex-wrap items-center gap-2">
-        <%= render 'runs/long_run_badge' if run.long_run_for?(local_assigns[:team]) %>
+        <%= render 'runs/long_run_badge' if run.long_run_for_team?(local_assigns[:team]) %>
         <%= render 'runs/streak_badge', streak: streak unless streak.nil? || streak.zero? || streak.negative? || streak == 1 %>
       </div>
     </div>

@@ -54,7 +54,11 @@ module TeamSettings
   def exclude_saturday_from_streak? = !include_saturday_in_streak?
   def exclude_sunday_from_streak? = !include_sunday_in_streak?
 
-  def exclude_from_streak?(date) =
+  def include_date_in_streak?(date) =
+    (date.saturday? && include_saturday_in_streak?) ||
+      (date.sunday? && include_sunday_in_streak?)
+
+  def exclude_date_from_streak?(date) =
     (date.saturday? && exclude_saturday_from_streak?) ||
       (date.sunday? && exclude_sunday_from_streak?)
 

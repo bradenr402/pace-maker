@@ -144,7 +144,7 @@ class TeamsController < ApplicationController
                 @rankings_date_range
               ),
             current_streak: member.current_streak(@team)[:streak],
-            longest_streak: member.longest_streak(@team)[:streak]
+            record_streak: member.record_streak(@team)[:streak]
           }
         end
     end

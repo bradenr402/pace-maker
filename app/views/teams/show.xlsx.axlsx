@@ -36,7 +36,7 @@ wb.styles do |style|
           member.miles_in_date_range(@date_range),
           member.long_runs_in_date_range(@team, @date_range),
           member.current_streak(@team)[:streak],
-          member.longest_streak(@team)[:streak]
+          member.record_streak(@team)[:streak]
         ]
       else
         sheet.add_row [
@@ -44,7 +44,7 @@ wb.styles do |style|
           member.miles_in_date_range(@date_range),
           member.long_runs_in_date_range(@team, @date_range),
           member.current_streak(@team)[:streak],
-          member.longest_streak(@team)[:streak]
+          member.record_streak(@team)[:streak]
         ]
       end
     end
@@ -83,7 +83,7 @@ wb.styles do |style|
             member.miles_in_date_range(@date_range),
             member.long_runs_in_date_range(@team, @date_range),
             member.current_streak(@team)[:streak],
-            member.longest_streak(@team)[:streak]
+            member.record_streak(@team)[:streak]
           ]
         else
           sheet.add_row [
@@ -91,7 +91,7 @@ wb.styles do |style|
             member.miles_in_date_range(@date_range),
             member.long_runs_in_date_range(@team, @date_range),
             member.current_streak(@team)[:streak],
-            member.longest_streak(@team)[:streak]
+            member.record_streak(@team)[:streak]
           ]
         end
       end
@@ -129,7 +129,7 @@ wb.styles do |style|
             member.miles_in_date_range(@date_range),
             member.long_runs_in_date_range(@team, @date_range),
             member.current_streak(@team)[:streak],
-            member.longest_streak(@team)[:streak]
+            member.record_streak(@team)[:streak]
           ]
         else
           sheet.add_row [
@@ -137,7 +137,7 @@ wb.styles do |style|
             member.miles_in_date_range(@date_range),
             member.long_runs_in_date_range(@team, @date_range),
             member.current_streak(@team)[:streak],
-            member.longest_streak(@team)[:streak]
+            member.record_streak(@team)[:streak]
           ]
         end
       end

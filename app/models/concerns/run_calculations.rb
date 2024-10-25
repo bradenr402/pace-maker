@@ -7,14 +7,22 @@ module RunCalculations
 
   def distance_km = (distance * 1.609344).round(1)
 
-  def pace = (duration / distance).round
+  def pace
+    return nil if distance.zero?
+
+    (duration / distance).round
+  end
+
   alias pace_per_mile pace
 
-  def pace_per_km = (duration / distance_km).round
+  def pace_per_km
+    return nil if distance.zero?
+
+    (duration / distance_km).round
+  end
 
   def streak_value(team = nil)
-    streak_data =
-      team ? user.current_streak(team) : user.current_streak_without_team
+    streak_data = user.current_streak(team)
     streak_value = streak_data[:streak]
     streak_end_date = streak_data[:end_date]
 

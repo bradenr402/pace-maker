@@ -109,7 +109,7 @@
                             'bg-slate-200/60 dark:bg-slate-700/60'
                           end %>
 
-                          <%= 'opacity-40' if team.exclude_from_streak?(date) && date != team.season_start_date && date != team.season_end_date %>
+                          <%= 'opacity-40' if team.exclude_date_from_streak?(date) && date != team.season_start_date && date != team.season_end_date %>
                           ">
                       <%= date.strftime('%e') %>
                     </div>

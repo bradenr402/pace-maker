@@ -20,12 +20,6 @@ module UserCalculations
 
   def runs_on_day(date) = runs.where(date:)
 
-  def runs_valid_for_streak(team)
-    required_distance = team.streak_distance_for_user(self)
-
-    runs.where('distance >= ?', required_distance)
-  end
-
   # Long run calculations
   def long_runs_this_season(team) =
     runs.where(data: team.season_range, distance: team.long_run_distance_for_user(self)..Float::INFINITY)
@@ -43,181 +37,56 @@ module UserCalculations
     runs.where(date: date_range, distance: team.long_run_distance_for_user(self)..Float::INFINITY).count
 
   # Streak calculations
-  def current_streak(team)
-    filtered_runs =
-      runs_valid_for_streak(team)
-      .order(date: :desc)
-      .distinct
-      .pluck(:date)
-      .map(&:to_date)
+  def current_streak(team = nil, current_date = Date.current)
+    @all_runs ||= runs
+    return { streak: 0, start_date: nil, end_date: nil } if @all_runs.empty?
 
-    # Return a streak of 0 if there are no qualifying runs
-    return { streak: 0, start_date: nil, end_date: nil } if filtered_runs.empty?
-
-    # Initialize streak count and start date
-    streak = 1
+    streak = 0
     start_date = nil
+    end_date = nil
 
-    # Return a streak of 0 if the streak has been broken
-    # (i.e. the most recent run is not the previous day
-    # or the previous day is a Saturday or Sunday and the team excludes Saturdays and Sundays from streaks)
-    most_recent_run = filtered_runs.first
-    unless (most_recent_run.saturday? && team.exclude_saturday_from_streak?) ||
-           (most_recent_run.sunday? && team.exclude_sunday_from_streak?) ||
-           (most_recent_run == Date.current - 1.day) ||
-           (most_recent_run == Date.current)
-      return { streak: 0, start_date: nil, end_date: nil }
-    end
+    loop do
+      runs_on_date = @all_runs.where(date: current_date)
+      required_distance = team&.streak_distance_for_user(self) || 0
 
-    filtered_runs.each_cons(2) do |current_date, previous_date|
-      if current_date == previous_date + 1.day
+      if runs_on_date.any? { |run| run.distance >= required_distance }
+        end_date ||= current_date
+        start_date = current_date
         streak += 1
-        start_date = previous_date
-      elsif (current_date - 1.day).saturday? &&
-            team.exclude_saturday_from_streak?
-        next
-      elsif (current_date - 1.day).sunday? && team.exclude_sunday_from_streak?
-        next
       else
-        break
+        break unless team&.exclude_date_from_streak?(current_date)
       end
+
+      current_date = current_date.prev_day
     end
 
-    # Return most recent run date if current streak is 1
-    return { streak: 1, start_date: filtered_runs.first, end_date: filtered_runs.first } if streak == 1
-
-    { streak:, start_date:, end_date: filtered_runs.first }
+    { streak:, start_date:, end_date: }
   end
 
-  def longest_streak(team)
-    filtered_runs =
-      runs_valid_for_streak(team)
-      .order(date: :desc)
-      .distinct
-      .pluck(:date)
-      .map(&:to_date)
+  def record_streak(team = nil)
+    return { streak: 0, start_date: nil, end_date: nil } if runs.empty?
 
-    # Return a streak of 0 if there are no qualifying runs
-    return { streak: 0, start_date: nil, end_date: nil } if filtered_runs.empty?
+    run_dates = runs.order(:date).pluck(:date)
+    oldest_date = run_dates.first
+    newest_date = run_dates.last
+    current_date = newest_date
 
-    # Initialize streak counts, start dates, and end dates
-    longest_streak = 1
+    longest_streak = 0
     longest_start_date = nil
     longest_end_date = nil
 
-    temp_streak = 1
-    temp_start_date = nil
-    temp_end_date = nil
+    while current_date >= oldest_date
+      streak_data = current_streak(team, current_date)
+      streak = streak_data[:streak]
 
-    filtered_runs.each_cons(2) do |current_date, previous_date|
-      if current_date == previous_date + 1.day
-        temp_streak += 1
-        temp_start_date = previous_date
-        temp_end_date ||= current_date
-      elsif (current_date - 1.day).saturday? &&
-            team.exclude_saturday_from_streak?
-        next
-      elsif (current_date - 1.day).sunday? && team.exclude_sunday_from_streak?
-        next
-      else
-        if temp_streak > longest_streak
-          longest_streak = temp_streak
-          longest_start_date = temp_start_date
-          longest_end_date = temp_end_date
-        end
-        temp_streak = 1
-        temp_start_date = nil
-        temp_end_date = nil
-        next
+      if streak > longest_streak
+        longest_streak = streak
+        longest_start_date = streak_data[:start_date]
+        longest_end_date = streak_data[:end_date]
       end
+
+      current_date = (streak_data[:start_date] || current_date).prev_day
     end
-
-    # Return most recent run date if longest streak is 1
-    return { streak: 1, start_date: filtered_runs.first, end_date: filtered_runs.first } if longest_streak == 1
-
-    {
-      streak: longest_streak,
-      start_date: longest_start_date,
-      end_date: longest_end_date
-    }
-  end
-
-  def current_streak_without_team
-    filtered_runs =
-      runs
-      .order(date: :desc)
-      .distinct
-      .pluck(:date)
-      .map(&:to_date)
-
-    # Return a streak of 0 if there are no qualifying runs
-    return { streak: 0, start_date: nil, end_date: nil } if filtered_runs.empty?
-
-    # Initialize streak count and start date
-    streak = 1
-    start_date = nil
-
-    # Return a streak of 0 if the streak has been broken
-    # (i.e. the most recent run is not the previous day)
-    most_recent_run = filtered_runs.first
-    unless (most_recent_run == Date.current - 1.day) ||
-           (most_recent_run == Date.current)
-      return { streak: 0, start_date: nil, end_date: nil }
-    end
-
-    filtered_runs.each_cons(2) do |current_date, previous_date|
-      break unless current_date == previous_date + 1.day
-
-      streak += 1
-      start_date = previous_date
-    end
-
-    # Return most recent run date if current streak is 1
-    return { streak: 1, start_date: filtered_runs.first, end_date: filtered_runs.first } if streak == 1
-
-    { streak:, start_date:, end_date: filtered_runs.first }
-  end
-
-  def longest_streak_without_team
-    filtered_runs =
-      runs
-      .order(date: :desc)
-      .distinct
-      .pluck(:date)
-      .map(&:to_date)
-
-    # Return a streak of 0 if there are no qualifying runs
-    return { streak: 0, start_date: nil, end_date: nil } if filtered_runs.empty?
-
-    # Initialize streak counts, start dates, and end dates
-    longest_streak = 1
-    longest_start_date = nil
-    longest_end_date = nil
-
-    temp_streak = 1
-    temp_start_date = nil
-    temp_end_date = nil
-
-    filtered_runs.each_cons(2) do |current_date, previous_date|
-      if current_date == previous_date + 1.day
-        temp_streak += 1
-        temp_start_date = previous_date
-        temp_end_date ||= current_date
-      else
-        if temp_streak > longest_streak
-          longest_streak = temp_streak
-          longest_start_date = temp_start_date
-          longest_end_date = temp_end_date
-        end
-        temp_streak = 1
-        temp_start_date = nil
-        temp_end_date = nil
-        next
-      end
-    end
-
-    # Return most recent run date if longest streak is 1
-    return { streak: 1, start_date: filtered_runs.first, end_date: filtered_runs.first } if longest_streak == 1
 
     {
       streak: longest_streak,
