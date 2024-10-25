@@ -68,7 +68,7 @@ module UserCalculations
         start_date = current_date
         streak += 1
       else
-        break unless team&.exclude_date_from_streak?(current_date)
+        break unless current_date.today? || team&.exclude_date_from_streak?(current_date)
       end
 
       current_date = current_date.prev_day
