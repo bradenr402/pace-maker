@@ -17,12 +17,5 @@ class TeamJoinRequest < ApplicationRecord
   # Methods
   def blocked? = (request_number >= team.max_allowed_requests)
 
-  def allowed?
-    return false if blocked?
-    return false if pending? || approved?
-    return false if user.member_of?(team)
-    return false if user.owns?(team)
-
-    true
-  end
+  def allowed? = !(blocked? || pending? || approved? || user.member_of?(team) || user.owns?(team))
 end
