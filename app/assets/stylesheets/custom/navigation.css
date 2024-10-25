@@ -32,11 +32,11 @@
   }
 
   .tab-container-scroll-left {
-    @apply bg-gradient-to-r from-slate-50 dark:from-slate-800 via-slate-50/90 dark:via-slate-800/90 to-transparent px-4 h-full rounded-l-lg absolute top-1/2 left-0 transform -translate-y-1/2 z-40;
+    @apply bg-gradient-to-r from-slate-200 dark:from-slate-800 via-slate-200/90 dark:via-slate-800/90 to-transparent px-4 h-full rounded-l-lg absolute top-1/2 left-0 transform -translate-y-1/2 z-40;
   }
 
   .tab-container-scroll-right {
-    @apply bg-gradient-to-l from-slate-50 dark:from-slate-800 via-slate-50/90 dark:via-slate-800/90 to-transparent px-4 h-full rounded-r-lg absolute top-1/2 right-0 transform -translate-y-1/2 z-40;
+    @apply bg-gradient-to-l from-slate-200 dark:from-slate-800 via-slate-200/90 dark:via-slate-800/90 to-transparent px-4 h-full rounded-r-lg absolute top-1/2 right-0 transform -translate-y-1/2 z-40;
   }
 
   .sliding-tab-indicator {
