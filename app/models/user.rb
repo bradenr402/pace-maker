@@ -47,6 +47,7 @@ class User < ApplicationRecord
   before_validation :convert_empty_string_phone_number_to_nil
   before_update :set_password_changed_at,
                 if: :will_save_change_to_encrypted_password?
+  before_save :normalize_email
   before_save :purge_avatar, if: -> { remove_avatar == '1' }
   before_save :clear_avatar_url, if: -> { avatar.attached? }
 
@@ -182,6 +183,8 @@ class User < ApplicationRecord
 
   def convert_empty_string_phone_number_to_nil =
     (self.phone_number = nil if phone_number.blank?)
+
+  def normalize_email = (self.email = email.downcase)
 
   def purge_avatar
     avatar.purge_later
