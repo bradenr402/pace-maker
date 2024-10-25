@@ -113,7 +113,9 @@ class User < ApplicationRecord
 
   class << self
     def from_omniauth(auth)
-      return nil if User.exists?(email: auth.info.email)
+      user = User.find_by(email: auth.info.email)
+      return nil if user&.provider.nil? || user&.uid.nil?
+      return user if (user&.provider == auth.provider) && (user&.uid == auth.uid)
 
       user =
         User.new(
@@ -130,7 +132,7 @@ class User < ApplicationRecord
       user.display_name = auth.info.name
       user.avatar_url = auth.info.image
 
-      # If you are using confirmable and the provider(s) you use validate emails,
+      # If you are using :confirmable and the provider(s) you use validate emails,
       # uncomment the line below to skip the confirmation emails.
       # user.skip_confirmation!
 

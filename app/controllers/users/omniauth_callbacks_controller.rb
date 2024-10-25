@@ -31,13 +31,17 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # end
 
   def google_oauth2
+    # gets user from auth information
     @user = User.from_omniauth(auth)
 
-    if @user.nil? # account already exists with email
+    if @user.nil? # account already exists with email but is not linked to a Google account
+      # links Google account to existing account if signed in, else asks user to sign in
       handle_existing_account
-    elsif @user.persisted? # account created and saved without errors
+    elsif @user.persisted? # account linked to Google account
+      # creates account with Google account and signs user in
       handle_successful_authentication
     else # error creating/linking account
+      # displays error message and redirects to sign in page
       handle_failed_authentication
     end
   end
