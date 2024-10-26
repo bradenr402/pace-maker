@@ -1,9 +1,9 @@
 @layer components {
   .sidebar-link {
-    @apply rounded-lg px-3 py-2 dark:py-[0.5625rem] focus:text-indigo-600 text-soft hover:text-normal text-sm font-medium hover:bg-slate-200/40 dark:hover:bg-slate-700/40 transition duration-200 ease-in-out dark:focus:text-white flex items-center gap-2.5 border border-transparent dark:border-none;
+    @apply rounded-lg px-3 py-2 focus:text-indigo-600 text-soft hover:text-normal text-sm font-medium hover:bg-slate-200/40 dark:hover:bg-slate-700/40 transition duration-200 ease-in-out dark:focus:text-white flex items-center gap-2.5 border border-transparent;
 
     &.sidebar-link-active {
-      @apply text-normal bg-slate-200/75 dark:bg-slate-700/75 hover:bg-slate-200 dark:hover:bg-slate-700/75 border-slate-300/50;
+      @apply text-normal bg-slate-200/75 dark:bg-slate-700/75 hover:bg-slate-200 dark:hover:bg-slate-700/75 border-slate-300/50 dark:border-slate-600/50;
     }
   }
 
