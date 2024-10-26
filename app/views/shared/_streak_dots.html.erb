@@ -1,0 +1,31 @@
+<% week_start ||= :sunday %>
+<% week = week_range(week_start: week_start).to_a %>
+
+<% week_days = Date::DAYNAMES %>
+<% week_days = week_days.rotate(week_days.index(week_start.to_s.capitalize)) %>
+
+<% exclude_saturday = exclude_sunday ||= false %>
+<% run_dates = user.runs_in_date_range(week).map(&:date).uniq %>
+
+<div class="flex items-center justify-between w-full px-4 py-3 bg-slate-200/75 dark:bg-slate-700/50 border border-slate-300/50 dark:border-slate-600/50 rounded-xl">
+  <% 7.times do |i| %>
+    <% day = week_days[i] %>
+    <% date = week[i] %>
+    <% exclude_date = (date.saturday? && exclude_saturday) || (date.sunday? && exclude_sunday) %>
+    <div class="flex flex-col items-center gap-1 <%= 'opacity-50' if exclude_date %>">
+      <span class="text-center text-xs text-soft font-bold"><%= day.first %></span>
+      <% if run_dates.include?(date) %>
+        <span class="bg-gradient-to-b from-indigo-400 to-indigo-500 dark:from-indigo-500 dark:to-indigo-600 rounded size-3"></span>
+      <% elsif date.today? && user == current_user %>
+        <span class="relative grid place-items-center size-3">
+          <span class="motion-reduce:hidden animate-ping-slow absolute inline-flex size-full rounded-full bg-indigo-400 dark:bg-indigo-500 opacity-60"></span>
+          <span class="relative inline-flex rounded-full size-1.5 bg-gradient-to-b from-indigo-400 to-indigo-500 dark:from-indigo-500 dark:to-indigo-600"></span>
+        </span>
+      <% else %>
+        <span class="grid place-items-center size-3">
+          <span class="bg-slate-400/80 dark:bg-slate-500/80 rounded-full size-1.5"></span>
+        </span>
+      <% end %>
+    </div>
+  <% end %>
+</div>

@@ -15,6 +15,9 @@ module.exports = {
         4.5: '1.125rem',
         5.5: '1.375rem',
       },
+      animation: {
+        'ping-slow': 'ping 3s cubic-bezier(0, 0, 0.2, 1) infinite',
+      },
     },
   },
   plugins: [
@@ -24,5 +27,5 @@ module.exports = {
   ],
   future: {
     hoverOnlyWhenSupported: true,
-  }
+  },
 };
