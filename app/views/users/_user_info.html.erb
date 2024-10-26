@@ -109,7 +109,7 @@
       <h2 class="subheading">Contact</h2>
       <p class="text-sm text-soft">
         <% if user == current_user %>
-          Your contact information. You can hide this in <%= link_to 'settings', edit_user_registration_path(tab: 'settingsTab'), class: 'btn-link transition duration-200 ease-in-out' %>.
+          Your contact information. You can hide this in your <%= link_to 'settings', edit_user_registration_path(tab: 'settingsTab'), class: 'btn-link transition duration-200 ease-in-out' %>.
         <% else %>
           Contact information for <%= user.first_name %>.
         <% end %>
