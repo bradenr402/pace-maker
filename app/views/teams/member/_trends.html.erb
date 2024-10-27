@@ -16,7 +16,7 @@
 
         <!-- Group by select -->
         <%= label_tag :group_by, 'Group by', class: 'sr-only' %>
-        <%= select_tag :group_by, options_for_select([['Group by day', 'day'], ['Group by week', 'week']], params[:group_by] || 'day'),
+        <%= select_tag :group_by, options_for_select([['group by day', 'day'], ['group by week', 'week']], params[:group_by] || 'day'),
                         data: { action: 'input->search-form#searchNow' },
                         class: 'form-select appearance-none pl-3 pr-10 py-2 border border-l-0 rounded-l-none w-max focus:z-10' %>
       </div>
