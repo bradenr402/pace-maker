@@ -149,7 +149,7 @@
       <%= hidden_field_tag 'user[settings][email_visible]', 'false' %>
       <%= f.fields_for :settings do |settings_form| %>
         <%= settings_form.check_box :email_visible, { checked: @user.show_email?, class: 'form-input-checkbox' }, true, false %>
-        <%= settings_form.label :email_visible, 'Show email to other users', class: 'select-none text-sm' %>
+        <%= settings_form.label :email_visible, 'Show email on profile', class: 'select-none text-sm' %>
       <% end %>
     </div>
   </div>
@@ -171,7 +171,7 @@
       <%= hidden_field_tag 'user[settings][phone_visible]', 'false' %>
       <%= f.fields_for :settings do |settings_form| %>
         <%= settings_form.check_box :phone_visible, { checked: @user.show_phone?, class: 'form-input-checkbox' }, true, false %>
-        <%= settings_form.label :phone_visible, 'Show phone number to other users', class: 'select-none text-sm' %>
+        <%= settings_form.label :phone_visible, 'Show phone number on profile', class: 'select-none text-sm' %>
       <% end %>
     </div>
   </div>
