@@ -163,7 +163,7 @@
 
     <div class="relative">
       <%= inline_svg_tag 'icons/phone.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= f.telephone_field :phone_number, placeholder: 'e.g., 1234567890', autocomplete: 'tel', class: 'form-input pl-10', data: { form_validation_target: 'phone', action: 'input->form-validation#validatePhone input->form-validation#filterPhoneInput' } %>
+      <%= f.telephone_field :phone_number, placeholder: '(555) 555-5555', value: number_to_phone(f.object.phone_number, area_code: true), autocomplete: 'tel', class: 'form-input pl-10', data: { form_validation_target: 'phone', action: 'input->form-validation#validatePhone' } %>
     </div>
 
     <p class="hidden my-1 error-message" data-form-validation-target="phoneError">Invalid phone number</p>

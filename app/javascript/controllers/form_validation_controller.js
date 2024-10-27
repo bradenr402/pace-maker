@@ -109,23 +109,25 @@ export default class extends Controller {
       this.phoneTarget.classList.remove('form-input-error');
       this.phoneErrorTarget.classList.add('hidden');
     }
+
+    this.phoneTarget.value = this.phoneFormat(this.phoneTarget.value);
   }
 
-  filterPhoneInput(event) {
-    let value = this.phoneTarget.value;
-    // Remove non-digits and non-leading + characters
-    value = value.replace(/[^\d\+]/g, '');
+  phoneFormat(input) {
+    //returns (###) ###-####
 
-    // Ensure leading + if present, followed by digits only
-    if (value.startsWith('+')) {
-      value = '+' + value.slice(1).replace(/\D/g, '');
-    } else {
-      value = value.replace(/\D/g, '');
-    }
+    const phoneFormatRegex = /(\d{0,3})(\d{0,3})(\d{0,4})/;
 
-    this.phoneTarget.value = value;
+    // Extract digits from phone number and split into groups
+    const phoneDigits = input.replace(/\D/g, '');
+    const [_, areaCode, prefix, lineNumber] =
+      phoneDigits.match(phoneFormatRegex);
 
-    this.validatePhone();
+    if (prefix && lineNumber) return `(${areaCode}) ${prefix}-${lineNumber}`;
+
+    if (prefix) return `(${areaCode}) ${prefix}`;
+
+    return areaCode;
   }
 
   validateDisplayName(event) {

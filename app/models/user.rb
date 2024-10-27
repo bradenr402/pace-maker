@@ -45,6 +45,7 @@ class User < ApplicationRecord
 
   # Callbacks
   before_validation :convert_empty_string_phone_number_to_nil
+  before_validation :normalize_phone_number
   before_update :set_password_changed_at,
                 if: :will_save_change_to_encrypted_password?
   before_save :normalize_email
@@ -185,6 +186,9 @@ class User < ApplicationRecord
 
   def convert_empty_string_phone_number_to_nil =
     (self.phone_number = nil if phone_number.blank?)
+
+  def normalize_phone_number =
+    (self.phone_number = phone_number&.gsub(/[()\s-]/, ''))
 
   def normalize_email = (self.email = email.downcase)
 
