@@ -121,7 +121,7 @@
     <% if resource.avatar.attached? %>
       <div class="flex items-center gap-2 mt-3">
         <%= f.check_box :remove_avatar, class: 'form-input-checkbox', data: { image_preview_target: 'removeAvatarCheckbox', action: 'image-preview#selectCheckbox' } %>
-        <%= f.label :remove_avatar, 'Remove profile photo', class: 'select-none text-sm text-slate-700 dark:text-slate-300' %>
+        <%= f.label :remove_avatar, 'Remove profile photo', class: 'form-check-label text-sm' %>
       </div>
     <% end %>
   </div>
@@ -149,7 +149,7 @@
       <%= hidden_field_tag 'user[settings][email_visible]', 'false' %>
       <%= f.fields_for :settings do |settings_form| %>
         <%= settings_form.check_box :email_visible, { checked: @user.show_email?, class: 'form-input-checkbox' }, true, false %>
-        <%= settings_form.label :email_visible, 'Show email on profile', class: 'select-none text-sm' %>
+        <%= settings_form.label :email_visible, 'Show email on profile', class: 'form-check-label text-sm' %>
       <% end %>
     </div>
   </div>
