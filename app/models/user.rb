@@ -189,11 +189,15 @@ class User < ApplicationRecord
   def ineligible_message(message) = { allowed?: false, message: }
 
   def password_complexity
+    # Skip validation if password is blank or matches required format
     return if password.blank? || password =~ PASSWORD_FORMAT
 
-    errors.add :password,
-               'Complexity requirement not met. Password must include at least ' \
-                 '1 uppercase letter, 1 lowercase letter, 1 digit, and 1 special character (#?!@$%^&*-)'
+    # Add error message if password doesn't meet complexity requirements
+    errors.add(
+      :password,
+      'Password must include: 1 uppercase letter, 1 lowercase letter, ' \
+        '1 digit, and 1 special character (#?!@$%^&*-)'
+    )
   end
 
   def convert_empty_string_phone_number_to_nil =
