@@ -90,3 +90,7 @@ gem 'chartkick'
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection'
+
+gem 'countries'
+gem 'country_select'
+gem 'phonelib'

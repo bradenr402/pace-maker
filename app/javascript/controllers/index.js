@@ -52,6 +52,9 @@ application.register("notifications", NotificationsController)
 import PasswordVisibilityController from "./password_visibility_controller"
 application.register("password-visibility", PasswordVisibilityController)
 
+import PhoneController from "./phone_controller"
+application.register("phone", PhoneController)
+
 import PinnedPagesMenuController from "./pinned_pages_menu_controller"
 application.register("pinned-pages-menu", PinnedPagesMenuController)
 

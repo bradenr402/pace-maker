@@ -85,6 +85,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         :username,
         :email,
         :phone_number,
+        :phone_country_code,
         :gender,
         :avatar,
         :remove_avatar,

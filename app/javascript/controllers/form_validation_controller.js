@@ -112,25 +112,6 @@ export default class extends Controller {
       this.phoneTarget.classList.remove('form-input-error');
       this.phoneErrorTarget.classList.add('hidden');
     }
-
-    this.phoneTarget.value = this.phoneFormat(this.phoneTarget.value);
-  }
-
-  phoneFormat(input) {
-    //returns (###) ###-####
-
-    const phoneFormatRegex = /(\d{0,3})(\d{0,3})(\d{0,4})/;
-
-    // Extract digits from phone number and split into groups
-    const phoneDigits = input.replace(/\D/g, '');
-    const [_, areaCode, prefix, lineNumber] =
-      phoneDigits.match(phoneFormatRegex);
-
-    if (prefix && lineNumber) return `(${areaCode}) ${prefix}-${lineNumber}`;
-
-    if (prefix) return `(${areaCode}) ${prefix}`;
-
-    return areaCode;
   }
 
   validateDisplayName(event) {

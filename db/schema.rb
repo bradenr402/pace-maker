@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_11_160243) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_28_160821) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
@@ -175,6 +175,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_11_160243) do
     t.string "avatar_url"
     t.string "provider"
     t.datetime "password_changed_at"
+    t.string "phone_country_code"
     t.index ["display_name"], name: "index_users_on_display_name"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["phone_number"], name: "index_users_on_phone_number", unique: true, where: "(phone_number IS NOT NULL)"

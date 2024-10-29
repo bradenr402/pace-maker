@@ -5,9 +5,11 @@ class User < ApplicationRecord
   include UserTeamsConcern
   include UserRunsConcern
 
+  # Include the countries gem for dialing code lookup
+  require 'countries'
+
   # Constants
   USERNAME_FORMAT = /\A[a-z0-9_.]{3,}\z/
-  PHONE_NUMBER_FORMAT = /\A\+?\d{10,15}\z/
   PASSWORD_FORMAT = /\A(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[#?!@$%^&*-])/
 
   # Devise Modules
@@ -45,9 +47,9 @@ class User < ApplicationRecord
 
   # Callbacks
   before_validation :convert_empty_string_phone_number_to_nil
-  before_validation :normalize_phone_number
   before_update :set_password_changed_at,
                 if: :will_save_change_to_encrypted_password?
+  before_save :format_phone_number
   before_save :normalize_email
   before_save :purge_avatar, if: -> { remove_avatar == '1' }
   before_save :clear_avatar_url, if: -> { avatar.attached? }
@@ -67,14 +69,7 @@ class User < ApplicationRecord
             }
   validate :password_complexity
   validates :display_name, length: { maximum: 100 }, allow_blank: true
-  validates :phone_number,
-            uniqueness: true,
-            allow_blank: true,
-            format: {
-              with: PHONE_NUMBER_FORMAT,
-              message: 'is not a valid phone number'
-            },
-            if: -> { phone_number.present? }
+  validates :phone_number, phone: { possible: true, allow_blank: true }
   validates :gender,
             inclusion: {
               in: genders.keys + ['']
@@ -108,6 +103,23 @@ class User < ApplicationRecord
     return 'their' unless gender?
 
     male? ? 'his' : 'her'
+  end
+
+  def formatted_phone_number(format = :national)
+    parsed_number = Phonelib.parse(phone_number, phone_country_code)
+
+    case format
+    when :national
+      parsed_number.national
+    when :national_with_country_code
+      "+#{parsed_number.country_code} #{parsed_number.national}"
+    when :international
+      parsed_number.international
+    when :e164
+      parsed_number.e164
+    else
+      parsed_number.national
+    end
   end
 
   def google_account_linked? = uid? && provider == 'google_oauth2'
@@ -187,8 +199,10 @@ class User < ApplicationRecord
   def convert_empty_string_phone_number_to_nil =
     (self.phone_number = nil if phone_number.blank?)
 
-  def normalize_phone_number =
-    (self.phone_number = phone_number&.gsub(/[()\s-]/, ''))
+  def format_phone_number
+    parsed_phone = Phonelib.parse(phone_number, phone_country_code)
+    self.phone_number = parsed_phone.international(false)
+  end
 
   def normalize_email = (self.email = email.downcase)
 

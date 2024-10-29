@@ -154,24 +154,50 @@
     </div>
   </div>
 
-  <div class="form-group">
-    <%= f.label :phone_number, class: "form-label" do %>
-      <p> Phone number
-        <span class="help-text">(optional)</span>
-      </p>
-    <% end %>
+  <div class="form-group" data-controller="phone">
+    <div class="sm:flex flex-wrap items-center justify-between">
+      <%= f.label :phone_number, class: 'form-label' do %>
+        <p> Phone number
+          <span class="help-text">(optional)</span>
+        </p>
+      <% end %>
 
-    <div class="relative">
-      <%= inline_svg_tag 'icons/phone.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= f.telephone_field :phone_number, placeholder: '(555) 555-5555', value: number_to_phone(f.object.phone_number, area_code: true), autocomplete: 'tel', class: 'form-input pl-10', data: { form_validation_target: 'phone', action: 'input->form-validation#validatePhone' } %>
+      <div class="flex items-center gap-2 max-sm:mb-2">
+        <%= f.check_box :format_as_you_type, { checked: true, class: 'form-input-checkbox', data: { action: 'change->phone#toggleFormatting' } } %>
+        <%= f.label :format_as_you_type, 'Format as you type', class: 'form-check-label text-sm' %>
+      </div>
     </div>
 
+    <div class="relative flex rounded-md shadow-sm">
+      <!-- Country code select -->
+      <%= label_tag :group_by, 'Country code', class: 'sr-only' %>
+      <%= inline_svg_tag 'icons/phone.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+      <%= f.select :phone_country_code,
+                    grouped_options_for_select(country_code_options, @user.phone_country_code),
+                    { prompt: 'Country code', selected: @user.phone_country_code },
+                    {
+                      class: 'form-select appearance-none px-10 py-2 border [&:not(:focus)]:border-r-transparent rounded-r-none w-max focus:z-10',
+                      data: { action: 'change->phone#updateCountryCode change->phone#phoneFormat', phone_target: 'countryCode' }
+                    }
+      %>
+
+      <!-- Phone number input -->
+      <%= f.phone_field :phone_number,
+                        placeholder: '(555) 555-5555',
+                        autocomplete: 'tel',
+                        value: number_to_phone(f.object.phone_number, area_code: true),
+                        class: 'form-input shadow-sm pl-3 pr-10 py-2 border [&:not(:focus)]:border-l-transparent rounded-l-none w-full focus:z-10',
+                        data: { form_validation_target: 'phone', phone_target: 'phone', action: 'input->form-validation#validatePhone input->phone#phoneFormat' }
+      %>
+
+    </div>
     <p class="hidden my-1 error-message" data-form-validation-target="phoneError">Invalid phone number</p>
+
     <div class="flex items-center gap-2 mt-2">
       <%= hidden_field_tag 'user[settings][phone_visible]', 'false' %>
       <%= f.fields_for :settings do |settings_form| %>
         <%= settings_form.check_box :phone_visible, { checked: @user.show_phone?, class: 'form-input-checkbox' }, true, false %>
-        <%= settings_form.label :phone_visible, 'Show phone number on profile', class: 'select-none text-sm' %>
+        <%= settings_form.label :phone_visible, 'Show phone number on profile', class: 'form-check-label text-sm' %>
       <% end %>
     </div>
   </div>

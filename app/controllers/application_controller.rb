@@ -21,6 +21,7 @@ class ApplicationController < ActionController::Base
                                         username
                                         email
                                         phone_number
+                                        phone_country_code
                                       ]
   end
 end

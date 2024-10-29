@@ -13,4 +13,21 @@ module ApplicationHelper
       "#{base_list}#{oxford_comma ? ',' : ''} #{conjunction} #{items.last}"
     end
   end
+
+  def country_code_options
+    us_option = [['+1 (US)', 'US']]
+
+    other_countries =
+      ISO3166::Country
+        .all
+        .map do |country|
+          code = country.country_code
+          name = country.alpha2
+          ["+#{code} (#{name})", name]
+        end
+        .compact
+        .sort_by { |code_and_name| code_and_name[1] }
+
+    { 'Frequently Used' => us_option, 'All Countries' => other_countries }
+  end
 end
