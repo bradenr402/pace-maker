@@ -15,20 +15,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_28_160821) do
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
 
-  create_table "active_admin_comments", force: :cascade do |t|
-    t.string "namespace"
-    t.text "body"
-    t.string "resource_type"
-    t.bigint "resource_id"
-    t.string "author_type"
-    t.bigint "author_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author"
-    t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
-    t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource"
-  end
-
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -55,40 +41,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_28_160821) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
-  end
-
-  create_table "admin_users", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_admin_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
-  end
-
-  create_table "feedbacks", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.integer "feedback_type"
-    t.text "message"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_feedbacks_on_user_id"
-  end
-
-  create_table "notifications", force: :cascade do |t|
-    t.string "title"
-    t.text "body"
-    t.string "url"
-    t.bigint "user_id", null: false
-    t.datetime "read_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "type"
-    t.json "metadata"
-    t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
   create_table "pinned_pages", force: :cascade do |t|
@@ -185,8 +137,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_28_160821) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "feedbacks", "users"
-  add_foreign_key "notifications", "users"
   add_foreign_key "pinned_pages", "users"
   add_foreign_key "runs", "users"
   add_foreign_key "team_join_requests", "teams"

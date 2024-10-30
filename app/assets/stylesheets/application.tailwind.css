@@ -7,11 +7,11 @@
 
 @layer components {
   .heading {
-    @apply text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight;
+    @apply text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight;
   }
 
   .subheading {
-    @apply text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight;
+    @apply text-xl sm:text-2xl font-semibold text-slate-900 dark:text-slate-100 tracking-tight;
   }
 
   .text-normal {
