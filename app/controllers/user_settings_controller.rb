@@ -27,6 +27,13 @@ class UserSettingsController < ApplicationController
     end
   end
 
+  def reset
+    current_user.reset_settings_to_defaults
+
+    redirect_to edit_user_registration_path(tab: 'settingsTab'),
+                success: 'Your settings have been reset.'
+  end
+
   private
 
   def user_settings_params =

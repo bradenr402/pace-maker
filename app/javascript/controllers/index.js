@@ -61,9 +61,6 @@ application.register("pinned-pages-menu", PinnedPagesMenuController)
 import PinnedPagesReorderController from "./pinned_pages_reorder_controller"
 application.register("pinned-pages-reorder", PinnedPagesReorderController)
 
-import RestoreDefaultsController from "./restore_defaults_controller"
-application.register("restore-defaults", RestoreDefaultsController)
-
 import SearchFormController from "./search_form_controller"
 application.register("search-form", SearchFormController)
 

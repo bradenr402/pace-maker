@@ -30,6 +30,14 @@ module TeamSettings
     }
   end
 
+  def reset_settings_to_defaults
+    settings(:join_requirements).update(TeamSettings.defaults[:join_requirements])
+    settings(:long_runs).update(TeamSettings.defaults[:long_runs])
+    settings(:streaks).update(TeamSettings.defaults[:streaks])
+    settings(:milestones).update(TeamSettings.defaults[:milestones])
+    settings(:general).update(TeamSettings.defaults[:general])
+  end
+
   included do
     has_settings do |s|
       s.key :join_requirements, defaults: TeamSettings.defaults[:join_requirements]

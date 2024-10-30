@@ -16,6 +16,12 @@ module UserSettings
     }
   end
 
+  def reset_settings_to_defaults
+    settings(:privacy).update(UserSettings.defaults[:privacy])
+    settings(:appearance).update(UserSettings.defaults[:appearance])
+    settings(:notifications).update(UserSettings.defaults[:notifications])
+  end
+
   included do
     has_settings do |s|
       s.key :privacy, defaults: UserSettings.defaults[:privacy]

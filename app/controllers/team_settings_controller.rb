@@ -1,6 +1,6 @@
 class TeamSettingsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_team, only: %i[update show]
+  before_action :set_team, only: %i[update show reset]
   before_action :authorize_owner!, only: %i[update]
   before_action :authorize_member!, only: %i[show]
 
@@ -78,6 +78,13 @@ class TeamSettingsController < ApplicationController
     }
 
     render :show
+  end
+
+  def reset
+    @team.reset_settings_to_defaults
+
+    redirect_to edit_team_path(@team, tab: 'settingsTab'),
+                success: "The settings for #{@team.name} have been reset."
   end
 
   private

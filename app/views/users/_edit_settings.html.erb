@@ -3,7 +3,7 @@
   <p class="text-soft">Set your preferences to optimize your experience.</p>
 </div>
 
-<%= form_with model: @user, url: user_settings_path(@user), local: true, data: { controller: 'restore-defaults' } do |form| %>
+<%= form_with model: @user, url: user_settings_path(@user), local: true do |form| %>
   <!-- Hidden fields to ensure that unchecked checkboxes submit 'false' -->
   <%= hidden_field_tag 'user[settings][email_visible]', 'false' %>
   <%= hidden_field_tag 'user[settings][phone_visible]', 'false' %>
@@ -19,7 +19,7 @@
       <div class="flex gap-x-2.5">
         <div class="form-input-toggle shrink-0" data-controller="toggle-checkbox" data-action="mousedown->toggle-checkbox#toggle">
           <span class="form-input-toggle-switch"></span>
-          <%= settings_form.check_box :email_visible, { checked: @user.show_email?, class: 'sr-only', data: { restore_defaults_target: 'emailVisible', toggle_checkbox_target: 'checkbox' } }, true, false %>
+          <%= settings_form.check_box :email_visible, { checked: @user.show_email?, class: 'sr-only', data: { toggle_checkbox_target: 'checkbox' } }, true, false %>
         </div>
         <%= settings_form.label :email_visible, 'Show email', class: 'select-none text-slate-700 dark:text-slate-300' %>
       </div>
@@ -27,7 +27,7 @@
       <div class="flex gap-x-2.5">
         <div class="form-input-toggle shrink-0" data-controller="toggle-checkbox" data-action="mousedown->toggle-checkbox#toggle">
           <span class="form-input-toggle-switch"></span>
-          <%= settings_form.check_box :phone_visible, { checked: @user.show_phone?, class: 'sr-only', data: { restore_defaults_target: 'phoneVisible', toggle_checkbox_target: 'checkbox' } }, true, false %>
+          <%= settings_form.check_box :phone_visible, { checked: @user.show_phone?, class: 'sr-only', data: { toggle_checkbox_target: 'checkbox' } }, true, false %>
         </div>
         <%= settings_form.label :phone_visible, 'Show phone number', class: 'select-none text-slate-700 dark:text-slate-300' %>
       </div>
@@ -43,7 +43,7 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div>
-          <%= settings_form.radio_button :theme, 'system', checked: (@user.settings(:appearance).theme == 'system'), data: { theme_target: 'input', action: 'theme#change', restore_defaults_target: 'theme' }, class: 'hidden peer' %>
+          <%= settings_form.radio_button :theme, 'system', checked: (@user.settings(:appearance).theme == 'system'), data: { theme_target: 'input', action: 'theme#change',}, class: 'hidden peer' %>
           <%= settings_form.label :theme_system, class: 'form-radio-card-label peer-checked:*:bg-indigo-100 dark:peer-checked:*:bg-indigo-900' do %>
             <div class="p-2 rounded-md bg-slate-200 dark:bg-slate-700 shrink-0">
               <%= inline_svg_tag 'icons/computer.svg', class: 'size-5 peer-checked:text-indigo-500' %>
@@ -57,7 +57,7 @@
         </div>
 
         <div>
-          <%= settings_form.radio_button :theme, 'light', checked: (@user.settings(:appearance).theme == 'light'), data: { theme_target: 'input', action: 'theme#change', restore_defaults_target: 'theme' }, class: 'hidden peer' %>
+          <%= settings_form.radio_button :theme, 'light', checked: (@user.settings(:appearance).theme == 'light'), data: { theme_target: 'input', action: 'theme#change',}, class: 'hidden peer' %>
           <%= settings_form.label :theme_light, class: 'form-radio-card-label peer-checked:*:bg-indigo-100 dark:peer-checked:*:bg-indigo-900' do %>
             <div class="p-2 rounded-md bg-slate-200 dark:bg-slate-700 shrink-0">
               <%= inline_svg_tag 'icons/sun.svg', class: 'size-5 peer-checked:text-indigo-500' %>
@@ -71,7 +71,7 @@
         </div>
 
         <div>
-          <%= settings_form.radio_button :theme, 'dark', checked: (@user.settings(:appearance).theme == 'dark'), data: { theme_target: 'input', action: 'theme#change', restore_defaults_target: 'theme' }, class: 'hidden peer' %>
+          <%= settings_form.radio_button :theme, 'dark', checked: (@user.settings(:appearance).theme == 'dark'), data: { theme_target: 'input', action: 'theme#change',}, class: 'hidden peer' %>
           <%= settings_form.label :theme_dark, class: 'form-radio-card-label peer-checked:*:bg-indigo-100 dark:peer-checked:*:bg-indigo-900' do %>
             <div class="p-2 rounded-md bg-slate-200 dark:bg-slate-700 shrink-0">
               <%= inline_svg_tag 'icons/moon.svg', class: 'size-5 peer-checked:text-indigo-500' %>
@@ -95,23 +95,33 @@
       <div class="flex gap-x-2.5">
         <div class="form-input-toggle shrink-0" data-controller="toggle-checkbox" data-action="mousedown->toggle-checkbox#toggle">
           <span class="form-input-toggle-switch"></span>
-          <%= settings_form.check_box :in_app, { checked: @user.settings(:notifications).in_app, class: 'sr-only', data: { restore_defaults_target: 'inApp', toggle_checkbox_target: 'checkbox' } }, true, false %>
+          <%= settings_form.check_box :in_app, { checked: @user.settings(:notifications).in_app, class: 'sr-only', data: { toggle_checkbox_target: 'checkbox' } }, true, false %>
         </div>
         <%= settings_form.label :in_app, 'In app notifications', class: 'select-none text-slate-700 dark:text-slate-300' %>
       </div>
     </div>
   <% end %>
 
-  <div class="flex items-end justify-between flex-wrap gap-2 pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
-    <div>
-      <p class="form-label">Restore default settings</p>
-      <p class="text-soft text-sm">Reset all settings to their defaults for a fresh start.</p>
-    </div>
-    <button type="button" data-action="restore-defaults#restore" class="btn btn-sm btn-destructive btn-muted ml-auto">Reset settings</button>
-  </div>
-
   <div class="md:sticky bottom-0 flex items-center gap-4 pt-6 pb-6 bg-slate-50 border-t dark:bg-slate-900 border-slate-200 dark:border-slate-700">
     <%= form.submit 'Save settings', data: { turbo: false }, class: 'btn btn-primary' %>
     <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-dark btn-muted' %>
   </div>
 <% end %>
+
+<div class="pt-6 border-t border-slate-200 dark:border-slate-700">
+  <h2 class="mb-2 text-lg font-bold text-slate-700 dark:text-slate-200">Danger Zone</h2>
+</div>
+
+<div class="card">
+  <div class="flex flex-wrap gap-4 items-center justify-between">
+    <div class="max-w-md">
+      <p class="font-bold">Reset settings</p>
+      <p class="help-text">Reset all settings to their defaults for a fresh start.</p>
+    </div>
+
+    <%= button_to reset_user_settings_path(current_user), method: :post, data: { turbo: false }, class: 'btn btn-destructive ml-auto gap-2' do %>
+      <%= inline_svg_tag 'icons/settings-reset.svg', class: 'size-5' %>
+      Reset settings
+    <% end %>
+  </div>
+</div>

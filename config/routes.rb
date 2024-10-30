@@ -22,7 +22,9 @@ Rails.application.routes.draw do
              only: %i[update],
              path: 'settings',
              as: :settings,
-             controller: 'user_settings'
+             controller: 'user_settings' do
+      post :reset
+    end
     delete 'unlink_google_account', on: :member
   end
 
@@ -31,7 +33,9 @@ Rails.application.routes.draw do
              only: %i[update show],
              path: 'settings',
              as: :settings,
-             controller: 'team_settings'
+             controller: 'team_settings' do
+      post :reset
+    end
 
     member do
       post :remove_member

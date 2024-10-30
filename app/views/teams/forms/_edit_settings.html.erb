@@ -5,7 +5,7 @@
 
 <% default_settings = TeamSettings.defaults %>
 
-<%= form_with model: @team, url: team_settings_path(@team), local: true, data: { controller: 'restore-defaults team-gender-fields' } do |form| %>
+<%= form_with model: team, url: team_settings_path(team), local: true, data: { controller: 'team-gender-fields' } do |form| %>
   <!-- Hidden fields to ensure that unchecked checkboxes submit 'false' -->
   <%= hidden_field_tag 'team[settings][require_gender]', 'false' %>
   <%= hidden_field_tag 'team[settings][include_saturday]', 'false' %>
@@ -21,7 +21,7 @@
       <div class="flex gap-x-2.5">
         <div class="form-input-toggle shrink-0" data-controller="toggle-checkbox" data-action="mousedown->toggle-checkbox#toggle">
           <span class="form-input-toggle-switch"></span>
-          <%= settings_form.check_box :require_gender, { checked: @team.require_gender?, disabled: @team.owner.gender.blank?, class: 'sr-only', data: { restore_defaults_target: 'requireGender', team_gender_fields_target: 'requireGender', toggle_checkbox_target: 'checkbox', action: 'change->team-gender-fields#toggleFields' } }, true, false %>
+          <%= settings_form.check_box :require_gender, { checked: team.require_gender?, disabled: team.owner.gender.blank?, class: 'sr-only', data: { team_gender_fields_target: 'requireGender', toggle_checkbox_target: 'checkbox', action: 'change->team-gender-fields#toggleFields' } }, true, false %>
         </div>
         <div>
           <%= settings_form.label :require_gender, 'Gender required', class: 'select-none text-slate-700 dark:text-slate-300' %>
@@ -43,17 +43,17 @@
 
     <div class="form-group <%= @team.require_gender? ? '' : 'hidden' %>" data-team-gender-fields-target="longRunMale">
       <%= settings_form.label :long_run_distance_male, 'Male long run distance', class: 'form-label' %>
-      <%= settings_form.number_field :long_run_distance_male, step: 0.1, min: 0.1, value: @team.long_run_distance_male, placeholder: "e.g., #{default_settings.dig(:long_runs, :long_run_distance_male)}", class: 'form-input', data: { restore_defaults_target: 'longRunDistanceMale' } %>
+      <%= settings_form.number_field :long_run_distance_male, step: 0.1, min: 0.1, value: team.long_run_distance_male, placeholder: "e.g., #{default_settings.dig(:long_runs, :long_run_distance_male)}", class: 'form-input' %>
     </div>
 
     <div class="form-group <%= @team.require_gender? ? '' : 'hidden' %>" data-team-gender-fields-target="longRunFemale">
       <%= settings_form.label :long_run_distance_female, 'Female long run distance', class: 'form-label' %>
-      <%= settings_form.number_field :long_run_distance_female, step: 0.1, min: 0.1, value: @team.long_run_distance_female, placeholder: "e.g., #{default_settings.dig(:long_runs, :long_run_distance_female)}", class: 'form-input', data: { restore_defaults_target: 'longRunDistanceFemale' } %>
+      <%= settings_form.number_field :long_run_distance_female, step: 0.1, min: 0.1, value: team.long_run_distance_female, placeholder: "e.g., #{default_settings.dig(:long_runs, :long_run_distance_female)}", class: 'form-input' %>
     </div>
 
     <div class="form-group <%= @team.require_gender? ? 'hidden' : '' %>" data-team-gender-fields-target="longRunNeutral">
       <%= settings_form.label :long_run_distance_neutral, 'Long run distance', class: 'form-label' %>
-      <%= settings_form.number_field :long_run_distance_neutral, step: 0.1, min: 0.1, value: @team.long_run_distance_neutral, placeholder: "e.g., #{default_settings.dig(:long_runs, :long_run_distance_neutral)}", class: 'form-input', data: { restore_defaults_target: 'longRunDistanceNeutral' } %>
+      <%= settings_form.number_field :long_run_distance_neutral, step: 0.1, min: 0.1, value: team.long_run_distance_neutral, placeholder: "e.g., #{default_settings.dig(:long_runs, :long_run_distance_neutral)}", class: 'form-input' %>
     </div>
 
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
@@ -63,17 +63,17 @@
 
     <div class="form-group <%= @team.require_gender? ? '' : 'hidden' %>" data-team-gender-fields-target="streakMale">
       <%= settings_form.label :streak_distance_male, 'Male streak distance', class: 'form-label' %>
-      <%= settings_form.number_field :streak_distance_male, step: 0.1, min: 0.1, value: @team.streak_distance_male, placeholder: "e.g., #{default_settings.dig(:streaks, :streak_distance_male)}", class: 'form-input', data: { restore_defaults_target: 'streakDistanceMale' } %>
+      <%= settings_form.number_field :streak_distance_male, step: 0.1, min: 0.1, value: team.streak_distance_male, placeholder: "e.g., #{default_settings.dig(:streaks, :streak_distance_male)}", class: 'form-input' %>
     </div>
 
     <div class="form-group <%= @team.require_gender? ? '' : 'hidden' %>" data-team-gender-fields-target="streakFemale">
       <%= settings_form.label :streak_distance_female, 'Female streak distance', class: 'form-label' %>
-      <%= settings_form.number_field :streak_distance_female, step: 0.1, min: 0.1, value: @team.streak_distance_female, placeholder: "e.g., #{default_settings.dig(:streaks, :streak_distance_female)}", class: 'form-input', data: { restore_defaults_target: 'streakDistanceFemale' } %>
+      <%= settings_form.number_field :streak_distance_female, step: 0.1, min: 0.1, value: team.streak_distance_female, placeholder: "e.g., #{default_settings.dig(:streaks, :streak_distance_female)}", class: 'form-input' %>
     </div>
 
     <div class="form-group <%= @team.require_gender? ? 'hidden' : '' %>" data-team-gender-fields-target="streakNeutral">
       <%= settings_form.label :streak_distance_neutral, 'Streak distance', class: 'form-label' %>
-      <%= settings_form.number_field :streak_distance_neutral, step: 0.1, min: 0.1, value: @team.streak_distance_neutral, placeholder: "e.g., #{default_settings.dig(:streaks, :streak_distance_neutral)}", class: 'form-input', data: { restore_defaults_target: 'streakDistanceNeutral' } %>
+      <%= settings_form.number_field :streak_distance_neutral, step: 0.1, min: 0.1, value: team.streak_distance_neutral, placeholder: "e.g., #{default_settings.dig(:streaks, :streak_distance_neutral)}", class: 'form-input' %>
     </div>
 
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
@@ -110,7 +110,7 @@
       <div class="flex gap-x-2.5">
         <div class="form-input-toggle shrink-0" data-controller="toggle-checkbox" data-action="mousedown->toggle-checkbox#toggle">
           <span class="form-input-toggle-switch"></span>
-          <%= settings_form.check_box :include_saturday, { checked: @team.include_saturday_in_streak?, class: 'sr-only', data: { restore_defaults_target: 'includeSaturday', toggle_checkbox_target: 'checkbox' } }, true, false %>
+          <%= settings_form.check_box :include_saturday, { checked: team.include_saturday_in_streak?, class: 'sr-only', data: { toggle_checkbox_target: 'checkbox' } }, true, false %>
         </div>
         <div>
           <%= settings_form.label :include_saturday, 'Include Saturdays', class: 'select-none text-slate-700 dark:text-slate-300' %>
@@ -121,7 +121,7 @@
       <div class="flex gap-x-2.5">
         <div class="form-input-toggle shrink-0" data-controller="toggle-checkbox" data-action="mousedown->toggle-checkbox#toggle">
           <span class="form-input-toggle-switch"></span>
-          <%= settings_form.check_box :include_sunday, { checked: @team.include_sunday_in_streak?, class: 'sr-only', data: { restore_defaults_target: 'includeSunday', toggle_checkbox_target: 'checkbox' } }, true, false %>
+          <%= settings_form.check_box :include_sunday, { checked: team.include_sunday_in_streak?, class: 'sr-only', data: { toggle_checkbox_target: 'checkbox' } }, true, false %>
         </div>
         <div>
           <%= settings_form.label :include_sunday, 'Include Sundays', class: 'select-none text-slate-700 dark:text-slate-300' %>
@@ -137,31 +137,44 @@
 
     <div class="form-group">
       <%= settings_form.label :week_start, 'Start week on', class: 'form-label' %>
-      <%= settings_form.select :week_start, options_for_select([['Sunday', :sunday], ['Monday', :monday], ['Tuesday', :tuesday], ['Wednesday', :wednesday], ['Thursday', :thursday], ['Friday', :friday], ['Saturday', :saturday]], @team.settings(:general).week_start), {}, data: { restore_defaults_target: 'weekStart' }, class: 'form-select' %>
+      <%= settings_form.select :week_start, options_for_select([['Sunday', :sunday], ['Monday', :monday], ['Tuesday', :tuesday], ['Wednesday', :wednesday], ['Thursday', :thursday], ['Friday', :friday], ['Saturday', :saturday]], team.settings(:general).week_start), {}, class: 'form-select' %>
       <p class="my-1 help-text">Choose what day is considered the start of the week. This setting affects the calendar view on the team page.</p>
     </div>
   <% end %>
 
-  <% if current_user.owned_teams.reject{ |team| team == @team }.any? %>
+  <% if current_user.owned_teams.reject{ |owned_team| owned_team == team }.any? %>
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
       <%= form.label :copy_from_team_id, 'Copy settings from:', class: 'form-label' %>
-      <%= form.collection_select :copy_from_team_id, current_user.owned_teams.reject { |team| team == @team }, :id, :name, { prompt: 'Select a team' }, { class: 'form-select' } %>
-      <p class="my-1 help-text">Choose another team from the dropdown and click 'Copy settings' to apply its configuration here.</p>
 
-      <%= button_tag 'Copy settings', type: 'submit', class: 'btn btn-primary btn-muted mt-2', name: 'commit_action', value: 'copy_settings', data: { turbo: false } %>
+      <div class="flex items-center gap-4">
+        <%= form.collection_select :copy_from_team_id, current_user.owned_teams.reject { |team| team == team }, :id, :name, { prompt: 'Select a team' }, { class: 'form-select' } %>
+        <%= button_tag 'Copy settings', type: 'submit', class: 'btn btn-primary btn-muted shrink-0 whitespace-nowrap h-full', name: 'commit_action', value: 'copy_settings', data: { turbo: false } %>
+      </div>
+
+      <p class="my-1 help-text">Choose another team from the dropdown and click 'Copy settings' to apply its configuration here.</p>
     </div>
   <% end %>
-
-  <div class="flex items-end justify-between flex-wrap gap-2 pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
-    <div>
-      <p class="form-label">Restore Default Settings</p>
-      <p class="text-soft text-sm">Reset all settings to their defaults for a fresh start.</p>
-    </div>
-    <button type="button" data-action="restore-defaults#restore" class="btn btn-sm btn-destructive btn-muted ml-auto">Reset settings</button>
-  </div>
 
   <div class="md:sticky bottom-0 flex items-center gap-4 pt-6 pb-6 bg-slate-50 border-t dark:bg-slate-900 border-slate-200 dark:border-slate-700">
     <%= button_tag 'Save settings', type: 'submit', class: 'btn btn-primary', name: 'commit_action', value: 'save_settings', data: { turbo: false } %>
     <%= link_to 'Cancel', :back, class: 'btn btn-dark btn-muted', data: { turbo: false } %>
   </div>
 <% end %>
+
+<div class="pt-6 border-t border-slate-200 dark:border-slate-700">
+  <h2 class="mb-2 text-lg font-bold text-slate-700 dark:text-slate-200">Danger Zone</h2>
+</div>
+
+<div class="card">
+  <div class="flex flex-wrap gap-4 items-center justify-between">
+    <div class="max-w-md">
+      <p class="font-bold">Reset settings</p>
+      <p class="help-text">Reset all settings to their defaults for a fresh start.</p>
+    </div>
+
+    <%= button_to reset_team_settings_path(team), method: :post, data: { turbo: false }, class: 'btn btn-destructive ml-auto gap-2' do %>
+      <%= inline_svg_tag 'icons/settings-reset.svg', class: 'size-5' %>
+      Reset settings
+    <% end %>
+  </div>
+</div>
