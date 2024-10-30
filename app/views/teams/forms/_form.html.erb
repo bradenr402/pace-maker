@@ -1,5 +1,5 @@
-<%= form_with model: @team, data: { controller: "form-validation" }, html: { novalidate: true } do |form| %>
-  <%= render 'shared/error_messages', resource: @team %>
+<%= form_with model: team, data: { controller: "form-validation" }, html: { novalidate: true } do |form| %>
+  <%= render 'shared/error_messages', resource: team %>
 
   <div class="my-6">
     <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Team Information</h2>
@@ -34,7 +34,7 @@
     <% end %>
 
     <div class="flex items-center gap-x-4">
-      <%= render 'shared/team_photo', team: @team, size: :md, image_only: true, image_classes: @team.photo.blank? ? 'hidden' : '', image_options: { data: { image_preview_target: 'output' } } %>
+      <%= render 'shared/team_photo', team: team, size: :md, image_only: true, image_classes: team.photo.blank? ? 'hidden' : '', image_options: { data: { image_preview_target: 'output' } } %>
 
       <div class="space-y-2">
         <%= form.file_field :photo, accept: 'image/png, image/jpeg', class: 'form-file', data: { image_preview_target: 'input', action: 'image-preview#readURL' } %>
@@ -42,7 +42,7 @@
       </div>
     </div>
 
-    <% if @team.photo.attached? %>
+    <% if team.photo.attached? %>
       <div class="flex items-center gap-2 mt-2">
         <%= form.check_box :remove_photo, class: 'form-input-checkbox', data: { image_preview_target: 'removephotoCheckbox', action: 'image-preview#selectCheckbox' } %>
         <%= form.label :remove_photo, 'Remove profile photo', class: 'select-none text-sm' %>
@@ -64,7 +64,7 @@
 
     <div class="relative">
       <%= inline_svg_tag 'icons/calendar.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= form.date_field :season_start_date, value: form.object.new_record? ? nil : @team.season_start_date, class: 'form-input pl-10', data: { form_validation_target: "seasonStartDate", action: "input->form-validation#validateSeasonEndDate" } %>
+      <%= form.date_field :season_start_date, value: form.object.new_record? ? nil : team.season_start_date, class: 'form-input pl-10', data: { form_validation_target: "seasonStartDate", action: "input->form-validation#validateSeasonEndDate" } %>
     </div>
   </div>
 
@@ -77,7 +77,7 @@
 
     <div class="relative">
       <%= inline_svg_tag 'icons/calendar.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= form.date_field :season_end_date, value: form.object.new_record? ? nil : @team.season_end_date, class: 'form-input pl-10', data: { form_validation_target: "seasonEndDate", action: "input->form-validation#validateSeasonEndDate" } %>
+      <%= form.date_field :season_end_date, value: form.object.new_record? ? nil : team.season_end_date, class: 'form-input pl-10', data: { form_validation_target: "seasonEndDate", action: "input->form-validation#validateSeasonEndDate" } %>
     </div>
 
     <p class="hidden my-1 error-message" data-form-validation-target="seasonEndDateError">Season end date must be after season start date</p>

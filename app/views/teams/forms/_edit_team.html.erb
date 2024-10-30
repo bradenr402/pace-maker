@@ -3,7 +3,7 @@
   <p class="text-soft">Edit your team's details.</p>
 </div>
 
-<%= render 'teams/forms/form', team: @team %>
+<%= render 'teams/forms/form', team: team %>
 
 <div class="pt-6 border-t border-slate-200 dark:border-slate-700">
   <h2 class="mb-2 text-lg font-bold text-slate-700 dark:text-slate-200">Danger Zone</h2>
@@ -29,5 +29,5 @@
     </button>
   </div>
 
-  <%= render 'teams/shared/delete_team_modal', team: @team %>
+  <%= render 'teams/shared/delete_team_modal', team: team %>
 </div>

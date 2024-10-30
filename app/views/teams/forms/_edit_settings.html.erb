@@ -25,14 +25,14 @@
         </div>
         <div>
           <%= settings_form.label :require_gender, 'Gender required', class: 'select-none text-slate-700 dark:text-slate-300' %>
-          <p class="my-1 help-text"><%= @team.owner.gender.blank? ? 'You cannot require gender for your team if your own gender is not specified.' : 'Require users to specify their gender in order to join this team.' %></p>
+          <p class="my-1 help-text"><%= team.owner.gender.blank? ? 'You cannot require gender for your team if your own gender is not specified.' : 'Require users to specify their gender in order to join this team.' %></p>
         </div>
       </div>
     </div>
 
     <div class="form-group">
       <%= settings_form.label :max_allowed_requests, 'Maximum allowed requests', class: 'form-label' %>
-      <%= settings_form.number_field :max_allowed_requests, step: 1, min: 1, value: @team.settings(:join_requirements).max_allowed_requests, placeholder: "e.g., #{default_settings.dig(:join_requirements, :max_allowed_requests)}", class: 'form-input', data: { restore_defaults_target: 'maxAllowedRequests' } %>
+      <%= settings_form.number_field :max_allowed_requests, step: 1, min: 1, value: team.settings(:join_requirements).max_allowed_requests, placeholder: "e.g., #{default_settings.dig(:join_requirements, :max_allowed_requests)}", class: 'form-input' %>
       <p class="my-1 help-text">Choose how many times a user can request to join your team before being blocked.</p>
     </div>
 
@@ -41,17 +41,17 @@
       <p class="text-sm text-slate-600 dark:text-slate-400">Set the number of miles for a run to count as a "long run".</p>
     </div>
 
-    <div class="form-group <%= @team.require_gender? ? '' : 'hidden' %>" data-team-gender-fields-target="longRunMale">
+    <div class="form-group <%= team.require_gender? ? '' : 'hidden' %>" data-team-gender-fields-target="longRunMale">
       <%= settings_form.label :long_run_distance_male, 'Male long run distance', class: 'form-label' %>
       <%= settings_form.number_field :long_run_distance_male, step: 0.1, min: 0.1, value: team.long_run_distance_male, placeholder: "e.g., #{default_settings.dig(:long_runs, :long_run_distance_male)}", class: 'form-input' %>
     </div>
 
-    <div class="form-group <%= @team.require_gender? ? '' : 'hidden' %>" data-team-gender-fields-target="longRunFemale">
+    <div class="form-group <%= team.require_gender? ? '' : 'hidden' %>" data-team-gender-fields-target="longRunFemale">
       <%= settings_form.label :long_run_distance_female, 'Female long run distance', class: 'form-label' %>
       <%= settings_form.number_field :long_run_distance_female, step: 0.1, min: 0.1, value: team.long_run_distance_female, placeholder: "e.g., #{default_settings.dig(:long_runs, :long_run_distance_female)}", class: 'form-input' %>
     </div>
 
-    <div class="form-group <%= @team.require_gender? ? 'hidden' : '' %>" data-team-gender-fields-target="longRunNeutral">
+    <div class="form-group <%= team.require_gender? ? 'hidden' : '' %>" data-team-gender-fields-target="longRunNeutral">
       <%= settings_form.label :long_run_distance_neutral, 'Long run distance', class: 'form-label' %>
       <%= settings_form.number_field :long_run_distance_neutral, step: 0.1, min: 0.1, value: team.long_run_distance_neutral, placeholder: "e.g., #{default_settings.dig(:long_runs, :long_run_distance_neutral)}", class: 'form-input' %>
     </div>
@@ -61,17 +61,17 @@
       <p class="text-sm text-slate-600 dark:text-slate-400">Set the number of miles for a run to count towards a member's run streak.</p>
     </div>
 
-    <div class="form-group <%= @team.require_gender? ? '' : 'hidden' %>" data-team-gender-fields-target="streakMale">
+    <div class="form-group <%= team.require_gender? ? '' : 'hidden' %>" data-team-gender-fields-target="streakMale">
       <%= settings_form.label :streak_distance_male, 'Male streak distance', class: 'form-label' %>
       <%= settings_form.number_field :streak_distance_male, step: 0.1, min: 0.1, value: team.streak_distance_male, placeholder: "e.g., #{default_settings.dig(:streaks, :streak_distance_male)}", class: 'form-input' %>
     </div>
 
-    <div class="form-group <%= @team.require_gender? ? '' : 'hidden' %>" data-team-gender-fields-target="streakFemale">
+    <div class="form-group <%= team.require_gender? ? '' : 'hidden' %>" data-team-gender-fields-target="streakFemale">
       <%= settings_form.label :streak_distance_female, 'Female streak distance', class: 'form-label' %>
       <%= settings_form.number_field :streak_distance_female, step: 0.1, min: 0.1, value: team.streak_distance_female, placeholder: "e.g., #{default_settings.dig(:streaks, :streak_distance_female)}", class: 'form-input' %>
     </div>
 
-    <div class="form-group <%= @team.require_gender? ? 'hidden' : '' %>" data-team-gender-fields-target="streakNeutral">
+    <div class="form-group <%= team.require_gender? ? 'hidden' : '' %>" data-team-gender-fields-target="streakNeutral">
       <%= settings_form.label :streak_distance_neutral, 'Streak distance', class: 'form-label' %>
       <%= settings_form.number_field :streak_distance_neutral, step: 0.1, min: 0.1, value: team.streak_distance_neutral, placeholder: "e.g., #{default_settings.dig(:streaks, :streak_distance_neutral)}", class: 'form-input' %>
     </div>
@@ -84,20 +84,20 @@
 
     <div class="form-group" data-controller="form-help-text">
       <%= settings_form.label :streaks_increment, 'Streaks milestone increment', class: 'form-label' %>
-      <%= settings_form.number_field :streaks_increment, step: 1, min: 1, value: @team.streaks_increment, placeholder: "e.g., #{default_settings.dig(:milestones, :streaks_increment)}", class: 'form-input', data: { restore_defaults_target: 'streaksIncrement', form_help_text_target: 'input', action: 'input->form-help-text#update' } %>
-      <p class="help-text my-1">Team members will earn another badge for every <span data-form-help-text-target="output"><%= @team.streaks_increment %></span> day<span data-form-help-text-target="plural">s</span> of their current streak.</p>
+      <%= settings_form.number_field :streaks_increment, step: 1, min: 1, value: team.streaks_increment, placeholder: "e.g., #{default_settings.dig(:milestones, :streaks_increment)}", class: 'form-input', data: { form_help_text_target: 'input', action: 'input->form-help-text#update' } %>
+      <p class="help-text my-1">Team members will earn another badge for every <span data-form-help-text-target="output"><%= team.streaks_increment %></span> day<span data-form-help-text-target="plural">s</span> of their current streak.</p>
     </div>
 
     <div class="form-group" data-controller="form-help-text">
       <%= settings_form.label :mileage_increment, 'Mileage milestone increment', class: 'form-label' %>
-      <%= settings_form.number_field :mileage_increment, step: 1, min: 1, value: @team.mileage_increment, placeholder: "e.g., #{default_settings.dig(:milestones, :mileage_increment)}", class: 'form-input', data: { restore_defaults_target: 'mileageIncrement', form_help_text_target: 'input', action: 'input->form-help-text#update' } %>
-      <p class="help-text my-1">Team members will earn another badge for every <span data-form-help-text-target="output"><%= @team.mileage_increment %></span> mile<span data-form-help-text-target="plural">s</span> they run.</p>
+      <%= settings_form.number_field :mileage_increment, step: 1, min: 1, value: team.mileage_increment, placeholder: "e.g., #{default_settings.dig(:milestones, :mileage_increment)}", class: 'form-input', data: { form_help_text_target: 'input', action: 'input->form-help-text#update' } %>
+      <p class="help-text my-1">Team members will earn another badge for every <span data-form-help-text-target="output"><%= team.mileage_increment %></span> mile<span data-form-help-text-target="plural">s</span> they run.</p>
     </div>
 
     <div class="form-group" data-controller="form-help-text">
       <%= settings_form.label :long_runs_increment, 'Long runs milestone increment', class: 'form-label' %>
-      <%= settings_form.number_field :long_runs_increment, step: 1, min: 1, value: @team.long_runs_increment, placeholder: "e.g., #{default_settings.dig(:milestones, :long_runs_increment)}", class: 'form-input', data: { restore_defaults_target: 'longRunsIncrement', form_help_text_target: 'input', action: 'input->form-help-text#update' } %>
-      <p class="help-text my-1">Team members will earn another badge for every <span data-form-help-text-target="output"><%= @team.long_runs_increment %></span> long run<span data-form-help-text-target="plural">s</span> they complete.</p>
+      <%= settings_form.number_field :long_runs_increment, step: 1, min: 1, value: team.long_runs_increment, placeholder: "e.g., #{default_settings.dig(:milestones, :long_runs_increment)}", class: 'form-input', data: { form_help_text_target: 'input', action: 'input->form-help-text#update' } %>
+      <p class="help-text my-1">Team members will earn another badge for every <span data-form-help-text-target="output"><%= team.long_runs_increment %></span> long run<span data-form-help-text-target="plural">s</span> they complete.</p>
     </div>
 
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
