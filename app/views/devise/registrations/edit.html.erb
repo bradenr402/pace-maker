@@ -20,6 +20,11 @@
         <%= inline_svg_tag 'icons/settings.svg', class: 'size-5' %>
         <span>Settings</span>
       </button>
+
+      <button type="button" id="feedbackTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'feedbackTab' ? 'btn-tab-active' : '' %>">
+        <%= inline_svg_tag 'icons/feedback.svg', class: 'size-5' %>
+        <span>Feedback</span>
+      </button>
     </div>
 
     <!-- Right Arrow -->
@@ -34,5 +39,9 @@
 
   <div id="settingsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'settingsTab' ? '' : 'hidden' %>">
     <%= render 'users/edit_settings' %>
+  </div>
+
+  <div id="feedbackTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'feedbackTab' ? '' : 'hidden' %>">
+    <%= render 'users/feedback' %>
   </div>
 </div>

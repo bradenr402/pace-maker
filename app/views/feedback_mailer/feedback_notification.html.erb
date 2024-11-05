@@ -1,0 +1,18 @@
+<h1>New Feedback Received</h1>
+
+<h2>User Information</h2>
+<p><strong>Name:</strong> <%= @user[:display_name] || @user[:username] %></p>
+<p><strong>Email:</strong> <%= @user[:email] %></p>
+<p><strong>User ID:</strong> <%= @user[:id] %></p>
+
+<h2>Feedback Details</h2>
+<p><strong>Type:</strong> <%= @feedback[:feedback_type].titleize %></p>
+<p><strong>Title:</strong> <%= @feedback[:title] %></p>
+
+<h2>Message</h2>
+<p><%= @feedback[:message] %></p>
+
+<% if @feedback[:images].present? || @feedback[:video].present? %>
+  <h2>Attachments</h2>
+  <p>Please see attached files.</p>
+<% end %>

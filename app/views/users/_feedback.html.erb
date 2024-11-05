@@ -1,0 +1,82 @@
+<div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
+  <h1 class="heading">Feedback</h1>
+  <p class="text-soft">Share your thoughts, report issues, or suggest improvements to help make this app better.</p>
+</div>
+
+<%= form_with scope: :feedback_form, url: feedback_form_index_path, method: :post, local: true do |form| %>
+  <div class="form-group">
+    <%= form.label :title, class: 'form-label' %>
+    <%= form.text_field :title, placeholder: 'Add a title for your feedback...', class: 'form-input' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :feedback_type, 'Feedback type', class: 'form-label mb-2' %>
+
+    <div class="flex flex-col gap-y-2">
+      <label class="flex cursor-pointer transition duration-200 ease-in-out active:scale-[0.98]">
+        <div class="flex items-center py-2 px-4 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 [&:has(input:checked)]:bg-slate-200 dark:[&:has(input:checked)]:bg-slate-800 w-full">
+          <%= form.radio_button :feedback_type, 'bug', class: 'form-input-radio' %>
+          <div class="ml-4">
+            <div class="flex items-center gap-x-2">
+              <%= inline_svg_tag 'icons/bug.svg', class: 'size-5 text-rose-500 shrink-0' %>
+              <span class="form-radio-label">Bug Report</span>
+            </div>
+            <p class="text-sm text-soft select-none text-pretty">Report technical issues, errors, or unexpected behaviors</p>
+          </div>
+        </div>
+      </label>
+
+      <div class="border-b border-slate-200 dark:border-slate-700"></div>
+
+      <label class="flex cursor-pointer transition duration-200 ease-in-out active:scale-[0.98]">
+        <div class="flex items-center py-2 px-4 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 [&:has(input:checked)]:bg-slate-200 dark:[&:has(input:checked)]:bg-slate-800 w-full">
+          <%= form.radio_button :feedback_type, 'suggestion', class: 'form-input-radio' %>
+          <div class="ml-4">
+            <div class="flex items-center gap-x-2">
+              <%= inline_svg_tag 'icons/lightbulb.svg', class: 'size-5 text-yellow-500 shrink-0' %>
+              <span class="form-radio-label">Feature Suggestion</span>
+            </div>
+            <p class="text-sm text-soft select-none text-pretty">Suggest new features or improvements</p>
+          </div>
+        </div>
+      </label>
+
+      <div class="border-b border-slate-200 dark:border-slate-700"></div>
+
+      <label class="flex cursor-pointer transition duration-200 ease-in-out active:scale-[0.98]">
+        <div class="flex items-center py-2 px-4 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 [&:has(input:checked)]:bg-slate-200 dark:[&:has(input:checked)]:bg-slate-800 w-full">
+          <%= form.radio_button :feedback_type, 'other', class: 'form-input-radio' %>
+          <div class="ml-4">
+            <div class="flex items-center gap-x-2">
+              <%= inline_svg_tag 'icons/question-circle.svg', class: 'size-5 text-blue-500 shrink-0' %>
+              <span class="form-radio-label">Other</span>
+            </div>
+            <p class="text-sm text-soft select-none text-pretty">Share general feedback, questions, or comments</p>
+          </div>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :message, class: 'form-label' %>
+    <%= form.text_area :message, placeholder: 'Add your message...', class: 'form-input', data: { controller: 'autogrow', action: 'input->autogrow#grow' } %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :images, 'Upload images', class: 'form-label' %>
+    <%= form.file_field :images, multiple: true, accept: 'image/*', class: 'form-file', data: { max_file_size: 5.megabytes } %>
+    <p class="help-text my-1">You can upload multiple images (max 5MB each)</p>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :video, 'Upload video', class: 'form-label' %>
+    <%= form.file_field :video, accept: 'video/*', class: 'form-file', data: { max_file_size: 50.megabytes } %>
+    <p class="help-text mt-1">You can upload one video file (max 50MB)</p>
+  </div>
+
+  <div class="md:sticky bottom-0 flex items-center gap-4 pt-6 pb-6 bg-slate-50 border-t dark:bg-slate-900 border-slate-200 dark:border-slate-700">
+    <%= form.submit 'Send feedback', data: { turbo: false }, class: 'btn btn-primary' %>
+    <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-dark btn-muted' %>
+  </div>
+<% end %>
