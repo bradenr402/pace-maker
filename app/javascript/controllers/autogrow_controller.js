@@ -4,7 +4,7 @@ import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
   connect() {
     this.element.style.overflow = 'hidden';
-    this.grow();
+    if (!this.element.closest('.hidden')) this.grow();
   }
 
   grow() {
