@@ -17,7 +17,7 @@ export default class extends Controller {
       setTimeout(() => {
         notification.classList.remove(this.hiddenClass);
         notification.classList.add(this.visibleClass);
-      }, 100 + index * 200);
+      }, 100 + index * 500);
 
       setTimeout(() => {
         this.hideNotification(notification);
