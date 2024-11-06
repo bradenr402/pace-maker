@@ -11,6 +11,9 @@ module.exports = {
   safelist: [{ pattern: /form-.+/ }, { pattern: /btn-.+/ }],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['InterVariable', ...defaultTheme.fontFamily.sans],
+      },
       spacing: {
         4.5: '1.125rem',
         5.5: '1.375rem',
