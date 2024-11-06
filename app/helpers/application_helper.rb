@@ -15,7 +15,7 @@ module ApplicationHelper
   end
 
   def country_code_options
-    us_option = [['+1 (US)', 'US']]
+    us_option = [['US +1', 'US']]
 
     other_countries =
       ISO3166::Country
@@ -23,7 +23,7 @@ module ApplicationHelper
         .map do |country|
           code = country.country_code
           name = country.alpha2
-          ["+#{code} (#{name})", name]
+          ["#{name} +#{code}", name]
         end
         .compact
         .sort_by { |code_and_name| code_and_name[1] }
