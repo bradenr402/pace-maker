@@ -36,70 +36,10 @@
     </div>
 
     <!-- Current Streak Card -->
-    <% current_streak_data = user.current_streak %>
-    <% current_streak = current_streak_data[:streak] %>
-    <% current_streak_start_date = current_streak_data[:start_date] %>
-    <% current_streak_end_date = current_streak_data[:end_date] %>
-
-    <div class="card">
-      <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Current Streak</h2>
-      <p class="text-3xl font-bold">
-        <%= current_streak %>
-        <span class="text-base font-normal text-soft"><%= 'day'.pluralize(current_streak) %></span>
-      </p>
-      <p class="mt-1 mb-4 text-soft">
-        <% if current_streak.zero? %>
-          No current streak recorded.
-        <% elsif current_streak_start_date == current_streak_end_date %>
-          <%= pretty_date(current_streak_start_date, date_style: :relative) %>
-        <% else %>
-          <%= pretty_date(current_streak_start_date, date_style: :relative) %> &ndash; <%= pretty_date(current_streak_end_date, date_style: :relative) %>
-        <% end %>
-      </p>
-
-      <%= render 'shared/streak_dots', user: user %>
-      <% if user === current_user %>
-        <p class="mt-1 text-soft text-sm">
-          <% if current_streak_end_date == Date.today %>
-            Run again tomorrow to keep your streak!
-          <% elsif current_streak_end_date == Date.yesterday %>
-            Log a run to extend your streak!
-          <% else %>
-            Log a run to start a streak!
-          <% end %>
-        </p>
-      <% end %>
-    </div>
+    <%= render 'shared/user_current_streak_card', user: current_user %>
 
     <!-- Record Streak Card -->
-    <% record_streak_data = user.record_streak %>
-    <% record_streak = record_streak_data[:streak] %>
-    <% record_streak_start_date = record_streak_data[:start_date] %>
-    <% record_streak_end_date = record_streak_data[:end_date] %>
-
-    <div class="card">
-      <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Record Streak</h2>
-      <p class="text-3xl font-bold">
-        <%= record_streak %>
-        <span class="text-base font-normal text-soft"><%= 'day'.pluralize(record_streak) %></span>
-      </p>
-      <p class="mt-1 mb-4 text-soft">
-        <% if record_streak.zero? %>
-          No record streak recorded.
-        <% elsif record_streak_start_date == record_streak_end_date %>
-          <%= pretty_date(record_streak_start_date, date_style: :relative) %>
-        <% else %>
-          <%= pretty_date(record_streak_start_date, date_style: :relative) %> &ndash; <%= pretty_date(record_streak_end_date, date_style: :relative) %>
-        <% end %>
-      </p>
-
-      <div class="flex flex-wrap gap-1 items-center">
-        <span class="text-soft text-sm">Highest milestone reached:</span>
-        <div class="w-max ml-auto">
-          <%= render 'teams/member/streak_badge', percentage: 100, days: record_streak - (record_streak % 10) %>
-        </div>
-      </div>
-    </div>
+    <%= render 'shared/user_record_streak_card', user: current_user %>
   </div>
 </div>
 
