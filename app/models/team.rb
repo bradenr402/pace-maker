@@ -45,8 +45,7 @@ class Team < ApplicationRecord
   # Methods
   def season_dates? = season_start_date.present? && season_end_date.present?
 
-  def season_in_progress? =
-    season_dates? && Date.current.between?(season_start_date, season_end_date)
+  def season_in_progress? = season_dates? && season_start_date.past? && season_end_date.future?
 
   def season_over? = season_dates? && season_end_date.past?
 
