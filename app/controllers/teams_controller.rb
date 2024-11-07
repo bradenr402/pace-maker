@@ -203,7 +203,7 @@ class TeamsController < ApplicationController
   def update
     @team.photo.attach(params[:photo])
     if @team.update(team_params)
-      redirect_to @team, success: 'Team was successfully updated.'
+      redirect_back fallback_location: team_path(@team), success: 'Team was successfully updated.'
     else
       render :edit,
              status: :unprocessable_entity,
