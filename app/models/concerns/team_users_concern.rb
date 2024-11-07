@@ -1,7 +1,11 @@
 module TeamUsersConcern
   extend ActiveSupport::Concern
 
-  def gender_requirement_met?(user) = require_gender? && user.gender?
+  def gender_requirement_met?(user)
+    return true unless require_gender?
+
+    user.gender?
+  end
 
   def members_in_common(user) =
     members
