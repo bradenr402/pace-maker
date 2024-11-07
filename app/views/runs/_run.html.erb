@@ -3,7 +3,7 @@
 <div class="card">
   <div class="flex items-start gap-2 mb-4">
     <%= link_to local_assigns[:team] ? team_member_path(team, run_user) : user_path(run_user), data: { turbo: false }, class: 'group flex items-center gap-3 flex-grow' do %>
-      <%= render 'shared/user_photo', user: run_user, size: :xs %>
+      <%= render 'shared/user_photo', user: run_user, size: :xs, icon_background: :darker %>
       <div>
         <p>
           <span class="font-bold transition duration-200 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500 mr-0.5"><%= run_user.default_name %></span>
