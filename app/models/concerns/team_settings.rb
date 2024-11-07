@@ -51,10 +51,11 @@ module TeamSettings
     end
 
     def track_settings_changes
-      # rubocop :disable Style/HashEachMethods
-      TeamSettings.keys.each do |key|
+      team_settings_keys = TeamSettings.keys
+
+      team_settings_keys.each do |key|
         settings(key).saved_changes.each do |attribute, changes|
-          next if attribute == 'updated_at'
+          next unless attribute.to_sym.in?(team_settings_keys)
 
           old_value, new_value = changes
 
@@ -110,7 +111,6 @@ module TeamSettings
         end
       end
     end
-    # rubocop :enable Style/HashEachMethods
 
     private def process_bool_value(value)
       if value.to_s == 'f'
@@ -156,7 +156,7 @@ module TeamSettings
     when 'mileage_increment'
       "This setting awards you a new mileage milestone badge on your team member profile for every #{pluralize_simple(value, 'mile')} you run."
     else
-      "#{key}, #{value}"
+      ''
     end
   end
   alias setting_explanation_for setting_explanation

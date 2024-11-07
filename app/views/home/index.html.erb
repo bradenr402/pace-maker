@@ -80,19 +80,26 @@
                 <% end %>
 
                 <div class="text-base mb-2">
-                  <p class="text-light"><%= audit.attribute_name.humanize %> changed:</p>
+                  <% if audit.attribute_name == 'description' && audit.old_value.blank? %>
+                    <p class="text-light">Description added:</p>
+                  <% else %>
+                    <p class="text-light"><%= audit.attribute_name.humanize %> changed:</p>
+                  <% end %>
                   <div class="text-light ml-4">
                     <% if audit.attribute_name == 'season_start_date' || audit.attribute_name == 'season_end_date' %>
                       <p><span class="text-soft">from:</span> <%= pretty_date(audit.old_value, month_format: :short, date_style: :absolute) %></p>
                       <p><span class="text-soft">to:</span> <%= pretty_date(audit.new_value, month_format: :short, date_style: :absolute) %></p>
+                    <% elsif audit.attribute_name == 'description' && audit.old_value.blank? %>
+                      <p> <%= audit.new_value %></p>
                     <% else %>
-                      <p><span class="text-soft">from:</span> <%= humanize_boolean(audit.old_value).humanize %></p>
-                      <p><span class="text-soft">to:</span> <%= humanize_boolean(audit.new_value).humanize %></p>
+                      <p><span class="text-soft">from:</span> <%= humanize_boolean(audit.old_value) %></p>
+                      <p><span class="text-soft">to:</span> <%= humanize_boolean(audit.new_value) %></p>
                     <% end %>
                   </div>
                 </div>
 
-                <p class="mt-auto text-soft text-sm text-pretty"><%= updated_team.setting_explanation_for(audit.attribute_key, audit.new_value) %></p>
+                <% description = updated_team.setting_explanation_for(audit.attribute_key, audit.new_value) %>
+                <%= content_tag(:p, description, class: 'mt-auto text-soft text-sm text-pretty') if description.present? %>
               </div>
             <% end %>
           </div>
