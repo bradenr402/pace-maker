@@ -14,7 +14,7 @@
     <%= simple_format @team.description, class: 'text-soft text-sm md:max-w-[80%] md:mx-auto text-pretty' unless @team.description.blank? %>
 
     <div class="flex items-center justify-center md:justify-end mt-4">
-      <% if @current_user_member_of_team %>
+      <% if @current_user_member_of_team || @current_user_owns_team %>
         <div
           data-controller="modal"
           data-modal-hide-modal-class="opacity-0 scale-75 pointer-events-none"
