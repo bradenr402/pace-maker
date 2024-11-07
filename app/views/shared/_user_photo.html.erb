@@ -63,7 +63,7 @@
 <% elsif image_only %>
   <%= image_tag '', class: "#{size_classes} object-cover #{image_classes}", **image_options if current_page?(edit_user_registration_path) %>
 <% else %>
-  <div class="grid place-items-center <%= size_classes %> <%= icon_background_class %>">
-    <%= inline_svg_tag "icons/#{icon_name}#{icon_filled ? '-filled' : ''}.svg", class: "#{fallback_size_class} #{icon_color_class} #{image_classes}" %>
+  <div class="grid place-items-center <%= size_classes %> <%= icon_background_class %> <%= image_classes %>">
+    <%= inline_svg_tag "icons/#{icon_name}#{icon_filled ? '-filled' : ''}.svg", class: "#{fallback_size_class} #{icon_color_class}" %>
   </div>
 <% end %>

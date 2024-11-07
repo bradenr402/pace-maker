@@ -1,9 +1,14 @@
 module UserTeamsConcern
   extend ActiveSupport::Concern
 
-  included do
-    # Associations, validations, or callbacks related to teams
+  def connected_users
+    User.joins(teams: :team_memberships)
+        .where(team_memberships: { team_id: membered_teams.pluck(:id) })
+        .where.not(id:)
+        .distinct
   end
+
+  def connected_user_ids = connected_users.pluck(:id)
 
   def owns?(team) = self == team.owner
   alias owner_of? owns?

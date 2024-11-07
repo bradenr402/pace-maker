@@ -14,9 +14,11 @@ class Team < ApplicationRecord
            class_name: 'TeamJoinRequest',
            dependent: :destroy
   has_one_attached :photo
+  has_many :team_audits, dependent: :destroy
 
   # Callbacks
   before_validation :convert_empty_string_season_dates_to_nil
+  after_update :track_changes
 
   # Validations
   validates :name, presence: true
@@ -36,6 +38,9 @@ class Team < ApplicationRecord
 
   # Scopes
   scope :not_included_in, ->(team_ids) { where.not(id: team_ids) }
+  scope :by_connected_users, ->(user) { where(user_id: user.connected_user_ids) }
+  scope :updated_recently, ->(since = 1.week.ago) { where('teams.updated_at >= ?', since) }
+  scope :recently_created, ->(since = 1.week.ago) { where('teams.created_at >= ?', since) }
 
   # Methods
   def season_dates? = season_start_date.present? && season_end_date.present?
@@ -66,5 +71,33 @@ class Team < ApplicationRecord
 
     self.season_start_date = nil
     self.season_end_date = nil
+  end
+
+  def track_changes
+    saved_changes.each do |attribute, (old_value, new_value)|
+      next if attribute == 'updated_at'
+
+      team_audits.create!(
+        attribute_name: attribute,
+        old_value:,
+        new_value:,
+        changed_at: Time.current
+      )
+    end
+
+    # rubocop:disable Style/HashEachMethods
+    TeamSettings.keys.each do |key|
+      settings(key).saved_changes.each do |attribute, (old_value, new_value)|
+        next if attribute == 'updated_at'
+
+        team_audits.create!(
+          attribute_name: "settings_#{attribute}",
+          old_value:,
+          new_value:,
+          changed_at: Time.current
+        )
+      end
+    end
+    # rubocop:enable Style/HashEachMethods
   end
 end

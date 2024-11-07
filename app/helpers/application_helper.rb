@@ -30,4 +30,19 @@ module ApplicationHelper
 
     { 'Frequently Used' => us_option, 'All Countries' => other_countries }
   end
+
+  def humanize_boolean(value)
+    true_values = [true, 'true', 't', 'True', 'T']
+    false_values = [false, 'false', 'f', 'False', 'F']
+
+    return value unless true_values.include?(value) || false_values.include?(value)
+
+    value = value.to_s.downcase
+
+    if true_values.include?(value)
+      'yes'
+    else
+      'no'
+    end
+  end
 end

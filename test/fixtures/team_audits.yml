@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  team: one
+  attribute_name: MyString
+  old_value: MyText
+  new_value: MyText
+  changed_at: 2024-11-06 11:33:13
+
+two:
+  team: two
+  attribute_name: MyString
+  old_value: MyText
+  new_value: MyText
+  changed_at: 2024-11-06 11:33:13

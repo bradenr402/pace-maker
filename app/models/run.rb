@@ -20,8 +20,13 @@ class Run < ApplicationRecord
 
   # Scopes
   scope :in_date_range, ->(range) { where(date: range).order(date: :desc) }
-  scope :today, -> { where(date: Date.today.all_day).order(date: :desc) }
+  scope :today, -> { where(date: Date.current.all_day).order(date: :desc) }
   scope :excluding_date, ->(date) { where.not(date:) }
+  scope :recent_by_connected_users, lambda { |user|
+    where(user_id: user.connected_user_ids)
+      .where('date >= ?', 7.days.ago)
+      .order(date: :desc)
+  }
 
   # Methods
   def long_run_for_team?(team = nil)

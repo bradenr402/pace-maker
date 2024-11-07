@@ -1,0 +1,37 @@
+<% team ||= nil %>
+<% unless local_assigns[:streak] && local_assigns[:start_date] && local_assigns[:end_date] %>
+  <% streak_data = user.current_streak(team) %>
+  <% streak = streak_data[:streak] %>
+  <% start_date = streak_data[:start_date] %>
+  <% end_date = streak_data[:end_date] %>
+<% end %>
+
+<div class="card">
+  <h2 class="mb-6 text-lg font-semibold text-light"><%= 'Your' if current_page?(root_path) %> Current Streak</h2>
+  <p class="text-3xl font-bold">
+    <%= streak %>
+    <span class="text-base font-normal text-soft"><%= 'day'.pluralize(streak) %></span>
+  </p>
+  <p class="mt-1 mb-4 text-soft">
+    <% if streak.zero? %>
+      No current streak recorded.
+    <% elsif start_date == end_date %>
+      <%= pretty_date(start_date, date_style: :relative) %>
+    <% else %>
+      <%= pretty_date(start_date, date_style: :relative) %> &ndash; <%= pretty_date(end_date, date_style: :relative) %>
+    <% end %>
+  </p>
+
+  <%= render 'shared/streak_dots', user: user, week_start: team&.week_start, exclude_saturday: team&.exclude_saturday_from_streak?, exclude_sunday: team&.exclude_sunday_from_streak? %>
+  <% if user == current_user %>
+    <p class="mt-1 text-soft text-sm">
+      <% if end_date == Date.today %>
+        Run again tomorrow to advance your streak!
+      <% elsif end_date == Date.yesterday %>
+        Log a run to advance your streak!
+      <% else %>
+        Log a run to start your streak!
+      <% end %>
+    </p>
+  <% end %>
+</div>

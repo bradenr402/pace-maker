@@ -1,4 +1,8 @@
-<div class="bg-slate-50/85 dark:bg-slate-800/85 divide-y rounded-lg border p-4 shadow backdrop-blur-sm dark:divide-slate-700 dark:border-slate-700 dark:shadow-none">
+<div class="card">
+  <% if current_page?(root_path) %>
+    <p class="text-sm text-soft mb-2">Request to join <%= link_to request.team.name, request.team, class: 'btn-link' %></p>
+  <% end %>
+
   <div class="flex items-center gap-3">
     <%= link_to request.user, class: 'group flex items-center gap-3 flex-1' do %>
       <%= render 'shared/user_photo', user: request.user, size: :xs, icon_background: :darker %>

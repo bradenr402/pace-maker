@@ -3,6 +3,7 @@
 <% current_is_new_run = current_page?(new_run_path) %>
 <% current_is_teams = current_page?(teams_path) %>
 <% current_is_profile = current_page?(profile_path) %>
+<% current_is_root = current_page?(root_path) %>
 
 <div class="hidden h-full flex-[0.3] min-w-72 max-w-[350px] md:block">
   <nav
@@ -19,9 +20,22 @@
 
     <!-- Main navigation links -->
     <div class="mb-6">
-      <%= link_to profile_path, aria: { current: current_is_profile ? 'page' : nil }, class: "group sidebar-link #{'sidebar-link-active' if current_is_profile}" do %>
-        <%= render 'shared/user_photo', user: current_user, size: :thumb, icon_background: :none, icon_filled: current_is_profile, icon_name: 'profile', image_classes: "dark:group-focus:text-white #{'motion-safe:group-hover:bounce-animation motion-safe:group-focus:bounce-animation' unless current_is_profile}" %>
-        <span>Profile</span>
+      <%= link_to root_path, aria: { current: current_page?(root_path) ? 'page' : nil }, class: "group sidebar-link #{'sidebar-link-active' if current_page?(root_path)}" do %>
+        <% if current_is_root %>
+          <%= inline_svg_tag 'icons/home-filled.svg', class: 'size-5 dark:group-focus:text-white' %>
+        <% else %>
+          <%= inline_svg_tag 'icons/home.svg', class: 'size-5 dark:group-focus:text-white motion-safe:group-hover:bounce-animation motion-safe:group-focus:bounce-animation' %>
+        <% end %>
+        <span>Home</span>
+      <% end %>
+
+      <%= link_to search_path, aria: { current: current_is_search ? 'page' : nil }, class: "group sidebar-link #{'sidebar-link-active' if current_is_search}" do %>
+        <% if current_is_search %>
+          <%= inline_svg_tag 'icons/search-filled.svg', class: 'size-5 dark:group-focus:text-white' %>
+        <% else %>
+          <%= inline_svg_tag 'icons/search.svg', class: 'size-5 dark:group-focus:text-white motion-safe:group-hover:wiggle-animation motion-safe:group-focus:wiggle-animation' %>
+        <% end %>
+        <span>Search</span>
       <% end %>
 
       <%= link_to teams_path, aria: { current: current_is_teams ? 'page' : nil }, class: "group sidebar-link #{'sidebar-link-active' if current_is_teams}" do %>
@@ -33,13 +47,9 @@
         <span>Teams</span>
       <% end %>
 
-      <%= link_to search_path, aria: { current: current_is_search ? 'page' : nil }, class: "group sidebar-link #{'sidebar-link-active' if current_is_search}" do %>
-        <% if current_is_search %>
-          <%= inline_svg_tag 'icons/search-filled.svg', class: 'size-5 dark:group-focus:text-white' %>
-        <% else %>
-          <%= inline_svg_tag 'icons/search.svg', class: 'size-5 dark:group-focus:text-white motion-safe:group-hover:wiggle-animation motion-safe:group-focus:wiggle-animation' %>
-        <% end %>
-        <span>Search</span>
+      <%= link_to profile_path, aria: { current: current_is_profile ? 'page' : nil }, class: "group sidebar-link #{'sidebar-link-active' if current_is_profile}" do %>
+        <%= render 'shared/user_photo', user: current_user, size: :thumb, icon_background: :none, icon_filled: current_is_profile, icon_name: 'profile', image_classes: "dark:group-focus:text-white #{'motion-safe:group-hover:pulse-hover-animation motion-safe:group-focus:pulse-hover-animation' unless current_is_profile}" %>
+        <span>Profile</span>
       <% end %>
 
       <%= link_to edit_user_registration_path, aria: { current: current_is_edit_user ? 'page' : nil }, class: "group sidebar-link #{'sidebar-link-active' if current_is_edit_user}" do %>

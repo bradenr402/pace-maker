@@ -5,6 +5,8 @@ module UserRunsConcern
 
   def runs_today = runs.today
 
+  def runs_today? = runs.today.any?
+
   def run_on_day?(date) = runs.where(date: date.all_day).exists?
 
   def long_run_on_day?(date, team) =

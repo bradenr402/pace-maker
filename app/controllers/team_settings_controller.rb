@@ -19,9 +19,9 @@ class TeamSettingsController < ApplicationController
 
       copy_settings_from_team(source_team)
 
-      redirect_to @team,
-                  success:
-                    "Team settings successfully copied from #{source_team.name}."
+      redirect_back fallback_location: team_path(@team),
+                    success:
+                      "Team settings successfully copied from #{source_team.name}."
     when 'save_settings'
       settings_params =
         team_settings_params.transform_values do |value|
@@ -59,9 +59,11 @@ class TeamSettingsController < ApplicationController
              :mileage_increment
            )
          )
-        redirect_to @team, success: 'Team settings updated successfully.'
+
+        @team.track_settings_changes
+        redirect_back fallback_location: team_path(@team), success: 'Team settings updated successfully.'
       else
-        redirect_to @team, error: 'Unable to update team settings.'
+        redirect_back fallback_location: team_path(@team), error: 'Unable to update team settings.'
       end
     end
   end
