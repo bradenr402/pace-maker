@@ -7,6 +7,8 @@
 <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
 <%= javascript_importmap_tags %>
 
+<%= favicon_link_tag asset_path('favicon.svg'), rel: 'apple-touch-icon' %>
+
 <script>
   if ('<%= user_signed_in? ? current_user.settings(:appearance).theme : 'system' %>' === 'dark' || ('<%= user_signed_in? ? current_user.settings(:appearance).theme : 'system' %>' === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     document.documentElement.classList.add('dark')
