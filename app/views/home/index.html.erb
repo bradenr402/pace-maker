@@ -81,11 +81,11 @@
 
                 <div class="text-base mb-2">
                   <% if audit.attribute_name == 'description' && audit.old_value.blank? %>
-                    <p class="text-light">Description added:</p>
+                    <p class="text-normal">Description added:</p>
                   <% else %>
-                    <p class="text-light"><%= audit.attribute_name.humanize %> changed:</p>
+                    <p class="text-normal"><%= audit.attribute_name.humanize %> changed:</p>
                   <% end %>
-                  <div class="text-light ml-4">
+                  <div class="text-light mx-6 mt-2">
                     <% if audit.attribute_name == 'season_start_date' || audit.attribute_name == 'season_end_date' %>
                       <p><span class="text-soft">from:</span> <%= pretty_date(audit.old_value, month_format: :short, date_style: :absolute) %></p>
                       <p><span class="text-soft">to:</span> <%= pretty_date(audit.new_value, month_format: :short, date_style: :absolute) %></p>
