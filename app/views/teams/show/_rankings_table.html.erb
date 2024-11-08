@@ -97,8 +97,8 @@
             <p data-filter-gender-target="femaleTotal" class="text-xs whitespace-nowrap"><%= @all_members.count { |data| data[:member].gender == 'female' } %> female</p>
           </td>
         <% end %>
-        <td class="px-6 py-3 font-mono"><%= team.miles_in_date_range(date_range) %> <span class="text-xs">mi</span></td>
-        <td class="px-6 py-3 font-mono"><%= team.total_long_runs_in_date_range(date_range) %> <span class="text-xs">long runs</span></td>
+        <td class="px-6 py-3 font-mono"><%= team.miles_in_date_range(date_range) %> <span class="font-sans text-xs">mi</span></td>
+        <td class="px-6 py-3 font-mono"><%= team.total_long_runs_in_date_range(date_range) %> <span class="font-sans text-xs">long runs</span></td>
         <td class="px-6 py-3 font-mono"></td>
         <td class="px-6 py-3 font-mono"></td>
       </tr>
