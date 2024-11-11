@@ -1,5 +1,5 @@
 <%= turbo_frame_tag 'pin_button' do %>
-  <% excluded_paths = [profile_path, teams_path, search_path, edit_user_registration_path, manage_pinned_pages_path, new_run_path] %>
+  <% excluded_paths = [profile_path, teams_path, search_path, edit_user_registration_path, manage_pinned_pages_path, new_run_path, root_path] %>
 
   <% unless current_user.pinned_pages.exists?(page_url:) || page_url.split('?').first.in?(excluded_paths) %>
     <div class="border-t dark:border-slate-700 mt-2 pt-2">
