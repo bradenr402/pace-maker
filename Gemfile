@@ -68,6 +68,8 @@ group :development do
   gem 'letter_opener'
 
   gem 'bullet'
+
+  gem 'brakeman', require: false
 end
 
 group :test do
