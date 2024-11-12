@@ -96,3 +96,5 @@ gem 'omniauth-rails_csrf_protection'
 gem 'countries'
 gem 'country_select'
 gem 'phonelib'
+
+gem 'email_data'

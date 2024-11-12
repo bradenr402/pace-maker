@@ -56,7 +56,13 @@ class User < ApplicationRecord
   before_save :clear_avatar_url, if: -> { avatar.attached? }
 
   # Validations
-  validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :email,
+            presence: true,
+            format: {
+              with: URI::MailTo::EMAIL_REGEXP,
+              message: 'must be a valid email address'
+            },
+            nondisposable_email: true
   validates :username,
             presence: true,
             uniqueness: {
