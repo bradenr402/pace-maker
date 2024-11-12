@@ -36,3 +36,8 @@
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+
+# Ignore macOS system files.
+/.DS_Store
+/app/.DS_Store
+/app/assets/.DS_Store
