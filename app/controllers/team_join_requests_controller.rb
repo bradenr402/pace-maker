@@ -1,7 +1,6 @@
 class TeamJoinRequestsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_join_request, only: %i[update cancel approve reject]
-  before_action :set_team, only: %i[cancel approve reject]
+  before_action :set_join_request, :set_team, only: %i[update cancel approve reject]
   before_action :authorize_owner!, only: %i[approve reject]
 
   def update
