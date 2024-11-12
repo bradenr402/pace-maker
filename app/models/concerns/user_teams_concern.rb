@@ -47,13 +47,7 @@ module UserTeamsConcern
   end
 
   def search_users(query)
-    User
-      .joins(:teams)
-      .where(
-        'teams.id IN (:team_ids) OR teams.owner_id = :owner_id',
-        team_ids: teams.pluck(:id),
-        owner_id: id
-      )
+    connected_users
       .where(
         'LOWER(users.username) LIKE LOWER(:query) OR
         LOWER(users.display_name) LIKE LOWER(:query) OR
