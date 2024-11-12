@@ -3,7 +3,7 @@
   <p class="text-soft">Runs <%= user == current_user ? 'you have' : "#{user.first_name} has" %> gone on today.</p>
 </div>
 
-<div class="mb-10">
+<div class="mb-10 space-y-4 sm:space-y-6">
   <% runs_today = user.runs_today %>
   <% if runs_today.present? %>
     <% runs_today.each do |run| %>
