@@ -1,4 +1,6 @@
 class FeedbackFormController < ApplicationController
+  before_action :authenticate_user!
+
   def create
     user_data = {
       id: current_user.id,
