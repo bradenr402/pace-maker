@@ -1,8 +1,5 @@
 class TeamMembershipsController < ApplicationController
-  before_action :set_team
-  before_action :set_team_membership
-  before_action :set_member
-  before_action :authorize_member!
+  before_action :authenticate_user!, :set_team, :set_team_membership, :set_member, :authorize_member!
 
   def edit
     add_breadcrumb 'Teams', teams_path
