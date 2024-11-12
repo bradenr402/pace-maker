@@ -115,25 +115,20 @@ class RunsController < ApplicationController
 
   def parse_duration(input)
     parts = input.split(':').map(&:to_i)
+
     case parts.length
     when 2
       minutes, seconds = parts
-      ActiveRecord::Base
-        .connection
-        .execute("SELECT '#{minutes} minutes #{seconds} seconds'::interval")
-        .first[
-        'interval'
-      ]
+      sql = ActiveRecord::Base.sanitize_sql_array(
+        ["SELECT ?::interval", "#{minutes} minutes #{seconds} seconds"]
+      )
+      ActiveRecord::Base.connection.select_value(sql)
     when 3
       hours, minutes, seconds = parts
-      ActiveRecord::Base
-        .connection
-        .execute(
-          "SELECT '#{hours} hours #{minutes} minutes #{seconds} seconds'::interval"
-        )
-        .first[
-        'interval'
-      ]
+      sql = ActiveRecord::Base.sanitize_sql_array(
+        ["SELECT ?::interval", "#{hours} hours #{minutes} minutes #{seconds} seconds"]
+      )
+      ActiveRecord::Base.connection.select_value(sql)
     end
   end
 end
