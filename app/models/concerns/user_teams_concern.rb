@@ -17,6 +17,67 @@ module UserTeamsConcern
 
   def membered_teams = teams.where.not(owner_id: id)
 
+  def search_teams(query)
+    Team
+      .joins(:owner)
+      .where(
+        'LOWER(teams.name) LIKE LOWER(:query) OR
+        LOWER(users.username) LIKE LOWER(:query) OR
+        LOWER(users.display_name) LIKE LOWER(:query) OR
+        similarity(teams.name, :query) > 0.3 OR
+        similarity(users.username, :query) > 0.3 OR
+        similarity(users.display_name, :query) > 0.3',
+        query: "%#{query}%"
+      )
+      .select(
+        ActiveRecord::Base.sanitize_sql_array([
+          "teams.*, users.username, users.display_name,
+          GREATEST(similarity(teams.name, ?),
+                    similarity(users.username, ?),
+                    similarity(users.display_name, ?),
+                    CASE
+                      WHEN LOWER(teams.name) LIKE LOWER(?)
+                      THEN 1
+                      ELSE 0
+                    END) AS similarity_score",
+          query, query, query, "%#{query}%"
+        ])
+      )
+      .order('similarity_score DESC')
+  end
+
+  def search_users(query)
+    User
+      .joins(:teams)
+      .where(
+        'teams.id IN (:team_ids) OR teams.owner_id = :owner_id',
+        team_ids: teams.pluck(:id),
+        owner_id: id
+      )
+      .where(
+        'LOWER(users.username) LIKE LOWER(:query) OR
+        LOWER(users.display_name) LIKE LOWER(:query) OR
+        similarity(users.username, :query) > 0.3 OR
+        similarity(users.display_name, :query) > 0.3',
+        query: "%#{query}%"
+      )
+      .select(
+        ActiveRecord::Base.sanitize_sql_array([
+          "users.*,
+          GREATEST(similarity(users.username, ?),
+                    similarity(users.display_name, ?),
+                    CASE
+                      WHEN LOWER(users.username) LIKE LOWER(?)
+                      THEN 1
+                      ELSE 0
+                    END) AS similarity_score",
+          query, query, "%#{query}%"
+        ])
+      )
+      .order('similarity_score DESC')
+      .distinct
+  end
+
   def other_teams =
     Team.not_included_in(teams.pluck(:id) + owned_teams.pluck(:id))
 
