@@ -2,6 +2,8 @@ class SearchController < ApplicationController
   before_action :authenticate_user!
 
   def index
+    add_breadcrumb 'Search', search_path
+
     @query = params[:query]
     @teams = @query.present? ? search_teams : []
     @users = @query.present? ? search_users : []
