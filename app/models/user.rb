@@ -133,6 +133,8 @@ class User < ApplicationRecord
     end
   end
 
+  def raw_phone_number = Phonelib.parse(phone_number, phone_country_code).raw_national
+
   def google_account_linked? = uid? && provider == 'google_oauth2'
 
   class << self
@@ -218,10 +220,6 @@ class User < ApplicationRecord
     parsed_phone = Phonelib.parse(phone_number, phone_country_code)
     self.phone_number = parsed_phone.international(false)
   end
-
-  def normalize_email = (self.email = email.downcase)
-
-  def normalize_display_name = (self.display_name = display_name.strip)
 
   def purge_avatar
     avatar.purge_later

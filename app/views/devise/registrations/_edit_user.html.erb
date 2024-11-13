@@ -185,7 +185,7 @@
       <%= f.phone_field :phone_number,
                         placeholder: '(555) 555-5555',
                         autocomplete: 'tel',
-                        value: number_to_phone(f.object.phone_number, area_code: true),
+                        value: f.object.raw_phone_number,
                         class: 'form-input shadow-sm pl-3 pr-10 py-2 border [&:not(:focus)]:border-l-transparent rounded-l-none w-full focus:z-10',
                         data: { form_validation_target: 'phone', phone_target: 'phone', action: 'input->form-validation#validatePhone input->phone#phoneFormat' }
       %>
