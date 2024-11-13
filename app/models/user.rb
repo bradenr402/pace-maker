@@ -50,10 +50,14 @@ class User < ApplicationRecord
   before_update :set_password_changed_at,
                 if: :will_save_change_to_encrypted_password?
   before_save :format_phone_number
-  before_save :normalize_email
-  before_save :normalize_display_name
   before_save :purge_avatar, if: -> { remove_avatar == '1' }
   before_save :clear_avatar_url, if: -> { avatar.attached? }
+
+  # Normalizations
+  # rubocop:disable Style/SymbolProc
+  normalizes :display_name, with: -> { _1.strip }
+  normalizes :email, with: -> { _1.downcase.strip }
+  # rubocop :enable Style/SymbolProc
 
   # Validations
   validates :email,
