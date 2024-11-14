@@ -61,7 +61,7 @@
                 <%= render 'shared/user_photo', user: data[:member], size: :xs, icon_background: :darker %>
 
                 <div class="flex flex-col-reverse">
-                  <p class="transition duration-300 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= data[:member].default_name %></p>
+                  <p class="transition duration-200 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= data[:member].default_name %></p>
                   <%= content_tag(:p, data[:member] == current_user ? 'You' : 'Coach', class: 'help-text') if data[:member].owns?(team) || data[:member] == current_user %>
                 </div>
               <% end %>

@@ -11,7 +11,7 @@
       <%= render 'shared/user_photo', user: member, size: :xs, icon_background: :darker %>
 
       <div class="flex-1 leading-tight">
-        <p class='font-bold transition duration-300 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500'>
+        <p class='font-bold transition duration-200 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500'>
           <%= member.default_name %>
           <%= content_tag(:span, '(You)', class: 'font-normal text-soft text-xs') if member == current_user %>
         </p>

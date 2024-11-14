@@ -48,6 +48,6 @@
   }
 
   .sliding-tab-indicator {
-    @apply absolute top-1/2 -translate-y-1/2 bg-white dark:bg-slate-700 rounded-md transition-all duration-300 w-0 h-[calc(100%-0.25rem)];
+    @apply absolute top-1/2 -translate-y-1/2 bg-white dark:bg-slate-700 rounded-md transition-all duration-[350ms] w-0 h-[calc(100%-0.25rem)];
   }
 }

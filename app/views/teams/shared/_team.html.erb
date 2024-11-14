@@ -1,11 +1,11 @@
 <div class="card">
   <div class="flex flex-wrap-reverse items-end gap-3">
     <div class="flex items-center gap-3 flex-1">
-      <%= render 'shared/team_photo', team: team, size: :xs, icon_background: :darker %>
-      <div class="flex-1 leading-tight">
-        <%= link_to team.name, team, data: { turbo: false }, class: 'font-bold hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %>
+      <%= link_to render('shared/team_photo', team: team, size: :xs, icon_background: :darker), team, data: { turbo: false }, class: 'peer' %>
+      <div class="flex-1 leading-tight peer-hover:text-indigo-600 dark:peer-hover:text-indigo-500">
+        <%= link_to team.name, team, data: { turbo: false }, class: 'font-bold transition ease-in-out duration-200 hover:text-indigo-600 dark:hover:text-indigo-500' %>
         <p class="text-soft text-xs">
-          Coach: <%= link_to team.owner.default_name, team_member_path(team, team.owner), data: { turbo: false }, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-300' %>
+          Coach: <%= link_to team.owner.default_name, team_member_path(team, team.owner), data: { turbo: false }, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-200' %>
         </p>
       </div>
     </div>
