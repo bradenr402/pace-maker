@@ -145,11 +145,12 @@ class User < ApplicationRecord
 
   class << self
     def from_omniauth(auth)
-      user = User.find_by(email: auth.info.email)
-      return nil if user&.provider.nil? || user&.uid.nil?
-      return user if (user&.provider == auth.provider) && (user&.uid == auth.uid)
+      existing_user = User.find_by(email: auth.info.email)
 
-      user =
+      return existing_user if (existing_user&.provider == auth.provider) && (existing_user&.uid == auth.uid)
+      return nil if existing_user && ((existing_user.provider != auth.provider) || (existing_user.uid != auth.uid))
+
+      new_user =
         User.new(
           provider: auth.provider,
           uid: auth.uid,
@@ -161,15 +162,15 @@ class User < ApplicationRecord
       base_username = auth.info.email.split('@').first
       user.username = generate_unique_username(base_username)
 
-      user.display_name = auth.info.name
-      user.avatar_url = auth.info.image
+      new_user.display_name = auth.info.name
+      new_user.avatar_url = auth.info.image
 
       # If you are using :confirmable and the provider(s) you use validate emails,
       # uncomment the line below to skip the confirmation emails.
       # user.skip_confirmation!
 
-      user.save!
-      user
+      new_user.save!
+      new_user
     end
 
     def generate_unique_username(base_username)
