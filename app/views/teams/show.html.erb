@@ -60,7 +60,7 @@
 
   <div class="relative flex items-center mb-6">
     <!-- Left Arrow -->
-    <button type="button" data-action="mousedown->tabs#scrollLeft" data-tabs-target="leftArrow" class="opacity-0 pointer-events-none tab-container-scroll-left transition duration-300">
+    <button type="button" data-action="mousedown->tabs#scrollLeft" data-tabs-target="leftArrow" aria-label="Scroll tabs left" class="opacity-0 pointer-events-none tab-container-scroll-left transition duration-300">
       <%= inline_svg_tag 'icons/chevron-left.svg', class: 'size-5 text-soft' %>
     </button>
 
@@ -109,7 +109,7 @@
     </div>
 
     <!-- Right Arrow -->
-    <button type="button" data-action="mousedown->tabs#scrollRight" data-tabs-target="rightArrow" class="opacity-0 pointer-events-none tab-container-scroll-right transition duration-300">
+    <button type="button" data-action="mousedown->tabs#scrollRight" data-tabs-target="rightArrow" aria-label="Scroll tabs right" class="opacity-0 pointer-events-none tab-container-scroll-right transition duration-300">
       <%= inline_svg_tag 'icons/chevron-right.svg', class: 'size-5 text-soft' %>
     </button>
   </div>
