@@ -173,6 +173,7 @@
       <!-- Country code select -->
       <%= label_tag :group_by, 'Country code', class: 'sr-only' %>
       <%= inline_svg_tag 'icons/phone.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+      <%= f.label :phone_country_code, class: 'sr-only' %>
       <%= f.select :phone_country_code,
                     grouped_options_for_select(country_code_options, @user.phone_country_code),
                     { prompt: 'Country code', selected: @user.phone_country_code },
