@@ -28,7 +28,7 @@
         <%= inline_svg_tag 'icons/lock.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
         <%= f.password_field :password, autocomplete: 'current-password', placeholder: 'Enter your password', class: 'form-input pl-10', data: { password_visibility_target: 'password' } %>
 
-        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" data-action="password-visibility#toggle">
+        <button type="button" class="absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-500 size-8 grid place-items-center" data-action="password-visibility#toggle" aria-label="Toggle password visibility">
           <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
           <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-5 hidden' %>
         </button>

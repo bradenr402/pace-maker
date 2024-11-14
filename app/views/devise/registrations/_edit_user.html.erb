@@ -254,7 +254,7 @@
       <%= inline_svg_tag 'icons/lock.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
       <%= f.password_field :password, autocomplete: 'new-password', placeholder: 'Create a new password', class: 'form-input pl-10', data: { form_validation_target: 'newPassword', action: 'input->form-validation#validateNewPassword input->form-validation#validateNewPasswordConfirmation', password_visibility_target: 'password' } %>
 
-      <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" data-action="password-visibility#toggle">
+      <button type="button" class="absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-500 size-8 grid place-items-center" data-action="password-visibility#toggle" aria-label="Toggle password visibility">
         <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
         <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-5 hidden' %>
       </button>
@@ -299,7 +299,7 @@
       <%= inline_svg_tag 'icons/lock-check.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
       <%= f.password_field :password_confirmation, autocomplete: 'new-password', placeholder: 'Confirm your new password', class: 'form-input pl-10 transition duration-200 ease-in-out', data: { form_validation_target: 'newPasswordConfirmation', action: 'input->form-validation#validateNewPasswordConfirmation', password_visibility_target: 'password' } %>
 
-      <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" data-action="password-visibility#toggle">
+      <button type="button" class="absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-500 size-8 grid place-items-center" data-action="password-visibility#toggle" aria-label="Toggle password visibility">
         <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
         <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-5 hidden' %>
       </button>
@@ -316,7 +316,7 @@
         <%= inline_svg_tag 'icons/key.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
         <%= f.password_field :current_password, autocomplete: 'current-password', placeholder: 'Enter your current password', class: 'form-input pl-10', data: { password_visibility_target: 'password' } %>
 
-        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" data-action="password-visibility#toggle">
+        <button type="button" class="absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-500 size-8 grid place-items-center" data-action="password-visibility#toggle" aria-label="Toggle password visibility">
           <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
           <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-5 hidden' %>
         </button>
