@@ -47,8 +47,14 @@ class User < ApplicationRecord
 
   # Callbacks
   before_validation :convert_empty_string_phone_number_to_nil
-  before_update :set_password_changed_at,
-                if: :will_save_change_to_encrypted_password?
+  before_save :set_password_changed_at,
+              if: lambda {
+                # Will trigger if:
+                # 1. The user is updating their password, OR
+                # 2. this is a new record without any OAuth provider credentials
+                # (i.e., the user created their account via email & password)
+                will_save_change_to_encrypted_password? && persisted? || (new_record? && provider.blank? && uid.blank?)
+              }
   before_save :format_phone_number
   before_save :purge_avatar, if: -> { remove_avatar == '1' }
   before_save :clear_avatar_url, if: -> { avatar.attached? }
