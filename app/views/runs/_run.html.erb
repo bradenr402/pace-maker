@@ -1,8 +1,9 @@
 <% run_user = run.user %>
+<% team = params[:team] ? Team.find(params[:team]) : local_assigns[:team] %>
 
 <div class="card">
   <div class="flex items-start gap-2 mb-4">
-    <%= link_to local_assigns[:team] ? team_member_path(team, run_user) : user_path(run_user), data: { turbo: false }, class: 'group flex items-center gap-3 flex-grow' do %>
+    <%= link_to team ? team_member_path(team, run_user) : user_path(run_user), data: { turbo: false }, class: 'group flex items-center gap-3 flex-grow' do %>
       <%= render 'shared/user_photo', user: run_user, size: :xs, icon_background: :darker %>
       <div>
         <p>
@@ -16,7 +17,7 @@
     <%= render 'runs/actions_dropdown', run: run if run_user == current_user %>
   </div>
 
-  <%= run_content_wrapper(run, local_assigns[:team], local_assigns[:turbo_frame]) do %>
+  <%= run_content_wrapper(run, team, local_assigns[:turbo_frame]) do %>
     <% if run.duration? %>
       <div class="flex items-center justify-around mt-8 mb-6">
         <div class="flex flex-col items-center">
@@ -84,9 +85,9 @@
         <% end %>
       </div>
 
-      <% streak = run.streak_value(local_assigns[:team]) %>
+      <% streak = run.streak_value(team) %>
       <div class="flex flex-wrap items-center gap-2">
-        <%= render 'runs/long_run_badge' if run.long_run_for_team?(local_assigns[:team]) %>
+        <%= render 'runs/long_run_badge' if run.long_run_for_team?(team) %>
         <%= render 'runs/streak_badge', streak: streak unless streak.nil? || streak.zero? || streak.negative? || streak == 1 %>
       </div>
     </div>

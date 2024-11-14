@@ -1,5 +1,5 @@
 <% content_for :title, "Run • #{format_date(@run.date)}" %>
 
 <div class="max-w-3xl mx-auto my-16">
-  <%= render 'turbo_run', run: @run %>
+  <%= render 'turbo_run', run: @run, team: local_assigns[:team] %>
 </div>
