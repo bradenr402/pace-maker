@@ -11,7 +11,7 @@
   data-modal-show-modal-class="opacity-100 scale-100 pointer-events-auto"
   data-modal-hide-backdrop-class="opacity-0 pointer-events-none"
   data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
-  class="fixed bottom-20 right-4 md:hidden bg-transparent z-50"
+  class="fixed bottom-20 right-4 md:hidden bg-transparent z-50 [@media(display-mode:standalone)]:bottom-28"
 >
   <!-- Open New Run Modal Button -->
   <button data-action="mousedown->modal#open" data-modal-id="newRunModal" class="btn btn-primary p-3 rounded-full shadow-[0_3px_20px_-5px] shadow-indigo-600 hover:shadow-[0_5px_15px_-5px] hover:shadow-indigo-700 hover:scale-110 transition duration-200 ease-in-out grid place-items-center">
@@ -22,7 +22,7 @@
   <%= render 'runs/new_run_modal' %>
 </div>
 
-<nav class="fixed z-50 bottom-0 inset-x-0 md:hidden grid grid-cols-5 w-full px-1 py-3 bg-white/85 dark:bg-slate-800/85 backdrop-blur border-t border-slate-200 dark:border-slate-700">
+<nav class="fixed z-50 bottom-0 inset-x-0 md:hidden grid grid-cols-5 w-full px-1 py-3 pb-3 bg-white/85 dark:bg-slate-800/85 backdrop-blur border-t border-slate-200 dark:border-slate-700 [@media(display-mode:standalone)]:pb-10">
   <%= link_to root_path, aria: { current: current_is_root ? 'page' : nil }, class: "tab-link #{'tab-link-active' if current_is_root}" do %>
     <% if current_is_root %>
       <%= inline_svg_tag 'icons/home-filled.svg', class: 'size-6 shrink-0' %>
