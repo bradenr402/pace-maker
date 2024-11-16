@@ -8,6 +8,12 @@ export default class extends Controller {
 
   connect() {
     this.applyTheme();
+    this.setupSystemThemeListener();
+  }
+
+  setupSystemThemeListener() {
+    this.systemThemeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    this.systemThemeMediaQuery.addEventListener('change', () => this.applyTheme());
   }
 
   applyTheme() {
@@ -34,6 +40,15 @@ export default class extends Controller {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
+    }
+
+    // Set meta tag for mobile status bar color
+    const metaThemeColor =
+      document.querySelector('meta[name="theme-color"]') || document.createElement('meta');
+    metaThemeColor.name = 'theme-color';
+    metaThemeColor.content = isDarkTheme ? '#0f172a' : '#f8fafc';
+    if (!document.querySelector('meta[name="theme-color"]')) {
+      document.head.appendChild(metaThemeColor);
     }
   }
 }
