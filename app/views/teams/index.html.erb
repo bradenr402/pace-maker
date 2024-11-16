@@ -33,11 +33,11 @@
     </button>
   </div>
 
-  <div id="ownedTeamsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'ownedTeamsTab' ? '' : 'hidden' %>">
+  <div id="ownedTeamsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'ownedTeamsTab' ? '' : 'hidden' %>">
     <%= render 'teams/index/owned_teams', owned_teams: @owned_teams %>
   </div>
 
-  <div id="teamMembershipsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'teamMembershipsTab' ? '' : 'hidden' %>">
+  <div id="teamMembershipsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'teamMembershipsTab' ? '' : 'hidden' %>">
     <%= render 'teams/index/membered_teams', membered_teams: @membered_teams %>
   </div>
 
