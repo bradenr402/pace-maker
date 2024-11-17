@@ -52,7 +52,6 @@ export default class extends Controller {
     const urlParams = new URLSearchParams(window.location.search);
     const tabParam = urlParams.get('tab');
     const initialTab = tabParam || this.defaultTabValue;
-    this._updateUrlWithTab(initialTab);
 
     this._updateTabVisibility(initialTab);
 
