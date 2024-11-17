@@ -155,4 +155,10 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+
+  /* Disable tap highlight when tapping buttons/links on mobile */
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
 }
