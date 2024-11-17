@@ -10,8 +10,15 @@
       <%= render 'shared/sidebar' if user_signed_in? %>
       <div class="flex flex-col flex-1 h-full min-w-0">
         <div class="h-full min-w-0 overflow-y-scroll">
-          <%= render 'shared/pinned_pages_menu' if user_signed_in? %>
+          <% if user_signed_in? %>
+            <div class="md:hidden flex items-center justify-between gap-2 mt-8 mx-4">
+              <%= inline_svg_tag 'icons/logo.svg', class: 'w-48' %>
+              <%= render 'shared/pinned_pages_menu' %>
+            </div>
+          <% end %>
+
           <%= render 'shared/breadcrumbs' if user_signed_in? %>
+
           <main class="container px-5 mx-auto mt-24 mb-40">
             <%= yield %>
           </main>

@@ -2,8 +2,16 @@
 
 <% content_for :masthead do %>
   <div class="text-center">
-    <h1 class="heading my-3">Sign up for an account</h1>
-    <p class="mb-6 text-slate-700 dark:text-slate-200">
+    <div class="flex justify-center">
+      <%= inline_svg_tag 'logo.svg', class: 'w-64' %>
+    </div>
+    <h1 class="subheading my-6">Sign up for an account</h1>
+  </div>
+<% end %>
+
+<% content_for :footer do %>
+  <div class="text-center mt-4">
+    <p class="mt-4 text-light leading-none">
       Already have an account? <%= link_to 'Sign in', new_session_path(resource_name), class: 'btn-link' %>
     </p>
   </div>

@@ -1,10 +1,18 @@
-<% content_for :title, 'Change password' %>
+<% content_for :title, 'Reset password' %>
 
 <% content_for :masthead do %>
   <div class="text-center">
-    <h1 class="heading my-3">Change your password</h1>
-    <p class="mb-6 text-slate-700 dark:text-slate-200">
-      Remember your password? <%= link_to "Sign in", new_session_path(resource_name), class: 'btn-link' %>
+    <div class="flex justify-center">
+      <%= inline_svg_tag 'logo.svg', class: 'w-64' %>
+    </div>
+    <h1 class="subheading my-6">Reset your password</h1>
+  </div>
+<% end %>
+
+<% content_for :footer do %>
+  <div class="text-center mt-4">
+    <p class="mt-4 text-light leading-none">
+      Remember your password? <%= link_to 'Sign in', new_session_path(resource_name), class: 'btn-link' %>
     </p>
   </div>
 <% end %>
