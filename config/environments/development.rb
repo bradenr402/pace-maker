@@ -7,7 +7,7 @@ Rails.application.configure do
     Bullet.bullet_logger = false
     Bullet.console       = true
     Bullet.rails_logger  = false
-    Bullet.add_footer    = true
+    Bullet.add_footer    = false
     Bullet.n_plus_one_query_enable     = true
     Bullet.unused_eager_loading_enable = false
   end
