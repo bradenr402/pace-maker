@@ -402,6 +402,7 @@ DEPENDENCIES
   jbuilder
   ledermann-rails-settings
   letter_opener
+  mail
   omniauth
   omniauth-google-oauth2
   omniauth-rails_csrf_protection

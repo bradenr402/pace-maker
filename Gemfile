@@ -98,3 +98,5 @@ gem 'country_select'
 gem 'phonelib'
 
 gem 'email_data'
+
+gem 'mail'

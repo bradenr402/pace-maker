@@ -1,5 +1,5 @@
 class FeedbackMailer < ApplicationMailer
-  default to: 'rothbraden02@gmail.com'
+  default to: 'get.pace.maker@gmail.com'
 
   def feedback_notification
     @feedback = params[:feedback]
