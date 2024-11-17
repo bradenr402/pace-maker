@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_28_160821) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_06_163313) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
@@ -73,6 +73,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_28_160821) do
     t.datetime "updated_at", precision: nil
     t.index ["target_type", "target_id", "var"], name: "index_settings_on_target_type_and_target_id_and_var", unique: true
     t.index ["target_type", "target_id"], name: "index_settings_on_target_type_and_target_id"
+  end
+
+  create_table "team_audits", force: :cascade do |t|
+    t.bigint "team_id", null: false
+    t.string "attribute_name"
+    t.text "old_value"
+    t.text "new_value"
+    t.datetime "changed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["team_id"], name: "index_team_audits_on_team_id"
   end
 
   create_table "team_join_requests", force: :cascade do |t|
@@ -139,6 +150,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_28_160821) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "pinned_pages", "users"
   add_foreign_key "runs", "users"
+  add_foreign_key "team_audits", "teams"
   add_foreign_key "team_join_requests", "teams"
   add_foreign_key "team_join_requests", "users"
   add_foreign_key "team_memberships", "teams"

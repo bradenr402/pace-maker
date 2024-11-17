@@ -24,15 +24,16 @@ def seed_users
   puts "Creating #{NUM_USERS} users..."
   users = []
   NUM_USERS.times do |i|
-    users << User.find_or_create_by!(
-      email: "user#{i + 1}@example.com"
-    ) do |user|
-      user.password = 'Password123!'
-      user.username = "runner#{i + 1}"
-      user.display_name = "Runner #{i + 1}"
-      user.gender = ['male', 'female', ''].sample
-      user.phone_number = "+1#{rand(1_000_000_000..9_999_999_999)}"
-    end
+    user = User.new(
+      email: "user#{i + 1}@example.com",
+      password: 'Password123!',
+      username: "runner#{i + 1}",
+      display_name: "Runner #{i + 1}",
+      gender: ['male', 'female', ''].sample,
+      phone_number: "+1#{rand(1_000_000_000..9_999_999_999)}"
+    )
+    user.save(validate: false) # Skip validations for seeding ("@example.com" is not a valid email)
+    users << user
   end
   puts 'Users created successfully!'
   users
