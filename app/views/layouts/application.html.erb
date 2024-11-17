@@ -12,7 +12,7 @@
         <div class="h-full min-w-0 overflow-y-scroll">
           <% if user_signed_in? %>
             <div class="md:hidden flex items-center justify-between gap-2 mt-8 mx-4">
-              <%= inline_svg_tag 'logo.svg', class: 'w-48' %>
+              <%= link_to inline_svg_tag('logo.svg', class: 'w-48'), root_path %>
               <%= render 'shared/pinned_pages_menu' %>
             </div>
           <% end %>
