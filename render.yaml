@@ -1,19 +1,22 @@
 databases:
   - name: postgres
-    ipAllowList: []
     databaseName: pace_maker
     user: pace_maker
+    plan: free
 
 services:
   - type: web
     name: pace_maker
-    env: ruby
-    buildCommand: "./render-build.sh"
+    runtime: ruby
+    plan: free
+    buildCommand: "..bin/render-build.sh"
     startCommand: "bundle exec rails s"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: postgres
+          name: pace_maker
           property: connectionString
       - key: RAILS_MASTER_KEY
         sync: false
+      - key: WEB_CONCURRENCY
+        value: 2
