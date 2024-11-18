@@ -1,5 +1,5 @@
 databases:
-  - name: postgres
+  - name: pace_maker_production
     databaseName: pace_maker_production
     user: pace_maker
     plan: free
