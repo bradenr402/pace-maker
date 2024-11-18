@@ -85,21 +85,6 @@
         </div>
       </div>
     </div>
-
-    <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
-      <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Notifications</h2>
-      <p class="text-sm text-slate-600 dark:text-slate-400">Choose which notifications you would like to receive.</p>
-    </div>
-
-    <div class="form-group">
-      <div class="flex gap-x-2.5">
-        <div class="form-input-toggle shrink-0" data-controller="toggle-checkbox" data-action="mousedown->toggle-checkbox#toggle">
-          <span class="form-input-toggle-switch"></span>
-          <%= settings_form.check_box :in_app, { checked: @user.settings(:notifications).in_app, class: 'sr-only', data: { toggle_checkbox_target: 'checkbox' } }, true, false %>
-        </div>
-        <%= settings_form.label :in_app, 'In app notifications', class: 'select-none text-slate-700 dark:text-slate-300' %>
-      </div>
-    </div>
   <% end %>
 
   <div class="md:sticky bottom-0 flex items-center gap-4 pt-6 pb-6 bg-slate-50 border-t dark:bg-slate-900 border-slate-200 dark:border-slate-700">

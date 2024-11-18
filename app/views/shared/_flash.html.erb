@@ -1,6 +1,4 @@
 <%= turbo_frame_tag 'flash' do %>
-  <% in_app_notifications_check = user_signed_in? ? current_user.settings(:notifications).in_app : true %>
-
   <div
     data-controller="notifications"
     data-notifications-hidden-class="notification--hidden"
@@ -8,7 +6,7 @@
     data-notifications-exit-class="notification--exit"
     class="fixed top-8 sm:right-8 w-full max-w-[80vw] mx-[10vw] sm:max-w-sm sm:mx-0 space-y-1 z-50 flex flex-col items-center sm:items-end"
   >
-    <% if notice && in_app_notifications_check %>
+    <% if notice %>
       <div
         data-notifications-target="notification"
         class="flex items-center p-4 text-sm text-blue-600 border border-blue-300 rounded-lg bg-blue-50 dark:bg-slate-800 dark:text-blue-400 dark:border-blue-800 z-50 transition duration-200 ease-in-out notification--hidden"
@@ -29,7 +27,7 @@
       </div>
     <% end %>
 
-    <% if success && in_app_notifications_check %>
+    <% if success %>
       <div
         data-notifications-target="notification"
         class="flex items-center p-4 text-sm text-green-600 border border-green-300 rounded-lg bg-green-50 dark:bg-slate-800 dark:text-green-400 dark:border-green-800 z-50 transition duration-200 ease-in-out notification--hidden"
