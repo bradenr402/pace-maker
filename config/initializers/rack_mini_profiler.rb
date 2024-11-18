@@ -1,1 +1,3 @@
-Rack::MiniProfiler.config.enabled = false
+if Rails.env.development?
+  Rack::MiniProfiler.config.enabled = false
+end
