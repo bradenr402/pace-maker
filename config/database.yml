@@ -79,6 +79,7 @@ test:
 #
 production:
   <<: *default
+  url: <%= ENV["DATABASE_URL"] %>
   database: pace_maker_production
   username: pace_maker
   password: <%= ENV["PACE_MAKER_DATABASE_PASSWORD"] %>
