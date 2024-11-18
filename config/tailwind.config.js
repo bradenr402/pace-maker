@@ -8,6 +8,13 @@ module.exports = {
     './app/views/**/*.html.erb',
     './app/assets/stylesheets/**/*.css',
   ],
+  purge: [
+    './public/*.html',
+    './app/helpers/**/*.rb',
+    './app/javascript/**/*.js',
+    './app/views/**/*.html.erb',
+    './app/assets/stylesheets/**/*.css',
+  ],
   safelist: [{ pattern: /form-.+/ }, { pattern: /btn-.+/ }],
   theme: {
     extend: {
