@@ -9,7 +9,7 @@ services:
     name: pace_maker
     runtime: ruby
     plan: free
-    buildCommand: "..bin/render-build.sh"
+    buildCommand: "./bin/render-build.sh"
     startCommand: "bundle exec rails s"
     envVars:
       - key: DATABASE_URL
