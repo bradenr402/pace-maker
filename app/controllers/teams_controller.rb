@@ -20,48 +20,6 @@ class TeamsController < ApplicationController
         :setting_objects,
         :members
       )
-
-    query_param = params[:query]
-    @other_teams =
-      if query_param.present?
-        sanitized_query = ActiveRecord::Base.connection.quote(query_param)
-        Team
-          .with_attached_photo
-          .includes(:owner, :setting_objects, :members)
-          .joins(:owner)
-          .where(
-            'LOWER(teams.name) LIKE LOWER(:query) OR
-            LOWER(users.username) LIKE LOWER(:query) OR
-            LOWER(users.display_name) LIKE LOWER(:query) OR
-            similarity(teams.name, :query) > 0.3 OR
-            similarity(users.username, :query) > 0.3 OR
-            similarity(users.display_name, :query) > 0.3',
-            query: "%#{query_param}%"
-          )
-          .order(
-            Arel.sql(
-              "GREATEST(similarity(teams.name, #{sanitized_query}),
-                        similarity(users.username, #{sanitized_query}),
-                        similarity(users.display_name, #{sanitized_query}),
-                        CASE
-                          WHEN LOWER(teams.name) LIKE LOWER(#{sanitized_query})
-                          THEN 1
-                          ELSE 0
-                        END) DESC"
-            )
-          )
-      else
-        current_user.other_teams.with_attached_photo.includes(
-          :owner,
-          :setting_objects,
-          :members
-        )
-      end
-
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
   end
 
   def show

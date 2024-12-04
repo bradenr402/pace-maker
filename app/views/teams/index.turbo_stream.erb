@@ -1,9 +1,0 @@
-<%= turbo_stream.replace 'otherTeams' do %>
-  <% if other_teams.present? %>
-    <%= render 'teams/shared/team_list', teams: @other_teams %>
-  <% else %>
-    <div class="flex flex-col items-center justify-center gap-6 py-12">
-      <p class="text-soft text-center">No teams found.</p>
-    </div>
-  <% end %>
-<% end %>

@@ -1,47 +1,43 @@
 <% content_for :title, 'Teams' %>
 
-<div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="teamMembershipsTab" class="max-w-3xl mx-auto my-16">
-  <div class="relative flex items-center mb-6">
-    <!-- Left Arrow -->
-    <button type="button" data-action="mousedown->tabs#scrollLeft" data-tabs-target="leftArrow" aria-label="Scroll tabs left" class="opacity-0 pointer-events-none tab-container-scroll-left transition duration-300">
-      <%= inline_svg_tag 'icons/chevron-left.svg', class: 'size-5 text-soft' %>
-    </button>
-
-    <div class="tab-container mx-auto" data-tabs-target="container">
-      <!-- Tab Indicator -->
-      <span data-tabs-target="indicator" class="sliding-tab-indicator"></span>
-
-      <button type="button" id="ownedTeamsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'ownedTeamsTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/team.svg', class: 'size-5' %>
-        <span>My Teams</span>
-      </button>
-
-      <button type="button" id="teamMembershipsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'teamMembershipsTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/id-card.svg', class: 'size-5' %>
-        <span>My Team Memberships</span>
-      </button>
-
-      <button type="button" id="otherTeamsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'otherTeamsTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/search.svg', class: 'size-5' %>
-        <span>Find Teams</span>
-      </button>
+<div class="max-w-3xl mx-auto my-16">
+  <div class="mb-24">
+    <div class="pb-6 my-6 border-b border-slate-200 dark:border-slate-700">
+      <h1 class="heading">Your Teams</h1>
+      <p class="text-soft">Teams you coach.</p>
     </div>
 
-    <!-- Right Arrow -->
-    <button type="button" data-action="mousedown->tabs#scrollRight" data-tabs-target="rightArrow" aria-label="Scroll tabs right" class="opacity-0 pointer-events-none tab-container-scroll-right transition duration-300">
-      <%= inline_svg_tag 'icons/chevron-right.svg', class: 'size-5 text-soft' %>
-    </button>
+    <% if @owned_teams.present? %>
+      <%= render 'teams/shared/team_list', teams: @owned_teams %>
+
+      <div class="flex justify-center mt-12">
+        <%= link_to 'Create a team', new_team_path, class: 'btn btn-sm btn-primary btn-muted' %>
+      </div>
+    <% else %>
+      <div class="flex flex-col items-center justify-center gap-6 mt-12">
+        <p class="text-soft text-center">You don&#8217;t have any teams.</p>
+        <%= link_to 'Create a team', new_team_path, class: 'btn btn-primary' %>
+      </div>
+    <% end %>
   </div>
 
-  <div id="ownedTeamsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'ownedTeamsTab' ? '' : 'hidden' %>">
-    <%= render 'teams/index/owned_teams', owned_teams: @owned_teams %>
-  </div>
+  <div class="mb-24">
+    <div class="pb-6 my-6 border-b border-slate-200 dark:border-slate-700">
+      <h2 class="subheading">Your Team Memberships</h2>
+      <p class="text-sm text-soft">Teams you are a member of.</p>
+    </div>
 
-  <div id="teamMembershipsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'teamMembershipsTab' ? '' : 'hidden' %>">
-    <%= render 'teams/index/membered_teams', membered_teams: @membered_teams %>
-  </div>
+    <% if @membered_teams.present? %>
+      <%= render 'teams/shared/team_list', teams: @membered_teams %>
 
-  <div id="otherTeamsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'otherTeamsTab' ? '' : 'hidden' %>">
-    <%= render 'teams/index/other_teams', other_teams: @other_teams %>
+      <div class="flex justify-center mt-12">
+        <%= link_to 'Find a team to join', search_path, class: 'btn btn-sm btn-white btn-muted' %>
+      </div>
+    <% else %>
+      <div class="flex flex-col items-center justify-center gap-6 mt-12">
+        <p class="text-soft text-center">You&#8217;re not a member of any teams.</p>
+        <%= link_to 'Find a team', search_path, class: 'btn btn-white' %>
+      </div>
+    <% end %>
   </div>
 </div>
