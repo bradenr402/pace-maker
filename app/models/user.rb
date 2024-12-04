@@ -55,7 +55,7 @@ class User < ApplicationRecord
                 # (i.e., the user created their account via email & password)
                 will_save_change_to_encrypted_password? && persisted? || (new_record? && provider.blank? && uid.blank?)
               }
-  before_save :format_phone_number
+  before_save :format_phone_number, if: -> { phone_number.present? }
   before_save :purge_avatar, if: -> { remove_avatar == '1' }
   before_save :clear_avatar_url, if: -> { avatar.attached? }
 

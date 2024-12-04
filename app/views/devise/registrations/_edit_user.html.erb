@@ -176,7 +176,7 @@
       <%= f.label :phone_country_code, class: 'sr-only' %>
       <%= f.select :phone_country_code,
                     grouped_options_for_select(country_code_options, @user.phone_country_code),
-                    { prompt: 'Country code', selected: @user.phone_country_code },
+                    { include_blank: 'Country code', selected: @user.phone_country_code },
                     {
                       class: 'form-select appearance-none px-10 py-2 border [&:not(:focus)]:border-r-transparent rounded-r-none w-max focus:z-10',
                       data: { action: 'change->phone#updateCountryCode change->phone#phoneFormat', phone_target: 'countryCode' }
