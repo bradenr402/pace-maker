@@ -30,15 +30,14 @@
       <% else %>
         <% last_streak_milestone = 0 %>
         <% while current_streak >= last_streak_milestone %>
-          <%= render 'teams/member/streak_badge', percentage: ((current_streak - last_streak_milestone) / (next_streak_milestone - last_streak_milestone).to_f * 100).round(1), days: next_streak_milestone %>
+          <%= render 'teams/member/streak_badge', percentage: ((current_streak - last_streak_milestone) / (next_streak_milestone - last_streak_milestone).to_f * 100).round(1).clamp(0, 100), days: next_streak_milestone %>
           <% last_streak_milestone = next_streak_milestone %>
-          <% next_streak_milestone += streaks_increment %>
+          <% next_streak_milestone += streaks_increment if current_streak >= next_streak_milestone %>
         <% end %>
-        <%= render 'teams/member/streak_badge', percentage: ((current_streak - last_streak_milestone) / (next_streak_milestone - last_streak_milestone).to_f * 100).round(1), days: next_streak_milestone %>
       <% end %>
     </div>
 
-    <%= render 'shared/progress_bar', percentage: (current_streak / next_streak_milestone.to_f * 100).round(1), label: "Progress towards #{next_streak_milestone} day streak" %>
+    <%= render 'shared/progress_bar', percentage: (current_streak / next_streak_milestone.to_f * 100).round(1).clamp(0, 100), label: "Progress towards #{next_streak_milestone} day streak" %>
     <p class="my-1 text-soft text-xs"><%= current_streak %>/<%= next_streak_milestone %> days</p>
   </div>
 
@@ -52,15 +51,14 @@
       <% else %>
         <% last_mileage_milestone = 0 %>
         <% while miles >= last_mileage_milestone %>
-          <%= render 'teams/member/miles_badge', percentage: ((miles - last_mileage_milestone) / (next_mileage_milestone - last_mileage_milestone).to_f * 100).round(1), miles: next_mileage_milestone %>
+          <%= render 'teams/member/miles_badge', percentage: ((miles - last_mileage_milestone) / (next_mileage_milestone - last_mileage_milestone).to_f * 100).round(1).clamp(0, 100), miles: next_mileage_milestone %>
           <% last_mileage_milestone = next_mileage_milestone %>
-          <% next_mileage_milestone += mileage_increment %>
+          <% next_mileage_milestone += mileage_increment if miles >= next_mileage_milestone %>
         <% end %>
-        <%= render 'teams/member/miles_badge', percentage: ((miles - last_mileage_milestone) / (next_mileage_milestone - last_mileage_milestone).to_f * 100).round(1), miles: next_mileage_milestone %>
       <% end %>
     </div>
 
-    <%= render 'shared/progress_bar', percentage: (miles / next_mileage_milestone.to_f * 100).round(1), label: "Progress towards #{next_mileage_milestone} mile milestone" %>
+    <%= render 'shared/progress_bar', percentage: (miles / next_mileage_milestone.to_f * 100).round(1).clamp(0, 100), label: "Progress towards #{next_mileage_milestone} mile milestone" %>
     <p class="my-1 text-soft text-xs"><%= miles %>/<%= next_mileage_milestone %> miles</p>
   </div>
 
@@ -74,15 +72,14 @@
       <% else %>
         <% last_long_run_milestone = 0 %>
         <% while long_runs >= last_long_run_milestone %>
-          <%= render 'teams/member/long_run_badge', percentage: ((long_runs - last_long_run_milestone) / (next_long_run_milestone - last_long_run_milestone).to_f * 100).round(1), runs: next_long_run_milestone %>
+          <%= render 'teams/member/long_run_badge', percentage: ((long_runs - last_long_run_milestone) / (next_long_run_milestone - last_long_run_milestone).to_f * 100).round(1).clamp(0, 100), runs: next_long_run_milestone %>
           <% last_long_run_milestone = next_long_run_milestone %>
-          <% next_long_run_milestone += long_runs_increment %>
+          <% next_long_run_milestone += long_runs_increment if long_runs >= next_long_run_milestone %>
         <% end %>
-        <%= render 'teams/member/long_run_badge', percentage: ((long_runs - last_long_run_milestone) / (next_long_run_milestone - last_long_run_milestone).to_f * 100).round(1), runs: next_long_run_milestone %>
       <% end %>
     </div>
 
-    <%= render 'shared/progress_bar', percentage: (long_runs / next_long_run_milestone.to_f * 100).round(1), label: "Progress towards #{next_long_run_milestone} mile long run" %>
+    <%= render 'shared/progress_bar', percentage: (long_runs / next_long_run_milestone.to_f * 100).round(1).clamp(0, 100), label: "Progress towards #{next_long_run_milestone} long runs milestone" %>
     <p class="my-1 text-soft text-xs"><%= long_runs %>/<%= next_long_run_milestone %> miles</p>
   </div>
 </div>
