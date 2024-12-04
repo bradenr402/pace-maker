@@ -47,7 +47,7 @@
 
         <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
           <button data-action="mousedown->modal#close" data-modal-id="unlinkGoogleAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Nevermind</button>
-          <%= button_to unlink_google_account_user_path(current_user), method: :delete, class: 'btn btn-white btn-outline gap-2' do %>
+          <%= button_to unlink_google_account_user_path(current_user), method: :delete, class: 'btn btn-white btn-outline gap-2 w-full' do %>
             <%= inline_svg_tag 'icons/google-logo.svg', class: 'size-5' %>
             Unlink Google Account
           <% end %>
