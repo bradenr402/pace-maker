@@ -2,13 +2,19 @@ module UserTeamsConcern
   extend ActiveSupport::Concern
 
   def connected_users
-    User.joins(teams: :team_memberships)
-        .where(team_memberships: { team_id: membered_teams.pluck(:id) })
-        .where.not(id:)
-        .distinct
+    Rails.cache.fetch("#{cache_key_with_version}/connected_users") do
+      User.joins(teams: :team_memberships)
+          .where(team_memberships: { team_id: membered_teams.pluck(:id) })
+          .where.not(id:)
+          .distinct
+    end
   end
 
-  def connected_user_ids = connected_users.pluck(:id)
+  def connected_user_ids
+    Rails.cache.fetch("#{cache_key_with_version}/connected_user_ids") do
+      connected_users.pluck(:id)
+    end
+  end
 
   def owns?(team) = self == team.owner
   alias owner_of? owns?
@@ -16,6 +22,9 @@ module UserTeamsConcern
   def member_of?(team) = teams.include?(team)
 
   def membered_teams = teams.where.not(owner_id: id)
+
+  def other_teams =
+    Team.not_included_in(teams.pluck(:id) + owned_teams.pluck(:id))
 
   def search_teams(query)
     Team
@@ -31,17 +40,17 @@ module UserTeamsConcern
       )
       .select(
         ActiveRecord::Base.sanitize_sql_array([
-          "teams.*, users.username, users.display_name,
-          GREATEST(similarity(teams.name, ?),
-                    similarity(users.username, ?),
-                    similarity(users.display_name, ?),
-                    CASE
-                      WHEN LOWER(teams.name) LIKE LOWER(?)
-                      THEN 1
-                      ELSE 0
-                    END) AS similarity_score",
-          query, query, query, "%#{query}%"
-        ])
+                                                "teams.*, users.username, users.display_name,
+                                                GREATEST(similarity(teams.name, ?),
+                                                          similarity(users.username, ?),
+                                                          similarity(users.display_name, ?),
+                                                          CASE
+                                                            WHEN LOWER(teams.name) LIKE LOWER(?)
+                                                            THEN 1
+                                                            ELSE 0
+                                                          END) AS similarity_score",
+                                                query, query, query, "%#{query}%"
+                                              ])
       )
       .order('similarity_score DESC')
   end
@@ -57,23 +66,20 @@ module UserTeamsConcern
       )
       .select(
         ActiveRecord::Base.sanitize_sql_array([
-          "users.*,
-          GREATEST(similarity(users.username, ?),
-                    similarity(users.display_name, ?),
-                    CASE
-                      WHEN LOWER(users.username) LIKE LOWER(?)
-                      THEN 1
-                      ELSE 0
-                    END) AS similarity_score",
-          query, query, "%#{query}%"
-        ])
+                                                "users.*,
+                                                GREATEST(similarity(users.username, ?),
+                                                          similarity(users.display_name, ?),
+                                                          CASE
+                                                            WHEN LOWER(users.username) LIKE LOWER(?)
+                                                            THEN 1
+                                                            ELSE 0
+                                                          END) AS similarity_score",
+                                                query, query, "%#{query}%"
+                                              ])
       )
       .order('similarity_score DESC')
       .distinct
   end
-
-  def other_teams =
-    Team.not_included_in(teams.pluck(:id) + owned_teams.pluck(:id))
 
   def eligibility_for_team_membership(team)
     return ineligible_message('Team not found.') if team.nil?
@@ -100,26 +106,35 @@ module UserTeamsConcern
   def any_teams_require_gender? = teams_requiring_gender.any?
 
   def teams_in_common(other_user) =
-    teams.select { |team| other_user.teams.include?(team) }
+    Rails.cache.fetch([cache_key_with_version, other_user.cache_key_with_version, 'teams_in_common']) do
+      teams.select { |team| other_user.teams.include?(team) }
+    end
 
   def any_teams_in_common?(other_user) = teams_in_common(other_user).any?
 
   def owned_teams_in_common(other_user) =
-    owned_teams.select { |team| other_user.teams.include?(team) }
+    Rails.cache.fetch([cache_key_with_version, other_user.cache_key_with_version, 'owned_teams_in_common']) do
+      owned_teams.select { |team| other_user.teams.include?(team) }
+    end
 
   def any_owned_teams_in_common?(other_user) =
     owned_teams_in_common(other_user).any?
 
   def membered_teams_in_common(other_user) =
-    membered_teams.select { |team| other_user.teams.include?(team) }
+    Rails.cache.fetch([cache_key_with_version, other_user.cache_key_with_version, 'membered_teams_in_common']) do
+      membered_teams.select { |team| other_user.teams.include?(team) }
+    end
 
   def any_membered_teams_in_common?(other_user) =
     membered_teams_in_common(other_user).any?
 
-  def membered_teams_in_common_except(other_user, exclude: []) =
-    membered_teams
-      .select { |team| other_user.membered_teams.include?(team) }
-      .reject { |team| exclude.include?(team) }
+  def membered_teams_in_common_except(other_user, exclude: [])
+    Rails.cache.fetch([cache_key_with_version, other_user.cache_key_with_version, 'membered_teams_in_common_except']) do
+      membered_teams
+        .select { |team| other_user.membered_teams.include?(team) }
+        .reject { |team| exclude.include?(team) }
+    end
+  end
 
   def any_membered_teams_in_common_except?(other_user, exclude: []) =
     membered_teams_in_common_except(other_user, exclude:).any?

@@ -14,20 +14,38 @@ class TeamMembership < ApplicationRecord
   delegate :season_progress, to: :team
 
   # Methods
-  def miles_completed_in_goal = user.miles_this_season(team)
+  def miles_completed_in_goal
+    Rails.cache.fetch("#{cache_key_with_version}/miles_completed_in_goal") do
+      user.miles_this_season(team)
+    end
+  end
 
-  def miles_remaining_in_goal = mileage_goal - miles_completed_in_goal
+  def miles_remaining_in_goal
+    Rails.cache.fetch("#{cache_key_with_version}/miles_remaining_in_goal") do
+      mileage_goal - miles_completed_in_goal
+    end
+  end
 
-  def long_runs_completed_in_goal = user.total_long_runs_this_season(team)
+  def long_runs_completed_in_goal
+    Rails.cache.fetch("#{cache_key_with_version}/long_runs_completed_in_goal") do
+      user.total_long_runs_this_season(team)
+    end
+  end
 
-  def long_runs_remaining_in_goal = long_run_goal - long_runs_completed_in_goal
+  def long_runs_remaining_in_goal
+    Rails.cache.fetch("#{cache_key_with_version}/long_runs_remaining_in_goal") do
+      long_run_goal - long_runs_completed_in_goal
+    end
+  end
 
   def mileage_goal_progress
-    return nil unless mileage_goal?
+    Rails.cache.fetch("#{cache_key_with_version}/mileage_goal_progress") do
+      return nil unless mileage_goal?
 
-    progress = (miles_completed_in_goal / mileage_goal.to_f) * 100.0
+      progress = (miles_completed_in_goal / mileage_goal.to_f) * 100.0
 
-    [progress, 0.0].max.round(2) # Ensures progess stays above 0%
+      [progress, 0.0].max.round(2) # Ensures progess stays above 0%
+    end
   end
 
   def meeting_mileage_goal? = (mileage_goal_progress - season_progress).abs <= 5

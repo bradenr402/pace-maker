@@ -14,68 +14,76 @@ module TeamRunsConcern
   end
 
   def recent_runs
-    Run
-      .includes(:user)
-      .where(users: { id: members.pluck(:id) })
-      .order(date: :desc)
-      .first(15)
+    Rails.cache.fetch(members.cache_key_with_version) do
+      Run
+        .includes(:user)
+        .where(users: { id: members.pluck(:id) })
+        .order(date: :desc)
+        .first(15)
+    end
   end
 
   def recent_long_runs
-    Run
-      .includes(:user)
-      .where(users: { id: members.pluck(:id) })
-      .where(
-        'distance >= CASE
-        WHEN users.gender = ? THEN ?
-        WHEN users.gender = ? THEN ?
-        ELSE ? END',
-        'male',
-        long_run_distance_male,
-        'female',
-        long_run_distance_female,
-        long_run_distance_neutral
-      )
-      .order(date: :desc)
-      .first(15)
+    Rails.cache.fetch([members.cache_key_with_version, 'long_runs']) do
+      Run
+        .includes(:user)
+        .where(users: { id: members.pluck(:id) })
+        .where(
+          'distance >= CASE
+          WHEN users.gender = ? THEN ?
+          WHEN users.gender = ? THEN ?
+          ELSE ? END',
+          'male',
+          long_run_distance_male,
+          'female',
+          long_run_distance_female,
+          long_run_distance_neutral
+        )
+        .order(date: :desc)
+        .first(15)
+    end
   end
 
   def streak_runs
-    Run
-      .includes(:user)
-      .where(users: { id: members.pluck(:id) })
-      .where('date >= ?', Date.current.yesterday)
-      .where(
-        'distance >= CASE
-        WHEN users.gender = ? THEN ?
-        WHEN users.gender = ? THEN ?
-        ELSE ? END',
-        'male',
-        streak_distance_male,
-        'female',
-        streak_distance_female,
-        streak_distance_neutral
-      )
-      .order(date: :desc)
+    Rails.cache.fetch([members.cache_key_with_version, 'streak_runs']) do
+      Run
+        .includes(:user)
+        .where(users: { id: members.pluck(:id) })
+        .where('date >= ?', Date.current.yesterday)
+        .where(
+          'distance >= CASE
+          WHEN users.gender = ? THEN ?
+          WHEN users.gender = ? THEN ?
+          ELSE ? END',
+          'male',
+          streak_distance_male,
+          'female',
+          streak_distance_female,
+          streak_distance_neutral
+        )
+        .order(date: :desc)
+    end
   end
 
   def featured_runs = (recent_long_runs | streak_runs).sort_by(&:date).reverse
 
   def long_runs_in_date_range(range)
-    Run
-      .includes(:user)
-      .where(users: { id: members.pluck(:id) })
-      .in_date_range(range)
-      .where(
-        'distance >= CASE
-        WHEN users.gender = ? THEN ?
-        WHEN users.gender = ? THEN ?
-        ELSE ? END',
-        'male',
-        long_run_distance_male,
-        'female',
-        long_run_distance_female,
-        long_run_distance_neutral
-      )
+    Rails.cache.fetch([members.cache_key_with_version, 'long_runs_range', range]) do
+      Run
+        .includes(:user)
+        .where(users: { id: members.pluck(:id) })
+        .in_date_range(range)
+        .where(
+          'distance >= CASE
+          WHEN users.gender = ? THEN ?
+          WHEN users.gender = ? THEN ?
+          ELSE ? END',
+          'male',
+          long_run_distance_male,
+          'female',
+          long_run_distance_female,
+          long_run_distance_neutral
+        )
+    end
   end
 end

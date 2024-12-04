@@ -7,12 +7,15 @@ module TeamUsersConcern
     user.gender?
   end
 
-  def members_in_common(user) =
-    members
-      .includes(:teams)
-      .select do |member|
-        member != user && member != owner && (member.teams & user.teams).any?
-      end
+  def members_in_common(user)
+    Rails.cache.fetch([cache_key_with_version, 'members_in_common', user.cache_key_with_version]) do
+      members
+        .includes(:teams)
+        .select do |member|
+          member != user && member != owner && (member.teams & user.teams).any?
+        end
+    end
+  end
 
   def any_members_in_common?(user) = members_in_common(user).any?
 
