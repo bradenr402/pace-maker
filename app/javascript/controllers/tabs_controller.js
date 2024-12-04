@@ -6,7 +6,7 @@ export default class extends Controller {
   static targets = ['btn', 'tab', 'container', 'leftArrow', 'rightArrow', 'indicator'];
   static values = {
     defaultTab: String,
-    scrollFraction: { type: Number, default: 0.3 },
+    scrollFraction: { type: Number, default: 0.8 },
   };
 
   connect() {
