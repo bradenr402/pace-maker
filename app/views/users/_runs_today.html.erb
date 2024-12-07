@@ -2,9 +2,13 @@
   <h1 class="heading">Runs Today</h1>
   <p class="text-soft">Runs <%= user == current_user ? 'you have' : "#{user.first_name} has" %> gone on today.</p>
 </div>
+<% runs_today = user.runs_today %>
+
+<% if runs_today.present? %>
+  <p class="mt-6 mb-2 text-sm text-light"><%= user == current_user ? 'You have' : "#{user.first_name} has" %> logged <%= pluralize(runs_today.count, 'run') %> today.</p>
+<% end %>
 
 <div class="mb-10 space-y-4 sm:space-y-6">
-  <% runs_today = user.runs_today %>
   <% if runs_today.present? %>
     <% runs_today.each do |run| %>
       <%= render run %>

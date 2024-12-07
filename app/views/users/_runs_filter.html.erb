@@ -21,20 +21,21 @@
       <span class="hidden my-1 error-message" data-form-validation-target="endDateError">End date must be today or earlier and must be after start date</span>
     </div>
   <% end %>
-</div>
 
-<%= turbo_frame_tag 'runs' do %>
-  <div class="pb-6 my-6 border-b border-slate-200 dark:border-slate-700">
-    <h2 class="subheading">Runs <%= @date_range.titlecase %></h2>
-  </div>
-
-  <div class="mb-10 space-y-4 sm:space-y-6">
+  <%= turbo_frame_tag 'runs' do %>
     <% if @runs.present? %>
-      <%= render @runs %>
-    <% else %>
-      <div class="flex flex-col items-center justify-center gap-6 py-12">
-        <p class="text-soft">No runs found for the selected date range.</p>
-      </div>
+      <p class="mt-6 mb-2 text-sm text-light"><%= user == current_user ? 'You' : user.first_name %> went on <%= pluralize(@runs.count, 'run') %> <%= @date_range %>.</p>
     <% end %>
-  </div>
-<% end %>
+
+    <div class="mb-10 space-y-4 sm:space-y-6">
+      <% if @runs.present? %>
+        <%= render @runs %>
+      <% else %>
+        <div class="flex flex-col items-center justify-center gap-6 py-12">
+          <p class="text-soft">No runs found for the selected date range.</p>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+˝
