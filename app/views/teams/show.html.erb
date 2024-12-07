@@ -114,20 +114,20 @@
     </button>
   </div>
 
-  <% cache [@team, "info_tab_#{current_user.id}"] do %>
+  <% cache [@team, "info_tab_#{current_user.id}", @team.season_progress, @team.mileage_goal_progress, @team.long_run_goal_progress], expires_in: 4.hours do %>
     <div id="infoTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'infoTab' ? '' : 'hidden' %>">
       <%= render 'teams/show/team_info', team: @team %>
     </div>
   <% end %>
 
-  <% cache [@team, "members_tab_#{current_user.id}"] do %>
+  <% cache [@team, "members_tab_#{current_user.id}", @members.count], expires_in: 4.hours do %>
     <div id="membersTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'membersTab' ? '' : 'hidden' %>">
       <%= render 'teams/show/members', team: @team, members: @members %>
     </div>
   <% end %>
 
   <% if @current_user_owns_team %>
-    <% cache [@team, "join_requests_tab_#{current_user.id}"] do %>
+    <% cache [@team, "join_requests_tab_#{current_user.id}", @join_requests.count], expires_in: 4.hours do %>
       <div id="joinRequestsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'joinRequestsTab' ? '' : 'hidden' %>">
         <%= render 'teams/show/join_requests', join_requests: @join_requests %>
       </div>
@@ -135,25 +135,25 @@
   <% end %>
 
   <% if @current_user_member_of_team %>
-    <% cache [@team, "rankings_tab_#{current_user.id}"] do %>
+    <% cache([@team, "rankings_tab_#{current_user.id}", @members.count], expires_in: 4.hours) do %>
       <div id="rankingsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'rankingsTab' ? '' : 'hidden' %>">
         <%= render 'teams/show/rankings', team: @team %>
       </div>
     <% end %>
 
-    <% cache [@team, "trends_tab_#{current_user.id}"] do %>
+    <% cache [@team, "trends_tab_#{current_user.id}", @team.season_progress, @team.mileage_goal_progress, @team.long_run_goal_progress], expires_in: 4.hours do %>
       <div id="trendsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'trendsTab' ? '' : 'hidden' %>">
         <%= render 'teams/show/trends', team: @team %>
       </div>
     <% end %>
 
-    <% cache [@team, "featured_tab_#{current_user.id}"] do %>
+    <% cache [@team, "featured_tab_#{current_user.id}", @featured_runs.count], expires_in: 4.hours do %>
       <div id="featuredTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'featuredTab' ? '' : 'hidden' %>">
         <%= render 'teams/show/featured', team: @team %>
       </div>
     <% end %>
 
-    <% cache [@team, "recent_activity_tab_#{current_user.id}"] do %>
+    <% cache [@team, "recent_activity_tab_#{current_user.id}", @recent_runs.count], expires_in: 4.hours do %>
       <div id="recentActivityTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'recentActivityTab' ? '' : 'hidden' %>">
         <%= render 'teams/show/recent_activity', team: @team %>
       </div>
