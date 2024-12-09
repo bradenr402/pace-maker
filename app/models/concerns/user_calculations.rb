@@ -97,16 +97,16 @@ module UserCalculations
 
   # Streak calculations
   def current_streak(team = nil, current_date = Date.current)
-    Rails.cache.fetch("#{cache_key_with_version}/current_streak/#{team&.id}/#{current_date}") do
-      @all_runs ||= runs
-      return { streak: 0, start_date: nil, end_date: nil } if @all_runs.empty?
+    Rails.cache.fetch("#{cache_key_with_version}/current_streak/#{team&.id}/#{current_date}/#{runs.maximum(:updated_at)}") do
+      all_runs = runs.select(:date, :distance)
+      return { streak: 0, start_date: nil, end_date: nil } if all_runs.empty?
 
       streak = 0
       start_date = nil
       end_date = nil
 
       loop do
-        runs_on_date = @all_runs.where(date: current_date)
+        runs_on_date = all_runs.where(date: current_date)
         required_distance = team&.streak_distance_for_user(self) || 0
 
         if runs_on_date.any? { |run| run.distance >= required_distance }
@@ -125,7 +125,7 @@ module UserCalculations
   end
 
   def record_streak(team = nil)
-    Rails.cache.fetch("#{cache_key_with_version}/record_streak/#{team&.id}") do
+    Rails.cache.fetch("#{cache_key_with_version}/record_streak/#{team&.id}/#{runs.maximum(:updated_at)}") do
       return { streak: 0, start_date: nil, end_date: nil } if runs.empty?
 
       run_dates = runs.order(:date).pluck(:date)
