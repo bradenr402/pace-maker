@@ -24,7 +24,7 @@ module TeamRunsConcern
   end
 
   def recent_long_runs
-    Rails.cache.fetch([members.cache_key_with_version, 'long_runs']) do
+    Rails.cache.fetch([members.cache_key_with_version, 'long_runs', Date.current]) do
       Run
         .includes(:user)
         .where(users: { id: members.pluck(:id) })
@@ -45,7 +45,7 @@ module TeamRunsConcern
   end
 
   def streak_runs
-    Rails.cache.fetch([members.cache_key_with_version, 'streak_runs']) do
+    Rails.cache.fetch([members.cache_key_with_version, 'streak_runs', Date.current]) do
       Run
         .includes(:user)
         .where(users: { id: members.pluck(:id) })
@@ -68,7 +68,7 @@ module TeamRunsConcern
   def featured_runs = (recent_long_runs | streak_runs).sort_by(&:date).reverse
 
   def long_runs_in_date_range(range)
-    Rails.cache.fetch([members.cache_key_with_version, 'long_runs_range', range]) do
+    Rails.cache.fetch([members.cache_key_with_version, 'long_runs_range', range.hash]) do
       Run
         .includes(:user)
         .where(users: { id: members.pluck(:id) })
