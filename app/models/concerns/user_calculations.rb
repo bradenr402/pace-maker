@@ -74,7 +74,7 @@ module UserCalculations
 
     Rails.cache.fetch("#{cache_key_with_version}/long_runs_this_season/#{required_distance}/#{long_runs(team).maximum(:updated_at)}") do
       runs.where(
-        data: team.season_range,
+        date: team.season_range,
         distance: required_distance..Float::INFINITY
       )
     end
