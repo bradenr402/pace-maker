@@ -1,7 +1,7 @@
 module TeamCalculations
   # Season-related calculations
   def season_progress
-    Rails.cache.fetch("#{cache_key_with_version}/season_progress") do
+    Rails.cache.fetch("#{cache_key_with_version}/season_progress/#{Date.current}") do
       return nil unless season_dates?
 
       season_duration = season_end_date - season_start_date
@@ -14,84 +14,76 @@ module TeamCalculations
   end
 
   def days_remaining_in_season
-    Rails.cache.fetch("#{cache_key_with_version}/days_remaining_in_season") do
+    Rails.cache.fetch("#{cache_key_with_version}/days_remaining_in_season/#{Date.current}") do
       (season_end_date - Date.today).to_i
     end
   end
 
   # Mileage calculations
   def total_miles_in_season
-    Rails.cache.fetch("#{cache_key_with_version}/total_miles_in_season") do
+    Rails.cache.fetch("#{cache_key_with_version}/total_miles_in_season/#{total_miles}/#{season_start_date}/#{season_end_date}") do
       members.flat_map { |member| member.runs_this_season(self) }.sum(&:distance)
     end
   end
 
   def total_miles
-    Rails.cache.fetch("#{cache_key_with_version}/total_miles") do
-      members.sum(&:total_miles)
-    end
+    members.sum(&:total_miles)
   end
 
   def total_miles_on_day(date)
-    Rails.cache.fetch("#{cache_key_with_version}/total_miles_on_day/#{date}") do
+    Rails.cache.fetch("#{cache_key_with_version}/total_miles_on_day/#{date}/#{total_miles}") do
       members.sum { |member| member.runs_on_day(date).sum(&:distance) }
     end
   end
 
   def miles_in_date_range(date_range)
-    Rails.cache.fetch("#{cache_key_with_version}/miles_in_date_range/#{date_range.hash}") do
+    Rails.cache.fetch("#{cache_key_with_version}/miles_in_date_range/#{date_range.hash}/#{total_miles}") do
       members.sum { |member| member.miles_in_date_range(date_range) }
     end
   end
 
   # Run calculations
   def runs_in_season
-    Rails.cache.fetch("#{cache_key_with_version}/runs_in_season") do
+    Rails.cache.fetch("#{cache_key_with_version}/runs_in_season/#{total_miles}/#{season_start_date}/#{season_end_date}") do
       members.flat_map { |member| member.runs_this_season(self) }
     end
   end
 
   def runs_in_date_range(date_range)
-    Rails.cache.fetch("#{cache_key_with_version}/runs_in_date_range/#{date_range.hash}") do
+    Rails.cache.fetch("#{cache_key_with_version}/runs_in_date_range/#{date_range.hash}/#{total_miles}") do
       members.flat_map { |member| member.runs_in_date_range(date_range) }
     end
   end
 
   # Long run calculations
   def long_runs_in_season
-    Rails.cache.fetch("#{cache_key_with_version}/long_runs_in_season") do
+    Rails.cache.fetch("#{cache_key_with_version}/long_runs_in_season/#{total_miles}/#{season_start_date}/#{season_end_date}") do
       members.flat_map { |member| member.long_runs_this_season(self) }
     end
   end
 
-  def total_long_runs_in_season
-    Rails.cache.fetch("#{cache_key_with_version}/total_long_runs_in_season") do
-      members.sum { |member| member.total_long_runs_this_season(self) }
-    end
-  end
+  def total_long_runs_in_season = long_runs_in_season.count
 
   def total_long_runs
-    Rails.cache.fetch("#{cache_key_with_version}/total_long_runs") do
+    Rails.cache.fetch("#{cache_key_with_version}/total_long_runs/#{total_miles}") do
       members.sum { |member| member.total_long_runs(self) }
     end
   end
 
   def long_runs_in_date_range(date_range)
-    Rails.cache.fetch("#{cache_key_with_version}/long_runs_in_date_range/#{date_range.hash}") do
-      members.flat_map do |member|
-        member.long_runs_in_date_range(self, date_range)
-      end
+    Rails.cache.fetch("#{cache_key_with_version}/long_runs_in_date_range/#{date_range.hash}/#{total_miles}") do
+      members.flat_map { |member| member.long_runs_in_date_range(self, date_range) }
     end
   end
 
   def total_long_runs_in_date_range(date_range)
-    Rails.cache.fetch("#{cache_key_with_version}/total_long_runs_in_date_range/#{date_range.hash}") do
-      members.sum { |member| member.total_long_runs_in_date_range(self, date_range) }
+    Rails.cache.fetch("#{cache_key_with_version}/total_long_runs_in_date_range/#{date_range.hash}/#{total_miles}") do
+      long_runs_in_date_range(date_range).count
     end
   end
 
   def long_runs_on_day(date)
-    Rails.cache.fetch("#{cache_key_with_version}/long_runs_on_day/#{date}") do
+    RRails.cache.fetch("#{cache_key_with_version}/long_runs_on_day/#{date}/#{total_miles}") do
       members.flat_map do |member|
         member
           .runs
@@ -101,19 +93,17 @@ module TeamCalculations
     end
   end
 
-  def total_long_runs_on_day(date)
-    Rails.cache.fetch("#{cache_key_with_version}/total_long_runs_on_day/#{date}") do
-      long_runs_on_day(date).count
-    end
-  end
+  def total_long_runs_on_day(date) = long_runs_on_day(date).count
 
   # Mileage goal progress
   def mileage_goal_progress
-    return nil unless mileage_goal?
+    Rails.cache.fetch("#{cache_key_with_version}/mileage_goal_progress/#{total_miles_in_season}") do
+      return nil unless mileage_goal?
 
-    progress = (total_miles_in_season / mileage_goal.to_f) * 100.0
+      progress = (total_miles_in_season / mileage_goal.to_f) * 100.0
 
-    [progress, 0.0].max.round(2) # Ensures progess stays above 0%
+      [progress, 0.0].max.round(2) # Ensures progess stays above 0%
+    end
   end
 
   def miles_remaining_in_goal = mileage_goal - total_miles_in_season
@@ -128,17 +118,18 @@ module TeamCalculations
 
   # Long run goal progress
   def long_run_goal_progress
-    return nil unless long_run_goal?
+    Rails.cache.fetch("#{cache_key_with_version}/long_run_goal_progress/#{total_long_runs_in_season}") do
+      return nil unless long_run_goal?
 
-    progress = (total_long_runs_in_season / long_run_goal.to_f) * 100.0
+      progress = (total_long_runs_in_season / long_run_goal.to_f) * 100.0
 
-    [progress, 0.0].max.round(2) # Ensures progess stays above 0%
+      [progress, 0.0].max.round(2) # Ensures progess stays above 0%
+    end
   end
 
   def long_runs_remaining_in_goal = long_run_goal - total_long_runs_in_season
 
-  def meeting_long_run_goal? =
-    (long_run_goal_progress - season_progress).abs <= 5
+  def meeting_long_run_goal? = (long_run_goal_progress - season_progress).abs <= 5
 
   def ahead_of_long_run_goal? = long_run_goal_progress - season_progress > 5
 

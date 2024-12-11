@@ -1,103 +1,123 @@
 module UserCalculations
   # Mileage calculations
   def total_miles
-    Rails.cache.fetch("#{cache_key_with_version}/total_miles") do
+    Rails.cache.fetch("#{cache_key_with_version}/total_miles/#{runs.maximum(:updated_at)}") do
       runs.sum(:distance).round(1)
     end
   end
 
   def total_km
-    Rails.cache.fetch("#{cache_key_with_version}/total_km") do
+    Rails.cache.fetch("#{cache_key_with_version}/total_km/#{total_miles}") do
       (total_miles * 1.609344).round(1)
     end
   end
 
   def miles_this_season(team)
-    Rails.cache.fetch("#{cache_key_with_version}/miles_this_season/#{team.id}") do
+    Rails.cache.fetch("#{cache_key_with_version}/miles_this_season/#{team.id}/#{total_miles}") do
       runs_this_season(team).sum(:distance).round(1)
     end
   end
 
   def miles_in_date_range(date_range)
-    Rails.cache.fetch("#{cache_key_with_version}/miles_in_date_range/#{date_range.hash}") do
+    Rails.cache.fetch("#{cache_key_with_version}/miles_in_date_range/#{date_range.hash}/#{total_miles}") do
       runs_in_date_range(date_range).sum(:distance).round(1)
     end
   end
 
   # Duration calculations
   def total_duration
-    Rails.cache.fetch("#{cache_key_with_version}/total_duration") do
+    Rails.cache.fetch("#{cache_key_with_version}/total_duration/#{runs.maximum(:updated_at)}") do
       runs.where.not(duration: nil).sum(:duration)
     end
   end
 
   # Run calculations
   def runs_this_season(team)
-    Rails.cache.fetch("#{cache_key_with_version}/runs_this_season/#{team.id}") do
+    Rails.cache.fetch("#{cache_key_with_version}/runs_this_season/#{team.id}/#{runs.maximum(:updated_at)}") do
       runs.in_date_range(team.season_start_date..team.season_end_date)
     end
   end
 
   def runs_in_date_range(date_range)
-    Rails.cache.fetch("#{cache_key_with_version}/runs_in_date_range/#{date_range.hash}") do
+    Rails.cache.fetch("#{cache_key_with_version}/runs_in_date_range/#{date_range.hash}/#{runs.maximum(:updated_at)}") do
       runs.where(date: date_range)
     end
   end
 
   def runs_on_day(date)
-    Rails.cache.fetch("#{cache_key_with_version}/runs_on_day/#{date}") do
+    Rails.cache.fetch("#{cache_key_with_version}/runs_on_day/#{date}/#{runs.maximum(:updated_at)}") do
       runs.where(date:)
     end
   end
 
   # Long run calculations
+  def long_runs(team)
+    required_distance = team.long_run_distance_for_user(self)
+
+    Rails.cache.fetch("#{cache_key_with_version}/long_runs/#{required_distance}/#{runs.maximum(:updated_at)}") do
+      runs.where(distance: required_distance..Float::INFINITY)
+    end
+  end
+
   def total_long_runs(team)
-    Rails.cache.fetch("#{cache_key_with_version}/total_long_runs/#{team.id}") do
+    required_distance = team.long_run_distance_for_user(self)
+
+    Rails.cache.fetch("#{cache_key_with_version}/total_long_runs/#{required_distance}/#{long_runs(team).maximum(:updated_at)}") do
       runs.where(
-        distance: team.long_run_distance_for_user(self)..Float::INFINITY
+        distance: required_distance..Float::INFINITY
       ).count
     end
   end
 
   def long_runs_this_season(team)
-    Rails.cache.fetch("#{cache_key_with_version}/long_runs_this_season/#{team.id}") do
+    required_distance = team.long_run_distance_for_user(self)
+
+    Rails.cache.fetch("#{cache_key_with_version}/long_runs_this_season/#{required_distance}/#{long_runs(team).maximum(:updated_at)}") do
       runs.where(
         data: team.season_range,
-        distance: team.long_run_distance_for_user(self)..Float::INFINITY
+        distance: required_distance..Float::INFINITY
       )
     end
   end
 
   def total_long_runs_this_season(team)
-    Rails.cache.fetch("#{cache_key_with_version}/total_long_runs_this_season/#{team.id}") do
+    required_distance = team.long_run_distance_for_user(self)
+
+    Rails.cache.fetch("#{cache_key_with_version}/total_long_runs_this_season/#{required_distance}/#{long_runs(team).maximum(:updated_at)}") do
       runs.where(
         date: team.season_range,
-        distance: team.long_run_distance_for_user(self)..Float::INFINITY
+        distance: required_distance..Float::INFINITY
       ).count
     end
   end
 
   def long_runs_in_date_range(team, date_range)
-    Rails.cache.fetch("#{cache_key_with_version}/long_runs_in_date_range/#{team.id}/#{date_range.hash}") do
+    required_distance = team.long_run_distance_for_user(self)
+
+    Rails.cache.fetch("#{cache_key_with_version}/long_runs_in_date_range/#{required_distance}/#{date_range.hash}/#{long_runs(team).maximum(:updated_at)}") do
       runs.where(
         date: date_range,
-        distance: team.long_run_distance_for_user(self)..Float::INFINITY
+        distance: required_distance..Float::INFINITY
       )
     end
   end
 
   def total_long_runs_in_date_range(team, date_range)
-    Rails.cache.fetch("#{cache_key_with_version}/total_long_runs_in_date_range/#{team.id}/#{date_range.hash}") do
+    required_distance = team.long_run_distance_for_user(self)
+
+    Rails.cache.fetch("#{cache_key_with_version}/total_long_runs_in_date_range/#{required_distance}/#{date_range.hash}/#{long_runs(team).maximum(:updated_at)}") do
       runs.where(
         date: date_range,
-        distance: team.long_run_distance_for_user(self)..Float::INFINITY
+        distance: required_distance..Float::INFINITY
       ).count
     end
   end
 
   # Streak calculations
   def current_streak(team = nil, current_date = Date.current)
-    Rails.cache.fetch("#{cache_key_with_version}/current_streak/#{team&.id}/#{current_date}/#{runs.maximum(:updated_at)}") do
+    required_distance = team&.streak_distance_for_user(self) || 0
+
+    Rails.cache.fetch("#{cache_key_with_version}/current_streak/#{required_distance}/#{current_date}/#{runs.maximum(:updated_at)}") do
       all_runs = runs.select(:date, :distance)
       return { streak: 0, start_date: nil, end_date: nil } if all_runs.empty?
 
@@ -107,7 +127,6 @@ module UserCalculations
 
       loop do
         runs_on_date = all_runs.where(date: current_date)
-        required_distance = team&.streak_distance_for_user(self) || 0
 
         if runs_on_date.any? { |run| run.distance >= required_distance }
           end_date ||= current_date
@@ -125,7 +144,9 @@ module UserCalculations
   end
 
   def record_streak(team = nil)
-    Rails.cache.fetch("#{cache_key_with_version}/record_streak/#{team&.id}/#{runs.maximum(:updated_at)}") do
+    required_distance = team&.streak_distance_for_user(self) || 0
+
+    Rails.cache.fetch("#{cache_key_with_version}/record_streak/#{required_distance}/#{runs.maximum(:updated_at)}") do
       return { streak: 0, start_date: nil, end_date: nil } if runs.empty?
 
       run_dates = runs.order(:date).pluck(:date)
