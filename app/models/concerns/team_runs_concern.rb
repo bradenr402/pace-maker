@@ -29,10 +29,10 @@ module TeamRunsConcern
         .includes(:user)
         .where(users: { id: members.pluck(:id) })
         .where(
-          'distance >= CASE
+          'CAST(distance AS numeric) >= CAST(CASE
           WHEN users.gender = ? THEN ?
           WHEN users.gender = ? THEN ?
-          ELSE ? END',
+          ELSE ? END AS numeric)',
           'male',
           long_run_distance_male,
           'female',
@@ -51,10 +51,10 @@ module TeamRunsConcern
         .where(users: { id: members.pluck(:id) })
         .where('date >= ?', Date.current.yesterday)
         .where(
-          'distance >= CASE
+          'CAST(distance AS numeric) >= CAST(CASE
           WHEN users.gender = ? THEN ?
           WHEN users.gender = ? THEN ?
-          ELSE ? END',
+          ELSE ? END AS numeric)',
           'male',
           streak_distance_male,
           'female',
@@ -74,10 +74,10 @@ module TeamRunsConcern
         .where(users: { id: members.pluck(:id) })
         .in_date_range(range)
         .where(
-          'distance >= CASE
+          'CAST(distance AS numeric) >= CAST(CASE
           WHEN users.gender = ? THEN ?
           WHEN users.gender = ? THEN ?
-          ELSE ? END',
+          ELSE ? END AS numeric)',
           'male',
           long_run_distance_male,
           'female',
