@@ -60,7 +60,7 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     address: 'smtp.gmail.com',
     port: 587,
-    domain: 'yourdomain.com', # Replace with your domain
+    domain: 'pace-maker.onrender.com',
     user_name: Rails.application.credentials.dig(:gmail, :username),
     password: Rails.application.credentials.dig(:gmail, :password),
     authentication: 'plain',
