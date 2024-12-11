@@ -54,12 +54,25 @@
 
 <% icon_color_class = icon_color_class_map[icon_background] %>
 
-<% if team.photo.attached? && team.photo&.blob&.persisted? && team.photo&.variable? %>
-  <%= image_tag team.photo.variant(resize_to_limit: [px_size, px_size]).processed, class: "#{size_classes} object-cover #{image_classes}", **image_options %>
+
+<% unless image_only %>
+  <% svg_fallback = capture do %>
+    <div class="grid place-items-center <%= size_classes %> <%= icon_background_class %> <%= image_classes %>">
+      <%= inline_svg_tag "icons/#{icon_filled ? 'team-filled' : 'team'}.svg", class: "#{fallback_size_class} #{icon_color_class}" %>
+    </div>
+  <% end %>
+<% end %>
+
+<% team_photo_check = team.photo.attached? && team.photo&.blob&.persisted? && team.photo&.variable? %>
+
+<% if team_photo_check %>
+  <% begin %>
+    <%= image_tag team.photo.variant(resize_to_limit: [px_size, px_size]).processed, class: "#{size_classes} object-cover #{image_classes}", **image_options %>
+  <% rescue ActiveStorage::FileNotFoundError, StandardError => e %>
+    <%= svg_fallback %>
+  <% end %>
 <% elsif image_only %>
   <%= image_tag '', class: "#{size_classes} object-cover #{image_classes}", **image_options if team.persisted? && current_page?(edit_team_path(team)) %>
 <% else %>
-  <div class="grid place-items-center <%= size_classes %> <%= icon_background_class %> <%= image_classes %>">
-    <%= inline_svg_tag "icons/#{icon_filled ? 'team-filled' : 'team'}.svg", class: "#{fallback_size_class} #{icon_color_class}" %>
-  </div>
+  <%= svg_fallback %>
 <% end %>
