@@ -21,7 +21,11 @@
 <%= javascript_importmap_tags %>
 
 <script>
-  if ('<%= user_signed_in? ? current_user.settings(:appearance).theme : 'system' %>' === 'dark' || ('<%= user_signed_in? ? current_user.settings(:appearance).theme : 'system' %>' === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-    document.documentElement.classList.add('dark')
+  const theme = "<%= user_signed_in? ? current_user.theme : 'system' %>";
+  if (
+    theme === 'dark' ||
+    (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+  ) {
+    document.documentElement.classList.add('dark');
   }
 </script>

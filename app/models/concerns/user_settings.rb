@@ -32,4 +32,6 @@ module UserSettings
 
   def show_email? = settings(:privacy).email_visible
   def show_phone? = settings(:privacy).phone_visible
+
+  def theme = settings(:appearance).theme
 end
