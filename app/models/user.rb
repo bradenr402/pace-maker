@@ -19,8 +19,8 @@ class User < ApplicationRecord
          :rememberable,
          :validatable,
          :omniauthable,
-         omniauth_providers: [:google_oauth2],
-         authentication_keys: [:login]
+         omniauth_providers: [ :google_oauth2 ],
+         authentication_keys: [ :login ]
   # Others available are: :confirmable, :lockable, :timeoutable, and :trackable
 
   # Associations
@@ -43,7 +43,7 @@ class User < ApplicationRecord
   attr_accessor :remove_avatar
 
   # Enums
-  enum gender: { male: 'male', female: 'female' }
+  enum :gender, [ 'male', 'female' ]
 
   # Callbacks
   before_validation :convert_empty_string_phone_number_to_nil
@@ -89,7 +89,7 @@ class User < ApplicationRecord
   validates :phone_number, phone: { possible: true, allow_blank: true }
   validates :gender,
             inclusion: {
-              in: genders.keys + ['']
+              in: genders.keys + [ '' ]
             },
             if: -> { gender.present? }
 
@@ -193,7 +193,7 @@ class User < ApplicationRecord
       digits = ('0'..'9').to_a
       special = %w[# ? ! @ $ % ^ & * -]
 
-      password = [upper.sample, lower.sample, digits.sample, special.sample]
+      password = [ upper.sample, lower.sample, digits.sample, special.sample ]
 
       (length - password.length).times do
         password << (upper + lower + digits + special).sample
@@ -220,8 +220,7 @@ class User < ApplicationRecord
     )
   end
 
-  def convert_empty_string_phone_number_to_nil =
-    (self.phone_number = nil if phone_number.blank?)
+  def convert_empty_string_phone_number_to_nil = (self.phone_number = nil if phone_number.blank?)
 
   def format_phone_number
     parsed_phone = Phonelib.parse(phone_number, phone_country_code)

@@ -41,7 +41,7 @@ To run PaceMaker on your local machine, follow these steps:
 ### Prerequisites
 
 - Ruby 3.3.6+
-- Rails 7.2+
+- Rails 8.0+
 - PostgreSQL 14.14+
 
 ### Installation
