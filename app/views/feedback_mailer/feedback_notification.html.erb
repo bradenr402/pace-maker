@@ -1,18 +1,43 @@
-<h1>New Feedback Received</h1>
+<div class="container">
+  <h1>New Feedback Received</h1>
 
-<h2>User Information</h2>
-<p><strong>Name:</strong> <%= @user[:display_name] || @user[:username] %></p>
-<p><strong>Email:</strong> <%= @user[:email] %></p>
-<p><strong>User ID:</strong> <%= @user[:id] %></p>
+  <br>
+  <h2>Feedback Details</h2>
+  <p><span class="font-bold">Type:</span> <%= @feedback[:feedback_type].titleize %></p>
+  <p><span class="font-bold">Title:</span> <%= @feedback[:title] %></p>
 
-<h2>Feedback Details</h2>
-<p><strong>Type:</strong> <%= @feedback[:feedback_type].titleize %></p>
-<p><strong>Title:</strong> <%= @feedback[:title] %></p>
+  <br>
+  <h2>User Information</h2>
+  <p><span class="font-bold">Name:</span> <%= @user[:display_name] || @user[:username] %></p>
+  <p><span class="font-bold">Email:</span> <%= @user[:email] %></p>
+  <p><span class="font-bold">User ID:</span> <span class="font-mono"><%= @user[:id] %></span></p>
 
-<h2>Message</h2>
-<p><%= @feedback[:message] %></p>
+  <br>
+  <h2>Message</h2>
+  <p><%= @feedback[:message] %></p>
 
-<% if @feedback[:images].present? || @feedback[:video].present? %>
-  <h2>Attachments</h2>
-  <p>Please see attached files.</p>
-<% end %>
+  <% if @feedback[:images].present? || @feedback[:video].present? %>
+    <br>
+    <h2>Attachments</h2>
+    <p>
+      <% if @feedback[:images].present? %>
+        <%= pluralize(@feedback[:images].size, 'image') %> attached.
+      <% end %>
+      <% if @feedback[:video].present? %>
+        A video is attached.
+      <% end %>
+    </p>
+
+    <% if @feedback[:images].present? %>
+      <h3>Images</h3>
+      <% @feedback[:images].each do |image| %>
+        <%= image_tag image, style: 'max-width: 100%;' %>
+      <% end %>
+    <% end %>
+
+    <% if @feedback[:video].present? %>
+      <h3>Video</h3>
+      <%= video_tag @feedback[:video], controls: true, style: 'max-width: 100%;' %>
+    <% end %>
+  <% end %>
+</div>

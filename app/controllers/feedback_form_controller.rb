@@ -6,7 +6,7 @@ class FeedbackFormController < ApplicationController
       id: current_user.id,
       email: current_user.email,
       username: current_user.username,
-      display_name: current_user.display_name
+      display_name: current_user.display_name.presence || current_user.username
     }
 
     feedback_data = {
