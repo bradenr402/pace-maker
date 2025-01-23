@@ -52,7 +52,7 @@
     </thead>
 
     <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
-      <% @all_members.sort_by { |member| -(member[:total_miles]) }.each do |data| %>
+      <% @all_members.reject { |data| !team.include_coach? && data[:member].owns?(team) }.sort_by { |member| -(member[:total_miles]) }.each do |data| %>
         <tr data-filter-gender-target="row" class="bg-slate-50/85 dark:bg-slate-800/85 hover:bg-slate-200/70 dark:hover:bg-slate-700/70">
           <th scope="row" class="px-6 py-4 font-medium text-normal whitespace-nowrap">
             <div class="flex items-center">
