@@ -26,7 +26,8 @@ module TeamSettings
         long_runs_increment: 5
       },
       general: {
-        week_start: :monday
+        week_start: :monday,
+        include_self: true
       }
     }
   end
@@ -141,6 +142,8 @@ module TeamSettings
       end
     when 'week_start'
       'This setting determines the start of the week for the calendars on the team page and your member page.'
+    when 'include_self'
+      'This setting determines whether your own runs are included in the team stats.'
     when 'long_run_distance_male', 'long_run_distance_female', 'long_run_distance_neutral'
       "This setting means you must run at least #{pluralize(value, 'mile')} for a run to count as a long run."
     when 'streak_distance_male', 'streak_distance_female', 'streak_distance_neutral'
@@ -171,6 +174,8 @@ module TeamSettings
   def max_allowed_requests = settings(:join_requirements).max_allowed_requests.to_i
 
   def week_start = settings(:general).week_start.to_sym
+  def include_self? = settings(:general).include_self
+  alias include_coach? include_self?
 
   def long_run_distance_male = settings(:long_runs).long_run_distance_male.to_i
   def long_run_distance_female = settings(:long_runs).long_run_distance_female.to_i

@@ -19,11 +19,32 @@
       </div>
       <p class="text-sm text-slate-600 dark:text-slate-400">Miscellaneous settings.</p>
     </div>
-    <div class="flex flex-wrap items-center justify-between gap-4">
-      <p>Week Start:</p>
-      <div class="ml-auto flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-3 pr-4 py-1 w-max">
-        <%= inline_svg_tag 'icons/calendar.svg', class: 'size-4.5 text-soft shrink-0' %>
-        <span class="text-light text-sm whitespace-nowrap"><%= @team.settings(:general).week_start.to_s.titleize %></span>
+
+    <div class="divide-y dark:divide-slate-700">
+      <div class="flex flex-wrap items-center justify-between gap-4 py-2.5">
+        <p>Week Start:</p>
+        <div class="ml-auto flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-3 pr-4 py-1 w-max">
+          <%= inline_svg_tag 'icons/calendar.svg', class: 'size-4.5 text-soft shrink-0' %>
+          <span class="text-light text-sm whitespace-nowrap"><%= @team.settings(:general).week_start.to_s.titleize %></span>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-between gap-4 py-2.5">
+        <div>
+          <p>Coach Included?</p>
+          <p class="text-xs text-soft">This setting determines whether the coach&#8217;s runs are included in the team&#8217;s stats.</p>
+        </div>
+        <% if @team.include_coach? %>
+          <div class="ml-auto flex items-center gap-2 bg-green-100 dark:bg-green-900/80 text-green-700 dark:text-green-300 font-bold rounded-full pl-3 pr-4 py-1 w-max">
+            <%= inline_svg_tag 'icons/check.svg', class: 'size-4.5 shrink-0' %>
+            <span class="text-sm">Yes</span>
+          </div>
+        <% else %>
+          <div class="ml-auto flex items-center gap-2 bg-rose-100 dark:bg-rose-900/80 text-rose-700 dark:text-rose-300 font-bold rounded-full pl-3 pr-4 py-1 w-max">
+            <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4.5 shrink-0' %>
+            <span class="text-sm">No</span>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

@@ -10,6 +10,7 @@
   <%= hidden_field_tag 'team[settings][require_gender]', 'false' %>
   <%= hidden_field_tag 'team[settings][include_saturday]', 'false' %>
   <%= hidden_field_tag 'team[settings][include_sunday]', 'false' %>
+  <%= hidden_field_tag 'team[settings][include_self]', 'false' %>
 
   <%= form.fields_for :settings do |settings_form| %>
     <div class="my-6">
@@ -133,6 +134,17 @@
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
       <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">General</h2>
       <p class="text-sm text-slate-600 dark:text-slate-400">Miscellaneous settings to optimize your experience.</p>
+    </div>
+
+    <div class="form-group flex gap-x-2.5">
+      <div class="form-input-toggle shrink-0" data-controller="toggle-checkbox" data-action="mousedown->toggle-checkbox#toggle">
+        <span class="form-input-toggle-switch"></span>
+        <%= settings_form.check_box :include_self, { checked: team.include_self?, class: 'sr-only', data: { toggle_checkbox_target: 'checkbox' } }, true, false %>
+      </div>
+      <div>
+        <%= settings_form.label :include_self, 'Include self', class: 'select-none text-slate-700 dark:text-slate-300' %>
+        <p class="my-1 help-text">Check this box to include your own runs in the team&#8217;s stats.</p>
+      </div>
     </div>
 
     <div class="form-group">
