@@ -411,9 +411,9 @@ class TeamsController < ApplicationController
   end
 
   def get_trends_data
-    if @trends_date_range.present? && @trends_date_range_description.present?
-      return @trends_date_range, @trends_date_range_description
-    end
+    # if @trends_date_range.present? && @trends_date_range_description.present?
+    #   return @trends_date_range, @trends_date_range_description
+    # end
 
     today = Date.today
 

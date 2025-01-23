@@ -53,6 +53,12 @@ class Team < ApplicationRecord
 
   def season_range = season_start_date..season_end_date
 
+  def filtered_members
+    team_members = members
+    team_members = team_members.reject { |member| member == owner } unless include_coach?
+    team_members
+  end
+
   private
 
   def season_dates_presence

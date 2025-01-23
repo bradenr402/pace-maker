@@ -22,43 +22,43 @@ module TeamCalculations
   # Mileage calculations
   def total_miles_in_season
     Rails.cache.fetch("#{cache_key_with_version}/total_miles_in_season/#{total_miles}/#{season_start_date}/#{season_end_date}/#{include_coach?}") do
-      filtered_team_members.flat_map { |member| member.runs_this_season(self) }.sum(&:distance)
+      filtered_members.flat_map { |member| member.runs_this_season(self) }.sum(&:distance)
     end
   end
 
   def total_miles
-    filtered_team_members.sum(&:total_miles)
+    filtered_members.sum(&:total_miles)
   end
 
   def total_miles_on_day(date)
     Rails.cache.fetch("#{cache_key_with_version}/total_miles_on_day/#{date}/#{total_miles}/#{include_coach?}") do
-      filtered_team_members.sum { |member| member.runs_on_day(date).sum(&:distance) }
+      filtered_members.sum { |member| member.runs_on_day(date).sum(&:distance) }
     end
   end
 
   def miles_in_date_range(date_range)
     Rails.cache.fetch("#{cache_key_with_version}/miles_in_date_range/#{date_range.hash}/#{total_miles}/#{include_coach?}") do
-      filtered_team_members.sum { |member| member.miles_in_date_range(date_range) }
+      filtered_members.sum { |member| member.miles_in_date_range(date_range) }
     end
   end
 
   # Run calculations
   def runs_in_season
     Rails.cache.fetch("#{cache_key_with_version}/runs_in_season/#{total_miles}/#{season_start_date}/#{season_end_date}/#{include_coach?}") do
-      filtered_team_members.flat_map { |member| member.runs_this_season(self) }
+      filtered_members.flat_map { |member| member.runs_this_season(self) }
     end
   end
 
   def runs_in_date_range(date_range)
     Rails.cache.fetch("#{cache_key_with_version}/runs_in_date_range/#{date_range.hash}/#{total_miles}/#{include_coach?}") do
-      filtered_team_members.flat_map { |member| member.runs_in_date_range(date_range) }
+      filtered_members.flat_map { |member| member.runs_in_date_range(date_range) }
     end
   end
 
   # Long run calculations
   def long_runs_in_season
     Rails.cache.fetch("#{cache_key_with_version}/long_runs_in_season/#{total_miles}/#{season_start_date}/#{season_end_date}/#{include_coach?}") do
-      filtered_team_members.flat_map { |member| member.long_runs_this_season(self) }
+      filtered_members.flat_map { |member| member.long_runs_this_season(self) }
     end
   end
 
@@ -66,13 +66,13 @@ module TeamCalculations
 
   def total_long_runs
     Rails.cache.fetch("#{cache_key_with_version}/total_long_runs/#{total_miles}/#{include_coach?}") do
-      filtered_team_members.sum { |member| member.total_long_runs(self) }
+      filtered_members.sum { |member| member.total_long_runs(self) }
     end
   end
 
   def long_runs_in_date_range(date_range)
     Rails.cache.fetch("#{cache_key_with_version}/long_runs_in_date_range/#{date_range.hash}/#{total_miles}/#{include_coach?}") do
-      filtered_team_members.flat_map { |member| member.long_runs_in_date_range(self, date_range) }
+      filtered_members.flat_map { |member| member.long_runs_in_date_range(self, date_range) }
     end
   end
 
@@ -84,7 +84,7 @@ module TeamCalculations
 
   def long_runs_on_day(date)
     Rails.cache.fetch("#{cache_key_with_version}/long_runs_on_day/#{date}/#{total_miles}/#{include_coach?}") do
-      filtered_team_members.flat_map do |member|
+      filtered_members.flat_map do |member|
         member
           .runs
           .where(date:)
@@ -166,13 +166,5 @@ module TeamCalculations
       end
 
     "Your team #{team_status}! You're #{season_progress}% through the season, #{meeting_goal_status} #{long_run_goal_progress}% of your long run goal."
-  end
-
-  private
-
-  def filtered_team_members
-    team_members = members
-    team_members = team_members.reject { |member| member == owner } unless include_coach?
-    team_members
   end
 end
