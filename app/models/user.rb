@@ -43,7 +43,7 @@ class User < ApplicationRecord
   attr_accessor :remove_avatar
 
   # Enums
-  enum :gender, [ 'male', 'female' ]
+  enum :gender, { male: 'male', female: 'female' }
 
   # Callbacks
   before_validation :convert_empty_string_phone_number_to_nil
@@ -89,7 +89,7 @@ class User < ApplicationRecord
   validates :phone_number, phone: { possible: true, allow_blank: true }
   validates :gender,
             inclusion: {
-              in: genders.keys + [ '' ]
+              in: genders.keys + ['']
             },
             if: -> { gender.present? }
 
