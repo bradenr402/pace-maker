@@ -82,7 +82,6 @@
     @apply flex items-center gap-2.5 py-2 px-4 rounded text-sm transition duration-200 ease-in-out w-full hover:bg-rose-100 dark:hover:bg-rose-900/80 hover:text-rose-700 dark:hover:text-rose-200;
   }
 
-  /* Add this in your Tailwind CSS config or custom styles */
   .breadcrumbs {
     @apply text-sm text-slate-500 mb-4;
   }
@@ -154,11 +153,5 @@
   .hide-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
-  }
-
-  /* Disable tap highlight when tapping buttons/links on mobile */
-  button,
-  a {
-    -webkit-tap-highlight-color: transparent;
   }
 }
