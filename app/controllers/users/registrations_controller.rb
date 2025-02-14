@@ -34,8 +34,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     )
 
     # Update user attributes including settings
-    resource_updated =
-      update_resource(resource, account_update_params.except(:current_password))
+    resource_updated = update_resource(resource, account_update_params)
     yield resource if block_given?
 
     if resource_updated
@@ -117,7 +116,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     )
 
     if (resource.google_account_linked? && resource.password_changed_at.nil?) || params['password'].blank?
-      resource.update_without_password(params.except('current_password'))
+      resource.update_without_password(params.except(:current_password))
     else
       resource.update_with_password(params)
     end
