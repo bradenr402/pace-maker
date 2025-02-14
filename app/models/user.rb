@@ -19,8 +19,8 @@ class User < ApplicationRecord
          :rememberable,
          :validatable,
          :omniauthable,
-         omniauth_providers: [ :google_oauth2 ],
-         authentication_keys: [ :login ]
+         omniauth_providers: [:google_oauth2],
+         authentication_keys: [:login]
   # Others available are: :confirmable, :lockable, :timeoutable, and :trackable
 
   # Associations
@@ -193,7 +193,7 @@ class User < ApplicationRecord
       digits = ('0'..'9').to_a
       special = %w[# ? ! @ $ % ^ & * -]
 
-      password = [ upper.sample, lower.sample, digits.sample, special.sample ]
+      password = [upper.sample, lower.sample, digits.sample, special.sample]
 
       (length - password.length).times do
         password << (upper + lower + digits + special).sample
