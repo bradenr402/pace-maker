@@ -29,6 +29,8 @@ Rails.application.routes.draw do
     delete 'unlink_google_account', on: :member
   end
 
+  get '/profile', to: 'users#profile'
+
   resources :teams do
     resource :team_settings,
              only: %i[update show],

@@ -16,7 +16,7 @@ class UsersController < ApplicationController
   end
 
   def profile
-    redirect_to current_user
+    redirect_to user_path(current_user)
   end
 
   def unlink_google_account
