@@ -2,8 +2,8 @@
   <div data-controller="pwa-banner" data-pwa-banner-target="banner" class="z-50 mb-12 w-auto max-w-full rounded-xl border border-blue-300 bg-blue-50 p-4 text-blue-600 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-400">
     <div class="flex items-center justify-between gap-4">
       <div>
-        <p class="text-sm text-slate-800 dark:text-slate-100">Install PaceMaker as a progressive web app on your device for quick and easy access!</p>
-        <%= link_to 'Learn how to install', edit_user_registration_path(tab: 'helpTab'), class: 'cursor-pointer font-semibold text-sm text-blue-600 hover:text-blue-700 focus:ring-transparent dark:text-blue-400 dark:hover:text-blue-500 transition duration-200 ease-in-out' %>
+        <p class="max-sm:text-sm text-slate-800 dark:text-slate-100">Install PaceMaker as a progressive web app on your device for quick and easy access!</p>
+        <%= link_to 'Learn how to install', edit_user_registration_path(tab: 'helpTab'), class: 'cursor-pointer font-semibold max-sm:text-sm text-blue-600 hover:text-blue-700 focus:ring-transparent dark:text-blue-400 dark:hover:text-blue-500 transition duration-200 ease-in-out' %>
       </div>
 
       <button type="button" data-action="click->pwa-banner#dismiss" class="group inline-flex size-8 items-center justify-center rounded-full p-2 text-blue-600 transition duration-200 ease-in-out hover:bg-blue-100 focus:ring-2 focus:ring-blue-400 dark:text-blue-400 dark:hover:bg-blue-900" aria-label="Dismiss">
