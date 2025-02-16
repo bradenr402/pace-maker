@@ -1,6 +1,8 @@
 <% content_for :title, 'Home' %>
 
 <div class="max-w-4xl mx-auto my-16">
+  <%= render 'shared/pwa_banner' %>
+
   <h1 class="heading tracking-normal mb-4">Welcome back, <%= current_user.default_name %>!</h1>
 
   <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">

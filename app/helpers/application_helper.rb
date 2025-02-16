@@ -45,4 +45,8 @@ module ApplicationHelper
       'no'
     end
   end
+
+  def show_pwa_banner?
+    !cookies[:pwa_banner_dismissed]
+  end
 end
