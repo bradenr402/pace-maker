@@ -11,13 +11,13 @@
     data-dropdown-hide-dropdown-class="pointer-events-none scale-75 opacity-0"
     data-dropdown-show-dropdown-class="pointer-events-auto scale-100 opacity-100"
     data-dropdown-dropdown-open-class="bg-slate-200/50 dark:bg-slate-700/50 ring-2 ring-indigo-500/50"
-    class="rounded-full grid place-items-center"
+    class="rounded-lg grid place-items-center"
   >
     <!-- Run Actions Dropdown Trigger -->
     <button
       type="button"
       data-action="mousedown->dropdown#toggle"
-      class="p-1 rounded-full opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-slate-200/50 dark:hover:bg-slate-700/50"
+      class="p-1 rounded-lg opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-slate-200/50 dark:hover:bg-slate-700/50"
     >
       <%= inline_svg_tag 'icons/ellipsis-vertical.svg', class: 'size-5.5 shrink-0 text-slate-700 dark:text-slate-300' %>
       <span class="sr-only">Actions</span>
@@ -26,7 +26,7 @@
     <!-- Run Actions Dropdown Menu -->
     <div
       data-dropdown-target="dropdown"
-      class="dropdown-menu origin-top-right right-0 top-12"
+      class="dropdown-menu origin-top-right right-0 top-10"
     >
       <!-- Open Edit Run Modal Button -->
       <button data-action="mousedown->modal#open" data-modal-id="editRunModal" class="dropdown-option-primary">
