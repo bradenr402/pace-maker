@@ -25,6 +25,11 @@
         <%= inline_svg_tag 'icons/feedback.svg', class: 'size-5' %>
         <span>Feedback</span>
       </button>
+
+      <button type="button" id="helpTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'helpTab' ? 'btn-tab-active' : '' %>">
+        <%= inline_svg_tag 'icons/help.svg', class: 'size-5' %>
+        <span>Help</span>
+      </button>
     </div>
 
     <!-- Right Arrow -->
@@ -44,4 +49,7 @@
   <div id="feedbackTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'feedbackTab' ? '' : 'hidden' %>">
     <%= render 'users/feedback' %>
   </div>
+
+  <div id="helpTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'helpTab' ? '' : 'hidden' %>">
+    <%= render 'users/help' %>
 </div>
