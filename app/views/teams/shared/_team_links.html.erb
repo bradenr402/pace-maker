@@ -11,33 +11,26 @@
     <%= inline_svg_tag 'icons/settings.svg', class: 'size-5' %>
     Edit team settings
   <% end %>
+<% end %>
 
-  <%= link_to edit_team_team_membership_path(team, current_user), class: 'dropdown-option' do %>
-    <%= inline_svg_tag 'icons/user-pencil.svg', class: 'size-5' %>
-    Edit my personal goals
-  <% end %>
+<%= link_to edit_team_team_membership_path(team, current_user), class: @current_user_owns_team ? 'dropdown-option' : 'dropdown-option-primary' do %>
+  <%= inline_svg_tag 'icons/user-pencil.svg', class: 'size-5' %>
+  Edit my personal goals
+<% end %>
 
-  <%= link_to team_member_path(team, current_user), class: 'dropdown-option' do %>
-    <%= inline_svg_tag 'icons/user.svg', class: 'size-5' %>
-    View my member page
-  <% end %>
+<%= link_to team_member_path(team, current_user), class: 'dropdown-option' do %>
+  <%= inline_svg_tag 'icons/user.svg', class: 'size-5' %>
+  View my member page
+<% end %>
 
+<% if @current_user_owns_team %>
   <button data-action="mousedown->modal#open" data-modal-id="deleteTeam" class="dropdown-option-destructive">
     <%= inline_svg_tag 'icons/trash.svg', class: 'size-5' %>
     Delete team
   </button>
+<% end %>
 
-<% elsif @current_user_member_of_team %>
-  <%= link_to edit_team_team_membership_path(team, current_user), class: 'dropdown-option-primary' do %>
-    <%= inline_svg_tag 'icons/user-pencil.svg', class: 'size-5' %>
-    Edit my personal goals
-  <% end %>
-
-  <%= link_to team_member_path(team, current_user), class: 'dropdown-option' do %>
-    <%= inline_svg_tag 'icons/user.svg', class: 'size-5' %>
-    View my member page
-  <% end %>
-
+<% if @current_user_member_of_team && !@current_user_owns_team %>
   <%= link_to team_settings_path(team), class: 'dropdown-option' do %>
     <%= inline_svg_tag 'icons/settings.svg', class: 'size-5' %>
     View team settings
@@ -47,24 +40,4 @@
     <%= inline_svg_tag 'icons/log-out.svg', class: 'size-5' %>
     Leave team
   </button>
-
-<% else %>
-  <% if team.gender_requirement_met?(current_user) %>
-    <% if request.nil? || request.allowed? %>
-      <%= button_to request.nil? ? join_team_path(team) : team_join_request_path(request),
-            method: request.nil? ? :post : :patch,
-            class: 'dropdown-option-primary',
-            data: { turbo: false } do %>
-        <%= inline_svg_tag 'icons/user-plus.svg', class: 'size-5' %>
-        Join team
-      <% end %>
-
-    <% elsif request.pending? %>
-      <%= button_to 'Cancel request',
-            cancel_team_join_request_path(request),
-            method: :patch,
-            class: 'dropdown-option-destructive',
-            data: { turbo: false } %>
-    <% end %>
-  <% end %>
 <% end %>
