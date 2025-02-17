@@ -55,7 +55,7 @@ class Team < ApplicationRecord
 
   def filtered_members
     team_members = members
-    team_members = team_members.reject { |member| member == owner } unless include_coach?
+    team_members = team_members.where.not(id: owner.id) unless include_coach?
     team_members
   end
 
