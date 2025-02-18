@@ -128,8 +128,6 @@ GEM
     drb (2.2.1)
     email_data (1733617827.0.0)
     erubi (1.13.0)
-    et-orbi (1.2.11)
-      tzinfo
     faraday (2.12.2)
       faraday-net_http (>= 2.0, < 3.5)
       json
@@ -146,9 +144,6 @@ GEM
     ffi (1.17.0-x86_64-darwin)
     ffi (1.17.0-x86_64-linux-gnu)
     ffi (1.17.0-x86_64-linux-musl)
-    fugit (1.11.1)
-      et-orbi (~> 1, >= 1.2.11)
-      raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
     hashie (5.0.0)
@@ -266,7 +261,6 @@ GEM
     public_suffix (6.0.1)
     puma (6.5.0)
       nio4r (~> 2.0)
-    raabro (1.4.0)
     racc (1.8.1)
     rack (3.1.8)
     rack-mini-profiler (3.3.1)
@@ -333,8 +327,6 @@ GEM
       ffi (~> 1.12)
       logger
     rubyzip (2.3.2)
-    rufus-scheduler (3.9.2)
-      fugit (~> 1.1, >= 1.11.1)
     securerandom (0.4.0)
     selenium-webdriver (4.27.0)
       base64 (~> 0.2)
@@ -441,7 +433,6 @@ DEPENDENCIES
   rails (~> 8.0)
   redis (>= 5.3.0)
   rest-client
-  rufus-scheduler
   selenium-webdriver
   sprockets-rails
   sql_queries_count
