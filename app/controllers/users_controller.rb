@@ -30,6 +30,20 @@ class UsersController < ApplicationController
     redirect_to edit_user_registration_path
   end
 
+  def unlink_strava_account
+    if current_user.update(
+      strava_uid: nil,
+      strava_access_token: nil,
+      strava_refresh_token: nil,
+      strava_token_expires_at: nil
+    )
+      flash[:success] = 'Your Strava account was successfully disconnected.'
+    else
+      flash[:error] = 'There was an issue disconnecting your Strava account.'
+    end
+    redirect_to edit_user_registration_path
+  end
+
   private
 
   def set_user = @user = User.with_attached_avatar.find(params[:id])

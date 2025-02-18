@@ -19,7 +19,7 @@ class User < ApplicationRecord
          :rememberable,
          :validatable,
          :omniauthable,
-         omniauth_providers: [:google_oauth2],
+         omniauth_providers: %i[google_oauth2 strava],
          authentication_keys: [:login]
   # Others available are: :confirmable, :lockable, :timeoutable, and :trackable
 
@@ -143,8 +143,34 @@ class User < ApplicationRecord
 
   def google_account_linked? = uid? && provider == 'google_oauth2'
 
+  def strava_account_linked? = strava_uid? && strava_access_token?
+
+  def strava_token_expired? = strava_token_expires_at && Time.current >= strava_token_expires_at
+
+  def refresh_strava_token!
+    return unless strava_refresh_token
+
+    response = Faraday.post('https://www.strava.com/oauth/token', {
+                              client_id: Rails.application.credentials[:strava_client_id],
+                              client_secret: Rails.application.credentials[:strava_client_secret],
+                              grant_type: 'refresh_token',
+                              refresh_token: strava_refresh_token
+                            })
+
+    if response.success?
+      data = JSON.parse(response.body)
+      update!(
+        strava_access_token: data['access_token'],
+        strava_refresh_token: data['refresh_token'],
+        strava_token_expires_at: Time.at(data['expires_at'])
+      )
+    else
+      Rails.logger.error "Failed to refresh Strava token for user #{id}: #{response.body}"
+    end
+  end
+
   class << self
-    def from_omniauth(auth)
+    def from_google_omniauth(auth)
       existing_user = User.find_by(email: auth.info.email)
 
       return existing_user if (existing_user&.provider == auth.provider) && (existing_user&.uid == auth.uid)
@@ -201,6 +227,52 @@ class User < ApplicationRecord
 
       # Shuffle the password to make it more random
       password.shuffle.join
+    end
+
+    def from_strava_omniauth(auth, current_user)
+      existing_user = if current_user
+                        Rails.logger.info "Current user: #{current_user.inspect}"
+                        current_user
+                      elsif auth.info.email.present?
+                        Rails.logger.info "Existing user by email: #{auth.info.email}"
+                        User.find_by(email: auth.info.email)
+                      else
+                        Rails.logger.info "Existing user by Strava UID: #{auth.uid}"
+                        User.find_by(strava_uid: auth.uid)
+                      end
+
+      return existing_user if (existing_user&.provider == auth.provider) && (existing_user&.strava_uid == auth.uid)
+
+      if existing_user && (existing_user.strava_uid != auth.uid)
+        Rails.logger.info 'Existing user with different UID'
+        return nil
+      end
+
+      Rails.logger.info 'Creating new user'
+
+      new_user =
+        User.new(
+          strava_uid: auth.uid,
+          strava_access_token: auth.credentials.token,
+          strava_refresh_token: auth.credentials.refresh_token,
+          strava_token_expires_at: Time.at(auth.credentials.expires_at),
+          email: auth.info.email.presence,
+          password: generate_valid_password
+        )
+
+      base_username = auth.info.username.presence || auth.info.email.presence || 'strava_user'
+      new_user.username = generate_unique_username(base_username)
+
+      new_user.display_name = auth.info.name.presence
+
+      new_user.gender = if auth.extra.raw_info.sex == 'M'
+                          'male'
+                        elsif auth.extra.raw_info.sex == 'F'
+                          'female'
+                        end
+
+      new_user.save!
+      new_user
     end
   end
 

@@ -279,6 +279,12 @@ Devise.setup do |config|
                   scope: 'email,profile',
                   prompt: 'select_account'
 
+  config.omniauth :strava,
+                  Rails.application.credentials[:strava_client_id],
+                  Rails.application.credentials[:strava_client_secret],
+                  scope: 'read,activity:read,profile:read_all',
+                  prompt: 'select_account'
+
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.

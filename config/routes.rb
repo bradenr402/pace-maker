@@ -27,6 +27,7 @@ Rails.application.routes.draw do
       post :reset
     end
     delete 'unlink_google_account', on: :member
+    delete 'unlink_strava_account', on: :member
   end
 
   get '/profile', to: 'users#profile'

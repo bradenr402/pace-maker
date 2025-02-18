@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_11_043218) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_18_020159) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
-  enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -61,6 +61,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_11_043218) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.interval "duration"
+    t.string "strava_id"
+    t.string "strava_url"
+    t.index ["strava_id"], name: "index_runs_on_strava_id", unique: true
     t.index ["user_id"], name: "index_runs_on_user_id"
   end
 
@@ -73,6 +76,13 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_11_043218) do
     t.datetime "updated_at", precision: nil
     t.index ["target_type", "target_id", "var"], name: "index_settings_on_target_type_and_target_id_and_var", unique: true
     t.index ["target_type", "target_id"], name: "index_settings_on_target_type_and_target_id"
+  end
+
+  create_table "strava_webhook_subscriptions", force: :cascade do |t|
+    t.integer "subscription_id"
+    t.string "callback_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "team_audits", force: :cascade do |t|
@@ -139,6 +149,10 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_11_043218) do
     t.string "provider"
     t.datetime "password_changed_at"
     t.string "phone_country_code"
+    t.string "strava_uid"
+    t.string "strava_access_token"
+    t.string "strava_refresh_token"
+    t.datetime "strava_token_expires_at"
     t.index ["display_name"], name: "index_users_on_display_name"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["phone_number"], name: "index_users_on_phone_number", unique: true, where: "(phone_number IS NOT NULL)"
