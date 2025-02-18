@@ -60,8 +60,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # displays error message and redirects to sign in page
       handle_failed_authentication
     end
-
-    redirect_back fallback_location: edit_user_registration_path
   end
 
   def failure
