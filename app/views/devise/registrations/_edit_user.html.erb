@@ -198,8 +198,8 @@
     <div class="flex items-center gap-2 mt-2">
       <%= hidden_field_tag 'user[settings][email_visible]', 'false' %>
       <%= f.fields_for :settings do |settings_form| %>
-        <%= settings_form.check_box :email_visible, { checked: @user.show_email?, class: 'form-input-checkbox' }, true, false %>
-        <%= settings_form.label :email_visible, 'Show email on profile', class: 'form-check-label text-sm' %>
+        <%= settings_form.check_box :email_visible, { checked: @user.show_email?, class: 'form-input-checkbox', id: 'email_visible_checkbox' }, true, false %>
+        <%= settings_form.label :email_visible, 'Show email on profile', class: 'form-check-label text-sm', for: 'email_visible_checkbox' %>
       <% end %>
     </div>
   </div>
@@ -247,8 +247,8 @@
     <div class="flex items-center gap-2 mt-2">
       <%= hidden_field_tag 'user[settings][phone_visible]', 'false' %>
       <%= f.fields_for :settings do |settings_form| %>
-        <%= settings_form.check_box :phone_visible, { checked: @user.show_phone?, class: 'form-input-checkbox' }, true, false %>
-        <%= settings_form.label :phone_visible, 'Show phone number on profile', class: 'form-check-label text-sm' %>
+        <%= settings_form.check_box :phone_visible, { checked: @user.show_phone?, class: 'form-input-checkbox', id: 'phone_visible_checkbox' }, true, false %>
+        <%= settings_form.label :phone_visible, 'Show phone number on profile', class: 'form-check-label text-sm', for: 'phone_visible_checkbox' %>
       <% end %>
     </div>
   </div>
