@@ -21,14 +21,16 @@ You can find the deployed application at the following link: [pace-maker.onrende
 - **Home Page**: A welcoming and encouraging interface featuring:
   - Recent updates, such as team updates, new runs by users you know, team creations, and join requests.
   - Personal statistics like current and record streaks, with motivational messages based on user activity.
-- **Advanced Styling**: Tailwind CSS for a modern, aesthetic design that ensures both clarity and consistency.
+- **Advanced Styling**: A modern and aesthetic interface crafted with Tailwind CSS, ensuring a visually appealing and intuitive user experience. The design is fully responsive, adapting seamlessly to any device for optimal usability.
+- **Strava Integration**: Users can seamlessly connect their Strava accounts to PaceMaker for effortless run tracking. Choose to manually import past runs with a single click or enable automatic syncing for all future activities using Strava&#8217;s Webhook Events API. Stay focused on your goals while PaceMaker handles the rest.
 
 ## 🛠️ Tech Stack
 
 - **Framework**: [Ruby on Rails](https://rubyonrails.org/)
 - **Front-End**: [Tailwind CSS](https://tailwindcss.com), [Stimulus](https://stimulus.hotwired.dev/), [Turbo](https://turbo.hotwired.dev/), [Chartkick](https://chartkick.com/)
-- **Authentication**: [Devise](https://github.com/heartcombo/devise)
+- **Authentication**: [Devise](https://github.com/heartcombo/devise), [Google OAuth 2.0](https://developers.google.com/identity/protocols/oauth2)
 - **Database**: [PostgreSQL](https://www.postgresql.org/)
+- **APIs**: [Strava](https://developers.strava.com/)
 - **Deployment**:
   - **URL**: [pace-maker.onrender.com](https://pace-maker.onrender.com)
   - **Hosting Provider**: [Render](https://render.com)
