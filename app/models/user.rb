@@ -231,24 +231,15 @@ class User < ApplicationRecord
 
     def from_strava_omniauth(auth, current_user)
       existing_user = if current_user
-                        Rails.logger.info "Current user: #{current_user.inspect}"
                         current_user
                       elsif auth.info.email.present?
-                        Rails.logger.info "Existing user by email: #{auth.info.email}"
                         User.find_by(email: auth.info.email)
                       else
-                        Rails.logger.info "Existing user by Strava UID: #{auth.uid}"
                         User.find_by(strava_uid: auth.uid)
                       end
 
-      return existing_user if (existing_user&.provider == auth.provider) && (existing_user&.strava_uid == auth.uid)
-
-      if existing_user && (existing_user.strava_uid != auth.uid)
-        Rails.logger.info 'Existing user with different UID'
-        return nil
-      end
-
-      Rails.logger.info 'Creating new user'
+      return existing_user if existing_user&.strava_uid == auth.uid
+      return nil if existing_user && (existing_user.strava_uid != auth.uid)
 
       new_user =
         User.new(

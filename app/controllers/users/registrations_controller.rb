@@ -125,8 +125,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
     StravaService.subscribe_to_webhook(resource) if settings_params[:auto_import_strava]
 
-    Rails.logger.info params
-
     if ((resource.google_account_linked? || resource.strava_account_linked?) && resource.password_changed_at.nil?) || params['password'].blank?
       resource.update_without_password(params.except(:current_password))
     else
