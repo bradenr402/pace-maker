@@ -75,7 +75,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def handle_signed_in_user
     unless current_user.email == auth.info.email
-      flash[:error] = "The email on your #{auth.provider.capitalize} account does not match the one on your account."
+      flash[:error] =
+        "The email on your #{pretty_provider_name(auth.provider)} account does not match the one on your account."
       redirect_to edit_user_registration_path
       return
     end
@@ -92,7 +93,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def handle_not_signed_in_user
     store_location_for(:user, edit_user_registration_path)
     redirect_to new_user_session_path,
-                alert: "An account already exists with the email <b>#{auth.info.email}</b>. Please sign in to link your #{auth.provider.capitalize} account."
+                alert: "An account already exists with the email <b>#{auth.info.email}</b>. Please sign in to link your #{pretty_provider_name(auth.provider)} account."
   end
 
   def link_google_account
@@ -120,19 +121,29 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def handle_successful_authentication
     sign_out_all_scopes
-    flash[:success] = t 'devise.omniauth_callbacks.success', kind: auth.provider.capitalize
+    flash[:success] = t 'devise.omniauth_callbacks.success', kind: pretty_provider_name(auth.provider)
     sign_in_and_redirect @user, event: :authentication
   end
 
   def handle_failed_authentication
     session["devise.#{auth.provider}_data"] = request.env['omniauth.auth'].except('extra')
     flash[:error] = t 'devise.omniauth_callbacks.failure',
-                      kind: auth.provider.capitalize,
+                      kind: pretty_provider_name(auth.provider),
                       reason: "#{auth.info.email} is not authorized."
     redirect_to new_user_session_path
   end
 
   def auth
     @auth ||= request.env['omniauth.auth']
+  end
+
+  def pretty_provider_name(provider)
+    if provider == 'google_oauth2'
+      'Google'
+    elsif provider == 'strava'
+      'Strava'
+    else
+      provider.capitalize
+    end
   end
 end
