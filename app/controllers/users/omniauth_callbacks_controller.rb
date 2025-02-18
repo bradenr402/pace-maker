@@ -74,7 +74,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def handle_signed_in_user
-    unless auth.provider == 'google_oauth2' && current_user.email == auth.info.email
+    if auth.provider == 'google_oauth2' && current_user.email != auth.info.email
       flash[:error] =
         "The email on your #{pretty_provider_name(auth.provider)} account does not match the one on your account."
       redirect_to edit_user_registration_path
