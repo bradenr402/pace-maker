@@ -88,7 +88,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         :gender,
         :avatar,
         :remove_avatar,
-        { settings: %i[email_visible phone_visible] }
+        { settings: %i[email_visible phone_visible auto_import_strava] }
       ]
     )
   end
@@ -109,13 +109,25 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def update_resource(resource, params)
     settings_params = params.delete(:settings) || {}
-    resource.settings(:privacy).update(
+
+    settings_params =
       settings_params.transform_values do |value|
         value == 'true' if %w[true false].include?(value)
       end
+
+    resource.settings(:privacy).update(
+      settings_params.slice(:email_visible, :phone_visible)
     )
 
-    if (resource.google_account_linked? && resource.password_changed_at.nil?) || params['password'].blank?
+    resource.settings(:strava).update(
+      settings_params.slice(:auto_import_strava)
+    )
+
+    StravaService.subscribe_to_webhook(resource) if settings_params[:auto_import_strava]
+
+    Rails.logger.info params
+
+    if ((resource.google_account_linked? || resource.strava_account_linked?) && resource.password_changed_at.nil?) || params['password'].blank?
       resource.update_without_password(params.except(:current_password))
     else
       resource.update_with_password(params)

@@ -92,4 +92,6 @@
       </div>
     </div>
   <% end %>
+
+  <%= link_to 'View on Strava', run.strava_url, class: 'btn-link text-xs' if run.strava_url? %>
 </div>

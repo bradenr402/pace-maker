@@ -70,6 +70,11 @@ Rails.application.routes.draw do
 
   resources :feedback_form, only: %i[create]
 
+  resource :strava_imports, only: [:create]
+
+  post 'webhooks/strava', to: 'strava_webhooks#create'
+  get 'webhooks/strava', to: 'strava_webhooks#verify'
+
   get 'service-worker.js', to: 'service_worker#service_worker', as: :pwa_service_worker
   get 'manifest.json', to: 'service_worker#manifest', as: :pwa_manifest
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

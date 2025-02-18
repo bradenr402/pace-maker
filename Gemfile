@@ -103,3 +103,4 @@ gem 'mail'
 
 gem 'multi_json'
 gem 'omniauth-strava', '~> 1.0'
+gem 'rest-client'
