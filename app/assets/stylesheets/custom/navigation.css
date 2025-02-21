@@ -28,7 +28,7 @@
   }
 
   .btn-tab {
-    @apply rounded-md py-1.5 px-5.5 flex items-center gap-2 text-sm text-normal hover:text-muted dark:hover:text-soft z-10;
+    @apply rounded-md py-1 md:py-1.5 px-3.5 md:px-5.5 flex items-center gap-1.5 text-xs md:text-sm text-normal hover:text-muted dark:hover:text-soft z-10;
 
     &.btn-tab-icon-only {
       @apply p-2;
