@@ -3,12 +3,27 @@
   <p class="text-soft">Looking for assistance? You&#8217;ve come to the right place.</p>
 </div>
 
-<div class="pb-6">
-  <h2 class="subheading">App Installation Instructions</h2>
-  <p class="text-sm text-soft text-pretty">Follow the instructions below to install PaceMaker as a progressive web app on your device.</p>
+<div class="mb-24">
+  <div class="pb-6">
+    <h2 class="subheading">Privacy and Data Usage Policies</h2>
+    <p class="text-sm text-soft text-pretty">Please review our <%= link_to 'Privacy Policy', privacy_policy_path, class: 'btn-link' %> for information on how we handle your data.</p>
+  </div>
+
+  <p class="text-sm text-soft text-pretty mb-2">Learn more about how we use data from third-party services:</p>
+  <ul class="text-sm text-soft list-disc pl-4 space-y-0.5">
+    <li><%= link_to 'Strava Data Usage Policy', strava_policy_path, class: 'btn-link' %></li>
+    <li><%= link_to 'Google Data Usage Policy', google_policy_path, class: 'btn-link' %></li>
+  </ul>
+
+  <p class="text-sm text-soft text-pretty mt-4">If you have any questions, please reach out to <%= mail_to 'get.pace.maker@gmail.com', 'get.pace.maker@gmail.com', class: 'btn-link' %>.</p>
 </div>
 
 <div class="mb-24" data-controller="pwa">
+  <div class="pb-6">
+    <h2 class="subheading">App Installation Instructions</h2>
+    <p class="text-sm text-soft text-pretty">Follow the instructions below to install PaceMaker as a progressive web app on your device.</p>
+  </div>
+
   <div data-pwa-target="installedMessage" class="hidden mb-6">
     <p class="text-sm text-light">PaceMaker is already installed on your device.</p>
   </div>
