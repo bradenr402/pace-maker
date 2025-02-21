@@ -148,7 +148,7 @@ export default class extends Controller {
     window.history.replaceState({}, '', url);
   }
 
-  _debounce(func, timeout = 200) {
+  _debounce(func, timeout = 50) {
     let timer;
     return (...args) => {
       clearTimeout(timer);

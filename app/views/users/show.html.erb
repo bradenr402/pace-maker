@@ -19,7 +19,7 @@
   <div class="relative flex items-center mb-6">
     <!-- Left Arrow -->
     <button type="button" data-action="mousedown->tabs#scrollLeft" data-tabs-target="leftArrow" aria-label="Scroll tabs left" class="opacity-0 pointer-events-none tab-container-scroll-left transition duration-200">
-      <%= inline_svg_tag 'icons/chevron-left.svg', class: 'size-5 text-soft' %>
+      <%= inline_svg_tag 'icons/chevron-left.svg', class: 'size-4 md:size-5 text-soft' %>
     </button>
 
     <div class="tab-container mx-auto" data-tabs-target="container">
@@ -27,24 +27,24 @@
       <span data-tabs-target="indicator" class="sliding-tab-indicator"></span>
 
       <button type="button" id="infoTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'infoTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/info.svg', class: 'size-5' %>
+        <%= inline_svg_tag 'icons/info.svg', class: 'size-4 md:size-5' %>
         <span>User Info</span>
       </button>
 
       <button type="button" id="teamsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'teamsTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/team.svg', class: 'size-5' %>
+        <%= inline_svg_tag 'icons/team.svg', class: 'size-4 md:size-5' %>
         <span>Teams</span>
       </button>
 
       <button type="button" id="runsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'runsTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/runner.svg', class: 'size-4.5' %>
+        <%= inline_svg_tag 'icons/runner.svg', class: 'size-3.5 md:size-4.5' %>
         <span>Runs</span>
       </button>
     </div>
 
     <!-- Right Arrow -->
     <button type="button" data-action="mousedown->tabs#scrollRight" data-tabs-target="rightArrow" aria-label="Scroll tabs right" class="opacity-0 pointer-events-none tab-container-scroll-right transition duration-200">
-      <%= inline_svg_tag 'icons/chevron-right.svg', class: 'size-5 text-soft' %>
+      <%= inline_svg_tag 'icons/chevron-right.svg', class: 'size-4 md:size-5 text-soft' %>
     </button>
   </div>
 

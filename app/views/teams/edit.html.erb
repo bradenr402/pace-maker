@@ -4,7 +4,7 @@
   <div class="relative flex items-center mb-6">
     <!-- Left Arrow -->
     <button type="button" data-action="mousedown->tabs#scrollLeft" data-tabs-target="leftArrow" aria-label="Scroll tabs left" class="opacity-0 pointer-events-none tab-container-scroll-left transition duration-300">
-      <%= inline_svg_tag 'icons/chevron-left.svg', class: 'size-5 text-soft' %>
+      <%= inline_svg_tag 'icons/chevron-left.svg', class: 'size-4 md:size-5 text-soft' %>
     </button>
 
     <div class="tab-container mx-auto" data-tabs-target="container">
@@ -12,19 +12,19 @@
       <span data-tabs-target="indicator" class="sliding-tab-indicator"></span>
 
       <button type="button" id="editTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'editTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/team.svg', class: 'size-5' %>
+        <%= inline_svg_tag 'icons/team.svg', class: 'size-4 md:size-5' %>
         <span>Edit Team</span>
       </button>
 
       <button type="button" id="settingsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'settingsTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/settings.svg', class: 'size-5' %>
+        <%= inline_svg_tag 'icons/settings.svg', class: 'size-4 md:size-5' %>
         <span>Settings</span>
       </button>
     </div>
 
     <!-- Right Arrow -->
     <button type="button" data-action="mousedown->tabs#scrollRight" data-tabs-target="rightArrow" aria-label="Scroll tabs right" class="opacity-0 pointer-events-none tab-container-scroll-right transition duration-300">
-      <%= inline_svg_tag 'icons/chevron-right.svg', class: 'size-5 text-soft' %>
+      <%= inline_svg_tag 'icons/chevron-right.svg', class: 'size-4 md:size-5 text-soft' %>
     </button>
   </div>
 

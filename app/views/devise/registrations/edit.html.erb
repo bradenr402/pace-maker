@@ -4,7 +4,7 @@
   <div class="relative flex items-center mb-6">
     <!-- Left Arrow -->
     <button type="button" data-action="mousedown->tabs#scrollLeft" data-tabs-target="leftArrow" aria-label="Scroll tabs left" class="opacity-0 pointer-events-none tab-container-scroll-left transition duration-300">
-      <%= inline_svg_tag 'icons/chevron-left.svg', class: 'size-5 text-soft' %>
+      <%= inline_svg_tag 'icons/chevron-left.svg', class: 'size-4 md:size-5 text-soft' %>
     </button>
 
     <div class="tab-container mx-auto" data-tabs-target="container">
@@ -12,29 +12,29 @@
       <span data-tabs-target="indicator" class="sliding-tab-indicator"></span>
 
       <button type="button" id="accountTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'accountTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/profile.svg', class: 'size-5' %>
+        <%= inline_svg_tag 'icons/profile.svg', class: 'size-4 md:size-5' %>
         <span>Account</span>
       </button>
 
       <button type="button" id="settingsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'settingsTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/settings.svg', class: 'size-5' %>
+        <%= inline_svg_tag 'icons/settings.svg', class: 'size-4 md:size-5' %>
         <span>Settings</span>
       </button>
 
       <button type="button" id="feedbackTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'feedbackTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/feedback.svg', class: 'size-5' %>
+        <%= inline_svg_tag 'icons/feedback.svg', class: 'size-4 md:size-5' %>
         <span>Feedback</span>
       </button>
 
       <button type="button" id="helpTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'helpTab' ? 'btn-tab-active' : '' %>">
-        <%= inline_svg_tag 'icons/help.svg', class: 'size-5' %>
+        <%= inline_svg_tag 'icons/help.svg', class: 'size-4 md:size-5' %>
         <span>Help</span>
       </button>
     </div>
 
     <!-- Right Arrow -->
     <button type="button" data-action="mousedown->tabs#scrollRight" data-tabs-target="rightArrow" aria-label="Scroll tabs right" class="opacity-0 pointer-events-none tab-container-scroll-right transition duration-300">
-      <%= inline_svg_tag 'icons/chevron-right.svg', class: 'size-5 text-soft' %>
+      <%= inline_svg_tag 'icons/chevron-right.svg', class: 'size-4 md:size-5 text-soft' %>
     </button>
   </div>
 
