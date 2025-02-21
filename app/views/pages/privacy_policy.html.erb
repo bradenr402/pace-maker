@@ -1,0 +1,68 @@
+<div class="max-w-3xl mx-auto my-16">
+  <div class="pb-8 my-8 border-b border-slate-200 dark:border-slate-700">
+    <h1 class="heading mb-1">Privacy Policy</h1>
+    <p class="text-soft">Effective Date: <%= Date.today.strftime("%B %d, %Y") %></p>
+  </div>
+
+  <div class="space-y-10">
+    <div class="mb-8">
+      <h2 class="subheading mb-3">1. Introduction</h2>
+      <p class="text-soft">Welcome to PaceMaker. Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your personal information.</p>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="subheading mb-3">2. Information We Collect</h2>
+      <p class="text-soft mb-2">We collect the following types of information:</p>
+      <ul class="text-soft list-disc pl-4 space-y-0.5">
+        <li>
+          <span class="font-semibold">Account Information:</span> When you sign up, we collect your email address and a username. Additionally, you may choose to provide your phone number, gender, name, and a profile photo.
+        </li>
+        <li>
+          <span class="font-semibold">Activity Data:</span> When you link your Strava account, we collect your Strava athlete ID and activity data. We only collect data from Strava with your explicit consent. For more information, please refer to the <%= link_to 'Strava Data Usage Policy', strava_policy_path, class: 'btn-link' %>.
+        </li>
+      </ul>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="subheading mb-3">3. How We Use Your Information</h2>
+      <p class="text-soft mb-2">We use your data to:</p>
+      <ul class="text-soft list-disc pl-4 space-y-0.5">
+        <li>Allow you to log and track your runs.</li>
+        <li>Improve our services and user experience.</li>
+        <li>Comply with legal obligations.</li>
+      </ul>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="subheading mb-3">4. Data Sharing</h2>
+      <p class="text-soft">We do not and never will sell your data. We will never share your data with any third parties without your explicit consent, except as required by law.</p>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="subheading mb-3">5. How to Manage Your Data</h2>
+      <p class="text-soft mb-2">
+        Manage your data in <%= link_to 'settings', edit_user_registration_path, class: 'btn-link' %>. You can:
+      </p>
+      <ul class="text-soft list-disc pl-4 space-y-0.5">
+        <li>Update your account details (under the &#8221;Account&#8220; tab in settings).</li>
+        <li>Delete your imported Strava data (under &#8220;Linked Accounts&#8221; in the &#8221;Account&#8220; tab in settings).</li>
+        <li>Delete your account (under the &#8221;Account&#8220; tab in settings, scroll to the bottom).</li>
+      </ul>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="subheading mb-3">6. Security Measures</h2>
+      <p class="text-soft">We take security seriously and use encryption and access controls to protect your data. Your password is securely hashed and stored, ensuring that we cannot access it.</p>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="subheading mb-3">7. Changes to This Policy</h2>
+      <p class="text-soft">We may update this policy, and changes will be posted on this page.</p>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="subheading mb-3">8. Contact Us</h2>
+      <p class="text-soft">If you have any questions regarding this policy, reach out to <%= mail_to 'get.pace.maker@gmail.com','get.pace.maker@gmail.com', class: 'btn-link' %>.</p>
+    </div>
+  </div>
+</div>

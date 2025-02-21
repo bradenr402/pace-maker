@@ -70,10 +70,14 @@ Rails.application.routes.draw do
 
   resources :feedback_form, only: %i[create]
 
-  resource :strava_imports, only: [:create]
+  resource :strava_imports, only: %i[create destroy]
 
-  post 'webhooks/strava', to: 'strava_webhooks#create'
+  post 'webhooks/strava', to: 'strava_webhooks#receive'
   get 'webhooks/strava', to: 'strava_webhooks#verify'
+
+  get 'privacy_policy', to: 'pages#privacy_policy'
+  get 'strava_policy', to: 'pages#strava_policy'
+  get 'google_policy', to: 'pages#google_policy'
 
   get 'service-worker.js', to: 'service_worker#service_worker', as: :pwa_service_worker
   get 'manifest.json', to: 'service_worker#manifest', as: :pwa_manifest

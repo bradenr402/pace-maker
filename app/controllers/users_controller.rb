@@ -37,7 +37,12 @@ class UsersController < ApplicationController
       strava_refresh_token: nil,
       strava_token_expires_at: nil
     )
-      flash[:success] = 'Your Strava account was successfully disconnected.'
+      if params[:delete_strava_data] == 'true'
+        current_user.strava_runs.destroy_all
+        flash[:success] = 'Your Strava account was successfully disconnected and all your Strava data was deleted.'
+      else
+        flash[:success] = 'Your Strava account was successfully disconnected. Your Strava data was not deleted.'
+      end
     else
       flash[:error] = 'There was an issue disconnecting your Strava account.'
     end

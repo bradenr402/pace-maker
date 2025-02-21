@@ -1,0 +1,40 @@
+<div class="max-w-3xl mx-auto my-16">
+  <div class="pb-8 my-8 border-b border-slate-200 dark:border-slate-700">
+    <h1 class="heading mb-1">Google Data Usage Policy</h1>
+  </div>
+
+  <div class="space-y-10">
+    <div class="mb-8">
+      <h2 class="subheading mb-3">1. Data We Collect</h2>
+      <p class="text-soft mb-2">When you connect your Google account to PaceMaker, we collect the following data:</p>
+      <ul class="text-soft list-disc pl-4 space-y-0.5">
+        <li>Your Google user ID</li>
+        <li>Profile information such as name, email address, and profile photo</li>
+      </ul>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="subheading mb-3">2. How We Collect the Data</h2>
+      <p class="text-soft">We collect your data through the <%= link_to 'Google OAuth 2.0 API', 'https://developers.google.com/identity/protocols/oauth2', class: 'btn-link' %> when you authorize PaceMaker to access your Google account, or when you create a PaceMaker account with &#8220;Sign up with Google.&#8221;</p>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="subheading mb-3">3. How to Withdraw Consent</h2>
+      <p class="text-soft mb-2">You can unlink your Google account at any time by visiting your <%= link_to 'settings', edit_user_registration_path, class: 'btn-link' %> in PaceMaker and clicking &#8220;Unlink Google Account.&#8221;</p>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="subheading mb-3">4. How to Manage Your Data</h2>
+      <p class="text-soft mb-2">If you wish to delete your Google data from PaceMaker, you can:</p>
+      <ul class="text-soft list-disc pl-4 space-y-0.5">
+        <li>Delete your Google user ID from PaceMaker by unlinking your Google account as described above in Section 3 above.</li>
+        <li>Manually edit your name, email address, or profile photo in your <%= link_to 'settings', edit_user_registration_path, class: 'btn-link' %>.</li>
+      </ul>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="subheading mb-3">Contact Us</h2>
+      <p class="text-soft">If you have any questions regarding this policy, reach out to <%= mail_to 'get.pace.maker@gmail.com','get.pace.maker@gmail.com', class: 'btn-link' %>.</p>
+    </div>
+  </div>
+</div>

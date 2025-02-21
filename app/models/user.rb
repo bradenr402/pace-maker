@@ -148,7 +148,7 @@ class User < ApplicationRecord
   def strava_token_expired? = strava_token_expires_at && Time.current >= strava_token_expires_at
 
   def refresh_strava_token!
-    return unless strava_refresh_token
+    return false unless strava_refresh_token
 
     response = Faraday.post('https://www.strava.com/oauth/token', {
                               client_id: Rails.application.credentials[:strava_client_id],
@@ -164,8 +164,10 @@ class User < ApplicationRecord
         strava_refresh_token: data['refresh_token'],
         strava_token_expires_at: Time.at(data['expires_at'])
       )
+      true
     else
       Rails.logger.error "Failed to refresh Strava token for user #{id}: #{response.body}"
+      false
     end
   end
 

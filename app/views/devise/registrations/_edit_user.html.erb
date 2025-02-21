@@ -16,9 +16,9 @@
   data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
   class="form-group flex flex-col items-start"
 >
-  <h2 class="font-semibold mb-2">Google</h2>
+  <h2 class="font-semibold">Google</h2>
   <% if current_user.google_account_linked? %>
-    <button data-action="mousedown->modal#open" data-modal-id="unlinkGoogleAccountModal" <%= 'disabled' if resource.password_changed_at.nil? %> class="btn btn-white btn-outline gap-2">
+    <button data-action="mousedown->modal#open" data-modal-id="unlinkGoogleAccountModal" <%= 'disabled' if resource.password_changed_at.nil? %> class="btn btn-white btn-outline gap-2 mt-2">
       <%= inline_svg_tag 'icons/google-logo.svg', class: 'size-5' %>
       Unlink Google Account
     </button>
@@ -43,15 +43,12 @@
       >
         <div class="flex flex-col space-y-1.5 text-center sm:text-left">
           <h2 class="text-lg font-semibold leading-none tracking-tight">Unlink Google Account?</h2>
-          <p class="text-soft text-sm">Are you sure you want to unlink your Google account? You will no longer be sign in with your Google account.</p>
+          <p class="text-soft text-sm">Are you sure you want to unlink your Google account? You will no longer be able to sign in with your Google account.</p>
         </div>
 
         <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-          <button data-action="mousedown->modal#close" data-modal-id="unlinkGoogleAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Nevermind</button>
-          <%= button_to unlink_google_account_user_path(current_user), method: :delete, class: 'btn btn-white btn-outline gap-2 w-full' do %>
-            <%= inline_svg_tag 'icons/google-logo.svg', class: 'size-5' %>
-            Unlink Google Account
-          <% end %>
+          <button data-action="mousedown->modal#close" data-modal-id="unlinkGoogleAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+          <%= button_to 'Unlink Google Account', unlink_google_account_user_path(current_user), method: :delete, class: 'btn btn-destructive gap-2 w-full' %>
         </div>
 
         <button data-action="mousedown->modal#close" type="button" data-modal-id="unlinkGoogleAccountModal" class="modal-x-btn">
@@ -61,22 +58,30 @@
       </div>
     <% end %>
   <% else %>
+    <p class="help-text mt-1 mb-3">Link your Google account for easier sign-in. The email on your Google account must match the email on your PaceMaker account.</p>
     <%= button_to user_google_oauth2_omniauth_authorize_path, data: { turbo: 'false' }, class: 'btn btn-white btn-outline gap-2' do %>
       <%= inline_svg_tag 'icons/google-logo.svg', class: 'size-5' %>
       Link Google Account
     <% end %>
-    <p class="help-text my-1">Link your Google account for easier sign-in. The email on your Google account must match the email on your PaceMaker account.</p>
   <% end %>
 
-  <h2 class="font-semibold mt-6 mb-2">Strava</h2>
+  <h2 class="font-semibold mt-6">Strava</h2>
   <% if current_user.strava_account_linked? %>
-    <div class="flex items-center gap-x-4 gap-y-2 flex-wrap">
+    <div class="mt-4 flex items-center gap-x-4 gap-y-2 flex-wrap mt-2">
       <button data-action="mousedown->modal#open" data-modal-id="unlinkStravaAccountModal" class="btn btn-white btn-outline gap-2">
         Disconnect from Strava
       </button>
 
+      <%= link_to 'View my Strava account', "https://strava.com/athletes/#{current_user.strava_uid}", class: 'btn-link text-sm' %>
+    </div>
+
+    <div class="mt-4 flex items-center gap-x-4 gap-y-2 flex-wrap">
       <button data-action="mousedown->modal#open" data-modal-id="importStravaRunsModal" class="btn btn-primary btn-muted">
-        Sync runs from Strava
+        Import runs from Strava
+      </button>
+
+      <button data-action="mousedown->modal#open" data-modal-id="deleteStravaDataModal" class="btn btn-destructive btn-muted">
+        Delete imported Strava data
       </button>
     </div>
 
@@ -98,15 +103,20 @@
     >
       <div class="flex flex-col space-y-1.5 text-center sm:text-left">
         <h2 class="text-lg font-semibold leading-none tracking-tight">Disconnect Strava Account?</h2>
-        <p class="text-soft text-sm">Are you sure you want to disconnect your Strava account? <span class="underline underline-offset-2 font-semibold">You will no longer be able to sync your activities from Strava.</span></p>
+        <p class="text-soft text-sm text-pretty">Are you sure you want to disconnect your Strava account? You will no longer be able to sync your activities from Strava.</p>
       </div>
 
-      <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-        <button data-action="mousedown->modal#close" data-modal-id="unlinkStravaAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Nevermind</button>
-        <%= button_to unlink_strava_account_user_path(current_user), method: :delete, class: 'btn btn-destructive gap-2 w-full' do %>
-          Disconnect Strava Account
-        <% end %>
-      </div>
+      <%= form_with url: unlink_strava_account_user_path(current_user), method: :delete, local: true do |f| %>
+        <div class="flex items-center gap-2 mt-4 mb-2">
+          <%= f.check_box :delete_strava_data, { class: 'form-input-checkbox' }, true, false %>
+          <%= f.label :delete_strava_data, 'Delete all imported Strava data', class: 'form-check-label text-sm' %>
+        </div>
+
+        <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
+          <button data-action="mousedown->modal#close" data-modal-id="unlinkStravaAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+          <%= f.submit 'Disconnect from Strava', class: 'btn btn-destructive gap-2 max-sm:w-full' %>
+        </div>
+      <% end %>
 
       <button data-action="mousedown->modal#close" type="button" data-modal-id="unlinkStravaAccountModal" class="modal-x-btn">
         <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
@@ -131,13 +141,16 @@
       class="modal opacity-0 scale-75 pointer-events-none"
     >
       <div class="flex flex-col space-y-1.5 text-center sm:text-left">
-        <h2 class="text-lg font-semibold leading-none tracking-tight">Sync Runs from Strava?</h2>
-        <p class="text-soft text-sm">Are you sure you want to sync all your runs from your Strava account to PaceMaker? None of your existing runs on PaceMaker will be affected.</p>
+        <h2 class="text-lg font-semibold leading-none tracking-tight">Import Runs from Strava?</h2>
+        <div>
+          <p class="text-soft text-sm text-pretty">Are you sure you want to import all your runs from your Strava account to PaceMaker? None of your existing runs on PaceMaker will be affected.</p>
+          <p class="text-soft text-sm text-pretty italic mt-3">By proceeding to import your runs from Strava, you consent to PaceMaker accessing and displaying your Strava activities on your profile.</p>
+        </div>
       </div>
 
       <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
         <button data-action="mousedown->modal#close" data-modal-id="importStravaRunsModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
-        <%= button_to 'Sync runs', strava_imports_path, class: 'btn btn-primary btn-muted gap-2 w-full' %>
+        <%= button_to 'Import runs', strava_imports_path, class: 'btn btn-primary gap-2 max-sm:w-full' %>
       </div>
 
       <button data-action="mousedown->modal#close" type="button" data-modal-id="importStravaRunsModal" class="modal-x-btn">
@@ -145,12 +158,48 @@
         <span class="sr-only">Close</span>
       </button>
     </div>
+
+    <!-- Delete Strava Data Modal Backdrop -->
+    <div
+      data-modal-target="backdrop"
+      data-modal-id="deleteStravaDataModal"
+      data-action="mousedown->modal#backdropClose"
+      class="modal-backdrop opacity-0 pointer-events-none"></div>
+
+    <!-- Delete Strava Data Modal -->
+    <div
+      id="deleteStravaDataModal"
+      role="dialog"
+      aria-label="Delete Strava Data Confirmation"
+      tabindex="-1"
+      data-modal-target="modal"
+      class="modal opacity-0 scale-75 pointer-events-none"
+    >
+      <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+        <h2 class="text-lg font-semibold leading-none tracking-tight">Delete Imported Strava Data?</h2>
+        <div>
+          <p class="text-soft text-sm text-pretty">Are you sure you want to delete all data imported from your Strava account?</p>
+          <p class="text-soft text-sm text-pretty italic mt-3">This action will only delete the data from PaceMaker, and will not affect any of your data or activities on Strava.</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
+        <button data-action="mousedown->modal#close" data-modal-id="deleteStravaDataModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+        <%= button_to 'Delete Strava data', strava_imports_path, method: :delete, class: 'btn btn-destructive gap-2 max-sm:w-full' %>
+      </div>
+
+      <button data-action="mousedown->modal#close" type="button" data-modal-id="deleteStravaDataModal" class="modal-x-btn">
+        <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
+        <span class="sr-only">Close</span>
+      </button>
+    </div>
   <% else %>
+    <p class="help-text mt-1">PaceMaker is compatible with Strava! Connect your Strava account to sync your activities with PaceMaker.</p>
+    <p class="help-text mb-2">By connecting your Strava account, you agree to our <%= link_to 'Strava Data Usage Policy', strava_policy_path, class: 'btn-link' %>.</p>
+
     <%= button_to user_strava_omniauth_authorize_path, data: { turbo: 'false' }, class: 'rounded-lg hover:brightness-75 transition-all duration-200 ease-in-out' do %>
       <%= image_tag 'btn_strava_connect.svg', alt: 'Connect to Strava', class: 'rounded-lg' %>
     <% end %>
-
-    <p class="help-text my-1">PaceMaker is compatible with Strava. Connect your Strava account to sync your activities with PaceMaker.</p>
   <% end %>
 </div>
 
@@ -161,10 +210,11 @@
     <%= hidden_field_tag 'user[settings][auto_import_strava]', 'false' %>
     <%= f.fields_for :settings do |settings_form| %>
       <%= settings_form.check_box :auto_import_strava, { checked: @user.auto_import_strava?, class: 'form-input-checkbox', id: 'auto_import_strava_checkbox' }, true, false %>
-      <%= settings_form.label :auto_import_strava, 'Automatically sync Strava activity', class: 'form-check-label text-sm', for: 'auto_import_strava_checkbox' %>
+      <%= settings_form.label :auto_import_strava, 'Automatically sync new Strava activities', class: 'form-check-label text-sm', for: 'auto_import_strava_checkbox' %>
     <% end %>
   </div>
-  <p class="text-xs text-soft mt-0.5">Currently, activities can only sync from Strava to PaceMaker. Syncing from PaceMaker to Strava will be available in a future update. Check back later!</p>
+  <p class="help-text mt-1 mb-3 italic">By checking this box, you consent to PaceMaker automatically accessing and displaying your new Strava activities on your PaceMaker profile. Activities that you have already imported from Strava will continue to be synced even if you uncheck this box.</p>
+  <p class="help-text text-pretty">Currently, activities can only be synced from Strava to PaceMaker. Syncing from PaceMaker to Strava will be available in a future update. If you have opted in to automatically sync Strava activities, this feature will be enabled automatically when it becomes available.</p>
 
   <div class="py-6 mt-6 border-t border-slate-200 dark:border-slate-700">
     <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Profile</h2>

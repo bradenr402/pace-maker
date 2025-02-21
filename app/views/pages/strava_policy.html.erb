@@ -1,0 +1,45 @@
+<div class="max-w-3xl mx-auto my-16">
+  <div class="pb-8 my-8 border-b border-slate-200 dark:border-slate-700">
+    <h1 class="heading mb-1">Strava Data Usage Policy</h1>
+  </div>
+
+  <div class="space-y-10">
+    <div class="mb-8">
+      <h2 class="subheading mb-3">1. Data We Collect</h2>
+      <p class="text-soft mb-2">When you connect your Strava account to PaceMaker, we collect the following data:</p>
+      <ul class="text-soft list-disc pl-4 space-y-0.5">
+        <li>Your Strava athlete ID</li>
+        <li>Activity data, including run details such as distance, time, description, and date of run</li>
+      </ul>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="subheading mb-3">2. How We Collect the Data</h2>
+      <p class="text-soft mb-2">We collect your data through the <%= link_to 'Strava API', 'https://developers.strava.com/', class: 'btn-link' %> when you authorize PaceMaker to access your Strava account. Data is fetched when:</p>
+      <ul class="text-soft list-disc pl-4 space-y-0.5">
+        <li>You manually import activities by clicking &#8220;Import runs from Strava&#8221; in your <%= link_to 'settings', edit_user_registration_path, class: 'btn-link' %>.</li>
+        <li>You enable automatic sync for new Strava activities by checking &#8220;Automatically sync new Strava activities&#8221; in your <%= link_to 'settings', edit_user_registration_path, class: 'btn-link' %>.</li>
+        <li>You update or delete your existing Strava activities.</li>
+      </ul>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="subheading mb-3">3. How to Withdraw Consent</h2>
+      <p class="text-soft mb-2">You can disconnect your Strava account at any time by:</p>
+      <ul class="text-soft list-disc pl-4 space-y-0.5">
+        <li>Visiting your <%= link_to 'settings', edit_user_registration_path, class: 'btn-link' %> in PaceMaker and clicking &#8220;Disconnect from Strava.&#8221;</li>
+        <li>Revoking PaceMaker&#8217;s access to your Strava account from your <%= link_to 'Strava Apps Settings', 'https://www.strava.com/settings/apps', class: 'btn-link' %>.</li>
+      </ul>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="subheading mb-3">4. How to Request Data Deletion</h2>
+      <p class="text-soft">If you wish to delete your Strava data from PaceMaker, you can use the &#8220;Delete imported Strava data&#8221; option in your <%= link_to 'settings', edit_user_registration_path, class: 'btn-link' %>.</p>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="subheading mb-3">Contact Us</h2>
+      <p class="text-soft">If you have any questions regarding this policy, reach out to <%= mail_to 'get.pace.maker@gmail.com','get.pace.maker@gmail.com', class: 'btn-link' %>.</p>
+    </div>
+  </div>
+</div>

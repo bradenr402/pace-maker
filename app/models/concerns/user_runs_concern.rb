@@ -11,4 +11,6 @@ module UserRunsConcern
 
   def long_run_on_day?(date, team) =
     runs.where(date: date.all_day).any? { |run| run.long_run_for_team?(team) }
+
+  def strava_runs = runs.where.not(strava_id: nil)
 end
