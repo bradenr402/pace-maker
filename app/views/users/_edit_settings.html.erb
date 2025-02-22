@@ -19,17 +19,17 @@
       <div class="flex gap-x-2.5">
         <div class="form-input-toggle shrink-0" data-controller="toggle-checkbox" data-action="mousedown->toggle-checkbox#toggle">
           <span class="form-input-toggle-switch"></span>
-          <%= settings_form.check_box :email_visible, { checked: @user.show_email?, class: 'sr-only', data: { toggle_checkbox_target: 'checkbox' } }, true, false %>
+          <%= settings_form.check_box :email_visible, { checked: @user.show_email?, class: 'sr-only', id: 'email_visible_settings_checkbox', data: { toggle_checkbox_target: 'checkbox' } }, true, false %>
         </div>
-        <%= settings_form.label :email_visible, 'Show email', class: 'select-none text-slate-700 dark:text-slate-300' %>
+        <%= settings_form.label :email_visible, 'Show email', class: 'select-none text-slate-700 dark:text-slate-300', for: 'email_visible_settings_checkbox' %>
       </div>
 
       <div class="flex gap-x-2.5">
         <div class="form-input-toggle shrink-0" data-controller="toggle-checkbox" data-action="mousedown->toggle-checkbox#toggle">
           <span class="form-input-toggle-switch"></span>
-          <%= settings_form.check_box :phone_visible, { checked: @user.show_phone?, class: 'sr-only', data: { toggle_checkbox_target: 'checkbox' } }, true, false %>
+          <%= settings_form.check_box :phone_visible, { checked: @user.show_phone?, class: 'sr-only', id: 'phone_visible_settings_checkbox', data: { toggle_checkbox_target: 'checkbox' } }, true, false %>
         </div>
-        <%= settings_form.label :phone_visible, 'Show phone number', class: 'select-none text-slate-700 dark:text-slate-300' %>
+        <%= settings_form.label :phone_visible, 'Show phone number', class: 'select-none text-slate-700 dark:text-slate-300', for: 'phone_visible_settings_checkbox' %>
       </div>
     </div>
 
