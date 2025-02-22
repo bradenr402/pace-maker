@@ -5,7 +5,7 @@
 
 <div class="my-6">
   <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Linked Accounts</h2>
-  <p class="text-sm text-slate-600 dark:text-slate-400">Manage your linked accounts.</p>
+  <p class="text-sm text-slate-600 dark:text-slate-400">Connect third-party accounts with PaceMaker for easier sign-in and data synchronization.</p>
 </div>
 
 <div
@@ -16,464 +16,515 @@
   data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
   class="form-group flex flex-col items-start"
 >
-  <h2 class="font-semibold">Google</h2>
-  <% if current_user.google_account_linked? %>
-    <button data-action="mousedown->modal#open" data-modal-id="unlinkGoogleAccountModal" <%= 'disabled' if resource.password_changed_at.nil? %> class="btn btn-white btn-outline gap-2 mt-2">
+  <div class="card w-full">
+    <div class="flex items-center gap-3 mb-1">
       <%= inline_svg_tag 'icons/google-logo.svg', class: 'size-5' %>
-      Unlink Google Account
-    </button>
-    <% if resource.password_changed_at.nil? %>
-      <p class="help-text my-1">You signed up with Google and have not created a password yet. You must create a password to unlink your Google account.</p>
+      <h2 class="font-semibold">Google</h2>
+    </div>
+
+    <% if current_user.google_account_linked? %>
+      <p class="text-soft text-sm mb-6">Connected.</p>
+
+      <button data-action="mousedown->modal#open" data-modal-id="unlinkGoogleAccountModal" class="btn btn-destructive" <%= 'disabled' if resource.password_changed_at.nil? %>>
+        Unlink Google Account
+      </button>
+      <% if resource.password_changed_at.nil? %>
+        <p class="help-text my-1">You signed up with Google and have not created a password yet. You must create a password to unlink your Google account.</p>
+      <% else %>
+        <!-- Unlink Google Account Modal Backdrop -->
+        <div
+          data-modal-target="backdrop"
+          data-modal-id="unlinkGoogleAccountModal"
+          data-action="mousedown->modal#backdropClose"
+          class="modal-backdrop opacity-0 pointer-events-none"></div>
+        <!-- Unlink Google Account Modal -->
+        <div
+          id="unlinkGoogleAccountModal"
+          role="dialog"
+          aria-label="Unlink Google Account Confirmation"
+          tabindex="-1"
+          data-modal-target="modal"
+          class="modal opacity-0 scale-75 pointer-events-none"
+        >
+          <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+            <h2 class="text-lg font-semibold leading-none tracking-tight">Unlink Google Account?</h2>
+            <p class="text-soft text-sm">Are you sure you want to unlink your Google account? You will no longer be able to sign in with your Google account.</p>
+          </div>
+          <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
+            <button data-action="mousedown->modal#close" data-modal-id="unlinkGoogleAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+            <%= button_to 'Unlink Google Account', unlink_google_account_user_path(current_user), method: :delete, class: 'btn btn-destructive gap-2 w-full' %>
+          </div>
+          <button data-action="mousedown->modal#close" type="button" data-modal-id="unlinkGoogleAccountModal" class="modal-x-btn">
+            <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
+            <span class="sr-only">Close</span>
+          </button>
+        </div>
+      <% end %>
     <% else %>
-      <!-- Unlink Google Account Modal Backdrop -->
+      <p class="text-soft text-sm text-pretty mt-1 mb-6">Link your Google account for easier sign-in. The email on your Google account must match the email on your PaceMaker account.</p>
+      <%= button_to user_google_oauth2_omniauth_authorize_path, data: { turbo: 'false' }, class: 'btn btn-white gap-2' do %>
+        <%= inline_svg_tag 'icons/google-logo.svg', class: 'size-5' %>
+        Link Google Account
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="card w-full mt-6">
+    <h2 class="font-semibold">Strava</h2>
+
+    <% if current_user.strava_account_linked? %>
+      <div class="flex gap-4 mb-6">
+        <p class="text-soft text-sm">Connected.</p>
+        <%= link_to 'View your Strava account', "https://strava.com/athletes/#{current_user.strava_uid}", class: 'btn-link text-sm' %>
+      </div>
+
+      <button data-action="mousedown->modal#open" data-modal-id="unlinkStravaAccountModal" class="btn btn-destructive">
+        Disconnect from Strava
+      </button>
+
+      <div class="py-6 mt-6 border-t border-slate-200 dark:border-slate-700">
+        <h3 class="mb-2 text-sm font-normal text-slate-700 dark:text-slate-200">Data Management</h3>
+        <p class="text-xs text-slate-600 dark:text-slate-400">Manage your Strava data using the options below.</p>
+      </div>
+
+      <div class="flex items-center gap-x-4 gap-y-2 flex-wrap">
+        <button data-action="mousedown->modal#open" data-modal-id="importStravaRunsModal" class="btn btn-white">
+          Import runs from Strava
+        </button>
+        <button data-action="mousedown->modal#open" data-modal-id="deleteStravaRunsModal" class="btn btn-destructive">
+          Delete imported Strava runs
+        </button>
+      </div>
+
+      <div class="mt-5 pt-6 border-t border-slate-200 dark:border-slate-700 ">
+        <%= form_with model: @user, url: user_settings_path(@user), local: true do |form| %>
+          <!-- Hidden fields to ensure that unchecked checkboxes submit 'false' -->
+          <%= hidden_field_tag 'user[settings][auto_import_strava]', 'false' %>
+
+          <%= form.fields_for :settings do |settings_form| %>
+            <div class="flex items-center gap-2">
+              <%= settings_form.check_box :auto_import_strava, { checked: @user.auto_import_strava?, class: 'form-input-checkbox', id: 'auto_import_strava_checkbox', onchange: 'this.form.submit()' }, true, false %>
+              <%= settings_form.label :auto_import_strava, 'Automatically sync new Strava activities', class: 'form-check-label text-sm', for: 'auto_import_strava_checkbox' %>
+            </div>
+          <% end %>
+        <% end %>
+
+        <div class="flex items-center gap-2 md:gap-3 p-2 md:p-3 mt-4 rounded-lg border border-slate-200 dark:border-slate-700">
+          <%= inline_svg_tag 'icons/info.svg', class: 'size-4 shrink-0' %>
+          <p class="text-light text-xs text-pretty">Currently, activities can only be synced from Strava to PaceMaker. Syncing from PaceMaker to Strava will be available in a future update. If you have opted in to automatically sync Strava activities, this feature will be enabled automatically when it becomes available.</p>
+        </div>
+      </div>
+
+      <!-- Disconnect Strava Account Modal Backdrop -->
       <div
         data-modal-target="backdrop"
-        data-modal-id="unlinkGoogleAccountModal"
+        data-modal-id="unlinkStravaAccountModal"
         data-action="mousedown->modal#backdropClose"
         class="modal-backdrop opacity-0 pointer-events-none"></div>
 
-      <!-- Unlink Google Account Modal -->
+      <!-- Disconnect Strava Account Modal -->
       <div
-        id="unlinkGoogleAccountModal"
+        id="unlinkStravaAccountModal"
         role="dialog"
-        aria-label="Unlink Google Account Confirmation"
+        aria-label="Disconnect Strava Account Confirmation"
         tabindex="-1"
         data-modal-target="modal"
         class="modal opacity-0 scale-75 pointer-events-none"
       >
         <div class="flex flex-col space-y-1.5 text-center sm:text-left">
-          <h2 class="text-lg font-semibold leading-none tracking-tight">Unlink Google Account?</h2>
-          <p class="text-soft text-sm">Are you sure you want to unlink your Google account? You will no longer be able to sign in with your Google account.</p>
+          <h2 class="text-lg font-semibold leading-none tracking-tight">Disconnect Strava Account?</h2>
+          <p class="text-soft text-sm text-pretty">Are you sure you want to disconnect your Strava account? You will no longer be able to sync your activities from Strava.</p>
         </div>
 
-        <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-          <button data-action="mousedown->modal#close" data-modal-id="unlinkGoogleAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
-          <%= button_to 'Unlink Google Account', unlink_google_account_user_path(current_user), method: :delete, class: 'btn btn-destructive gap-2 w-full' %>
-        </div>
+        <%= form_with url: unlink_strava_account_user_path(current_user), method: :delete, local: true do |f| %>
+          <div class="flex items-center gap-2 mt-4 mb-2">
+            <%= f.check_box :delete_strava_data, { class: 'form-input-checkbox' }, true, false %>
+            <%= f.label :delete_strava_data, 'Delete all imported Strava data', class: 'form-check-label text-sm' %>
+          </div>
+          <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
+            <button data-action="mousedown->modal#close" data-modal-id="unlinkStravaAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+            <%= f.submit 'Disconnect from Strava', class: 'btn btn-destructive gap-2 max-sm:w-full' %>
+          </div>
+        <% end %>
 
-        <button data-action="mousedown->modal#close" type="button" data-modal-id="unlinkGoogleAccountModal" class="modal-x-btn">
+        <button data-action="mousedown->modal#close" type="button" data-modal-id="unlinkStravaAccountModal" class="modal-x-btn">
           <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
           <span class="sr-only">Close</span>
         </button>
       </div>
-    <% end %>
-  <% else %>
-    <p class="help-text mt-1 mb-3">Link your Google account for easier sign-in. The email on your Google account must match the email on your PaceMaker account.</p>
-    <%= button_to user_google_oauth2_omniauth_authorize_path, data: { turbo: 'false' }, class: 'btn btn-white btn-outline gap-2' do %>
-      <%= inline_svg_tag 'icons/google-logo.svg', class: 'size-5' %>
-      Link Google Account
-    <% end %>
-  <% end %>
 
-  <h2 class="font-semibold mt-6">Strava</h2>
-  <% if current_user.strava_account_linked? %>
-    <div class="mt-4 flex items-center gap-x-4 gap-y-2 flex-wrap mt-2">
-      <button data-action="mousedown->modal#open" data-modal-id="unlinkStravaAccountModal" class="btn btn-white btn-outline gap-2">
-        Disconnect from Strava
-      </button>
+      <!-- Import Strava Runs Modal Backdrop -->
+      <div
+        data-modal-target="backdrop"
+        data-modal-id="importStravaRunsModal"
+        data-action="mousedown->modal#backdropClose"
+        class="modal-backdrop opacity-0 pointer-events-none"></div>
 
-      <%= link_to 'View my Strava account', "https://strava.com/athletes/#{current_user.strava_uid}", class: 'btn-link text-sm' %>
-    </div>
-
-    <div class="mt-4 flex items-center gap-x-4 gap-y-2 flex-wrap">
-      <button data-action="mousedown->modal#open" data-modal-id="importStravaRunsModal" class="btn btn-primary btn-muted">
-        Import runs from Strava
-      </button>
-
-      <button data-action="mousedown->modal#open" data-modal-id="deleteStravaDataModal" class="btn btn-destructive btn-muted">
-        Delete imported Strava data
-      </button>
-    </div>
-
-    <!-- Disconnect Strava Account Modal Backdrop -->
-    <div
-      data-modal-target="backdrop"
-      data-modal-id="unlinkStravaAccountModal"
-      data-action="mousedown->modal#backdropClose"
-      class="modal-backdrop opacity-0 pointer-events-none"></div>
-
-    <!-- Disconnect Strava Account Modal -->
-    <div
-      id="unlinkStravaAccountModal"
-      role="dialog"
-      aria-label="Disconnect Strava Account Confirmation"
-      tabindex="-1"
-      data-modal-target="modal"
-      class="modal opacity-0 scale-75 pointer-events-none"
-    >
-      <div class="flex flex-col space-y-1.5 text-center sm:text-left">
-        <h2 class="text-lg font-semibold leading-none tracking-tight">Disconnect Strava Account?</h2>
-        <p class="text-soft text-sm text-pretty">Are you sure you want to disconnect your Strava account? You will no longer be able to sync your activities from Strava.</p>
-      </div>
-
-      <%= form_with url: unlink_strava_account_user_path(current_user), method: :delete, local: true do |f| %>
-        <div class="flex items-center gap-2 mt-4 mb-2">
-          <%= f.check_box :delete_strava_data, { class: 'form-input-checkbox' }, true, false %>
-          <%= f.label :delete_strava_data, 'Delete all imported Strava data', class: 'form-check-label text-sm' %>
+      <!-- Import Strava Runs Modal -->
+      <div
+        id="importStravaRunsModal"
+        role="dialog"
+        aria-label="Import Strava Runs Confirmation"
+        tabindex="-1"
+        data-modal-target="modal"
+        class="modal opacity-0 scale-75 pointer-events-none"
+      >
+        <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+          <h2 class="text-lg font-semibold leading-none tracking-tight">Import Runs from Strava?</h2>
+          <div>
+            <p class="text-soft text-sm text-pretty">Are you sure you want to import all your runs from your Strava account to PaceMaker? None of your existing runs on PaceMaker will be affected.</p>
+            <p class="text-soft text-sm text-pretty italic mt-3">By proceeding to import your runs from Strava, you consent to PaceMaker accessing and displaying your Strava activities on your profile.</p>
+          </div>
         </div>
 
         <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-          <button data-action="mousedown->modal#close" data-modal-id="unlinkStravaAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
-          <%= f.submit 'Disconnect from Strava', class: 'btn btn-destructive gap-2 max-sm:w-full' %>
+          <button data-action="mousedown->modal#close" data-modal-id="importStravaRunsModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+          <%= button_to 'Import runs', strava_imports_path, class: 'btn btn-primary gap-2 max-sm:w-full' %>
         </div>
+
+        <button data-action="mousedown->modal#close" type="button" data-modal-id="importStravaRunsModal" class="modal-x-btn">
+          <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
+          <span class="sr-only">Close</span>
+        </button>
+      </div>
+
+      <!-- Delete Strava Runs Modal Backdrop -->
+      <div
+        data-modal-target="backdrop"
+        data-modal-id="deleteStravaRunsModal"
+        data-action="mousedown->modal#backdropClose"
+        class="modal-backdrop opacity-0 pointer-events-none"></div>
+
+      <!-- Delete Strava Runs Modal -->
+      <div
+        id="deleteStravaRunsModal"
+        role="dialog"
+        aria-label="Delete Strava Runs Confirmation"
+        tabindex="-1"
+        data-modal-target="modal"
+        class="modal opacity-0 scale-75 pointer-events-none"
+      >
+        <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+          <h2 class="text-lg font-semibold leading-none tracking-tight">Delete Imported Strava Runs?</h2>
+          <div>
+            <p class="text-soft text-sm text-pretty">Are you sure you want to delete all runs imported from your Strava account?</p>
+            <p class="text-soft text-sm text-pretty italic mt-3">This action will only delete the runs from PaceMaker, and will not affect any of your data or activities on Strava.</p>
+          </div>
+        </div>
+        <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
+          <button data-action="mousedown->modal#close" data-modal-id="deleteStravaRunsModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+          <%= button_to 'Delete imported Strava runs', strava_imports_path, method: :delete, class: 'btn btn-destructive gap-2 max-sm:w-full' %>
+        </div>
+        <button data-action="mousedown->modal#close" type="button" data-modal-id="deleteStravaRunsModal" class="modal-x-btn">
+          <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
+          <span class="sr-only">Close</span>
+        </button>
+      </div>
+    <% else %>
+      <p class="text-soft text-sm text-pretty mt-1 mb-6">PaceMaker is compatible with Strava! Connect your Strava account to sync your activities with PaceMaker. By connecting your Strava account, you agree to our <%= link_to 'Strava Data Usage Policy', strava_policy_path, class: 'btn-link' %>.</p>
+      <%= button_to user_strava_omniauth_authorize_path, data: { turbo: 'false' }, class: 'inline-block rounded-lg hover:brightness-[85%] transition-all duration-200 ease-in-out', form: { class: '-mb-1' } do %>
+        <%= image_tag 'btn_strava_connect.svg', alt: 'Connect to Strava', class: 'rounded-lg' %>
       <% end %>
-
-      <button data-action="mousedown->modal#close" type="button" data-modal-id="unlinkStravaAccountModal" class="modal-x-btn">
-        <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
-        <span class="sr-only">Close</span>
-      </button>
-    </div>
-
-    <!-- Import Strava Runs Modal Backdrop -->
-    <div
-      data-modal-target="backdrop"
-      data-modal-id="importStravaRunsModal"
-      data-action="mousedown->modal#backdropClose"
-      class="modal-backdrop opacity-0 pointer-events-none"></div>
-
-    <!-- Import Strava Runs Modal -->
-    <div
-      id="importStravaRunsModal"
-      role="dialog"
-      aria-label="Import Strava Runs Confirmation"
-      tabindex="-1"
-      data-modal-target="modal"
-      class="modal opacity-0 scale-75 pointer-events-none"
-    >
-      <div class="flex flex-col space-y-1.5 text-center sm:text-left">
-        <h2 class="text-lg font-semibold leading-none tracking-tight">Import Runs from Strava?</h2>
-        <div>
-          <p class="text-soft text-sm text-pretty">Are you sure you want to import all your runs from your Strava account to PaceMaker? None of your existing runs on PaceMaker will be affected.</p>
-          <p class="text-soft text-sm text-pretty italic mt-3">By proceeding to import your runs from Strava, you consent to PaceMaker accessing and displaying your Strava activities on your profile.</p>
-        </div>
-      </div>
-
-      <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-        <button data-action="mousedown->modal#close" data-modal-id="importStravaRunsModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
-        <%= button_to 'Import runs', strava_imports_path, class: 'btn btn-primary gap-2 max-sm:w-full' %>
-      </div>
-
-      <button data-action="mousedown->modal#close" type="button" data-modal-id="importStravaRunsModal" class="modal-x-btn">
-        <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
-        <span class="sr-only">Close</span>
-      </button>
-    </div>
-
-    <!-- Delete Strava Data Modal Backdrop -->
-    <div
-      data-modal-target="backdrop"
-      data-modal-id="deleteStravaDataModal"
-      data-action="mousedown->modal#backdropClose"
-      class="modal-backdrop opacity-0 pointer-events-none"></div>
-
-    <!-- Delete Strava Data Modal -->
-    <div
-      id="deleteStravaDataModal"
-      role="dialog"
-      aria-label="Delete Strava Data Confirmation"
-      tabindex="-1"
-      data-modal-target="modal"
-      class="modal opacity-0 scale-75 pointer-events-none"
-    >
-      <div class="flex flex-col space-y-1.5 text-center sm:text-left">
-        <h2 class="text-lg font-semibold leading-none tracking-tight">Delete Imported Strava Data?</h2>
-        <div>
-          <p class="text-soft text-sm text-pretty">Are you sure you want to delete all data imported from your Strava account?</p>
-          <p class="text-soft text-sm text-pretty italic mt-3">This action will only delete the data from PaceMaker, and will not affect any of your data or activities on Strava.</p>
-        </div>
-      </div>
-
-      <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-        <button data-action="mousedown->modal#close" data-modal-id="deleteStravaDataModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
-        <%= button_to 'Delete Strava data', strava_imports_path, method: :delete, class: 'btn btn-destructive gap-2 max-sm:w-full' %>
-      </div>
-
-      <button data-action="mousedown->modal#close" type="button" data-modal-id="deleteStravaDataModal" class="modal-x-btn">
-        <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
-        <span class="sr-only">Close</span>
-      </button>
-    </div>
-  <% else %>
-    <p class="help-text mt-1">PaceMaker is compatible with Strava! Connect your Strava account to sync your activities with PaceMaker.</p>
-    <p class="help-text mb-2">By connecting your Strava account, you agree to our <%= link_to 'Strava Data Usage Policy', strava_policy_path, class: 'btn-link' %>.</p>
-
-    <%= button_to user_strava_omniauth_authorize_path, data: { turbo: 'false' }, class: 'rounded-lg hover:brightness-75 transition-all duration-200 ease-in-out' do %>
-      <%= image_tag 'btn_strava_connect.svg', alt: 'Connect to Strava', class: 'rounded-lg' %>
-    <% end %>
-  <% end %>
-</div>
-
-<%= form_for resource, as: resource_name, url: registration_path(resource_name), data: { controller: "form-validation" }, html: { method: :put, novalidate: true } do |f| %>
-  <%= render 'devise/shared/error_messages', resource: resource %>
-
-  <div class="flex items-center gap-2">
-    <%= hidden_field_tag 'user[settings][auto_import_strava]', 'false' %>
-    <%= f.fields_for :settings do |settings_form| %>
-      <%= settings_form.check_box :auto_import_strava, { checked: @user.auto_import_strava?, class: 'form-input-checkbox', id: 'auto_import_strava_checkbox' }, true, false %>
-      <%= settings_form.label :auto_import_strava, 'Automatically sync new Strava activities', class: 'form-check-label text-sm', for: 'auto_import_strava_checkbox' %>
     <% end %>
   </div>
-  <p class="help-text mt-1 mb-3 italic">By checking this box, you consent to PaceMaker automatically accessing and displaying your new Strava activities on your PaceMaker profile. Activities that you have already imported from Strava will continue to be synced even if you uncheck this box.</p>
-  <p class="help-text text-pretty">Currently, activities can only be synced from Strava to PaceMaker. Syncing from PaceMaker to Strava will be available in a future update. If you have opted in to automatically sync new Strava activities, this feature will be enabled automatically when it becomes available.</p>
+</div>
+
+<%= form_for resource, as: resource_name, url: registration_path(resource_name), data: { controller: 'form-validation' }, html: { method: :put, novalidate: true } do |f| %>
+  <%= render 'devise/shared/error_messages', resource: resource %>
 
   <div class="py-6 mt-6 border-t border-slate-200 dark:border-slate-700">
     <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Profile</h2>
     <p class="text-sm text-slate-600 dark:text-slate-400">This information will be visible to other users.</p>
   </div>
 
-  <div class='form-group'>
-    <%= f.label :username, class: "form-label" %>
+  <div class="card">
+    <div class='form-group'>
+      <%= f.label :username, class: "form-label" %>
 
-    <div class="relative">
-      <%= inline_svg_tag 'icons/user.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= f.text_field :username, autocomplete: 'username', placeholder: 'e.g., john_doe', class: 'form-input pl-10', data: { form_validation_target: 'username', action: 'input->form-validation#validateUsername' } %>
-    </div>
-
-    <p class="my-1 help-text">Your username is unique to you and is used to identify your account.</p>
-    <p class="hidden my-1 error-message" data-form-validation-target="usernameError">Username can only contain lowercase letters, numbers, underscores, and periods and must be at least 3 characters long</p>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :display_name, class: "form-label" do %>
-      <p> Display name
-        <span class="help-text">(optional)</span>
-      </p>
-    <% end %>
-
-    <div class="relative">
-      <%= inline_svg_tag 'icons/profile.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= f.text_field :display_name, placeholder: 'e.g., John Doe', class: 'form-input pl-10', data: { form_validation_target: 'displayName', action: 'input->form-validation#validateDisplayName' } %>
-    </div>
-
-    <p class="my-1 help-text">Your display name is not unique and can be added to help other users recognize you.</p>
-    <p class="hidden my-1 error-message" data-form-validation-target="displayNameError">Display name must be 100 characters or less</p>
-  </div>
-
-  <div data-controller="image-preview" class="form-group">
-    <%= f.label :avatar, class: 'form-label' do %>
-      <p> Profile photo
-        <span class="help-text">(optional)</span>
-      </p>
-    <% end %>
-
-    <div class="flex items-center gap-x-4">
-      <%= render 'shared/user_photo', user: resource, size: :md, image_only: true, image_classes: resource.avatar.blank? ? 'hidden' : '', image_options: { data: { image_preview_target: 'output' } } %>
-      <div class="space-y-2">
-        <%= f.file_field :avatar, accept: 'image/png, image/jpeg', class: 'form-file', data: { image_preview_target: 'input', action: 'image-preview#readURL' } %>
-        <button type="button" class="btn btn-transparent" data-image-preview-target="clearBtn" data-action="image-preview#clearUpload">Clear upload</button>
+      <div class="relative">
+        <%= inline_svg_tag 'icons/user.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+        <%= f.text_field :username, autocomplete: 'username', placeholder: 'e.g., john_doe', class: 'form-input pl-10', data: { form_validation_target: 'username', action: 'input->form-validation#validateUsername' } %>
       </div>
+
+      <p class="my-1 help-text">Your username is unique to you and is used to identify your account.</p>
+      <p class="hidden my-1 error-message" data-form-validation-target="usernameError">Username can only contain lowercase letters, numbers, underscores, and periods and must be at least 3 characters long</p>
     </div>
 
-    <% if resource.avatar.attached? %>
-      <div class="flex items-center gap-2 mt-3">
-        <%= f.check_box :remove_avatar, class: 'form-input-checkbox', data: { image_preview_target: 'removeAvatarCheckbox', action: 'image-preview#selectCheckbox' } %>
-        <%= f.label :remove_avatar, 'Remove profile photo', class: 'form-check-label text-sm' %>
+    <div class="form-group">
+      <%= f.label :display_name, class: "form-label" do %>
+        <p> Display name
+          <span class="help-text">(optional)</span>
+        </p>
+      <% end %>
+
+      <div class="relative">
+        <%= inline_svg_tag 'icons/profile.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+        <%= f.text_field :display_name, placeholder: 'e.g., John Doe', class: 'form-input pl-10', data: { form_validation_target: 'displayName', action: 'input->form-validation#validateDisplayName' } %>
       </div>
-    <% end %>
+
+      <p class="my-1 help-text">Your display name is not unique and can be added to help other users recognize you.</p>
+      <p class="hidden my-1 error-message" data-form-validation-target="displayNameError">Display name must be 100 characters or less</p>
+    </div>
+
+    <div data-controller="image-preview" class="form-group">
+      <%= f.label :avatar, class: 'form-label' do %>
+        <p> Profile photo
+          <span class="help-text">(optional)</span>
+        </p>
+      <% end %>
+
+      <div class="flex items-center gap-x-4">
+        <%= render 'shared/user_photo', user: resource, size: :md, image_only: true, image_classes: resource.avatar.blank? ? 'hidden' : '', image_options: { data: { image_preview_target: 'output' } } %>
+        <div class="space-y-2">
+          <%= f.file_field :avatar, accept: 'image/png, image/jpeg', class: 'form-file', data: { image_preview_target: 'input', action: 'image-preview#readURL' } %>
+          <button type="button" class="btn btn-transparent" data-image-preview-target="clearBtn" data-action="image-preview#clearUpload">Clear upload</button>
+        </div>
+      </div>
+
+      <% if resource.avatar.attached? %>
+        <div class="flex items-center gap-2 mt-3">
+          <%= f.check_box :remove_avatar, class: 'form-input-checkbox', data: { image_preview_target: 'removeAvatarCheckbox', action: 'image-preview#selectCheckbox' } %>
+          <%= f.label :remove_avatar, 'Remove profile photo', class: 'form-check-label text-sm' %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="flex items-center gap-4 pt-6 border-t border-slate-200 dark:border-slate-700">
+      <%= f.submit 'Save changes', data: { turbo: false }, class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-dark btn-muted' %>
+    </div>
   </div>
+<% end %>
+
+<%= form_for resource, as: resource_name, url: registration_path(resource_name), data: { controller: 'form-validation' }, html: { method: :put, novalidate: true } do |f| %>
+  <%= render 'devise/shared/error_messages', resource: resource %>
 
   <div class="py-6 mt-6 border-t border-slate-200 dark:border-slate-700">
     <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Contact Information</h2>
     <p class="text-sm text-slate-600 dark:text-slate-400">Choose whether this information will be visible to other users.</p>
   </div>
 
-  <div class='form-group'>
-    <%= f.label :email, class: 'form-label' %>
+  <div class="card">
+    <div class='form-group'>
+      <%= f.label :email, class: 'form-label' %>
 
-    <div class="relative">
-      <%= inline_svg_tag 'icons/envelope.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= f.email_field :email, autocomplete: 'email', placeholder: 'e.g., example@email.com', class: 'form-input pl-10', disabled: resource.google_account_linked?, data: { form_validation_target: 'email', action: 'input->form-validation#validateEmail' } %>
-    </div>
+      <div class="relative">
+        <%= inline_svg_tag 'icons/envelope.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+        <%= f.email_field :email, autocomplete: 'email', placeholder: 'e.g., example@email.com', class: 'form-input pl-10', disabled: resource.google_account_linked?, data: { form_validation_target: 'email', action: 'input->form-validation#validateEmail' } %>
+      </div>
 
-    <% if resource.google_account_linked? %>
-      <p class="my-1 help-text">Your email is linked to your Google account. You must unlink your Google account to change it.</p>
-    <% else %>
-      <p class="hidden my-1 error-message" data-form-validation-target="emailError">Invalid email address</p>
-    <% end %>
-
-    <div class="flex items-center gap-2 mt-2">
-      <%= hidden_field_tag 'user[settings][email_visible]', 'false' %>
-      <%= f.fields_for :settings do |settings_form| %>
-        <%= settings_form.check_box :email_visible, { checked: @user.show_email?, class: 'form-input-checkbox', id: 'email_visible_checkbox' }, true, false %>
-        <%= settings_form.label :email_visible, 'Show email on profile', class: 'form-check-label text-sm', for: 'email_visible_checkbox' %>
-      <% end %>
-    </div>
-  </div>
-
-  <div class="form-group" data-controller="phone">
-    <div class="sm:flex flex-wrap items-center justify-between">
-      <%= f.label :phone_number, class: 'form-label' do %>
-        <p> Phone number
-          <span class="help-text">(optional)</span>
-        </p>
+      <% if resource.google_account_linked? %>
+        <p class="my-1 help-text">Your email is linked to your Google account. You must unlink your Google account to change it.</p>
+      <% else %>
+        <p class="hidden my-1 error-message" data-form-validation-target="emailError">Invalid email address</p>
       <% end %>
 
-      <div class="flex items-center gap-2 max-sm:mb-2">
-        <%= check_box_tag 'format_as_you_type', '1', true, class: 'form-input-checkbox', data: { action: 'change->phone#toggleFormatting' } %>
-        <%= label_tag 'format_as_you_type', 'Format as you type', class: 'form-check-label text-sm' %>
+      <div class="flex items-center gap-2 mt-2">
+        <%= hidden_field_tag 'user[settings][email_visible]', 'false' %>
+        <%= f.fields_for :settings do |settings_form| %>
+          <%= settings_form.check_box :email_visible, { checked: @user.show_email?, class: 'form-input-checkbox', id: 'email_visible_checkbox' }, true, false %>
+          <%= settings_form.label :email_visible, 'Show email on profile', class: 'form-check-label text-sm', for: 'email_visible_checkbox' %>
+        <% end %>
       </div>
     </div>
 
-    <div class="relative flex rounded-md shadow-sm">
-      <!-- Country code select -->
-      <%= label_tag :group_by, 'Country code', class: 'sr-only' %>
-      <%= inline_svg_tag 'icons/phone.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= f.label :phone_country_code, class: 'sr-only' %>
-      <%= f.select :phone_country_code,
-                    grouped_options_for_select(country_code_options, @user.phone_country_code),
-                    { include_blank: 'Country code', selected: @user.phone_country_code },
-                    {
-                      class: 'form-select appearance-none px-10 py-2 border [&:not(:focus)]:border-r-transparent rounded-r-none w-max focus:z-10',
-                      data: { action: 'change->phone#updateCountryCode change->phone#phoneFormat', phone_target: 'countryCode' }
-                    }
-      %>
+    <div class="form-group" data-controller="phone">
+      <div class="sm:flex flex-wrap items-center justify-between">
+        <%= f.label :phone_number, class: 'form-label' do %>
+          <p> Phone number
+            <span class="help-text">(optional)</span>
+          </p>
+        <% end %>
 
-      <!-- Phone number input -->
-      <%= f.phone_field :phone_number,
-                        placeholder: '(555) 555-5555',
-                        autocomplete: 'tel',
-                        value: f.object.raw_phone_number,
-                        class: 'form-input shadow-sm pl-3 pr-10 py-2 border [&:not(:focus)]:border-l-transparent rounded-l-none w-full focus:z-10',
-                        data: { form_validation_target: 'phone', phone_target: 'phone', action: 'input->form-validation#validatePhone input->phone#phoneFormat' }
-      %>
+        <div class="flex items-center gap-2 max-sm:mb-2">
+          <%= check_box_tag 'format_as_you_type', '1', true, class: 'form-input-checkbox', data: { action: 'change->phone#toggleFormatting' } %>
+          <%= label_tag 'format_as_you_type', 'Format as you type', class: 'form-check-label text-sm' %>
+        </div>
+      </div>
 
+      <div class="relative flex rounded-md shadow-sm">
+        <!-- Country code select -->
+        <%= label_tag :group_by, 'Country code', class: 'sr-only' %>
+        <%= inline_svg_tag 'icons/phone.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+        <%= f.label :phone_country_code, class: 'sr-only' %>
+        <%= f.select :phone_country_code,
+                      grouped_options_for_select(country_code_options, @user.phone_country_code),
+                      { include_blank: 'Country code', selected: @user.phone_country_code },
+                      {
+                        class: 'form-select appearance-none px-10 py-2 border [&:not(:focus)]:border-r-transparent rounded-r-none w-max focus:z-10',
+                        data: { action: 'change->phone#updateCountryCode change->phone#phoneFormat', phone_target: 'countryCode' }
+                      }
+        %>
+
+        <!-- Phone number input -->
+        <%= f.phone_field :phone_number,
+                          placeholder: '(555) 555-5555',
+                          autocomplete: 'tel',
+                          value: f.object.raw_phone_number,
+                          class: 'form-input shadow-sm pl-3 pr-10 py-2 border [&:not(:focus)]:border-l-transparent rounded-l-none w-full focus:z-10',
+                          data: { form_validation_target: 'phone', phone_target: 'phone', action: 'input->form-validation#validatePhone input->phone#phoneFormat' }
+        %>
+
+      </div>
+      <p class="hidden my-1 error-message" data-form-validation-target="phoneError">Invalid phone number</p>
+
+      <div class="flex items-center gap-2 mt-2">
+        <%= hidden_field_tag 'user[settings][phone_visible]', 'false' %>
+        <%= f.fields_for :settings do |settings_form| %>
+          <%= settings_form.check_box :phone_visible, { checked: @user.show_phone?, class: 'form-input-checkbox', id: 'phone_visible_checkbox' }, true, false %>
+          <%= settings_form.label :phone_visible, 'Show phone number on profile', class: 'form-check-label text-sm', for: 'phone_visible_checkbox' %>
+        <% end %>
+      </div>
     </div>
-    <p class="hidden my-1 error-message" data-form-validation-target="phoneError">Invalid phone number</p>
 
-    <div class="flex items-center gap-2 mt-2">
-      <%= hidden_field_tag 'user[settings][phone_visible]', 'false' %>
-      <%= f.fields_for :settings do |settings_form| %>
-        <%= settings_form.check_box :phone_visible, { checked: @user.show_phone?, class: 'form-input-checkbox', id: 'phone_visible_checkbox' }, true, false %>
-        <%= settings_form.label :phone_visible, 'Show phone number on profile', class: 'form-check-label text-sm', for: 'phone_visible_checkbox' %>
-      <% end %>
+    <div class="flex items-center gap-4 pt-6 border-t border-slate-200 dark:border-slate-700">
+      <%= f.submit 'Save changes', data: { turbo: false }, class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-dark btn-muted' %>
     </div>
   </div>
+<% end %>
+
+<%= form_for resource, as: resource_name, url: registration_path(resource_name), data: { controller: 'form-validation' }, html: { method: :put, novalidate: true } do |f| %>
+  <%= render 'devise/shared/error_messages', resource: resource %>
 
   <div class="py-6 mt-6 border-t border-slate-200 dark:border-slate-700">
     <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Personal Details</h2>
     <p class="text-sm text-slate-600 dark:text-slate-400">This information will only be visible to your coaches and other team members.</p>
   </div>
 
-  <div class="form-group">
-    <%= f.label :gender, class: 'form-label' do %>
-      <p> Gender
-        <span class="help-text">(optional)</span>
-      </p>
-    <% end %>
+  <div class="card">
+    <div class="form-group">
+      <%= f.label :gender, class: 'form-label' do %>
+        <p> Gender
+          <span class="help-text">(optional)</span>
+        </p>
+      <% end %>
 
-    <% if resource.any_teams_require_gender? %>
-      <div class="relative">
-        <%= inline_svg_tag 'icons/gender.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-        <%= f.select :gender, User.genders.keys.map { |gender| [gender.humanize, gender] }, {}, class: 'form-select pl-10' %>
-      </div>
+      <% if resource.any_teams_require_gender? %>
+        <div class="relative">
+          <%= inline_svg_tag 'icons/gender.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+          <%= f.select :gender, User.genders.keys.map { |gender| [gender.humanize, gender] }, {}, class: 'form-select pl-10' %>
+        </div>
 
-      <% teams_requiring_gender = resource.teams_requiring_gender %>
+        <% teams_requiring_gender = resource.teams_requiring_gender %>
 
-      <p class="my-1 help-text">You are a member of <%= pluralize(teams_requiring_gender.count, 'team that requires its members', 'teams that require their members') %> to specify their gender:</p>
+        <p class="my-1 help-text">You are a member of <%= pluralize(teams_requiring_gender.count, 'team that requires its members', 'teams that require their members') %> to specify their gender:</p>
 
-      <ul class="pl-4 my-1 list-disc help-text">
-        <%= teams_requiring_gender.map { |team| content_tag(:li, link_to(team.name, team, class: 'btn-link')) }.join.html_safe %>
-      </ul>
+        <ul class="pl-4 my-1 list-disc help-text">
+          <%= teams_requiring_gender.map { |team| content_tag(:li, link_to(team.name, team, class: 'btn-link')) }.join.html_safe %>
+        </ul>
 
-      <p class="my-1 help-text">You must leave <%= teams_requiring_gender.count == 1 ? 'this team' : 'these teams' %> to remove your gender.</p>
-    <% else %>
-      <div class="relative">
-        <%= inline_svg_tag 'icons/gender.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-        <%= f.select :gender, [['Prefer not to answer', '']].concat(User.genders.keys.map { |gender| [gender.humanize, gender] }), {}, class: 'form-select pl-10' %>
-      </div>
-    <% end %>
+        <p class="my-1 help-text">You must leave <%= teams_requiring_gender.count == 1 ? 'this team' : 'these teams' %> to remove your gender.</p>
+      <% else %>
+        <div class="relative">
+          <%= inline_svg_tag 'icons/gender.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+          <%= f.select :gender, [['Prefer not to answer', '']].concat(User.genders.keys.map { |gender| [gender.humanize, gender] }), {}, class: 'form-select pl-10' %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="flex items-center gap-4 pt-6 border-t border-slate-200 dark:border-slate-700">
+      <%= f.submit 'Save changes', data: { turbo: false }, class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-dark btn-muted' %>
+    </div>
   </div>
+<% end %>
+
+<%= form_for resource, as: resource_name, url: registration_path(resource_name), data: { controller: 'form-validation' }, html: { method: :put, novalidate: true } do |f| %>
+  <%= render 'devise/shared/error_messages', resource: resource %>
 
   <div class="py-6 mt-6 border-t border-slate-200 dark:border-slate-700">
     <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Password</h2>
     <p class="text-sm text-slate-600 dark:text-slate-400">Leave the fields below blank if you don't want to change your password.</p>
   </div>
 
-  <div class="form-group">
-    <%= f.label :password, class: 'form-label' do %>
-      <p> New password
-        <span class="help-text">(optional)</span>
-      </p>
-    <% end %>
-
-    <div data-controller="password-visibility" class="relative">
-      <%= inline_svg_tag 'icons/lock.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= f.password_field :password, autocomplete: 'new-password', placeholder: 'Create a new password', class: 'form-input pl-10', data: { form_validation_target: 'newPassword', action: 'input->form-validation#validateNewPassword input->form-validation#validateNewPasswordConfirmation', password_visibility_target: 'password' } %>
-
-      <button type="button" class="absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-500 size-8 grid place-items-center" data-action="password-visibility#toggle" aria-label="Toggle password visibility">
-        <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
-        <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-5 hidden' %>
-      </button>
-    </div>
-    <p class="my-1 help-text">Leave this blank if you don't want to change your password.</p>
-
-    <div class="hidden" data-form-validation-target="passwordRequirements">
-      <p class="my-1 help-text">Password must contain:</p>
-      <div class="ml-2">
-        <p class="help-text my-1 flex items-center gap-1.5" data-form-validation-target="passwordLength">
-          <%= inline_svg_tag 'icons/check.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'lengthCheck' } %>
-          <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'lengthCross' } %>
-          <span>At least 6 characters</span>
-        </p>
-        <p class="help-text my-1 flex items-center gap-1.5" data-form-validation-target="passwordUppercase">
-          <%= inline_svg_tag 'icons/check.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'uppercaseCheck' } %>
-          <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'uppercaseCross' } %>
-          <span>At least 1 uppercase letter</span>
-        </p>
-        <p class="help-text my-1 flex items-center gap-1.5" data-form-validation-target="passwordLowercase">
-          <%= inline_svg_tag 'icons/check.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'lowercaseCheck' } %>
-          <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'lowercaseCross' } %>
-          <span>At least 1 lowercase letter</span>
-        </p>
-        <p class="help-text my-1 flex items-center gap-1.5" data-form-validation-target="passwordDigit">
-          <%= inline_svg_tag 'icons/check.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'digitCheck' } %>
-          <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'digitCross' } %>
-          <span>At least 1 digit</span>
-        </p>
-        <p class="help-text my-1 flex items-center gap-1.5" data-form-validation-target="passwordSpecial">
-          <%= inline_svg_tag 'icons/check.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'specialCheck' } %>
-          <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'specialCross' } %>
-          <span>At least 1 special character (#?!@$%^&*-)</span>
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :password_confirmation, 'Confirm new password', class: 'form-label transition duration-200 ease-in-out', data: { form_validation_target: 'newPasswordConfirmationLabel' } %>
-    <div data-controller="password-visibility" class="relative">
-      <%= inline_svg_tag 'icons/lock-check.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= f.password_field :password_confirmation, autocomplete: 'new-password', placeholder: 'Confirm your new password', class: 'form-input pl-10 transition duration-200 ease-in-out', data: { form_validation_target: 'newPasswordConfirmation', action: 'input->form-validation#validateNewPasswordConfirmation', password_visibility_target: 'password' } %>
-
-      <button type="button" class="absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-500 size-8 grid place-items-center" data-action="password-visibility#toggle" aria-label="Toggle password visibility">
-        <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
-        <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-5 hidden' %>
-      </button>
-    </div>
-
-    <p class="hidden my-1 error-message" data-form-validation-target="newPasswordConfirmationError">Passwords do not match</p>
-    <p class="my-1 text-xs transition-opacity duration-200 ease-in-out text-slate-700 dark:text-slate-400" data-form-validation-target="newPasswordConfirmationHint">Enter your new password again to confirm it.</p>
-  </div>
-
-  <% if resource.password_changed_at? %>
+  <div class="card">
     <div class="form-group">
-      <%= f.label :current_password, 'Current password', class: 'form-label' %>
+      <%= f.label :password, class: 'form-label' do %>
+        <p> New password
+          <span class="help-text">(optional)</span>
+        </p>
+      <% end %>
+
       <div data-controller="password-visibility" class="relative">
-        <%= inline_svg_tag 'icons/key.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-        <%= f.password_field :current_password, autocomplete: 'current-password', placeholder: 'Enter your current password', class: 'form-input pl-10', data: { password_visibility_target: 'password' } %>
+        <%= inline_svg_tag 'icons/lock.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+        <%= f.password_field :password, autocomplete: 'new-password', placeholder: 'Create a new password', class: 'form-input pl-10', data: { form_validation_target: 'newPassword', action: 'input->form-validation#validateNewPassword input->form-validation#validateNewPasswordConfirmation', password_visibility_target: 'password' } %>
 
         <button type="button" class="absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-500 size-8 grid place-items-center" data-action="password-visibility#toggle" aria-label="Toggle password visibility">
           <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
           <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-5 hidden' %>
         </button>
       </div>
-      <p class="my-1 text-xs text-slate-700 dark:text-slate-400">Your current password is required to change your password.</p>
-    </div>
-  <% end %>
+      <p class="my-1 help-text">Leave this blank if you don't want to change your password.</p>
 
-  <div class="md:sticky bottom-0 flex items-center gap-4 pt-6 pb-6 bg-slate-50 border-t dark:bg-slate-900 border-slate-200 dark:border-slate-700">
-    <%= f.submit 'Save changes', data: { turbo: false }, class: 'btn btn-primary' %>
-    <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-dark btn-muted' %>
+      <div class="hidden" data-form-validation-target="passwordRequirements">
+        <p class="my-1 help-text">Password must contain:</p>
+        <div class="ml-2">
+          <p class="help-text my-1 flex items-center gap-1.5" data-form-validation-target="passwordLength">
+            <%= inline_svg_tag 'icons/check.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'lengthCheck' } %>
+            <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'lengthCross' } %>
+            <span>At least 6 characters</span>
+          </p>
+          <p class="help-text my-1 flex items-center gap-1.5" data-form-validation-target="passwordUppercase">
+            <%= inline_svg_tag 'icons/check.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'uppercaseCheck' } %>
+            <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'uppercaseCross' } %>
+            <span>At least 1 uppercase letter</span>
+          </p>
+          <p class="help-text my-1 flex items-center gap-1.5" data-form-validation-target="passwordLowercase">
+            <%= inline_svg_tag 'icons/check.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'lowercaseCheck' } %>
+            <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'lowercaseCross' } %>
+            <span>At least 1 lowercase letter</span>
+          </p>
+          <p class="help-text my-1 flex items-center gap-1.5" data-form-validation-target="passwordDigit">
+            <%= inline_svg_tag 'icons/check.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'digitCheck' } %>
+            <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'digitCross' } %>
+            <span>At least 1 digit</span>
+          </p>
+          <p class="help-text my-1 flex items-center gap-1.5" data-form-validation-target="passwordSpecial">
+            <%= inline_svg_tag 'icons/check.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'specialCheck' } %>
+            <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-3.5 hidden', data: { form_validation_target: 'specialCross' } %>
+            <span>At least 1 special character (#?!@$%^&*-)</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :password_confirmation, 'Confirm new password', class: 'form-label transition duration-200 ease-in-out', data: { form_validation_target: 'newPasswordConfirmationLabel' } %>
+      <div data-controller="password-visibility" class="relative">
+        <%= inline_svg_tag 'icons/lock-check.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+        <%= f.password_field :password_confirmation, autocomplete: 'new-password', placeholder: 'Confirm your new password', class: 'form-input pl-10 transition duration-200 ease-in-out', data: { form_validation_target: 'newPasswordConfirmation', action: 'input->form-validation#validateNewPasswordConfirmation', password_visibility_target: 'password' } %>
+
+        <button type="button" class="absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-500 size-8 grid place-items-center" data-action="password-visibility#toggle" aria-label="Toggle password visibility">
+          <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
+          <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-5 hidden' %>
+        </button>
+      </div>
+
+      <p class="hidden my-1 error-message" data-form-validation-target="newPasswordConfirmationError">Passwords do not match</p>
+      <p class="my-1 text-xs transition-opacity duration-200 ease-in-out text-slate-700 dark:text-slate-400" data-form-validation-target="newPasswordConfirmationHint">Enter your new password again to confirm it.</p>
+    </div>
+
+    <% if resource.password_changed_at? %>
+      <div class="form-group">
+        <%= f.label :current_password, 'Current password', class: 'form-label' %>
+        <div data-controller="password-visibility" class="relative">
+          <%= inline_svg_tag 'icons/key.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+          <%= f.password_field :current_password, autocomplete: 'current-password', placeholder: 'Enter your current password', class: 'form-input pl-10', data: { password_visibility_target: 'password' } %>
+
+          <button type="button" class="absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-500 size-8 grid place-items-center" data-action="password-visibility#toggle" aria-label="Toggle password visibility">
+            <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
+            <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-5 hidden' %>
+          </button>
+        </div>
+        <p class="my-1 text-xs text-slate-700 dark:text-slate-400">Your current password is required to change your password.</p>
+      </div>
+    <% end %>
+
+    <div class="flex items-center gap-4 pt-6 border-t border-slate-200 dark:border-slate-700">
+      <%= f.submit 'Save changes', data: { turbo: false }, class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', :back, data: { turbo: false }, class: 'btn btn-dark btn-muted' %>
+    </div>
   </div>
 <% end %>
 

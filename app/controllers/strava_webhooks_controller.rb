@@ -13,6 +13,16 @@ class StravaWebhooksController < ApplicationController
   end
 
   def receive
+    if params[:object_type] == 'athlete' &&
+       params[:aspect_type] == 'update' &&
+       params.dig(:updates, :authorized) == 'false'
+      user = User.find_by(strava_uid: params[:object_id])
+      return render json: { error: 'User not found' }, status: :not_found unless user
+
+      user.delete_strava_data!
+      return render json: { status: 'success' }, status: :ok
+    end
+
     # Ensure the event is about an activity and has a valid ID
     unless params[:object_type] == 'activity' && params[:object_id].present?
       return render json: { error: 'Invalid payload' }, status: :bad_request
@@ -21,12 +31,13 @@ class StravaWebhooksController < ApplicationController
     user = User.find_by(strava_uid: params[:owner_id])
     return render json: { error: 'User not found' }, status: :not_found unless user
 
-    if params[:aspect_type] == 'create' && !user.auto_import_strava?
-      return render json: { error: 'User has opted out of automatic Strava syncing' }, status: :ok
-    end
-
     case params[:aspect_type]
     when 'create'
+      unless user.auto_import_strava?
+        Rails.logger.info "Received Strava webhook for user #{user.id} but auto-import is disabled"
+        return render json: { error: 'User has opted out of automatic imports for new Strava activities' }, status: :ok
+      end
+
       StravaService.import_single_run(user, params[:object_id])
     when 'update'
       StravaService.update_run(user, params[:object_id])

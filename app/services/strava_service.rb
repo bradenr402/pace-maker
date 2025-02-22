@@ -20,6 +20,8 @@ class StravaService
       run.strava_url = "https://www.strava.com/activities/#{activity['id']}"
       run.save!
     end
+  rescue StandardError => e
+    log_and_raise_error('importing runs from Strava', e, user)
   end
 
   def self.import_single_run(user, activity_id)
@@ -34,6 +36,8 @@ class StravaService
     run.strava_id = activity['id']
     run.strava_url = "https://www.strava.com/activities/#{activity['id']}"
     run.save!
+  rescue StandardError => e
+    log_and_raise_error('importing single run from Strava', e, user)
   end
 
   def self.update_run(user, activity_id)
@@ -43,9 +47,23 @@ class StravaService
   def self.delete_run(user, activity_id)
     run = user.runs.find_by(strava_id: activity_id)
     run&.destroy!
+  rescue StandardError => e
+    log_and_raise_error('deleting Strava run', e, user)
+  end
+
+  def self.fetch_activity(user, activity_id)
+    refresh_strava_token(user) if user.strava_token_expired?
+    url = "#{STRAVA_API_BASE}/activities/#{activity_id}"
+    response = RestClient.get(url, headers(user))
+    JSON.parse(response.body)
+  rescue RestClient::NotFound
+    nil
+  rescue StandardError => e
+    log_and_raise_error('fetching activity from Strava', e, user)
   end
 
   def self.fetch_activities(user)
+    refresh_strava_token(user) if user.strava_token_expired?
     activities = []
     url = "#{STRAVA_API_BASE}/athlete/activities"
     params = { per_page: 100, page: 1 }
@@ -58,6 +76,8 @@ class StravaService
     end
 
     activities
+  rescue StandardError => e
+    log_and_raise_error('fetching activities from Strava', e, user)
   end
 
   def self.fetch_activities_page(user, url, params)
@@ -68,14 +88,8 @@ class StravaService
     sleep_time = 60 if sleep_time.zero?
     sleep(sleep_time)
     []
-  end
-
-  def self.fetch_activity(user, activity_id)
-    url = "#{STRAVA_API_BASE}/activities/#{activity_id}"
-    response = RestClient.get(url, headers(user))
-    JSON.parse(response.body)
-  rescue RestClient::NotFound
-    nil
+  rescue StandardError => e
+    log_and_raise_error('fetching activities page from Strava', e, user)
   end
 
   def self.headers(user)
@@ -116,7 +130,7 @@ class StravaService
         callback_url: callback_url
       )
 
-      Rails.logger.info('Webhook subscription created successfully')
+      Rails.logger.info('Strava Webhook subscription created successfully')
     rescue RestClient::ExceptionWithResponse => e
       Rails.logger.error("Strava Webhook subscription failed with response code #{e.response.code}: #{e.response.body}")
     rescue JSON::ParserError => e
@@ -124,5 +138,15 @@ class StravaService
     rescue StandardError => e
       Rails.logger.error("Error creating Strava Webhook subscription: #{e.message}")
     end
+  end
+
+  def self.refresh_strava_token(user)
+    user.refresh_strava_token!
+    raise 'Unable to connect to Strava. Please try again.' if user.errors.any?
+  end
+
+  def self.log_and_raise_error(action, error, user)
+    Rails.logger.error("Error #{action} for user #{user.id}: #{error.message}")
+    raise "Error #{action} for user #{user.id}: #{error.message}"
   end
 end

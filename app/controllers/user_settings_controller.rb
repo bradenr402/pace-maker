@@ -15,16 +15,16 @@ class UserSettingsController < ApplicationController
       system
     ].include?(user_settings_params[:theme])
 
-    if @user.settings(:privacy).update(
-      settings_params.slice(:email_visible, :phone_visible)
-    ) && @user.settings(:appearance).update(settings_params.slice(:theme)) &&
-       @user.settings(:notifications).update(settings_params.slice(:in_app))
-      redirect_to edit_user_registration_path(tab: 'settingsTab'),
-                  success: 'Settings updated successfully.'
+    if @user.settings(:privacy).update(settings_params.slice(:email_visible, :phone_visible)) &&
+       @user.settings(:appearance).update(settings_params.slice(:theme)) &&
+       @user.settings(:notifications).update(settings_params.slice(:in_app)) &&
+       @user.settings(:strava).update(settings_params.slice(:auto_import_strava))
+      flash[:success] = 'Settings updated successfully.'
     else
-      redirect_to edit_user_registration_path(tab: 'settingsTab'),
-                  error: 'Unable to update settings.'
+      flash[:error] = 'Unable to update settings.'
     end
+
+    redirect_back fallback_location: edit_user_registration_path(tab: 'settingsTab')
   end
 
   def reset
@@ -40,5 +40,5 @@ class UserSettingsController < ApplicationController
     params
       .require(:user)
       .require(:settings)
-      .permit(:email_visible, :phone_visible, :theme, :in_app)
+      .permit(:email_visible, :phone_visible, :theme, :in_app, :auto_import_strava)
 end
