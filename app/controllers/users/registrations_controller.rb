@@ -88,7 +88,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         :gender,
         :avatar,
         :remove_avatar,
-        { settings: %i[email_visible phone_visible auto_import_strava] }
+        { settings: %i[email_visible phone_visible] }
       ]
     )
   end
@@ -119,11 +119,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       settings_params.slice(:email_visible, :phone_visible)
     )
 
-    resource.settings(:strava).update(
-      settings_params.slice(:auto_import_strava)
-    )
-
-    if ((resource.google_account_linked? || resource.strava_account_linked?) && resource.password_changed_at.nil?) || params['password'].blank?
+    if (resource.google_account_linked? && resource.password_changed_at.nil?) || params['password'].blank?
       resource.update_without_password(params.except(:current_password))
     else
       resource.update_with_password(params)

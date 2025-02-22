@@ -267,6 +267,25 @@ class User < ApplicationRecord
       new_user.save!
       new_user
     end
+
+    def deauthorize_strava_account!
+      Faraday.post('https://www.strava.com/oauth/deauthorize', {
+                     access_token: strava_access_token
+                   })
+
+      response.success?
+    end
+
+    def delete_strava_data!(delete_runs: false)
+      current_user.strava_runs.destroy_all if delete_runs
+
+      update!(
+        strava_uid: nil,
+        strava_access_token: nil,
+        strava_refresh_token: nil,
+        strava_token_expires_at: nil
+      )
+    end
   end
 
   private

@@ -31,17 +31,15 @@ class UsersController < ApplicationController
   end
 
   def unlink_strava_account
-    if current_user.update(
-      strava_uid: nil,
-      strava_access_token: nil,
-      strava_refresh_token: nil,
-      strava_token_expires_at: nil
-    )
-      if params[:delete_strava_data] == 'true'
-        current_user.strava_runs.destroy_all
-        flash[:success] = 'Your Strava account was successfully disconnected and all your Strava data was deleted.'
-      else
-        flash[:success] = 'Your Strava account was successfully disconnected. Your Strava data was not deleted.'
+    if current_user.deauthorize_strava_account!
+      delete_runs = params[:delete_strava_data] == 'true'
+
+      if current_user.delete_strava_data!(delete_runs:)
+        flash[:success] = if delete_runs
+                            'Your Strava account was successfully disconnected and all your runs from Strava were deleted.'
+                          else
+                            'Your Strava account was successfully disconnected. Your runs from Strava were not deleted.'
+                          end
       end
     else
       flash[:error] = 'There was an issue disconnecting your Strava account.'
