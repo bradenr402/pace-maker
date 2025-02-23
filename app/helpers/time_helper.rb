@@ -18,6 +18,45 @@ module TimeHelper
     end
   end
 
+  def pretty_time(time, options = {})
+    og_time = time
+    time = time.to_time if time.respond_to?(:to_time)
+    raise ArgumentError, "Invalid time: #{og_time.inspect}." unless time.is_a?(Time)
+
+    defaults = {
+      include_seconds: true,
+      time_format: :long,
+      include_meridian: true,
+      leading_zero: false
+    }
+    options = defaults.merge(options)
+
+    if options[:time_format] == :short
+      time_format = '%H:%M'
+    else
+      time_format = options[:leading_zero] ? '%I:%M' : '%-I:%M'
+    end
+
+    time_format += ':%S' if options[:include_seconds]
+    time_format += ' %p' if options[:include_meridian]
+
+    time.strftime(time_format).strip
+  end
+
+  def pretty_datetime(datetime, options = {})
+    og_datetime = datetime
+    datetime = datetime.to_time if datetime.respond_to?(:to_time)
+    raise ArgumentError, "Invalid datetime: #{og_datetime.inspect}." unless datetime.is_a?(Time)
+
+    date_options = options.slice(:include_weekday, :weekday_format, :month_format, :include_year, :year_format, :date_style)
+    time_options = options.slice(:include_seconds, :time_format, :include_meridian, :leading_zero)
+
+    date_str = pretty_date(datetime.to_date, date_options)
+    time_str = pretty_time(datetime, time_options)
+
+    "#{date_str}, #{time_str}"
+  end
+
   def precise_time_ago(from_time, options = {})
     options = {
       include_seconds: true,

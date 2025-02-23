@@ -88,7 +88,7 @@
   }
 
   .btn-link-soft {
-    @apply text-soft cursor-pointer font-semibold transition duration-200 ease-in-out hover:text-slate-600 focus:ring-transparent dark:hover:text-slate-500;
+    @apply text-soft cursor-pointer font-semibold hover:text-slate-600 focus:ring-transparent dark:hover:text-slate-500;
   }
 
   .btn-link-destructive {

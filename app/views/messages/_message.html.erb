@@ -1,0 +1,53 @@
+<%# message.reload %>
+<% user = message.user %>
+<% parent = message.parent || nil %>
+
+<div id="<%= dom_id(message) %>" class="grid grid-cols-[auto_1fr] gap-x-1.5">
+  <div class="flex flex-col justify-end">
+    <%= render 'shared/user_photo', user: user, size: :thumb, icon_background: :darker unless user == current_user %>
+  </div>
+
+  <div class="flex <%= message.pinned? ? 'mt-3' : 'mt-1' %> <%= user == current_user ? 'ml-20 sm:ml-24 md:ml-28 justify-end' : 'mr-20 sm:mr-24 md:mr-28' %>">
+    <div>
+      <% if parent.present? %>
+        <div class="relative top-3.5 -z-10 -mt-3">
+          <div class="inline-flex gap-1 mt-2 <%= parent.deleted? ? 'text-red-600 dark:text-red-300' : 'text-soft' %>">
+            <%= inline_svg_tag 'icons/reply.svg', class: 'size-3.5' %>
+            <span class="text-xs">
+              <% if user == current_user %>
+                You replied to <%= parent == current_user ? 'yourself' : parent.author_name %>
+              <% else %>
+                Replied to <%= user == current_user ? 'you' : parent.author_name %>
+              <% end %>
+            </span>
+          </div>
+          <p class="text-xs p-2 pb-4 sm:pb-5 rounded-t-2xl <%= parent.deleted? ? 'text-red-600 dark:text-red-300 border border-red-300 bg-red-50 dark:border-red-900 dark:bg-red-950' : 'text-light bg-slate-200/60 dark:bg-slate-800 border border-slate-300 dark:border-slate-700' %>"><%= truncate(parent.content, length: 100) %></p>
+        </div>
+      <% end %>
+
+      <div class="z-10 p-2 pb-1 sm:p-3 sm:pb-2 rounded-2xl <%= message.user == current_user ? 'rounded-br-sm' : 'rounded-bl-sm' %> <%= user == current_user ? 'bg-gradient-to-b from-indigo-500 to-indigo-600 selection:bg-white/80 selection:text-indigo-500' : 'bg-slate-100 dark:bg-slate-700 border dark:border-slate-600' %> shadow dark:shadow-none">
+        <% unless user == current_user %>
+          <% text_colors = ['text-rose-500', 'text-orange-500', 'text-amber-500', 'text-emerald-500', 'text-blue-500', 'text-indigo-500'] %>
+          <% text_color = text_colors[message.user_id % text_colors.size] %>
+          <p class="font-semibold italic text-xs <%= text_color %>"><%= message.author_name %></p>
+        <% end %>
+
+        <div class="text-pretty <%= user == current_user ? 'text-slate-100' : 'text-normal' %>">
+          <%= format_message(message) %>
+        </div>
+
+        <p class="text-xs <%= user == current_user ? 'text-right text-slate-300' : 'text-soft' %>">
+          <% if message.edited? %>
+        <time class="whitespace-nowrap" datetime="<%= message.updated_at.to_formatted_s(:long) %>">Edited: <%= pretty_datetime(message.updated_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
+          <% else %>
+        <time class="whitespace-nowrap" datetime="<%= message.created_at.to_formatted_s(:long) %>"><%= pretty_datetime(message.created_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
+          <% end %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div></div>
+
+  <%= render 'messages/actions', message: message %>
+</div>

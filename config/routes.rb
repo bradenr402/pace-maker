@@ -49,6 +49,16 @@ Rails.application.routes.draw do
 
     get 'member/:user_id', to: 'teams#member', as: 'member'
     resources :team_memberships, param: :user_id, only: %i[edit update]
+
+    resources :messages, only: %i[index create edit update destroy] do
+      resources :likes, only: %i[create destroy], module: :messages
+
+      member do
+        patch :pin
+        patch :unpin
+        get :cancel_edit
+      end
+    end
   end
 
   resources :team_join_requests, only: %i[update] do

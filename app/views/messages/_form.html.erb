@@ -1,0 +1,36 @@
+<%= turbo_frame_tag 'new_message_form' do %>
+  <%= form_with(model: message, url: team_messages_path, id: 'messageForm', data: { turbo_frame: '_top' }) do |form| %>
+    <%= form.hidden_field :parent_id, value: nil, data: { reply_message_target: 'parent' } %>
+
+    <div class="hidden mb-2" data-reply-message-target="replyMessage">
+      <div class="flex items-center gap-1 text-soft">
+        <div class="flex gap-1">
+          <%= inline_svg_tag 'icons/reply.svg', class: 'size-3.5' %>
+          <span class="text-xs">Replying to
+            <span data-reply-message-target="messageUserName"></span>
+          </span>
+        </div>
+
+        <button type="button" data-action="click->reply-message#cancel" class="mb-px p-1 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-700/40 hover:text-rose-500 transition duration-200 ease-in-out">
+          <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
+          <span class="sr-only">Cancel reply</span>
+        </button>
+      </div>
+
+      <div class="text-light text-sm">
+        <span data-reply-message-target="messageContent"></span>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-end gap-3">
+      <div class="grow">
+        <%= form.text_area :content, rows: 2, class: 'form-textarea grow rounded-t-2xl rounded-bl-2xl', autofocus: true, placeholder: 'Say something...', data: { controller: 'autogrow', action: 'input->autogrow#grow', reply_message_target: 'input' } %>
+      </div>
+
+      <%= form.button type: 'submit', class: 'btn btn-primary p-2 rounded-full grid place-items-center' do %>
+        <%= inline_svg_tag 'icons/arrow-up.svg', class: 'size-6' %>
+        <span class="sr-only">Send</span>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

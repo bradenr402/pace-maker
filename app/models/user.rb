@@ -37,6 +37,7 @@ class User < ApplicationRecord
            dependent: :destroy
   has_one_attached :avatar
   has_many :pinned_pages, dependent: :destroy
+  has_many :messages, dependent: :nullify
 
   # Attributes
   attr_writer :login

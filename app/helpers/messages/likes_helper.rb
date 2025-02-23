@@ -1,0 +1,2 @@
+module Messages::LikesHelper
+end

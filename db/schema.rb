@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_18_020159) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_22_234527) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -41,6 +41,31 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_020159) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "likeable_type", null: false
+    t.bigint "likeable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable"
+    t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.text "content"
+    t.bigint "user_id", null: false
+    t.bigint "team_id", null: false
+    t.integer "parent_id"
+    t.boolean "pinned", default: false, null: false
+    t.datetime "deleted_at"
+    t.integer "like_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "reply_count", default: 0, null: false
+    t.index ["team_id"], name: "index_messages_on_team_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "pinned_pages", force: :cascade do |t|
@@ -162,6 +187,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_020159) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "likes", "users"
+  add_foreign_key "messages", "teams"
+  add_foreign_key "messages", "users"
   add_foreign_key "pinned_pages", "users"
   add_foreign_key "runs", "users"
   add_foreign_key "team_audits", "teams"

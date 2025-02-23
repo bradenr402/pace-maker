@@ -1,0 +1,17 @@
+<%= turbo_stream.append 'messages' do %>
+  <%= render @message %>
+<% end %>
+
+<%= turbo_stream.replace 'new_message_form' do %>
+  <%= render 'form', message: Message.new %>
+<% end %>
+
+<%= turbo_stream.replace dom_id(@message.parent, :replies) do %>
+  <%= render 'messages/reply_button', message: @message.parent %>
+<% end %>
+
+<% if @message.parent.pinned? %>
+  <%= turbo_stream.replace "pinned_#{dom_id(@message.parent, :replies)}" do %>
+    <%= render 'messages/reply_button', message: @message.parent, pinned: true %>
+  <% end %>
+<% end %>

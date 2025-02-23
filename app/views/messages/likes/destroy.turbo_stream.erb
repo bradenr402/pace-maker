@@ -1,0 +1,9 @@
+<%= turbo_stream.replace dom_id(@message, :likes) do %>
+  <%= render 'messages/like_button', message: @message %>
+<% end %>
+
+<% if @message.pinned? %>
+  <%= turbo_stream.replace "pinned_#{dom_id(@message, :likes)}" do %>
+    <%= render 'messages/like_button', message: @message, pinned: true %>
+  <% end %>
+<% end %>

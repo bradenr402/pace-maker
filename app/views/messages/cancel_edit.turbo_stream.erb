@@ -1,0 +1,3 @@
+<%= turbo_stream.replace (@pin ? "pinned_#{dom_id(@message)}" : dom_id(@message)) do %>
+  <%= render (@pin ? 'pinned_message' : @message), message: @message %>
+<% end %>

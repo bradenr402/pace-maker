@@ -1,0 +1,115 @@
+<% pinned = defined?(pinned) ? pinned : false %>
+
+<div
+  data-controller="modal"
+  data-modal-hide-modal-class="opacity-0 scale-75 pointer-events-none"
+  data-modal-show-modal-class="opacity-100 scale-100 pointer-events-auto"
+  data-modal-hide-backdrop-class="opacity-0 pointer-events-none"
+  data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
+  class="flex items-center gap-2.5 mt-1 <%= message.user == current_user || pinned ? 'justify-end' : 'ml-1' %>"
+>
+  <%= render 'like_button', message: message, pinned: pinned %>
+
+  <%= render 'reply_button', message: message, pinned: pinned %>
+
+  <% if current_user.owns?(@team) %>
+    <% unless message.pinned? %>
+      <% pinned_message = @team.messages.find_by(pinned: true) %>
+      <% if pinned_message.present? %>
+
+        <button type="button" data-action="mousedown->modal#open" data-modal-id="pinMessage_<%= message.id %>" class="p-1 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-700/40 hover:text-yellow-500 transition duration-200 ease-in-out">
+          <%= inline_svg_tag 'icons/pin.svg', class: 'size-4 mt-px' %>
+          <span class="sr-only">Pin message</span>
+        </button>
+
+        <!-- Pin Message Modal Backdrop -->
+        <div
+          data-modal-target="backdrop"
+          data-modal-id="pinMessage_<%= message.id %>"
+          data-action="mousedown->modal#backdropClose"
+          class="modal-backdrop opacity-0 pointer-events-none"></div>
+
+        <!-- Pin Message Modal -->
+        <div
+          id="pinMessage_<%= message.id %>"
+          role="dialog"
+          aria-label="Pin Message Confirmation"
+          tabindex="-1"
+          data-modal-target="modal"
+          class="modal opacity-0 scale-75 pointer-events-none"
+        >
+          <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+            <h2 class="text-lg font-semibold leading-none tracking-tight">Pin Message?</h2>
+            <p class="text-soft text-sm">Are you sure you want to pin this message? This will unpin your other pinned message.</p>
+          </div>
+
+          <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
+            <button data-action="mousedown->modal#close" data-modal-id="pinMessage_<%= message.id %>" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+
+            <%= button_to 'Pin message', pin_team_message_path(message.team, message), method: :patch, data: { turbo_stream: true }, class: 'btn btn-primary font-bold w-full sm:w-auto whitespace-nowrap' %>
+          </div>
+
+          <button data-action="mousedown->modal#close" type="button" data-modal-id="pinMessage_<%= message.id %>" class="modal-x-btn">
+            <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
+            <span class="sr-only">Close</span>
+          </button>
+        </div>
+      <% else %>
+        <%= button_to pin_team_message_path(message.team, message), method: :patch, data: { turbo_stream: true }, class: 'p-1 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-700/40 hover:text-yellow-500 transition duration-200 ease-in-out' do %>
+          <%= inline_svg_tag 'icons/pin.svg', class: 'size-4 mt-px' %>
+          <span class="sr-only">Pin message</span>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% if message.user == current_user && message.editable? %>
+    <%= link_to edit_team_message_path(@team, message, pinned: pinned),
+                data: { turbo_stream: true, turbo_frame: @pin ? "pinned_#{dom_id(message)}" : dom_id(message) },
+                class: 'p-1 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-700/40 hover:text-orange-500 transition duration-200 ease-in-out' do
+    %>
+      <%= inline_svg_tag 'icons/edit.svg', class: 'size-4' %>
+      <span class="sr-only">Edit message</span>
+    <% end %>
+  <% end %>
+
+  <% if (message.user == current_user && message.deletable?) || current_user.owns?(@team) %>
+    <button type="button" data-action="mousedown->modal#open" data-modal-id="deleteMessage_<%= message.id %>" class="p-1 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-700/40 hover:text-rose-500 transition duration-200 ease-in-out">
+      <%= inline_svg_tag 'icons/trash.svg', class: 'size-4 mt-px' %>
+      <span class="sr-only">Delete message</span>
+    </button>
+
+    <!-- Delete Message Modal Backdrop -->
+    <div
+      data-modal-target="backdrop"
+      data-modal-id="deleteMessage_<%= message.id %>"
+      data-action="mousedown->modal#backdropClose"
+      class="modal-backdrop opacity-0 pointer-events-none"></div>
+
+    <!-- Delete Message Modal -->
+    <div
+      id="deleteMessage_<%= message.id %>"
+      role="dialog"
+      aria-label="Delete Message Confirmation"
+      tabindex="-1"
+      data-modal-target="modal"
+      class="modal opacity-0 scale-75 pointer-events-none"
+    >
+      <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+        <h2 class="text-lg font-semibold leading-none tracking-tight">Delete Message?</h2>
+        <p class="text-soft text-sm">Are you sure you want to delete this message? This action cannot be undone.</p>
+      </div>
+
+      <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
+        <button data-action="mousedown->modal#close" data-modal-id="deleteMessage_<%= message.id %>" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+
+        <%= button_to 'Delete message', team_message_path(@team, message), method: :delete, data: { turbo_stream: true }, class: 'btn btn-destructive font-bold w-full sm:w-auto whitespace-nowrap' %>
+      </div>
+
+      <button data-action="mousedown->modal#close" type="button" data-modal-id="deleteMessage_<%= message.id %>" class="modal-x-btn">
+        <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
+        <span class="sr-only">Close</span>
+      </button>
+    </div>
+  <% end %>
+</div>

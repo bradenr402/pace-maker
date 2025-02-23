@@ -15,6 +15,7 @@ class Team < ApplicationRecord
            dependent: :destroy
   has_one_attached :photo
   has_many :team_audits, dependent: :destroy
+  has_many :messages, dependent: :destroy
 
   # Callbacks
   before_validation :convert_empty_string_season_dates_to_nil
@@ -58,6 +59,8 @@ class Team < ApplicationRecord
     team_members = team_members.where.not(id: owner.id) unless include_coach?
     team_members
   end
+
+  def pinned_message = messages.find_by(pinned: true)
 
   private
 

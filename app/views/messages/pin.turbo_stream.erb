@@ -1,0 +1,19 @@
+<% unless @invalid_pin_attempt %>
+  <% if @previous_pinned_message %>
+    <%= turbo_stream.replace "pinned_#{dom_id(@previous_pinned_message)}" do %>
+      <%= render 'pinned_message', message: @message %>
+    <% end %>
+
+    <%= turbo_stream.replace dom_id(@previous_pinned_message) do %>
+      <%= render 'message', message: @previous_pinned_message %>
+    <% end %>
+  <% else %>
+    <%= turbo_stream.replace 'pinned_message' do %>
+      <%= render 'pinned_message', message: @message %>
+    <% end %>
+  <% end %>
+
+  <%= turbo_stream.replace dom_id(@message) do %>
+    <%= render @message %>
+  <% end %>
+<% end %>

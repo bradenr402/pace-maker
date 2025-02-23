@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-controller="theme" data-theme-user-theme-value="<%= user_signed_in? ? current_user.settings(:appearance).theme : 'system' %>">
+<html lang="en" data-controller="theme" data-theme-user-theme-value="<%= user_signed_in? ? current_user.settings(:appearance).theme : 'system' %>" class="overflow-hidden">
   <head>
     <%= render 'layouts/head' %>
   </head>

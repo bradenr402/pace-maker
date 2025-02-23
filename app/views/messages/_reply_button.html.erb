@@ -1,0 +1,22 @@
+<% pinned = defined?(pinned) ? pinned : false %>
+
+<div id="<%= pinned ? 'pinned_' : '' %><%= dom_id(message, :replies) %>" class="flex items-center gap-0.5">
+  <% reply = message.replies.find_by(user: current_user) %>
+
+  <% if reply.present? %>
+    <button type="button" data-action="click->reply-message#reply" data-message-id="<%= message.id %>" data-message-user-name="<%= message.user == current_user ? 'yourself' : message.author_name %>" data-message-content="<%= truncate(message.content, length: 100) %>" class="p-1 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-700/40 text-emerald-500 transition duration-200 ease-in-out">
+      <%= inline_svg_tag 'icons/reply.svg', class: 'size-4' %>
+      <span class="sr-only">Reply to message</span>
+    </button>
+    <span class="text-xs font-bold text-emerald-500"><%= message.reply_count %></span>
+  <% else %>
+    <button type="button" data-action="click->reply-message#reply" data-message-id="<%= message.id %>" data-message-user-name="<%= message.user == current_user ? 'yourself' : message.author_name %>" data-message-content="<%= truncate(message.content, length: 100) %>" class="p-1 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-700/40 hover:text-emerald-500 transition duration-200 ease-in-out">
+      <%= inline_svg_tag 'icons/reply.svg', class: 'size-4' %>
+      <span class="sr-only">Reply to message</span>
+    </button>
+
+    <% if message.reply_count.positive? %>
+      <span class="text-xs font-bold"><%= message.reply_count %></span>
+    <% end %>
+  <% end %>
+</div>

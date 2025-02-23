@@ -67,6 +67,9 @@ application.register("pwa-banner", PwaBannerController)
 import PwaController from "./pwa_controller"
 application.register("pwa", PwaController)
 
+import ReplyMessageController from "./reply_message_controller"
+application.register("reply-message", ReplyMessageController)
+
 import SearchFormController from "./search_form_controller"
 application.register("search-form", SearchFormController)
 
