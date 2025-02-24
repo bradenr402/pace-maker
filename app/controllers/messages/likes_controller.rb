@@ -3,6 +3,7 @@ class Messages::LikesController < ApplicationController
   before_action :set_message
   before_action :authenticate_user!
   before_action :authorize_member!
+  after_action :update_last_read
 
   def create
     if @topic.closed?
@@ -40,5 +41,11 @@ class Messages::LikesController < ApplicationController
 
     redirect_to team_path(@message.team),
                 alert: 'You are not authorized to acccess this page.'
+  end
+
+  def update_last_read
+    user_topic = current_user.user_topics.find_or_initialize_by(topic: @topic)
+
+    user_topic.update_last_read
   end
 end
