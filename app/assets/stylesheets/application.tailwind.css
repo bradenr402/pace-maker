@@ -59,7 +59,7 @@
   }
 
   .modal {
-    @apply fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] sm:w-full -translate-x-[calc(50%+1rem)] sm:-translate-x-1/2 -translate-y-1/2 max-w-lg gap-4 bg-slate-50 dark:bg-slate-800 border dark:border-slate-700 p-6 shadow-md transition duration-200 ease-in-out rounded-xl mx-4 sm:mx-0 overflow-y-auto max-h-[calc(100svh-10rem)] mt-0 mb-10 sm:max-h-none sm:mb-0 max-sm:[@media(display-mode:standalone)]:max-h-[calc(100svh-16rem)] max-sm:[@media(display-mode:standalone)]:mb-12;
+    @apply fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] sm:w-full -translate-x-[calc(50%+1rem)] sm:-translate-x-1/2 -translate-y-1/2 max-w-lg gap-4 bg-white dark:bg-[#131c2f] border border-slate-100 dark:border-slate-800 p-6 shadow-md transition duration-200 ease-in-out rounded-xl mx-4 sm:mx-0 overflow-y-auto max-h-[calc(100svh-10rem)] mt-0 mb-10 sm:max-h-none sm:mb-0 max-sm:[@media(display-mode:standalone)]:max-h-[calc(100svh-16rem)] max-sm:[@media(display-mode:standalone)]:mb-12;
   }
 
   .modal-backdrop {
