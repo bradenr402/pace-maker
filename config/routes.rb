@@ -56,6 +56,8 @@ Rails.application.routes.draw do
       member do
         patch :close
         patch :reopen
+        patch :favorite
+        patch :unfavorite
       end
 
       resources :messages, only: %i[index create edit update destroy] do

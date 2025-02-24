@@ -20,38 +20,36 @@
     <%= render 'main_chat_topic', team: @team %>
 
     <h2 class="text-lg font-semibold mb-3">Topics</h2>
-    <% if @topics.present? %>
+    <% if @open_topics.present? || @favorite_topics.present? %>
       <div>
-        <% @topics.each do |topic| %>
-          <%= render topic %>
-        <% end %>
+        <%= render @favorite_topics %>
+        <%= render @open_topics %>
       </div>
 
-      <div class="flex justify-center mt-12">
-        <button data-action="mousedown->modal#open" data-modal-id="newTopicModal" class="btn btn-sm btn-primary btn-muted">New topic</button>
-      </div>
-    <% else %>
+      <% if current_user.owns?(@team) %>
+        <div class="flex justify-center mt-12">
+          <button data-action="mousedown->modal#open" data-modal-id="newTopicModal" class="btn btn-sm btn-primary btn-muted">New topic</button>
+        </div>
+      <% end %>
+    <% elsif @favorite_topics.blank? %>
       <div class="flex flex-col items-center justify-center gap-6 mt-12">
         <p class="text-soft text-center">There are no open topics.</p>
-        <button data-action="mousedown->modal#open" data-modal-id="newTopicModal" class="btn btn-primary">New topic</button>
+        <% if current_user.owns?(@team) %>
+          <button data-action="mousedown->modal#open" data-modal-id="newTopicModal" class="btn btn-primary">New topic</button>
+        <% end %>
       </div>
     <% end %>
   </div>
 
   <% if @closed_topics.present? %>
     <div class="mb-24">
-      <div class="pb-6 my-6 border-b border-slate-200 dark:border-slate-700">
-        <h2 class="subheading">Closed Topics</h2>
-        <p class="text-sm text-soft">Topics that have been closed to new messages.</p>
-      </div>
+      <h2 class="text-lg font-semibold mb-3">Closed Topics</h2>
 
       <div>
-        <% @closed_topics.each do |topic| %>
-          <%= render topic %>
-        <% end %>
+        <%= render @closed_topics %>
       </div>
     </div>
   <% end %>
 
-  <%= render 'topics/new_topic_modal' %>
+  <%= render 'topics/new_topic_modal' if current_user.owns?(@team) %>
 </div>

@@ -1,3 +1,5 @@
+<% editing = defined?(editing) ? editing : false %>
+
 <%= form_with model: [@team, topic], local: true do |form| %>
   <div class="form-group">
     <%= form.label :title, 'Topic title', class: 'form-label' %>
@@ -5,7 +7,7 @@
   </div>
 
   <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-    <button data-action="mousedown->modal#close" data-modal-id="newTopicModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+    <button data-action="mousedown->modal#close" data-modal-id="<%= editing ? "editTopicModal_#{topic.id}" : 'newTopicModal' %>" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
     <%= form.submit form.object.new_record? ? 'Create topic' : 'Save changes', data: { turbo: false }, class: 'btn btn-primary w-full sm:w-auto' %>
   </div>
 <% end %>

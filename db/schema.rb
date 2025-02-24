@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_23_170825) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_24_144154) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -169,6 +169,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_23_170825) do
     t.index ["team_id"], name: "index_topics_on_team_id"
   end
 
+  create_table "user_topics", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "topic_id", null: false
+    t.boolean "favorited", default: false, null: false
+    t.datetime "last_read_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["topic_id"], name: "index_user_topics_on_topic_id"
+    t.index ["user_id", "topic_id"], name: "index_user_topics_on_user_id_and_topic_id", unique: true
+    t.index ["user_id"], name: "index_user_topics_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -211,4 +223,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_23_170825) do
   add_foreign_key "team_memberships", "users"
   add_foreign_key "teams", "users", column: "owner_id"
   add_foreign_key "topics", "teams"
+  add_foreign_key "user_topics", "topics"
+  add_foreign_key "user_topics", "users"
 end

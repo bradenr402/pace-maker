@@ -2,6 +2,8 @@ class Topic < ApplicationRecord
   # Associations
   belongs_to :team
   has_many :messages, dependent: :destroy
+  has_many :user_topics, dependent: :destroy
+  has_many :users, through: :user_topics
 
   # Validations
   validates :title, presence: true, uniqueness: { scope: :team_id }
@@ -25,6 +27,8 @@ class Topic < ApplicationRecord
   def pinned_message = messages.find_by(pinned: true)
 
   def last_message = messages.where(deleted_at: nil).order(created_at: :desc).limit(1).first
+
+  def favorited_by?(user) = user_topics.exists?(user:, favorited: true)
 
   private
 

@@ -38,6 +38,7 @@ class User < ApplicationRecord
   has_one_attached :avatar
   has_many :pinned_pages, dependent: :destroy
   has_many :messages, dependent: :nullify
+  has_many :user_topics, dependent: :destroy
 
   # Attributes
   attr_writer :login
@@ -122,6 +123,8 @@ class User < ApplicationRecord
 
     male? ? 'his' : 'her'
   end
+
+  def favorite_topics(team) = Topic.where(team: team.id).select { _1.favorited_by? self }
 
   def formatted_phone_number(format = :national)
     parsed_number = Phonelib.parse(phone_number, phone_country_code)

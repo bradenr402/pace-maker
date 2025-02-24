@@ -1,8 +1,8 @@
 class TopicsController < ApplicationController
   before_action :set_team
-  before_action :set_topic, only: %i[edit update destroy close reopen]
+  before_action :set_topic, only: %i[edit update destroy close reopen favorite unfavorite]
   before_action :authenticate_user!
-  before_action :authorize_member!, only: %i[index]
+  before_action :authorize_member!, only: %i[index favorite unfavorite]
   before_action :authorize_owner!, only: %i[edit update close reopen]
 
   def index
@@ -10,8 +10,11 @@ class TopicsController < ApplicationController
     add_breadcrumb @team.name, team_path(@team)
     add_breadcrumb 'Topics', team_topics_path(@team)
 
-    @topics = @team.topics.open.sort_by { _1.last_message.created_at }.reverse
-    @closed_topics = @team.topics.closed.sort_by { _1.last_message.created_at }.reverse
+    all_topics = @team.topics
+
+    @open_topics = sort_topics(all_topics.open.reject { _1.favorited_by? current_user })
+    @closed_topics = sort_topics(all_topics.closed)
+    @favorite_topics = sort_topics(current_user.favorite_topics(@team))
   end
 
   def create
@@ -19,9 +22,9 @@ class TopicsController < ApplicationController
     @topic.main = false
 
     if @topic.save
-      flash[:success] = 'Topic was successfully created.'
+      flash[:success] = "#{@topic.title} topic was successfully created."
     else
-      flash[:error] = 'Topic could not be created.'
+      flash[:error] = "#{@topic.title} topic could not be created."
     end
     redirect_to team_topics_path(@team)
   end
@@ -30,41 +33,68 @@ class TopicsController < ApplicationController
 
   def update
     if @topic.update(topic_params)
-      flash[:success] = 'Topic was successfully updated.'
+      flash[:success] = "#{@topic.title} topic was successfully updated."
     else
-      flash[:error] = 'Topic could not be updated.'
+      flash[:error] = "#{@topic.title} topic could not be updated."
     end
     redirect_to team_topics_path(@team)
   end
 
   def destroy
     if @topic.destroy
-      redirect_to team_topics_path(@team), success: 'Topic was successfully deleted.'
+      flash[:success] = "#{@topic.title} topic was successfully deleted."
     else
-      redirect_to team_topics_path(@team), error: 'Topic could not be deleted.'
+      flash[:error] = "#{@topic.title} topic could not be deleted."
     end
+    redirect_to team_topics_path(@team)
   end
 
   def close
-    return redirect_to team_topics_path(@team), notice: 'Topic is already closed.' if @topic.closed?
+    return redirect_to team_topics_path(@team), notice: "#{@topic.title} topic is already closed." if @topic.closed?
 
     return redirect_to team_topics_path(@team), alert: 'You cannot close the Main Chat.' if @topic.main
 
     if @topic.close
-      redirect_to team_topics_path(@team), success: 'Topic was successfully closed.'
+      flash[:success] = "#{@topic.title} topic was successfully closed."
     else
-      redirect_to team_topics_path(@team), error: 'Topic could not be closed.'
+      flash[:error] = "#{@topic.title} topic could not be closed."
     end
+    redirect_to team_topics_path(@team)
   end
 
   def reopen
-    return redirect_to team_topics_path(@team), notice: 'Topic is already open.' if @topic.open?
+    return redirect_to team_topics_path(@team), notice: "#{@topic.title} topic is already open." if @topic.open?
 
     if @topic.reopen
-      redirect_to team_topics_path(@team), success: 'Topic was successfully reopened.'
+      flash[:success] = "#{@topic.title} topic was successfully reopened."
     else
-      redirect_to team_topics_path(@team), error: 'Topic could not be reopened.'
+      flash[:error] = "#{@topic.title} topic could not be reopened."
     end
+    redirect_to team_topics_path(@team)
+  end
+
+  def favorite
+    return redirect_to team_topics_path(@team), alert: 'You cannot favorite a closed topic.' if @topic.closed?
+
+    user_topic = current_user.user_topics.find_or_initialize_by(topic: @topic)
+
+    if user_topic.favorite!
+      flash[:success] = "#{@topic.title} topic favorited."
+    else
+      flash[:error] = "#{@topic.title} topic could not be favorited."
+    end
+    redirect_to team_topics_path(@team)
+  end
+
+  def unfavorite
+    user_topic = current_user.user_topics.find_by(topic: @topic)
+
+    if user_topic&.unfavorite!
+      flash[:success] = "#{@topic.title} topic unfavorited."
+    else
+      flash[:error] = "#{@topic.title} topic could not be unfavorited."
+    end
+    redirect_to team_topics_path(@team)
   end
 
   private
@@ -88,4 +118,6 @@ class TopicsController < ApplicationController
     redirect_to team_path(@team),
                 alert: 'You are not authorized to perform this action.'
   end
+
+  def sort_topics(topics) = topics.sort_by { _1.last_message&.created_at || _1.created_at }.reverse
 end
