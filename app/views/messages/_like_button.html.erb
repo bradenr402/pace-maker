@@ -4,13 +4,13 @@
   <% like = message.likes.find_by(user: current_user) %>
 
   <% if like.present? %>
-    <%= button_to team_message_like_path(message.team, message, like), method: :delete, data: { turbo_method: :delete }, class: 'p-1 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-700/40 text-blue-500 transition duration-200 ease-in-out' do %>
+    <%= button_to team_topic_message_like_path(message.team, message.topic, message, like), method: :delete, data: { turbo_method: :delete }, class: 'p-1 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-700/40 text-blue-500 transition duration-200 ease-in-out' do %>
       <%= inline_svg_tag 'icons/like.svg', class: 'size-4 mt-px' %>
       <span class="sr-only">Unlike message</span>
     <% end %>
     <span class="text-xs font-bold text-blue-500"><%= message.like_count %></span>
   <% else %>
-    <%= button_to team_message_likes_path(message.team, message), method: :post, data: { turbo_method: :post }, class: 'p-1 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-700/40 hover:text-blue-500 transition duration-200 ease-in-out' do %>
+    <%= button_to team_topic_message_likes_path(message.team, message.topic, message), method: :post, data: { turbo_method: :post }, class: 'p-1 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-700/40 hover:text-blue-500 transition duration-200 ease-in-out' do %>
       <%= inline_svg_tag 'icons/like.svg', class: 'size-4 mt-px' %>
       <span class="sr-only">Like message</span>
     <% end %>

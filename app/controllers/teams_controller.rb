@@ -305,6 +305,17 @@ class TeamsController < ApplicationController
       )
   end
 
+  def main_chat
+    @team = Team.find(params[:team_id])
+    main_topic = @team.main_chat_topic
+
+    if main_topic
+      redirect_to team_topic_messages_path(@team, main_topic)
+    else
+      redirect_to team_topics_path(@team), error: 'Main Chat not found.'
+    end
+  end
+
   private
 
   def set_team

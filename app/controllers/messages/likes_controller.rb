@@ -1,30 +1,37 @@
 class Messages::LikesController < ApplicationController
+  before_action :set_topic
   before_action :set_message
   before_action :authenticate_user!
   before_action :authorize_member!
 
   def create
+    if @topic.closed?
+      redirect_to team_topic_messages_path(@topic.team, @topic), alert: 'This topic is closed. You cannot like messages.'
+    end
+
     @message.likes.create(user: current_user)
     render_like_count
   end
 
   def destroy
+    if @topic.closed?
+      redirect_to team_topic_messages_path(@topic.team, @topic), alert: 'This topic is closed. You cannot unlike messages.'
+    end
+
     @message.likes.find_by(user: current_user)&.destroy
     render_like_count
   end
 
   private
 
-  def set_message
-    @message = Message.find(params[:message_id])
-  end
+  def set_topic = @topic = Topic.find(params[:topic_id])
+
+  def set_message = @message = @topic.messages.find(params[:message_id])
 
   def render_like_count
-    flash.now[:notice] = "Liked message. Message: #{@message.id}, Likes: #{@message.like_count}, Content: #{@message.content}"
-
     respond_to do |format|
       format.turbo_stream
-      format.html { redirect_back fallback_location: team_messages_path(@message.team) }
+      format.html { redirect_back fallback_location: team_topic_messages_path(@message.team, @message.topic) }
     end
   end
 

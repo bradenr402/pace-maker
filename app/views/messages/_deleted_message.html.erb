@@ -6,19 +6,17 @@
   </div>
 
   <div class="flex mt-1 <%= user == current_user ? 'ml-20 sm:ml-24 md:ml-28 justify-end' : 'mr-20 sm:mr-24 md:mr-28' %>">
-    <div class="px-2 sm:px-3 py-1 sm:py-2 rounded-2xl <%= message.user == current_user ? 'rounded-br-sm' : 'rounded-bl-sm' %> border-[0.5px] border-red-300 bg-red-50 dark:border-red-900 dark:bg-red-950/80">
+    <div class="p-2 pb-1 sm:p-3 sm:pb-2 rounded-2xl <%= user == current_user ? 'rounded-br-sm' : 'rounded-bl-sm' %> border-[0.5px] border-red-300 bg-red-50 dark:border-red-900 dark:bg-red-950/80">
       <% unless user == current_user %>
         <% text_colors = ['text-rose-500', 'text-orange-500', 'text-amber-500', 'text-emerald-500', 'text-blue-500', 'text-indigo-500'] %>
-        <% text_color = text_colors[message.user_id % text_colors.size] %>
+        <% text_color = text_colors[user.id % text_colors.size] %>
         <p class="font-semibold italic text-xs <%= text_color %>"><%= message.author_name %></p>
       <% end %>
 
-      <div class="block sm:flex items-center gap-3">
-        <p class="text-pretty whitespace-nowrap text-red-600 dark:text-red-300"><%= message.content %></p>
-        <p class="text-xs text-red-500 dark:text-red-400 text-right">
-          <time class="whitespace-nowrap" datetime="<%= message.deleted_at.to_formatted_s(:long) %>"><%= pretty_datetime(message.deleted_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
-        </p>
-      </div>
+      <p class="text-pretty text-red-600 dark:text-red-300"><%= message.content %></p>
+      <p class="text-xs text-red-500 dark:text-red-400 text-right">
+        <time class="whitespace-nowrap" datetime="<%= message.deleted_at.to_formatted_s(:long) %>"><%= pretty_datetime(message.deleted_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
+      </p>
     </div>
   </div>
 </div>

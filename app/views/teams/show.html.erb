@@ -14,7 +14,7 @@
     <%= simple_format @team.description, class: 'text-soft text-sm md:max-w-[80%] md:mx-auto text-pretty' unless @team.description.blank? %>
 
     <div class="flex items-center justify-between mt-4">
-      <%= link_to 'Team Chat', team_messages_path(@team), class: 'btn btn-primary btn-muted' %>
+      <%= link_to 'Team Chat', team_topics_path(@team), class: 'btn btn-primary btn-muted' %>
 
       <% if @current_user_member_of_team || @current_user_owns_team %>
         <div

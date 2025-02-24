@@ -50,13 +50,22 @@ Rails.application.routes.draw do
     get 'member/:user_id', to: 'teams#member', as: 'member'
     resources :team_memberships, param: :user_id, only: %i[edit update]
 
-    resources :messages, only: %i[index create edit update destroy] do
-      resources :likes, only: %i[create destroy], module: :messages
+    get 'main_chat', to: 'teams#main_chat', as: :main_chat
 
+    resources :topics, except: %i[new show] do
       member do
-        patch :pin
-        patch :unpin
-        get :cancel_edit
+        patch :close
+        patch :reopen
+      end
+
+      resources :messages, only: %i[index create edit update destroy] do
+        resources :likes, only: %i[create destroy], module: :messages
+
+        member do
+          patch :pin
+          patch :unpin
+          get :cancel_edit
+        end
       end
     end
   end
@@ -91,6 +100,7 @@ Rails.application.routes.draw do
 
   get 'service-worker.js', to: 'service_worker#service_worker', as: :pwa_service_worker
   get 'manifest.json', to: 'service_worker#manifest', as: :pwa_manifest
+
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get 'up', to: 'rails/health#show', as: :rails_health_check

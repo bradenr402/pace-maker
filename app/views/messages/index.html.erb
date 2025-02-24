@@ -1,41 +1,51 @@
-<% content_for :title, "#{@team.name} Main Chat" %>
-
+<% content_for :title, "#{@team.name} - #{@topic.title}" %>
 <div data-controller="reply-message" class="max-w-3xl mx-auto mt-16 mb-80 md:mb-16">
-  <div class="mb-6 pt-4 border-b border-slate-200 dark:border-slate-700 sticky top-0 bg-slate-50 dark:bg-slate-900">
-    <%= link_to @team, class: 'group flex items-center gap-3 pb-2', aria: { label: "Back to #{@team.name}" } do %>
+  <div class="mb-6 border-b border-slate-200 dark:border-slate-700 sticky top-0 bg-slate-50 dark:bg-slate-900">
+    <%= link_to team_topics_path(@team), class: 'group flex items-center gap-3 pt-4 pb-2', aria: { label: "Back to #{@team.name} topics" } do %>
       <%= inline_svg_tag 'icons/chevron-left-bold.svg', class: 'size-6 transition ease-in-out duration-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-500' %>
       <div class="flex items-center justify-start gap-4">
-        <%= render 'shared/team_photo', team: @team, size: :xs, icon_background: :darker %>
+        <% if @topic.main %>
+          <div class="grid place-items-center size-9 rounded-md bg-gradient-to-b from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800 shrink-0">
+            <%= inline_svg_tag "icons/chat.svg", class: 'size-5 text-light' %>
+          </div>
+        <% else %>
+          <div class="grid place-items-center size-9 rounded-md bg-gradient-to-b from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800 shrink-0">
+            <%= inline_svg_tag "icons/hashtag.svg", class: 'size-5 text-light' %>
+          </div>
+        <% end %>
         <div>
-          <span class="text-lg font-bold transition ease-in-out duration-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= @team.name %></span>
-          <p class="text-soft text-xs">Main Chat</p>
+          <p class="text-lg font-bold transition ease-in-out duration-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= @topic.title %></p>
+          <p class="text-soft text-xs"><%= @team.name %></p>
         </div>
       </div>
     <% end %>
-
-    <% pinned_message = @team.messages.find_by(pinned: true) %>
+    <% pinned_message = @topic.messages.find_by(pinned: true) %>
     <% if pinned_message.present? %>
       <%= render 'pinned_message', message: pinned_message %>
     <% else %>
       <div id="pinned_message"></div>
     <% end %>
   </div>
-
   <div id="messages" class="mb-6">
     <% @messages.each do |message| %>
       <% if message.deleted? %>
         <%= render 'deleted_message', message: message %>
       <% else %>
         <%= render message %>
-        <% end %>
+      <% end %>
     <% end %>
   </div>
-
   <div>
-    <%= render 'form', message: Message.new %>
+    <% if @topic.open? %>
+      <%= render 'form', message: Message.new(topic: @topic) %>
+    <% else %>
+      <div class="flex flex-col items-center justify-center gap-4 mt-16 text-red-600 dark:text-red-400">
+        <%= inline_svg_tag 'icons/lock.svg', class: 'size-14' %>
+        <p class="text-center">This topic has been closed by the team coach. No further activity is allowed.</p>
+      </div>
+    <% end %>
   </div>
 </div>
-
 <script>
   window.onload = () => {
     document.addEventListener('keydown', function(event) {

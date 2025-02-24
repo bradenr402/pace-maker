@@ -4,7 +4,7 @@ class Message < ApplicationRecord
 
   # Associations
   belongs_to :user, optional: true
-  belongs_to :team
+  belongs_to :topic
   belongs_to :parent, class_name: 'Message', optional: true, counter_cache: :reply_count
   has_many :replies, class_name: 'Message', foreign_key: :parent_id, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
@@ -25,19 +25,14 @@ class Message < ApplicationRecord
   # Methods
   def deleted? = deleted_at.present?
 
-  def deletable? = created_at < 15.minutes.ago
+  def deletable? = created_at.after?(15.minutes.ago) && topic.open?
 
-  def editable?
-    return false if created_at < 60.minutes.ago
-    return false if pinned? && !user.owns?(team)
-
-    true
-  end
+  def editable? = created_at.after?(60.minutes.ago) && topic.open? && (!pinned? || user.owns?(team))
 
   def unpin! = update!(pinned: false)
 
   def pin!
-    team.pinned_message&.unpin!
+    topic&.pinned_message&.unpin!
 
     update!(pinned: true)
   end
@@ -46,11 +41,13 @@ class Message < ApplicationRecord
 
   def author_name = user&.default_name || 'Deleted User'
 
+  def team = topic.team
+
   def self.deleted_text = 'This message was deleted'
 
   private
 
   def decrement_parent_reply_count
-    parent.decrement!(:reply_count)
+    parent&.decrement!(:reply_count)
   end
 end

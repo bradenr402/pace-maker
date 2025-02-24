@@ -1,0 +1,28 @@
+<!-- New Topic Modal Backdrop -->
+<div
+  data-modal-target="backdrop"
+  data-modal-id="newTopicModal"
+  data-action="mousedown->modal#backdropClose"
+  class="modal-backdrop opacity-0 pointer-events-none"></div>
+
+<!-- New Topic Modal -->
+<div
+  id="newTopicModal"
+  role="dialog"
+  aria-label="New Topic Form"
+  tabindex="-1"
+  data-modal-target="modal"
+  class="modal opacity-0 scale-75 pointer-events-none"
+>
+  <div class="flex flex-col space-y-1.5 text-center sm:text-left mb-6">
+    <h2 class="text-lg font-semibold leading-none tracking-tight">New Topic</h2>
+  </div>
+
+<%= render 'form', topic: Topic.new(team: @team) %>
+
+  <!-- Close button -->
+  <button data-action="mousedown->modal#close" type="button" data-modal-id="newTopicModal" class="modal-x-btn">
+    <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
+    <span class="sr-only">Close</span>
+  </button>
+</div>

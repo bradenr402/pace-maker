@@ -31,11 +31,11 @@ module TimeHelper
     }
     options = defaults.merge(options)
 
-    if options[:time_format] == :short
-      time_format = '%H:%M'
-    else
-      time_format = options[:leading_zero] ? '%I:%M' : '%-I:%M'
-    end
+    time_format = if options[:time_format] == :short
+                    '%H:%M'
+                  else
+                    options[:leading_zero] ? '%I:%M' : '%-I:%M'
+                  end
 
     time_format += ':%S' if options[:include_seconds]
     time_format += ' %p' if options[:include_meridian]
@@ -55,6 +55,32 @@ module TimeHelper
     time_str = pretty_time(datetime, time_options)
 
     "#{date_str}, #{time_str}"
+  end
+
+  def time_abbr_format(time)
+    now = Time.current
+    time_diff_in_seconds = (now - time).to_i
+    time_diff_in_minutes = (time_diff_in_seconds / 60).to_i
+
+    # For recent times (within the last 24 hours)
+    if time_diff_in_minutes < 1440
+      case time_diff_in_minutes
+      when 0..1
+        time_diff_in_seconds <= 59 ? 'now' : '1 min'
+      when 2..59
+        "#{time_diff_in_minutes} min"
+      when 60..119
+        '1 hr'
+      when 120..1439
+        "#{time_diff_in_minutes / 60} hrs"
+      end
+    elsif time > (now - 7.days)
+      time.strftime('%a')
+    elsif time.year == now.year
+      time.strftime('%m/%d')
+    else
+      time.strftime('%m/%d/%Y')
+    end
   end
 
   def precise_time_ago(from_time, options = {})

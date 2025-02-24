@@ -1,7 +1,10 @@
+<% topic = message.topic %>
+<% team = topic.team %>
+
 <div id="<%= @pin ? "pinned_#{dom_id(message)}" : dom_id(message) %>" class="my-10">
-  <%= form_with(model: message, url: team_message_path(message.team, message), method: :put, data: { turbo_action: 'replace' }) do |form| %>
+  <%= form_with(model: message, url: team_topic_message_path(team, topic, message), method: :put, data: { turbo_action: 'replace' }) do |form| %>
     <div class="flex items-center justify-end gap-3">
-      <%= link_to cancel_edit_team_message_path(message.team, message, pinned: @pin), data: { turbo_stream: true, turbo_frame: @pin ? "pinned_#{dom_id(message)}" : dom_id(message) }, class: 'btn btn-dark btn-muted p-2 ml-2 rounded-full grid place-items-center' do %>
+      <%= link_to cancel_edit_team_topic_message_path(team, topic, message, pinned: @pin), data: { turbo_stream: true, turbo_frame: @pin ? "pinned_#{dom_id(message)}" : dom_id(message) }, class: 'btn btn-dark btn-muted p-2 ml-2 rounded-full grid place-items-center' do %>
         <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-6' %>
         <span class="sr-only">Cancel</span>
       <% end %>
