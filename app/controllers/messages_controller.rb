@@ -5,6 +5,7 @@ class MessagesController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_member!
   before_action :authorize_owner!, only: %i[pin unpin]
+  after_action :update_last_read
 
   def index
     add_breadcrumb 'Teams', teams_path
@@ -14,8 +15,6 @@ class MessagesController < ApplicationController
 
     @messages = @topic.messages.includes(:user, :likes).order(created_at: :asc).limit(100)
     @pinned_message = @messages.find_by(pinned: true)
-
-    update_last_read
   end
 
   def create
@@ -28,7 +27,6 @@ class MessagesController < ApplicationController
 
     respond_to do |format|
       if @message.save
-        update_last_read # needs to be called after the message is saved, so this message ism't marked unread
         format.turbo_stream
       else
         format.turbo_stream do
@@ -44,7 +42,6 @@ class MessagesController < ApplicationController
   end
 
   def edit
-    update_last_read
     if @message.pinned? && !@message.user.owns?(@team)
       return redirect_to team_topic_messages_path(@team, @topic), alert: 'You cannot edit a pinned message.'
     end
@@ -62,7 +59,6 @@ class MessagesController < ApplicationController
   end
 
   def update
-    update_last_read
     if @message.pinned? && !@message.user.owns?(@team)
       return redirect_to team_topic_messages_path(@team, @topic), alert: 'You cannot edit a pinned message.'
     end
@@ -82,7 +78,6 @@ class MessagesController < ApplicationController
   end
 
   def destroy
-    update_last_read
     unless (@message.user == current_user && @message.deletable?) || current_user.owns?(@team)
       return redirect_to team_topic_messages_path(@team, @topic), alert: 'You cannot delete this message.'
     end
@@ -101,7 +96,6 @@ class MessagesController < ApplicationController
   end
 
   def pin
-    update_last_read
     if @topic.closed?
       return redirect_to team_topic_messages_path(@team, @topic),
                          alert: 'This topic is closed. You cannot pin messages.'
@@ -128,14 +122,12 @@ class MessagesController < ApplicationController
   end
 
   def unpin
-    update_last_read
     @message.unpin!
 
     redirect_to team_topic_messages_path(@team, @topic), success: 'Message unpinned.'
   end
 
   def cancel_edit
-    update_last_read
     @pin = params[:pinned] == 'true'
 
     respond_to do |format|
