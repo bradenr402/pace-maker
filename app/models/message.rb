@@ -10,9 +10,6 @@ class Message < ApplicationRecord
   has_many :likes, as: :likeable, dependent: :destroy
 
   # Callbacks
-  after_create_commit -> { broadcast_append_later_to team }
-  after_update_commit -> { broadcast_replace_later_to team }
-  after_destroy_commit -> { broadcast_remove_to team }
   before_update :decrement_parent_reply_count, if: -> { deleted_at_changed? && deleted_at.present? }
 
   # Validations
