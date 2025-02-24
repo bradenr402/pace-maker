@@ -15,7 +15,6 @@ class Team < ApplicationRecord
            dependent: :destroy
   has_one_attached :photo
   has_many :team_audits, dependent: :destroy
-  has_many :messages, dependent: :destroy
   has_many :topics, dependent: :destroy
 
   # Callbacks
