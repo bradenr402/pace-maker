@@ -13,17 +13,22 @@ class MessagesController < ApplicationController
     add_breadcrumb @topic.title, team_topic_path(@team, @topic)
 
     @messages = @topic.messages.includes(:user, :likes).order(created_at: :asc).limit(100)
+    @pinned_message = @messages.find_by(pinned: true)
+
+    update_last_read
   end
 
   def create
     if @topic.closed?
-      return redirect_to team_topic_messages_path(@team, @topic), alert: 'This topic is closed. You cannot add new messages.'
+      return redirect_to team_topic_messages_path(@team, @topic),
+                         alert: 'This topic is closed. You cannot add new messages.'
     end
 
     @message = @topic.messages.build(message_params.merge(user: current_user))
 
     respond_to do |format|
       if @message.save
+        update_last_read # needs to be called after the message is saved, so this message ism't marked unread
         format.turbo_stream
       else
         format.turbo_stream do
@@ -39,6 +44,7 @@ class MessagesController < ApplicationController
   end
 
   def edit
+    update_last_read
     if @message.pinned? && !@message.user.owns?(@team)
       return redirect_to team_topic_messages_path(@team, @topic), alert: 'You cannot edit a pinned message.'
     end
@@ -56,6 +62,7 @@ class MessagesController < ApplicationController
   end
 
   def update
+    update_last_read
     if @message.pinned? && !@message.user.owns?(@team)
       return redirect_to team_topic_messages_path(@team, @topic), alert: 'You cannot edit a pinned message.'
     end
@@ -75,6 +82,7 @@ class MessagesController < ApplicationController
   end
 
   def destroy
+    update_last_read
     unless (@message.user == current_user && @message.deletable?) || current_user.owns?(@team)
       return redirect_to team_topic_messages_path(@team, @topic), alert: 'You cannot delete this message.'
     end
@@ -93,8 +101,10 @@ class MessagesController < ApplicationController
   end
 
   def pin
+    update_last_read
     if @topic.closed?
-      return redirect_to team_topic_messages_path(@team, @topic), alert: 'This topic is closed. You cannot pin messages.'
+      return redirect_to team_topic_messages_path(@team, @topic),
+                         alert: 'This topic is closed. You cannot pin messages.'
     end
 
     return redirect_to team_topic_messages_path(@team, @topic), notice: 'Message already pinned.' if @message.pinned?
@@ -118,12 +128,14 @@ class MessagesController < ApplicationController
   end
 
   def unpin
+    update_last_read
     @message.unpin!
 
     redirect_to team_topic_messages_path(@team, @topic), success: 'Message unpinned.'
   end
 
   def cancel_edit
+    update_last_read
     @pin = params[:pinned] == 'true'
 
     respond_to do |format|
@@ -153,5 +165,11 @@ class MessagesController < ApplicationController
 
     redirect_to team_path(@team),
                 alert: 'You are not authorized to perform this action.'
+  end
+
+  def update_last_read
+    user_topic = current_user.user_topics.find_or_initialize_by(topic: @topic)
+
+    user_topic.update_last_read
   end
 end

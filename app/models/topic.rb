@@ -10,6 +10,9 @@ class Topic < ApplicationRecord
   validates :main, inclusion: { in: [true, false] }
   validate :only_one_main_topic
 
+  # Callbacks
+  after_create :create_user_topics
+
   # Scopes
   scope :open, -> { where(closed_at: nil, main: false) }
   scope :closed, -> { where.not(closed_at: nil).where(main: false) }
@@ -30,6 +33,8 @@ class Topic < ApplicationRecord
 
   def favorited_by?(user) = user_topics.exists?(user:, favorited: true)
 
+  def unread_count_for(user) = user_topics.find_by(user:)&.unread_count
+
   private
 
   def only_one_main_topic
@@ -37,4 +42,6 @@ class Topic < ApplicationRecord
 
     errors.add(:main, 'There can only be one main topic per team')
   end
+
+  def create_user_topics = team.members.each { |user| user_topics.find_or_create_by(user:) }
 end

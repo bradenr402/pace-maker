@@ -37,6 +37,9 @@ module.exports = {
       animation: {
         'ping-slow': 'ping 3s cubic-bezier(0, 0, 0.2, 1) infinite',
       },
+      fontSize: {
+        xxs: '0.625rem'
+      },
     },
   },
   plugins: [

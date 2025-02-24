@@ -36,13 +36,15 @@
           <%= format_message(message) %>
         </div>
 
-        <p class="text-xs <%= user == current_user ? 'text-right text-slate-300' : 'text-soft' %>">
-          <% if message.edited? %>
-        <time class="whitespace-nowrap" datetime="<%= message.updated_at.to_formatted_s(:long) %>">Edited: <%= pretty_datetime(message.updated_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
-          <% else %>
-        <time class="whitespace-nowrap" datetime="<%= message.created_at.to_formatted_s(:long) %>"><%= pretty_datetime(message.created_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
-          <% end %>
-        </p>
+        <div class="flex items-center justify-between <%= user == current_user ? 'flex-row-reverse' : '' %>">
+          <p class="text-xs <%= user == current_user ? 'text-right text-slate-300' : 'text-soft' %>">
+            <% if message.edited? %>
+              <time class="whitespace-nowrap" datetime="<%= message.updated_at.to_formatted_s(:long) %>">Edited: <%= pretty_datetime(message.updated_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
+            <% else %>
+              <time class="whitespace-nowrap" datetime="<%= message.created_at.to_formatted_s(:long) %>"><%= pretty_datetime(message.created_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
+            <% end %>
+          </p>
+        </div>
       </div>
     </div>
   </div>

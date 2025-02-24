@@ -3,7 +3,7 @@
 <% end %>
 
 <%= turbo_stream.replace 'new_message_form' do %>
-  <%= render 'form', message: Message.new %>
+  <%= render 'form', message: Message.new(topic: @topic) %>
 <% end %>
 
 <% if @message.parent.present? %>

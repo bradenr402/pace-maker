@@ -1,4 +1,7 @@
 <% team = topic.team %>
+<% preview_message = topic.last_message %>
+<% unread_count = topic.unread_count_for(current_user) || 0 %>
+<% any_unread = unread_count.positive? && preview_message.present? %>
 
 <div class="flex items-center gap-2 group/container">
   <%= link_to team_topic_messages_path(team, topic), data: { turbo: false }, class: 'group/link flex items-center gap-3 sm:gap-4 grow py-2 group-first/container:pt-0 group-last/container:pb-0' do %>
@@ -9,21 +12,27 @@
 
     <div class="grow">
       <div class="flex items-center gap-1.5">
-        <%= inline_svg_tag 'icons/star-filled.svg', class: 'size-3 text-yellow-500' if topic.favorited_by?(current_user) %>
+        <%= inline_svg_tag 'icons/star-filled.svg', class: 'size-3 text-yellow-400' if topic.favorited_by?(current_user) %>
         <p class='font-bold transition duration-200 ease-in-out group-hover/link:text-indigo-600 dark:group-hover/link:text-indigo-500'>
           <%= topic.title %>
         </p>
       </div>
 
-      <% preview_message = topic.last_message %>
-      <% if preview_message %>
-        <span class="text-soft text-xs line-clamp-1"><%= "#{preview_message.author_name}: #{preview_message.content}" %></span>
+      <% if preview_message.present? %>
+        <span class="text-xs line-clamp-1 <%= any_unread ? 'font-semibold text-light' : 'text-soft' %>"><%= "#{preview_message.user == current_user ? 'You' : preview_message.author_name}: #{preview_message.content}" %></span>
       <% else %>
         <span class="text-soft text-xs line-clamp-1 italic">No messages</span>
       <% end %>
     </div>
 
-    <span class="text-xs text-soft whitespace-nowrap"><%= time_abbr_format(preview_message&.created_at || topic.created_at) %></span>
+    <div class="flex items-center gap-2">
+      <% if any_unread %>
+        <div class="inline-flex items-center rounded-full px-2 py-0.5 text-xxs font-semibold bg-blue-100 text-blue-600 dark:bg-blue-950 dark:text-blue-400">
+          <%= unread_count %>
+        </div>
+      <% end %>
+      <span class="text-xs whitespace-nowrap <%= any_unread ? 'font-semibold text-light' : 'text-soft' %>"><%= time_ago_abbr_format(preview_message&.created_at || topic.created_at) %></span>
+    </div>
   <% end %>
 
   <% if current_user.owns?(team) %>
@@ -90,12 +99,12 @@
     <% if topic.open? %>
       <div class="my-2 group-first/container:mt-0 group-last/container:mb-0">
         <% if topic.favorited_by?(current_user) %>
-          <%= button_to unfavorite_team_topic_path(team, topic), method: :patch, class: 'z-0 p-[5px] rounded-lg opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 text-yellow-500' do %>
+          <%= button_to unfavorite_team_topic_path(team, topic), method: :patch, class: 'z-0 p-[5px] rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 text-yellow-400' do %>
             <%= inline_svg_tag 'icons/star-filled.svg', class: 'size-5' %>
             <span class="sr-only">Unfavorite topic</span>
           <% end %>
         <% else %>
-          <%= button_to favorite_team_topic_path(team, topic), method: :patch, class: 'z-0 p-[5px] rounded-lg opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 hover:text-yellow-500' do %>
+          <%= button_to favorite_team_topic_path(team, topic), method: :patch, class: 'z-0 p-[5px] rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 text-light hover:text-yellow-400' do %>
             <%= inline_svg_tag 'icons/star.svg', class: 'size-5' %>
             <span class="sr-only">Favorite topic</span>
           <% end %>

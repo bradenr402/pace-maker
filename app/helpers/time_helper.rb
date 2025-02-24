@@ -57,29 +57,25 @@ module TimeHelper
     "#{date_str}, #{time_str}"
   end
 
-  def time_abbr_format(time)
-    now = Time.current
-    time_diff_in_seconds = (now - time).to_i
-    time_diff_in_minutes = (time_diff_in_seconds / 60).to_i
+  def time_ago_abbr_format(time)
+    distance_in_minutes = ((Time.current - time).abs / 60).round
+    distance_in_seconds = (Time.current - time).abs.round
 
-    # For recent times (within the last 24 hours)
-    if time_diff_in_minutes < 1440
-      case time_diff_in_minutes
-      when 0..1
-        time_diff_in_seconds <= 59 ? 'now' : '1 min'
-      when 2..59
-        "#{time_diff_in_minutes} min"
-      when 60..119
-        '1 hr'
-      when 120..1439
-        "#{time_diff_in_minutes / 60} hrs"
-      end
-    elsif time > (now - 7.days)
-      time.strftime('%a')
-    elsif time.year == now.year
-      time.strftime('%m/%d')
+    case distance_in_minutes
+    when 0..1
+      distance_in_seconds < 60 ? 'now' : '1 min'
+    when 2..59
+      "#{distance_in_minutes} min"
+    when 60..1439
+      "#{(distance_in_minutes / 60).round} h"
+    when 1440..10_079
+      "#{(distance_in_minutes / 1440).round} d"
+    when 10_080..43_199
+      "#{(distance_in_minutes / 10080).round} w"
+    when 43_200..525_599
+      "#{(distance_in_minutes / 43_200).round} mo"
     else
-      time.strftime('%m/%d/%Y')
+      "#{(distance_in_minutes / 525_600).round} y"
     end
   end
 
