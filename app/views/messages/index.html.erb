@@ -1,24 +1,12 @@
 <% content_for :title, "#{@team.name} - #{@topic.title}" %>
 <div data-controller="reply-message" class="max-w-3xl mx-auto mt-16 mb-80 md:mb-16">
   <div class="mb-6 border-b border-slate-200 dark:border-slate-700 sticky top-0 bg-slate-50 dark:bg-slate-900">
-    <%= link_to team_topics_path(@team), class: 'group flex items-center gap-3 pt-4 pb-2', aria: { label: "Back to #{@team.name} topics" } do %>
-      <%= inline_svg_tag 'icons/chevron-left-bold.svg', class: 'size-6 transition ease-in-out duration-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-500' %>
+    <%= link_to team_topics_path(@team), class: 'group flex items-center gap-3 pt-4 pb-2 pr-2 btn-link-soft w-max', aria: { label: "Back to #{@team.name} topics" } do %>
+      <%= inline_svg_tag 'icons/chevron-left-bold.svg', class: 'size-4 transition ease-in-out duration-200' %>
 
-      <div class="flex items-center justify-start gap-4">
-        <% if @topic.main %>
-          <div class="grid place-items-center size-9 rounded-md bg-gradient-to-b from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800 shrink-0">
-            <%= inline_svg_tag "icons/chat.svg", class: 'size-5 text-light' %>
-          </div>
-        <% else %>
-          <div class="grid place-items-center size-9 rounded-md bg-gradient-to-b from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800 shrink-0">
-            <%= inline_svg_tag "icons/hashtag.svg", class: 'size-5 text-light' %>
-          </div>
-        <% end %>
-
-        <div>
-          <p class="text-lg font-bold transition ease-in-out duration-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= @topic.title %></p>
-          <p class="text-soft text-xs"><%= @team.name %></p>
-        </div>
+      <div>
+        <p class="font-bold text-normal group-hover:text-soft transition ease-in-out duration-200"><%= @topic.title %></p>
+        <p class="text-xs transition ease-in-out duration-200">Back to topics</p>
       </div>
     <% end %>
 
