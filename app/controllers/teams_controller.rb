@@ -204,9 +204,10 @@ class TeamsController < ApplicationController
       TeamJoinRequest.find_by(user_id: current_user, team_id: @team)
 
     if ActiveRecord::Base.transaction do
-         join_request.pending! if join_request.present?
+         join_request&.canceled
          team_membership&.destroy
        end
+      Rails.cache.delete([@team, 'members', params[:query]])
       redirect_back fallback_location: @team,
                     success: 'You have successfully left this team.'
     else
@@ -232,6 +233,7 @@ class TeamsController < ApplicationController
     if ActiveRecord::Base.transaction do
          join_request.rejected! && team_membership.destroy
        end
+      Rails.cache.delete([@team, 'members', params[:query]])
       redirect_back fallback_location: team,
                     success:
                       "#{member.default_name} was successfully removed from this team."
