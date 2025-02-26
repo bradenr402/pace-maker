@@ -27,7 +27,7 @@
         <% if show_members_check %>
           <div class="flex items-start gap-1.5">
             <%= inline_svg_tag 'icons/user.svg', class: 'size-4 text-soft shrink-0' %>
-            <p class="text-soft text-xs">Members: <%= list items: team.members_in_common(current_user) %></p>
+            <p class="text-soft text-xs">Members: <%= list items: team.members_in_common(current_user).map { _1.default_name } %></p>
           </div>
         <% end %>
       </div>
