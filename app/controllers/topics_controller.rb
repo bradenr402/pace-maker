@@ -1,6 +1,6 @@
 class TopicsController < ApplicationController
   before_action :set_team
-  before_action :set_topic, only: %i[edit update destroy close reopen favorite unfavorite]
+  before_action :set_topic, only: %i[edit update destroy close reopen favorite unfavorite update_last_read]
   before_action :authenticate_user!
   before_action :authorize_member!, only: %i[index favorite unfavorite]
   before_action :authorize_owner!, only: %i[edit update close reopen]
@@ -76,7 +76,7 @@ class TopicsController < ApplicationController
   def favorite
     return redirect_to team_topics_path(@team), alert: 'You cannot favorite a closed topic.' if @topic.closed?
 
-    user_topic = current_user.user_topics.find_or_initialize_by(topic: @topic)
+    user_topic = current_user.user_topics.find_or_create_by(topic: @topic)
 
     if user_topic.favorite!
       flash[:success] = "#{@topic.title} topic favorited."
@@ -95,6 +95,13 @@ class TopicsController < ApplicationController
       flash[:error] = "#{@topic.title} topic could not be unfavorited."
     end
     redirect_to team_topics_path(@team)
+  end
+
+  def update_last_read
+    user_topic = current_user.user_topics.find_or_create_by(topic: @topic)
+    user_topic.update_last_read
+
+    head :ok
   end
 
   private

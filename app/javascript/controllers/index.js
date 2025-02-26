@@ -34,6 +34,9 @@ application.register("filter-gender", FilterGenderController)
 import FormHelpTextController from "./form_help_text_controller"
 application.register("form-help-text", FormHelpTextController)
 
+import FormSubmitController from "./form_submit_controller"
+application.register("form-submit", FormSubmitController)
+
 import FormValidationController from "./form_validation_controller"
 application.register("form-validation", FormValidationController)
 
@@ -87,3 +90,6 @@ application.register("theme", ThemeController)
 
 import ToggleCheckboxController from "./toggle_checkbox_controller"
 application.register("toggle-checkbox", ToggleCheckboxController)
+
+import TopicReaderController from "./topic_reader_controller"
+application.register("topic-reader", TopicReaderController)

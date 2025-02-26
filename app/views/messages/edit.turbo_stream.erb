@@ -1,3 +1,7 @@
 <%= turbo_stream.replace (@pin ? "pinned_#{dom_id(@message)}" : dom_id(@message)) do %>
   <%= render 'edit_form', message: @message %>
 <% end %>
+
+<%= turbo_stream.replace 'new_message_form' do %>
+  <div id="new_message_form"></div>
+<% end %>

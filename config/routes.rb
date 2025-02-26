@@ -58,6 +58,7 @@ Rails.application.routes.draw do
         patch :reopen
         patch :favorite
         patch :unfavorite
+        post :update_last_read
       end
 
       resources :messages, only: %i[index create edit update destroy] do

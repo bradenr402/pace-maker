@@ -112,7 +112,6 @@ class MessagesController < ApplicationController
     end
 
     @previous_pinned_message = @topic.pinned_message
-    @previous_pinned_message&.unpin!
     @message.pin!
 
     respond_to do |format|
@@ -124,7 +123,10 @@ class MessagesController < ApplicationController
   def unpin
     @message.unpin!
 
-    redirect_to team_topic_messages_path(@team, @topic), success: 'Message unpinned.'
+    respond_to do |format|
+      format.turbo_stream { flash.now[:success] = 'Message unpinned.' }
+      format.html { redirect_to team_topic_messages_path(@team, @topic), success: 'Message unpinned.' }
+    end
   end
 
   def cancel_edit

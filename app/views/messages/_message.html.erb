@@ -51,5 +51,5 @@
 
   <div></div>
 
-  <%= render 'messages/actions', message: message unless topic.closed? %>
+  <%= render 'messages/actions', message: message, current_user: current_user unless topic.closed? %>
 </div>

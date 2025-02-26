@@ -1,5 +1,5 @@
 <% if @message.pinned? %>
-  <%= turbo_stream.remove "pinned_#{dom_id(@message)}" %>
+  <%= turbo_stream.remove 'pinned_message' %>
 <% end %>
 
 <%= turbo_stream.replace dom_id(@message) do %>
@@ -14,6 +14,14 @@
   <% if @message.parent.pinned? %>
     <%= turbo_stream.replace "pinned_#{dom_id(@message.parent, :replies)}" do %>
       <%= render 'messages/reply_button', message: @message.parent, pinned: true %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% if @message.replies.any? %>
+  <% @message.replies.each do |reply| %>
+    <%= turbo_stream.replace dom_id(reply) do %>
+      <%= render reply %>
     <% end %>
   <% end %>
 <% end %>

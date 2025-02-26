@@ -1,9 +1,21 @@
+<%= turbo_stream.replace dom_id(@message) do %>
+  <%= render @message %>
+<% end %>
+
 <% if @message.pinned? %>
-  <%= turbo_stream.replace "pinned_#{dom_id(@message)}" do %>
+  <%= turbo_stream.replace 'pinned_message' do %>
     <%= render 'pinned_message', message: @message %>
   <% end %>
 <% end %>
 
-<%= turbo_stream.replace dom_id(@message) do %>
-  <%= render @message %>
+<% if @message.replies.any? %>
+  <% @message.replies.each do |reply| %>
+    <%= turbo_stream.replace dom_id(reply) do %>
+      <%= render reply %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.replace 'new_message_form' do %>
+  <%= render 'form', message: Message.new(topic: @topic) %>
 <% end %>

@@ -11,9 +11,9 @@
   data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
   class="flex items-center gap-2.5 mt-1 <%= user == current_user || pinned ? 'justify-end' : 'ml-1' %>"
 >
-  <%= render 'messages/like_button', message: message, pinned: pinned %>
+  <%= render 'messages/like_button', message: message, current_user: current_user, pinned: pinned %>
 
-  <%= render 'messages/reply_button', message: message, pinned: pinned %>
+  <%= render 'messages/reply_button', message: message, current_user: current_user, pinned: pinned %>
 
   <% if current_user.owns?(team) %>
     <% unless message.pinned? %>

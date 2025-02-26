@@ -1,48 +1,52 @@
-<% user = message.user %>
-<% topic = message.topic %>
-<% team = topic.team %>
+<% if message.present? && message.pinned? %>
+  <% user = message.user %>
+  <% topic = message.topic %>
+  <% team = topic.team %>
 
-<div id="pinned_<%= dom_id(message) %>" class="grid grid-cols-[auto_1fr] gap-x-1.5 mb-1">
-  <div class="flex flex-col justify-end">
-    <%= render 'shared/user_photo', user: user, size: :thumb, icon_background: :darker unless user == current_user %>
-  </div>
-
-  <div class="mt-2 w-full relative">
-    <% if current_user.owns?(team) %>
-      <%= button_to unpin_team_topic_message_path(team, topic, message), method: :patch, data: { turbo: false }, class: "absolute -top-2 -right-2 p-1 rounded-full text-yellow-600 dark:text-yellow-500 bg-yellow-200 hover:bg-yellow-300 dark:bg-yellow-800 dark:hover:bg-yellow-900 transition duration-200 ease-in-out" do %>
-        <%= inline_svg_tag 'icons/unpin.svg', class: 'size-4' %>
-        <span class="sr-only">Unpin message</span>
-      <% end %>
-    <% else %>
-      <div class="absolute -top-2 -right-2 p-1 rounded-full text-yellow-600 dark:text-yellow-500 bg-yellow-200 hover:bg-yellow-300 dark:bg-yellow-800 dark:hover:bg-yellow-900 transition duration-200 ease-in-out">
-        <%= inline_svg_tag 'icons/pin.svg', class: 'size-4' %>
-      </div>
-    <% end %>
-
-    <div class="z-10 p-2 pb-1 sm:p-3 sm:pb-2 rounded-2xl <%= user == current_user ? 'rounded-br-sm' : 'rounded-bl-sm' %> border border-blue-300 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
-      <% unless user == current_user %>
-        <p class="font-semibold italic text-xs"><%= message.author_name %></p>
-      <% end %>
-
-        <div class="text-pretty text-normal">
-          <%= format_message(message) %>
-        </div>
-
-      <p class="text-xs text-right text-soft">
-        <% if message.edited? %>
-          <time class="whitespace-nowrap" datetime="<%= message.updated_at.to_formatted_s(:long) %>">Edited: <%= pretty_datetime(message.updated_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
-        <% else %>
-          <time class="whitespace-nowrap" datetime="<%= message.created_at.to_formatted_s(:long) %>"><%= pretty_datetime(message.created_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
-        <% end %>
-      </p>
+  <div id="pinned_message" class="grid grid-cols-[auto_1fr] gap-x-1.5 mb-1">
+    <div class="flex flex-col justify-end">
+      <%= render 'shared/user_photo', user: user, size: :thumb, icon_background: :darker unless user == current_user %>
     </div>
+
+    <div class="mt-2 w-full relative">
+      <% if current_user.owns?(team) %>
+        <%= button_to unpin_team_topic_message_path(team, topic, message), method: :patch, class: "absolute -top-2 -right-2 p-1 rounded-full bg-yellow-500 hover:bg-yellow-400 text-white transition duration-200 ease-in-out" do %>
+          <%= inline_svg_tag 'icons/pin-filled.svg', class: 'size-4' %>
+          <span class="sr-only">Unpin message</span>
+        <% end %>
+      <% else %>
+        <div class="absolute -top-2 -right-2 p-1 rounded-full bg-yellow-500 text-white">
+          <%= inline_svg_tag 'icons/pin-filled.svg', class: 'size-4' %>
+        </div>
+      <% end %>
+
+      <div class="z-10 p-2 pb-1 sm:p-3 sm:pb-2 rounded-2xl <%= user == current_user ? 'rounded-br-sm' : 'rounded-bl-sm' %> border border-blue-300 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
+        <% unless user == current_user %>
+          <p class="font-semibold italic text-xs"><%= message.author_name %></p>
+        <% end %>
+
+          <div class="text-pretty text-normal">
+            <%= format_message(message) %>
+          </div>
+
+        <p class="text-xs text-right text-soft">
+          <% if message.edited? %>
+            <time class="whitespace-nowrap" datetime="<%= message.updated_at.to_formatted_s(:long) %>">Edited: <%= pretty_datetime(message.updated_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
+          <% else %>
+            <time class="whitespace-nowrap" datetime="<%= message.created_at.to_formatted_s(:long) %>"><%= pretty_datetime(message.created_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
+          <% end %>
+        </p>
+      </div>
+    </div>
+
+    <div></div>
+
+    <% if topic.open? %>
+      <%= render 'messages/actions', message: message, current_user: current_user, pinned: true %>
+    <% else %>
+      <div class="h-2"></div>
+    <% end %>
   </div>
-
-  <div></div>
-
-  <% if topic.open? %>
-    <%= render 'messages/actions', message: message, pinned: true %>
-  <% else %>
-    <div class="h-2"></div>
-  <% end %>
-</div>
+<% else %>
+  <div id="pinned_message"></div>
+<% end %>
