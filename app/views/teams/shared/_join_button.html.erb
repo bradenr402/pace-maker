@@ -1,0 +1,28 @@
+<% request = team.join_requests.find_by(user_id: current_user) %>
+
+<% if team.gender_requirement_met?(current_user) %>
+  <% if request&.pending? %>
+    <div class="text-center w-full space-y-2 mt-4">
+      <%= content_tag :p, 'You have requested to join this team.', class: 'text-soft text-sm' %>
+      <%= button_to 'Cancel request',
+                    cancel_team_join_request_path(request),
+                    method: :patch,
+                    data: { turbo: false },
+                    class: "btn btn-destructive btn-muted"
+      %>
+    </div>
+
+  <% elsif request.nil? || request.allowed? %>
+    <%= button_to 'Join team',
+                  request.nil? ? join_team_path(team) : team_join_request_path(request),
+                  method: request.nil? ? :post : :patch,
+                  data: { turbo: false },
+                  class: "btn btn-primary btn-muted"
+    %>
+  <% end %>
+
+<% elsif request&.blocked? %>
+  <p class="text-base error-message">You have been blocked from this team.</p>
+<% else %>
+  <p class="w-full text-base text-center error-message">You must specify your gender to join this team.</p>
+<% end %>
