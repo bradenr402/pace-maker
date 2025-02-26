@@ -1,7 +1,7 @@
 class MessagesController < ApplicationController
   before_action :set_team
   before_action :set_topic
-  before_action :set_message, only: %i[edit update destroy pin unpin cancel_edit]
+  before_action :set_message, only: %i[show edit update destroy pin unpin cancel_edit]
   before_action :authenticate_user!
   before_action :authorize_member!
   before_action :authorize_owner!, only: %i[pin unpin]
@@ -15,6 +15,24 @@ class MessagesController < ApplicationController
 
     @messages = @topic.messages.includes(:user, :likes).order(created_at: :asc).limit(100)
     @pinned_message = @messages.find_by(pinned: true)
+  end
+
+  def show
+    @users_read_list = []
+    @users_liked_list = []
+
+    @team.members.each do |user|
+      user_topic = @topic.user_topics.find_by(user:)
+
+      @users_read_list << user if user_topic&.last_read_at&.after?(@message.created_at)
+
+      like = @message.likes.find_by(user:)
+
+      @users_liked_list << user if like.present?
+    end
+
+    @users_read_list.sort_by!(&:default_name)
+    @users_liked_list.sort_by!(&:default_name)
   end
 
   def create

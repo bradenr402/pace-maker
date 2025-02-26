@@ -1,0 +1,103 @@
+<%= turbo_stream_from "user_#{current_user.id}_topic_#{@topic.id}" %>
+
+<div class="max-w-3xl mx-auto my-16">
+  <%= link_to team_topic_messages_path(@team, @topic), class: 'group flex items-center gap-3 py-4 pr-2 btn-link-soft w-max', aria: { label: "Back to #{@topic.title}" } do %>
+    <%= inline_svg_tag 'icons/chevron-left-bold.svg', class: 'size-4 transition ease-in-out duration-200' %>
+
+    <span class="text-sm transition ease-in-out duration-200">Back to <%= @topic.title %></span>
+  <% end %>
+  <div class="mb-12">
+    <div class="flex items-center gap-2 mb-3">
+      <%= inline_svg_tag 'icons/comment-filled.svg', class: 'size-4 text-light' %>
+      <h2 class="font-semibold">Message Details</h2>
+    </div>
+
+    <div class="card">
+      <% if @message.deleted? %>
+        <%= render 'deleted_message', message: @message, link: false, show_parent: false %>
+      <% elsif @message.pinned? %>
+        <%= render 'pinned_message', message: @message, link: false, show_parent: false %>
+      <% else %>
+        <%= render @message, link: false, show_parent: false %>
+      <% end %>
+
+      <div class="mt-3">
+        <p class="text-sm">
+          <span class="font-semibold">Sent</span>
+          <span class="text-light"><%= pretty_datetime(@message.created_at, date_style: :absolute, include_seconds: false, month_format: :short) %></span>
+        </p>
+
+        <% if @message.edited? %>
+          <p class="text-sm">
+            <span class="font-semibold">Edited</span>
+            <span class="text-light"><%= pretty_datetime(@message.updated_at, date_style: :absolute, include_seconds: false, month_format: :short) %></span>
+          </p>
+        <% end %>
+
+        <% if @message.deleted? %>
+          <p class="text-sm">
+            <span class="font-semibold">Deleted</span>
+            <span class="text-light"><%= pretty_datetime(@message.deleted_at, date_style: :absolute, include_seconds: false, month_format: :short) %></span>
+          </p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <% if @users_read_list.present? %>
+    <div class="mb-12">
+      <div class="flex items-center gap-2 mb-3">
+        <%= inline_svg_tag 'icons/check-circle.svg', class: 'size-4 text-light' %>
+        <h2 class="font-semibold">Read by</h2>
+      </div>
+
+      <div class="card">
+        <% @users_read_list.each do |user| %>
+          <div class="flex items-center justify-between py-3 border-b border-slate-200 dark:border-slate-700 last:border-b-0 first:pt-0 last:pb-0">
+            <div class="flex items-center gap-2">
+              <%= render 'shared/user_photo', user: user, size: :thumb, icon_background: :darker %>
+              <span><%= user.default_name %></span>
+            </div>
+            <%= inline_svg_tag 'icons/check-circle.svg', class: 'size-3 text-soft' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @users_liked_list.present? %>
+    <div class="mb-12">
+      <div class="flex items-center gap-2 mb-3">
+        <%= inline_svg_tag 'icons/like-filled.svg', class: 'size-4 text-light' %>
+        <h2 class="font-semibold">Liked by</h2>
+      </div>
+
+      <div class="card">
+        <% @users_liked_list.each do |user| %>
+          <div class="flex items-center justify-between py-3 border-b border-slate-200 dark:border-slate-700 last:border-b-0 first:pt-0 last:pb-0">
+            <div class="flex items-center gap-2">
+              <%= render 'shared/user_photo', user: user, size: :thumb, icon_background: :darker %>
+              <span><%= user.default_name %></span>
+            </div>
+            <span class="text-soft text-xs"><%= pretty_datetime(user.last_read_at(@topic), date_style: :absolute, include_seconds: false, month_format: :short) %></span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @message.replies.present? %>
+    <div class="mb-12">
+      <div class="flex items-center gap-1 mb-3">
+        <%= inline_svg_tag 'icons/reply-filled.svg', class: 'size-5 text-light' %>
+        <h2 class="font-semibold">Replies</h2>
+      </div>
+
+      <div class="card">
+        <% @message.replies.order(created_at: :asc).each do |reply| %>
+          <%= render 'message', message: reply, show_parent: false %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

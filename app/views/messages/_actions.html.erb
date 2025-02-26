@@ -1,4 +1,6 @@
 <% pinned = defined?(pinned) ? pinned : false %>
+<% link = local_assigns.fetch(:link, true) %>
+
 <% user = message.user %>
 <% topic = message.topic %>
 <% team = topic.team %>
@@ -11,6 +13,13 @@
   data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
   class="flex items-center gap-2.5 mt-1 <%= user == current_user || pinned ? 'justify-end' : 'ml-1' %>"
 >
+  <% if link %>
+    <%= link_to team_topic_message_path(team, topic, message), class: 'p-1 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-700/40 hover:text-indigo-500 transition duration-200 ease-in-out' do %>
+      <%= inline_svg_tag 'icons/info.svg', class: 'size-4' %>
+      <span class="sr-only">View message details</span>
+    <% end %>
+  <% end %>
+
   <%= render 'messages/like_button', message: message, current_user: current_user, pinned: pinned %>
 
   <%= render 'messages/reply_button', message: message, current_user: current_user, pinned: pinned %>

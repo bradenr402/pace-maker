@@ -1,3 +1,6 @@
+<% show_parent = local_assigns.fetch(:show_parent, true) %>
+<% link = local_assigns.fetch(:link, true) %>
+
 <% user = message.user %>
 <% topic = message.topic %>
 <% parent = message.parent %>
@@ -9,7 +12,7 @@
 
   <div class="flex <%= message.pinned? ? 'mt-3' : 'mt-1' %> <%= user == current_user ? 'ml-20 sm:ml-24 md:ml-28 justify-end' : 'mr-20 sm:mr-24 md:mr-28' %>">
     <div>
-      <% if parent.present? %>
+      <% if parent.present? && show_parent %>
         <div class="relative top-3.5 -z-10 -mt-3">
           <div class="inline-flex gap-1 mt-2 <%= parent.deleted? ? 'text-red-600 dark:text-red-300' : 'text-soft' %>">
             <%= inline_svg_tag 'icons/reply.svg', class: 'size-3.5' %>
@@ -51,5 +54,5 @@
 
   <div></div>
 
-  <%= render 'messages/actions', message: message, current_user: current_user unless topic.closed? %>
+  <%= render 'messages/actions', message: message, current_user: current_user, link: link unless topic.closed? %>
 </div>

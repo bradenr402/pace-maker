@@ -1,4 +1,6 @@
 <% if message.present? && message.pinned? %>
+  <% link = local_assigns.fetch(:link, true) %>
+
   <% user = message.user %>
   <% topic = message.topic %>
   <% team = topic.team %>
@@ -31,7 +33,7 @@
 
         <p class="text-xs text-right text-soft">
           <% if message.edited? %>
-            <time class="whitespace-nowrap" datetime="<%= message.updated_at.to_formatted_s(:long) %>">Edited: <%= pretty_datetime(message.updated_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
+            <time class="whitespace-nowrap" datetime="<%= message.updated_at.to_formatted_s(:long) %>"><span class="font-semibold">Edited</span> <%= pretty_datetime(message.updated_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
           <% else %>
             <time class="whitespace-nowrap" datetime="<%= message.created_at.to_formatted_s(:long) %>"><%= pretty_datetime(message.created_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
           <% end %>
@@ -42,7 +44,7 @@
     <div></div>
 
     <% if topic.open? %>
-      <%= render 'messages/actions', message: message, current_user: current_user, pinned: true %>
+      <%= render 'messages/actions', message: message, current_user: current_user, pinned: true, link: link %>
     <% else %>
       <div class="h-2"></div>
     <% end %>

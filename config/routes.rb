@@ -61,7 +61,7 @@ Rails.application.routes.draw do
         post :update_last_read
       end
 
-      resources :messages, only: %i[index create edit update destroy] do
+      resources :messages, only: %i[index show create edit update destroy] do
         resources :likes, only: %i[create destroy], module: :messages
 
         member do

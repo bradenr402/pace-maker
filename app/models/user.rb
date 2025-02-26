@@ -126,6 +126,12 @@ class User < ApplicationRecord
 
   def favorite_topics(team) = Topic.where(team: team.id).select { _1.favorited_by? self }
 
+  def last_read_at(topic)
+    user_topic = user_topics.find_by(topic:)
+
+    user_topic&.last_read_at
+  end
+
   def formatted_phone_number(format = :national)
     parsed_number = Phonelib.parse(phone_number, phone_country_code)
 
