@@ -20,11 +20,29 @@
     <%= render 'pinned_message', message: @pinned_message.presence %>
   </div>
   <div id="messages" class="mb-6">
-    <% @messages.each do |message| %>
-      <% if message.deleted? %>
-        <%= render 'deleted_message', message: message %>
-      <% else %>
-        <%= render message %>
+    <% last_message_date = nil %>
+
+    <% @objects.each do |object| %>
+      <% if last_message_date != object.created_at.to_date %>
+        <div class="text-soft text-sm text-center mt-8 mb-4">
+          <%= pretty_date(object.created_at, date_style: :relative, include_weekday: true, weekday_format: :short, month_format: :short, include_year: object.created_at.year != Time.current.year) %>
+        </div>
+
+        <% last_message_date = object.created_at.to_date %>
+      <% end %>
+
+      <% if object.is_a?(Message) %>
+        <% if object.deleted? %>
+            <%= render 'deleted_message', message: object %>
+        <% else %>
+          <%= render object %>
+        <% end %>
+      <% elsif object.is_a?(Topic) %>
+        <%= render 'topic_banner', topic: object %>
+      <% elsif object.is_a?(TeamMembership) %>
+        <div class="flex justify-center">
+          <p class="text-light text-sm text-center my-1 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-3 pr-4 py-1 w-max"><%= object.user.default_name %> joined the team!</p>
+        </div>
       <% end %>
     <% end %>
   </div>

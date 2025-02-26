@@ -15,6 +15,14 @@ class MessagesController < ApplicationController
 
     @messages = @topic.messages.includes(:user, :likes).order(created_at: :asc).limit(100)
     @pinned_message = @messages.find_by(pinned: true)
+
+    @objects = if @topic == @team.main_chat_topic
+                 @topics = @team.topics
+                 @team_memberships = @team.team_memberships.includes(:user)
+                 (@team_memberships + @topics + @messages).sort_by(&:created_at)
+               else
+                 @messages
+               end
   end
 
   def show
