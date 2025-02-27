@@ -2,7 +2,7 @@
 <% team = topic.team %>
 
 <div id="new_message_form">
-  <%= form_with(model: message, url: team_topic_messages_path(team, topic), id: 'messageForm', data: { controller: 'form-submit', form_submit_target: 'form' }) do |form| %>
+  <%= form_with(model: message, url: team_topic_messages_path(team, topic), id: 'messageForm', data: { controller: 'form-submit typing', form_submit_target: 'form', typing_user_id_value: current_user.id, typing_typing_path_value: team_topic_typing_path(team, topic) }) do |form| %>
     <%= form.hidden_field :parent_id, value: nil, data: { reply_message_target: 'parent' } %>
 
     <div class="hidden mb-2" data-reply-message-target="replyMessage">
@@ -26,7 +26,7 @@
     </div>
 
     <div class="flex items-center justify-end gap-3">
-      <%= form.text_area :content, rows: 2, class: 'form-textarea grow rounded-t-2xl rounded-bl-2xl', placeholder: 'Say something...', data: { controller: 'autogrow', form_submit_target: 'input', action: 'input->autogrow#grow keydown.ctrl+enter@window->form-submit#submit keydown.meta+enter@window->form-submit#submit', reply_message_target: 'input' } %>
+      <%= form.text_area :content, rows: 2, class: 'form-textarea grow rounded-t-2xl rounded-bl-2xl', placeholder: 'Say something...', data: { controller: 'autogrow', form_submit_target: 'input', action: 'input->autogrow#grow keydown.ctrl+enter@window->form-submit#submit keydown.meta+enter@window->form-submit#submit', reply_message_target: 'input', typing_target: 'input' } %>
 
       <%= form.button type: 'submit', class: 'btn btn-primary p-2 rounded-full grid place-items-center' do %>
         <%= inline_svg_tag 'icons/arrow-up.svg', class: 'size-6' %>

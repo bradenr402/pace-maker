@@ -99,3 +99,6 @@ application.register("toggle-checkbox", ToggleCheckboxController)
 
 import TopicReaderController from "./topic_reader_controller"
 application.register("topic-reader", TopicReaderController)
+
+import TypingController from "./typing_controller"
+application.register("typing", TypingController)

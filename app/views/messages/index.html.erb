@@ -38,6 +38,8 @@
 
   <div>
     <% if @topic.open? %>
+      <div id="typing_indicators_<%= @topic.id %>" class="my-3"></div>
+
       <%= render 'form', message: Message.new(topic: @topic) %>
     <% else %>
       <div class="flex flex-col items-center justify-center gap-4 mt-16 text-red-600 dark:text-red-400">

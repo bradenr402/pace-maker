@@ -35,6 +35,28 @@ class Topic < ApplicationRecord
 
   def unread_count_for(user) = user_topics.find_by(user:)&.unread_count
 
+  def broadcast_typing_indicator(user, typing = false)
+    team.members.each do |member|
+      next if member == user
+
+      if typing
+
+        broadcast_append_to(
+          "user_#{member.id}_topic_#{id}",
+          target: "typing_indicators_#{id}",
+          partial: 'typing/indicator',
+          locals: { user: user }
+        )
+      else
+        broadcast_remove_to(
+          "user_#{member.id}_topic_#{id}",
+          target: "typing_user_#{user.id}",
+          partial: 'typing/indicator'
+        )
+      end
+    end
+  end
+
   private
 
   def only_one_main_topic
