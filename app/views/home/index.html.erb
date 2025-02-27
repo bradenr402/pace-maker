@@ -13,7 +13,7 @@
   <div class="mt-16">
     <h2 class="subheading mb-4 text-center">Recent Updates</h2>
 
-    <div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="teamUpdatesTab" class="mx-auto">
+    <div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="<%= current_user.strava_account_linked? ? 'stravaActivityTab' : 'teamUpdatesTab' %>" class="mx-auto">
       <div class="relative flex items-center mb-6">
         <!-- Left Arrow -->
         <button type="button" data-action="mousedown->tabs#scrollLeft" data-tabs-target="leftArrow" aria-label="Scroll tabs left" class="opacity-0 pointer-events-none tab-container-scroll-left transition duration-300">
@@ -24,7 +24,14 @@
           <!-- Tab Indicator -->
           <span data-tabs-target="indicator" class="sliding-tab-indicator"></span>
 
-          <button type="button" id="teamUpdatesTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'teamUpdatesTab' ? 'btn-tab-active' : '' %>">
+        <% if current_user.strava_account_linked? %>
+            <button type="button" id="stravaActivityTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'stravaActivityTab' ? 'btn-tab-active' : '' %>">
+              <%= inline_svg_tag 'icons/strava.svg', class: 'size-4 md:size-5' %>
+              <span>Recent Strava Activity</span>
+            </button>
+          <% end %>
+
+          <button type="button" id="teamUpdatesTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab].blank? && !current_user.strava_account_linked? || params[:tab] == 'teamUpdatesTab' ? 'btn-tab-active' : '' %>">
             <%= inline_svg_tag 'icons/team.svg', class: 'size-4 md:size-5' %>
             <span>Team Updates</span>
           </button>
@@ -46,7 +53,7 @@
             <span>Streak Advancements</span>
           </button>
 
-          <button type="button" id="recentRunsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'recentRunsTab' ? 'btn-tab-active' : '' %>">
+          <button type="button" id="recentRunsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab gap-2 <%= params[:tab] == 'recentRunsTab' ? 'btn-tab-active' : '' %>">
             <%= inline_svg_tag 'icons/runner.svg', class: 'size-3.5 md:size-4.5' %>
             <span>Recent Runs</span>
           </button>
@@ -58,7 +65,28 @@
         </button>
       </div>
 
-      <div id="teamUpdatesTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'teamUpdatesTab' ? '' : 'hidden' %>">
+      <% if current_user.strava_account_linked? %>
+        <div id="stravaActivityTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'stravaActivityTab' ? '' : 'hidden' %>">
+          <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
+            <h1 class="subheading">Recent Strava Activity</h1>
+            <p class="text-sm text-soft">Your runs that have been added or updated by Strava recently.</p>
+          </div>
+
+        <% if @recent_updates[:strava_activity].any? %>
+          <div class="space-y-4 sm:space-y-6">
+            <% @recent_updates[:strava_activity].each do |run| %>
+              <%= render 'runs/run', run: run %>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="mt-12">
+            <p class="text-soft text-center">No activities have been imported from Strava recently.</p>
+          </div>
+        <% end %>
+        </div>
+      <% end %>
+
+      <div id="teamUpdatesTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? && !current_user.strava_account_linked? || params[:tab] == 'teamUpdatesTab' ? '' : 'hidden' %>">
         <% if @recent_updates[:team_updates].any? %>
           <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
             <h1 class="subheading">Team Updates</h1>

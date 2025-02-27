@@ -13,6 +13,7 @@ class HomeController < ApplicationController
     any_owned_teams = current_user.owned_teams.any?
 
     {
+      strava_activity: current_user.strava_account_linked? ? recent_strava_activity : [],
       team_updates: recent_team_updates,
       new_teams: any_connected_users ? new_teams_by_connected_users : [],
       new_runs: any_connected_users ? new_runs_by_connected_users : [],
@@ -30,7 +31,10 @@ class HomeController < ApplicationController
 
   # Helper methods for recent_updates
 
-  # 1. Fetches updates to team attributes and settings for teams the user is a member of
+  def recent_strava_activity
+    current_user.strava_runs.where('updated_at >= ?', 1.week.ago)
+  end
+
   def recent_team_updates
     team_ids = current_user.membered_teams.pluck(:id)
     TeamAudit.where(team_id: team_ids)
@@ -38,19 +42,16 @@ class HomeController < ApplicationController
              .order(changed_at: :desc)
   end
 
-  # 2. Fetches new teams created by connected users (users with a team in common)
   def new_teams_by_connected_users
     Team.where(owner_id: current_user.connected_user_ids)
         .recently_created
   end
 
-  # 3. Fetches new runs by connected users
   def new_runs_by_connected_users
     Run.recent_by_connected_users(current_user)
        .includes(user: :avatar_attachment)
   end
 
-  # 4. Fetches recent streak advancements by connected users
   def streak_advancements_by_connected_users
     current_user.connected_users
                 .map { |user| user.current_streak.merge(user: user) }
@@ -65,7 +66,6 @@ class HomeController < ApplicationController
     end
   end
 
-  # 5. Fetches pending join requests for teams the current user owns  def pending_join_requests
   def pending_join_requests
     TeamJoinRequest.where(team_id: current_user.owned_team_ids, status: :pending)
                    .order(created_at: :desc)
