@@ -44,7 +44,11 @@ Rails.application.routes.draw do
       post :reset
     end
 
-    post :remove_member, :join, :leave, on: :member
+    member do
+      post :remove_member
+      post :join
+      post :leave
+    end
 
     get 'member/:user_id', to: 'teams#member', as: 'member'
     resources :team_memberships, param: :user_id, only: %i[edit update]
@@ -53,7 +57,10 @@ Rails.application.routes.draw do
     get 'main_chat', to: 'teams#main_chat', as: :main_chat
     resources :topics, except: %i[new show] do
       member do
-        patch :close, :reopen, :favorite, :unfavorite
+        patch :close
+        patch :reopen
+        patch :favorite
+        patch :unfavorite
         post :update_last_read
       end
 
@@ -61,19 +68,24 @@ Rails.application.routes.draw do
         resources :likes, only: %i[create destroy], module: :messages
 
         member do
-          patch :pin, :unpin
+          patch :pin
+          patch :unpin
           get :cancel_edit
         end
 
         get :load_more, on: :collection
       end
+
+      post 'typing', to: 'typing#update'
     end
   end
 
   # Team Join Requests
   resources :team_join_requests, only: %i[update] do
     member do
-      patch :cancel, :approve, :reject
+      patch :cancel
+      patch :approve
+      patch :reject
     end
   end
 
