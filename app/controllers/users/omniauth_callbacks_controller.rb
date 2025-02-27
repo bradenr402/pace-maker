@@ -47,19 +47,29 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def strava
-    # gets user from auth information
-    @user = User.from_strava_omniauth(auth, current_user)
-
-    if @user.nil? # account already exists with email but is not linked to a Strava account
-      # links Strava account to existing account if signed in, else asks user to sign in
-      handle_existing_account
-    elsif @user.persisted? # account linked to Strava account
-      # creates account with Strava account and signs user in
-      handle_successful_authentication
-    else # error creating/linking account
-      # displays error message and redirects to sign in page
-      handle_failed_authentication
+    unless user_signed_in?
+      Rails.logger.warn 'Strava OAuth attempted without a signed-in user.'
+      return redirect_to new_user_session_path,
+                         alert: 'Please sign in to link your Strava account.'
     end
+
+    code = params[:code]
+    unless code.present?
+      Rails.logger.error 'Strava OAuth failed: Missing authorization code.'
+      return redirect_to edit_user_registration_path, alert: 'Authentication data missing.'
+    end
+
+    Rails.logger.info "Strava OAuth success: Authorization code received for user #{current_user.id}."
+
+    if exchange_strava_code_for_tokens(code)
+      Rails.logger.info "Strava OAuth success: Account linked for user #{current_user.id}."
+      flash[:success] = 'Your Strava account was successfully linked.'
+    else
+      Rails.logger.error "Strava OAuth failure: Unable to exchange code for tokens for user #{current_user.id}."
+      flash[:error] = 'There was an issue linking your Strava account.'
+    end
+
+    redirect_to edit_user_registration_path
   end
 
   def failure
@@ -105,42 +115,32 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     redirect_to edit_user_registration_path
   end
 
-  def link_strava_account
-    if current_user.update(
-      strava_uid: auth.uid,
-      strava_access_token: auth.credentials.token
+  def exchange_strava_code_for_tokens(code)
+    Rails.logger.info "Strava OAuth: Exchanging authorization code for tokens for user #{current_user.id}."
+
+    response = RestClient.post(
+      'https://www.strava.com/oauth/token', {
+        client_id: Rails.application.credentials[:strava_client_id],
+        client_secret: Rails.application.credentials[:strava_client_secret],
+        code: code,
+        grant_type: 'authorization_code'
+      }
     )
 
-      response = Faraday.post(
-        'https://www.strava.com/oauth/token', {
-          client_id: Rails.application.credentials[:strava_client_id],
-          client_secret: Rails.application.credentials[:strava_client_secret],
-          code: params[:code],
-          grant_type: 'authorization_code'
-        }
-      )
-
-      if response.success?
-        if params[:refresh_token].present? && params[:expires_at].present?
-          current_user.update(
-            strava_refresh_token: params[:refresh_token],
-            strava_token_expires_at: Time.at(params[:expires_at])
-          )
-          flash[:success] = 'Your Strava account was linked successfully.'
-        else
-          redirect_to edit_user_registration_path(current_user), alert: 'Missing Strava token data.'
-        end
-      else
-        # Log or inspect the response body for better debugging
-        logger.error("Strava OAuth failed: #{response.body}")
-        redirect_to edit_user_registration_path(current_user),
-                    alert: 'Could not authenticate your Strava account. Please try again later.'
-      end
-
-    else
-      flash[:error] = 'There was an issue linking your Strava account.'
+    unless response.code == 200
+      Rails.logger.error "Strava OAuth token exchange failed for user #{current_user.id}: #{response.body}"
+      return false
     end
-    redirect_to edit_user_registration_path
+
+    body = JSON.parse(response.body)
+    Rails.logger.info "Strava OAuth token exchange success for user #{current_user.id}: Access token received."
+
+    current_user.update(
+      strava_uid: body.dig('athlete', 'id'),
+      strava_access_token: body['access_token'],
+      strava_refresh_token: body['refresh_token'],
+      strava_token_expires_at: Time.at(body['expires_at'])
+    )
   end
 
   def handle_successful_authentication

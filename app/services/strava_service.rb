@@ -1,7 +1,4 @@
 class StravaService
-  require 'faraday'
-  require 'net/http'
-  require 'uri'
   require 'rest-client'
 
   STRAVA_API_BASE = 'https://www.strava.com/api/v3'
@@ -69,8 +66,9 @@ class StravaService
     params = { per_page: 100, page: 1 }
 
     loop do
-      activities.concat(fetch_activities_page(user, url, params))
-      break if activities.last(100).size < 100
+      page_activities = fetch_activities_page(user, url, params)
+      activities.concat(page_activities)
+      break if activities.size < 100
 
       params[:page] += 1
     end
@@ -86,8 +84,9 @@ class StravaService
   rescue RestClient::TooManyRequests => e
     sleep_time = e.response.headers[:retry_after].to_i
     sleep_time = 60 if sleep_time.zero?
+    Rails.logger.warn("Strava rate limit hit, retrying in #{sleep_time} seconds...")
     sleep(sleep_time)
-    []
+    retry
   rescue StandardError => e
     log_and_raise_error('fetching activities page from Strava', e, user)
   end
@@ -119,7 +118,7 @@ class StravaService
     Rails.logger.info "Request parameters: #{params}"
 
     begin
-      response = RestClient.post(url, params)
+      response = RestClient.post(url, params.to_json, content_type: :json, accept: :json)
       Rails.logger.info("Strava Webhook subscription response: #{response.body}")
 
       raise "Unexpected response code: #{response.code}, Response: #{response.body}" unless response.code == 201
@@ -141,12 +140,13 @@ class StravaService
   end
 
   def self.refresh_strava_token(user)
-    user.refresh_strava_token!
-    raise 'Unable to connect to Strava. Please try again.' if user.errors.any?
+    success = user.refresh_strava_token!
+    raise 'Unable to connect to Strava. Please try again.' unless success
   end
 
   def self.log_and_raise_error(action, error, user)
     Rails.logger.error("Error #{action} for user #{user.id}: #{error.message}")
+    Rails.logger.error(error.full_message)
     raise "Error #{action} for user #{user.id}: #{error.message}"
   end
 end
