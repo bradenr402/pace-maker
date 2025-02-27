@@ -55,13 +55,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       handle_existing_account
     elsif @user.persisted? # account linked to Strava account
       # creates account with Strava account and signs user in
-      @user.update(
-        strava_uid: auth.uid,
-        strava_access_token: auth.credentials.token,
-        strava_refresh_token: auth.credentials.refresh_token,
-        strava_token_expires_at: Time.at(auth.credentials.expires_at)
-      )
-
       handle_successful_authentication
     else # error creating/linking account
       # displays error message and redirects to sign in page
@@ -113,13 +106,37 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def link_strava_account
-    if current_user.update(
+    if @user.update(
       strava_uid: auth.uid,
-      strava_access_token: auth.credentials.token,
-      strava_refresh_token: auth.credentials.refresh_token,
-      strava_token_expires_at: Time.at(auth.credentials.expires_at)
+      strava_access_token: auth.credentials.token
     )
-      flash[:success] = 'Your Strava account was linked successfully.'
+
+      response = Faraday.post(
+        'https://www.strava.com/oauth/token', {
+          client_id: Rails.application.credentials[:strava_client_id],
+          client_secret: Rails.application.credentials[:strava_client_secret],
+          code: params[:code],
+          grant_type: 'authorization_code'
+        }
+      )
+
+      if response.success?
+        if params[:refresh_token].present? && params[:expires_at].present?
+          @user.update(
+            strava_refresh_token: params[:refresh_token],
+            strava_token_expires_at: Time.at(params[:expires_at])
+          )
+          flash[:success] = 'Your Strava account was linked successfully.'
+        else
+          redirect_to edit_user_registration_path(current_user), alert: 'Missing Strava token data.'
+        end
+      else
+        # Log or inspect the response body for better debugging
+        logger.error("Strava OAuth failed: #{response.body}")
+        redirect_to edit_user_registration_path(current_user),
+                    alert: 'Could not authenticate your Strava account. Please try again later.'
+      end
+
     else
       flash[:error] = 'There was an issue linking your Strava account.'
     end
