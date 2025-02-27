@@ -1,14 +1,15 @@
 Rails.application.routes.draw do
+  # Home
   get 'home/index'
   root 'home#index'
 
-  devise_for :users,
-             controllers: {
-               registrations: 'users/registrations',
-               sessions: 'users/sessions',
-               passwords: 'users/passwords',
-               omniauth_callbacks: 'users/omniauth_callbacks'
-             }
+  # Devise
+  devise_for :users, controllers: {
+    registrations: 'users/registrations',
+    sessions: 'users/sessions',
+    passwords: 'users/passwords',
+    omniauth_callbacks: 'users/omniauth_callbacks'
+  }
 
   devise_scope :user do
     post 'users/sign_out_all',
@@ -16,8 +17,10 @@ Rails.application.routes.draw do
          as: :sign_out_all_devices
   end
 
+  # Runs
   resources :runs, except: %i[index]
 
+  # Users & Settings
   resources :users, only: %i[show] do
     resource :user_settings,
              only: %i[update],
@@ -29,9 +32,9 @@ Rails.application.routes.draw do
     delete 'unlink_google_account', on: :member
     delete 'unlink_strava_account', on: :member
   end
-
   get '/profile', to: 'users#profile'
 
+  # Teams & Memberships
   resources :teams do
     resource :team_settings,
              only: %i[update show],
@@ -41,23 +44,16 @@ Rails.application.routes.draw do
       post :reset
     end
 
-    member do
-      post :remove_member
-      post :join
-      post :leave
-    end
+    post :remove_member, :join, :leave, on: :member
 
     get 'member/:user_id', to: 'teams#member', as: 'member'
     resources :team_memberships, param: :user_id, only: %i[edit update]
 
+    # Topics & Messages
     get 'main_chat', to: 'teams#main_chat', as: :main_chat
-
     resources :topics, except: %i[new show] do
       member do
-        patch :close
-        patch :reopen
-        patch :favorite
-        patch :unfavorite
+        patch :close, :reopen, :favorite, :unfavorite
         post :update_last_read
       end
 
@@ -65,8 +61,7 @@ Rails.application.routes.draw do
         resources :likes, only: %i[create destroy], module: :messages
 
         member do
-          patch :pin
-          patch :unpin
+          patch :pin, :unpin
           get :cancel_edit
         end
 
@@ -75,16 +70,17 @@ Rails.application.routes.draw do
     end
   end
 
+  # Team Join Requests
   resources :team_join_requests, only: %i[update] do
     member do
-      patch :cancel
-      patch :approve
-      patch :reject
+      patch :cancel, :approve, :reject
     end
   end
 
+  # Search
   get 'search', to: 'search#index', as: :search
 
+  # Pinned Pages
   resources :pinned_pages, only: %i[create destroy] do
     collection do
       get :manage
@@ -92,20 +88,24 @@ Rails.application.routes.draw do
     end
   end
 
+  # Feedback
   resources :feedback_form, only: %i[create]
 
+  # Strava
   resource :strava_imports, only: %i[create destroy]
-
   post 'webhooks/strava', to: 'strava_webhooks#receive'
   get 'webhooks/strava', to: 'strava_webhooks#verify'
 
+  # Policies & Legal
   get 'privacy_policy', to: 'pages#privacy_policy'
   get 'strava_policy', to: 'pages#strava_policy'
   get 'google_policy', to: 'pages#google_policy'
 
+  # PWA Support
   get 'service-worker.js', to: 'service_worker#service_worker', as: :pwa_service_worker
   get 'manifest.json', to: 'service_worker#manifest', as: :pwa_manifest
 
+  # Health Check
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get 'up', to: 'rails/health#show', as: :rails_health_check
