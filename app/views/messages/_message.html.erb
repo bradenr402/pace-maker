@@ -11,9 +11,9 @@
   </div>
 
   <div class="flex <%= message.pinned? ? 'mt-3' : 'mt-1' %> <%= user == current_user ? 'ml-20 sm:ml-24 md:ml-28 justify-end' : 'mr-20 sm:mr-24 md:mr-28' %>">
-    <div>
+    <div class="relative">
       <% if parent.present? && show_parent %>
-        <div class="relative top-3.5 -z-10 -mt-3">
+        <div data-scroll-target-id="<%= dom_id(parent) %>_bubble" data-action="click->scroll#scrollToTarget" class="pointer-events-auto relative top-3 z-0 cursor-pointer">
           <div class="inline-flex gap-1 mt-2 <%= parent.deleted? ? 'text-red-600 dark:text-red-300' : 'text-soft' %>">
             <%= inline_svg_tag 'icons/reply.svg', class: 'size-3.5' %>
             <span class="text-xs">
@@ -24,11 +24,13 @@
               <% end %>
             </span>
           </div>
-          <p class="text-xs p-2 pb-4 sm:pb-5 rounded-t-2xl <%= parent.deleted? ? 'text-red-600 dark:text-red-300 border border-red-300 bg-red-50 dark:border-red-900 dark:bg-red-950/80' : 'text-light bg-slate-200/60 dark:bg-slate-800 border border-slate-300 dark:border-slate-700' %>"><%= truncate(parent.content, length: 100) %></p>
+          <p class="text-xs p-2 pb-4 sm:pb-5 rounded-t-2xl <%= parent.deleted? ? 'text-red-600 dark:text-red-300 border border-red-300 bg-red-50 dark:border-red-900 dark:bg-red-950/80' : 'text-light bg-slate-200/60 dark:bg-slate-800 border border-slate-300 dark:border-slate-700' %>">
+            <%= truncate(parent.content, length: 100) %>
+          </p>
         </div>
       <% end %>
 
-      <div class="z-10 p-2 pb-1 sm:p-3 sm:pb-2 rounded-2xl <%= user == current_user ? 'rounded-br-sm' : 'rounded-bl-sm' %> <%= user == current_user ? 'bg-gradient-to-b from-indigo-500 to-indigo-600 selection:bg-white/80 selection:text-indigo-500' : 'bg-slate-100 dark:bg-slate-700 border dark:border-slate-600' %> shadow dark:shadow-none">
+      <div id="<%= dom_id(message) %>_bubble" class="relative z-10 p-2 pb-1 sm:p-3 sm:pb-2 rounded-2xl <%= user == current_user ? 'rounded-br-sm' : 'rounded-bl-sm' %> <%= user == current_user ? 'bg-gradient-to-b from-indigo-500 to-indigo-600 selection:bg-white/80 selection:text-indigo-500' : 'bg-slate-100 dark:bg-slate-700 border dark:border-slate-600' %> shadow dark:shadow-none">
         <% unless user == current_user %>
           <% text_colors = ['text-rose-500', 'text-orange-500', 'text-amber-500', 'text-emerald-500', 'text-blue-500', 'text-indigo-500'] %>
           <% text_color = text_colors[message.user_id % text_colors.size] %>

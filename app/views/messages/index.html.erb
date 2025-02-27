@@ -3,7 +3,7 @@
 <%= turbo_stream_from "user_#{current_user.id}_topic_#{@topic.id}", data: { controller: 'topic-reader', topic_reader_update_last_read_path_value: update_last_read_team_topic_path(@team, @topic) } %>
 
 <div data-controller="reply-message" class="max-w-3xl mx-auto mt-16 mb-80 md:mb-16">
-  <div class="mb-6 border-b border-slate-200 dark:border-slate-700 sticky top-0 bg-slate-50 dark:bg-slate-900">
+  <div class="mb-6 border-b border-slate-200 dark:border-slate-700 sticky top-0 bg-slate-50 dark:bg-slate-900 z-20">
     <div class="flex items-center justify-between">
       <%= link_to team_topics_path(@team), class: 'group flex items-center gap-4 pt-4 pb-2 pr-2 btn-link-soft w-max', aria: { label: "Back to #{@team.name} topics" } do %>
         <%= inline_svg_tag 'icons/chevron-left-bold.svg', class: 'size-4 transition ease-in-out duration-200' %>
@@ -21,10 +21,10 @@
     <%= render 'pinned_message', message: @pinned_message.presence %>
   </div>
 
-  <div data-controller="pagination" data-pagination-load-more-path-value="<%= load_more_team_topic_messages_path(@team, @topic) %>">
+  <div data-controller="pagination scroll" data-pagination-load-more-path-value="<%= load_more_team_topic_messages_path(@team, @topic) %>">
     <% if @more_messages %>
       <div class="flex justify-center my-3">
-        <button data-pagination-target="button" class="btn btn-sm btn-white gap-2" data-action="click->pagination#loadMore">Load more</button>
+        <button data-pagination-target="button" data-scroll-target="loadMoreButton" data-action="click->pagination#loadMore" class="btn btn-sm btn-white gap-2">Load more</button>
         <div data-pagination-target="spinner" class="hidden">
           <%= inline_svg_tag 'icons/spinner.svg', class: 'size-6 animate-spin' %>
         </div>

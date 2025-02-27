@@ -76,6 +76,9 @@ application.register("pwa", PwaController)
 import ReplyMessageController from "./reply_message_controller"
 application.register("reply-message", ReplyMessageController)
 
+import ScrollController from "./scroll_controller"
+application.register("scroll", ScrollController)
+
 import SearchFormController from "./search_form_controller"
 application.register("search-form", SearchFormController)
 

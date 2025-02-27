@@ -38,10 +38,7 @@ export default class extends Controller {
     const element = document.getElementById('new_message_form');
     const offset = 50;
 
-    element.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    });
+    element.scrollIntoView({ behavior: 'smooth' });
 
     window.scrollBy(0, -offset);
   }
