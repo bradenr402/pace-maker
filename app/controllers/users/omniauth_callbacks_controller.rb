@@ -59,7 +59,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       return redirect_to edit_user_registration_path, alert: 'Authentication data missing.'
     end
 
-    Rails.logger.info "Strava OAuth success: Authorization code received for user #{current_user.id}."
+    Rails.logger.info "Strava OAuth success: Authorization code received for user #{current_user.id}: #{code}"
 
     if exchange_strava_code_for_tokens(code)
       Rails.logger.info "Strava OAuth success: Account linked for user #{current_user.id}."
