@@ -106,7 +106,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def link_strava_account
-    if @user.update(
+    if current_user.update(
       strava_uid: auth.uid,
       strava_access_token: auth.credentials.token
     )
@@ -122,7 +122,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
       if response.success?
         if params[:refresh_token].present? && params[:expires_at].present?
-          @user.update(
+          current_user.update(
             strava_refresh_token: params[:refresh_token],
             strava_token_expires_at: Time.at(params[:expires_at])
           )
