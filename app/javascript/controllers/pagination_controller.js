@@ -21,7 +21,22 @@ export default class extends Controller {
     fetch(url.toString())
       .then((response) => response.json())
       .then((data) => {
-        this.messagesTarget.insertAdjacentHTML('afterbegin', data.html);
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = data.html;
+
+        const dateMarkers = tempDiv.querySelectorAll('[data-date]');
+
+        dateMarkers.forEach((marker) => {
+          const date = marker.dataset.date;
+
+          const existingMarker = this.messagesTarget.querySelector(`[data-date="${date}"]`);
+
+          if (existingMarker && tempDiv.querySelector(`[data-date="${date}"]`)) {
+            existingMarker.remove();
+          }
+        });
+
+        this.messagesTarget.insertAdjacentHTML('afterbegin', tempDiv.innerHTML);
         this.messagesTarget.dataset.oldestTimestamp = data.oldest_timestamp;
 
         if (data.more_messages) {

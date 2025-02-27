@@ -2,7 +2,7 @@
 
 <% @objects.each do |object| %>
   <% if last_message_date != object.created_at.to_date %>
-    <div class="flex items-center my-6 font-semibold">
+    <div class="flex items-center my-6 font-semibold" data-date="<%= object.created_at.to_date %>">
       <hr class="flex-grow border-t-[0.5px] border-slate-400 dark:border-slate-600">
       <span class="px-3 text-light text-sm">
         <%= pretty_date(object.created_at, date_style: :relative, include_weekday: true, weekday_format: :short, month_format: :short, include_year: object.created_at.year != Time.current.year) %>
