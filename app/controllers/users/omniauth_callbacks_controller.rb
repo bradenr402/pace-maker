@@ -55,6 +55,13 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       handle_existing_account
     elsif @user.persisted? # account linked to Strava account
       # creates account with Strava account and signs user in
+      @user.update(
+        strava_uid: auth.uid,
+        strava_access_token: auth.credentials.token,
+        strava_refresh_token: auth.credentials.refresh_token,
+        strava_token_expires_at: Time.at(auth.credentials.expires_at)
+      )
+
       handle_successful_authentication
     else # error creating/linking account
       # displays error message and redirects to sign in page
