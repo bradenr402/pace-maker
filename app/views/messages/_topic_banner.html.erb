@@ -1,6 +1,6 @@
 <% team = topic.team %>
 
-<div class="my-3">
+<div class="my-3" data-timestamp="<%= topic.created_at %>">
   <p class="text-soft text-sm text-center mb-1">New topic created!</p>
 
   <div class="flex justify-center">
@@ -18,7 +18,7 @@
         </div>
       </div>
 
-      <span class="text-xs whitespace-nowrap text-soft"><%= pretty_datetime(topic.created_at, date_style: :relative, include_seconds: false, month_format: :short) %></span>
+      <span class="text-xs whitespace-nowrap text-soft"><%= pretty_time(topic.created_at, include_seconds: false) %></span>
     <% end %>
   </div>
 </div>

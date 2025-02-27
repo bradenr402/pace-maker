@@ -1,6 +1,6 @@
 <% user = message.user %>
 
-<div id="<%= dom_id(message) %>" class="grid grid-cols-[auto_1fr] gap-x-1.5">
+<div id="<%= dom_id(message) %>" class="grid grid-cols-[auto_1fr] gap-x-1.5" data-timestamp="<%= message.created_at %>">
   <div class="flex flex-col justify-end">
     <%= render 'shared/user_photo', user: user, size: :thumb, icon_background: :darker unless user == current_user %>
   </div>
@@ -15,7 +15,7 @@
 
       <p class="text-pretty text-red-600 dark:text-red-300"><%= message.content %></p>
       <p class="text-xs text-red-500 dark:text-red-400 text-right">
-        <time class="whitespace-nowrap" datetime="<%= message.deleted_at.to_formatted_s(:long) %>"><%= pretty_datetime(message.deleted_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
+        <time class="whitespace-nowrap" datetime="<%= message.deleted_at.to_formatted_s(:long) %>"><%= pretty_time(message.deleted_at, include_seconds: false) %></time>
       </p>
     </div>
   </div>

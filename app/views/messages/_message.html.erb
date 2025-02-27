@@ -5,7 +5,7 @@
 <% topic = message.topic %>
 <% parent = message.parent %>
 
-<div id="<%= dom_id(message) %>" class="grid grid-cols-[auto_1fr] gap-x-1.5">
+<div id="<%= dom_id(message) %>" class="grid grid-cols-[auto_1fr] gap-x-1.5" data-timestamp="<%= message.created_at %>">
   <div class="flex flex-col justify-end">
     <%= render 'shared/user_photo', user: user, size: :thumb, icon_background: :darker unless user == current_user %>
   </div>
@@ -24,7 +24,7 @@
               <% end %>
             </span>
           </div>
-          <p class="text-xs p-2 pb-4 sm:pb-5 rounded-t-2xl <%= parent.deleted? ? 'text-red-600 dark:text-red-300 border border-red-300 bg-red-50 dark:border-red-900 dark:bg-red-950' : 'text-light bg-slate-200/60 dark:bg-slate-800 border border-slate-300 dark:border-slate-700' %>"><%= truncate(parent.content, length: 100) %></p>
+          <p class="text-xs p-2 pb-4 sm:pb-5 rounded-t-2xl <%= parent.deleted? ? 'text-red-600 dark:text-red-300 border border-red-300 bg-red-50 dark:border-red-900 dark:bg-red-950/80' : 'text-light bg-slate-200/60 dark:bg-slate-800 border border-slate-300 dark:border-slate-700' %>"><%= truncate(parent.content, length: 100) %></p>
         </div>
       <% end %>
 
@@ -42,9 +42,9 @@
         <div class="flex items-center justify-between <%= user == current_user ? 'flex-row-reverse' : '' %>">
           <p class="text-xs <%= user == current_user ? 'text-right text-slate-300' : 'text-soft' %>">
             <% if message.edited? %>
-              <time class="whitespace-nowrap" datetime="<%= message.updated_at.to_formatted_s(:long) %>">Edited: <%= pretty_datetime(message.updated_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
+              <time class="whitespace-nowrap" datetime="<%= message.updated_at.to_formatted_s(:long) %>">Edited: <%= pretty_time(message.updated_at, include_seconds: false) %></time>
             <% else %>
-              <time class="whitespace-nowrap" datetime="<%= message.created_at.to_formatted_s(:long) %>"><%= pretty_datetime(message.created_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
+              <time class="whitespace-nowrap" datetime="<%= message.created_at.to_formatted_s(:long) %>"><%= pretty_time(message.created_at, include_seconds: false) %></time>
             <% end %>
           </p>
         </div>

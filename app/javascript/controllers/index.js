@@ -52,6 +52,9 @@ application.register("modal", ModalController)
 import NotificationsController from "./notifications_controller"
 application.register("notifications", NotificationsController)
 
+import PaginationController from "./pagination_controller"
+application.register("pagination", PaginationController)
+
 import PasswordVisibilityController from "./password_visibility_controller"
 application.register("password-visibility", PasswordVisibilityController)
 

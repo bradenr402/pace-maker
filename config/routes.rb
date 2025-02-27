@@ -69,6 +69,8 @@ Rails.application.routes.draw do
           patch :unpin
           get :cancel_edit
         end
+
+        get :load_more, on: :collection
       end
     end
   end

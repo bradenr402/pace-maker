@@ -26,7 +26,7 @@
     </div>
 
     <div class="flex items-center justify-end gap-3">
-      <%= form.text_area :content, rows: 2, class: 'form-textarea grow rounded-t-2xl rounded-bl-2xl', autofocus: true, placeholder: 'Say something...', data: { controller: 'autogrow', form_submit_target: 'input', action: 'input->autogrow#grow keydown.ctrl+enter@window->form-submit#submit keydown.meta+enter@window->form-submit#submit', reply_message_target: 'input' } %>
+      <%= form.text_area :content, rows: 2, class: 'form-textarea grow rounded-t-2xl rounded-bl-2xl', placeholder: 'Say something...', data: { controller: 'autogrow', form_submit_target: 'input', action: 'input->autogrow#grow keydown.ctrl+enter@window->form-submit#submit keydown.meta+enter@window->form-submit#submit', reply_message_target: 'input' } %>
 
       <%= form.button type: 'submit', class: 'btn btn-primary p-2 rounded-full grid place-items-center' do %>
         <%= inline_svg_tag 'icons/arrow-up.svg', class: 'size-6' %>
