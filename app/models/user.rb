@@ -187,7 +187,7 @@ class User < ApplicationRecord
   end
 
   def deauthorize_strava_account!
-    response = Faraday.post(
+    response = RestClient.post(
       'https://www.strava.com/oauth/deauthorize', {
         access_token: strava_access_token
       }
