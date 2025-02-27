@@ -158,27 +158,32 @@ class User < ApplicationRecord
   def strava_token_expired? = strava_token_expires_at && Time.current >= strava_token_expires_at
 
   def refresh_strava_token!
-    return false unless strava_refresh_token
+    return unless strava_refresh_token
 
-    response = Faraday.post('https://www.strava.com/oauth/token', {
-                              client_id: Rails.application.credentials[:strava_client_id],
-                              client_secret: Rails.application.credentials[:strava_client_secret],
-                              grant_type: 'refresh_token',
-                              refresh_token: strava_refresh_token
-                            })
+    Rails.logger.info "Strava OAuth: Refreshing token for user #{id}."
 
-    if response.success?
-      data = JSON.parse(response.body)
-      update!(
-        strava_access_token: data['access_token'],
-        strava_refresh_token: data['refresh_token'],
-        strava_token_expires_at: Time.at(data['expires_at'])
-      )
-      true
-    else
+    response = RestClient.post(
+      'https://www.strava.com/oauth/token', {
+        client_id: Rails.application.credentials[:strava_client_id],
+        client_secret: Rails.application.credentials[:strava_client_secret],
+        grant_type: 'refresh_token',
+        refresh_token: strava_refresh_token
+      }
+    )
+
+    unless response.code == 200
       Rails.logger.error "Failed to refresh Strava token for user #{id}: #{response.body}"
-      false
+      return
     end
+
+    data = JSON.parse(response.body)
+    Rails.logger.info "Strava OAuth: Token refreshed successfully for user #{id}."
+
+    update!(
+      strava_access_token: data['access_token'],
+      strava_refresh_token: data['refresh_token'],
+      strava_token_expires_at: Time.at(data['expires_at'])
+    )
   end
 
   def deauthorize_strava_account!
@@ -188,7 +193,7 @@ class User < ApplicationRecord
       }
     )
 
-    response.success?
+    response.code == 200
   end
 
   def delete_strava_data!(delete_runs: false)
@@ -260,43 +265,6 @@ class User < ApplicationRecord
 
       # Shuffle the password to make it more random
       password.shuffle.join
-    end
-
-    def from_strava_omniauth(auth, current_user)
-      existing_user = if current_user
-                        current_user
-                      elsif auth.info.email.present?
-                        User.find_by(email: auth.info.email)
-                      else
-                        User.find_by(strava_uid: auth.uid)
-                      end
-
-      return existing_user if existing_user&.strava_uid == auth.uid
-      return nil if existing_user && (existing_user.strava_uid != auth.uid)
-
-      new_user =
-        User.new(
-          strava_uid: auth.uid,
-          strava_access_token: auth.credentials.token,
-          strava_refresh_token: auth.credentials.refresh_token,
-          strava_token_expires_at: Time.at(auth.credentials.expires_at),
-          email: auth.info.email.presence,
-          password: generate_valid_password
-        )
-
-      base_username = auth.info.username.presence || auth.info.email.presence || 'strava_user'
-      new_user.username = generate_unique_username(base_username)
-
-      new_user.display_name = auth.info.name.presence
-
-      new_user.gender = if auth.extra.raw_info.sex == 'M'
-                          'male'
-                        elsif auth.extra.raw_info.sex == 'F'
-                          'female'
-                        end
-
-      new_user.save!
-      new_user
     end
   end
 
