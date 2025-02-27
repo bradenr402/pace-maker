@@ -18,7 +18,12 @@ export default class extends Controller {
     const url = new URL(this.loadMorePathValue, window.location.origin);
     url.searchParams.set('oldest_message_timestamp', this.messagesTarget.dataset.oldestTimestamp);
 
-    fetch(url.toString())
+    fetch(url.toString(), {
+      headers: {
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+        'Content-Type': 'application/json',
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         const tempDiv = document.createElement('div');
