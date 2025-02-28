@@ -127,35 +127,40 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     Rails.logger.info "Sending params: #{params}"
 
-    response = RestClient.post(
-      'https://www.strava.com/oauth/token',
-      params.to_query,
-      { content_type: :json, accept: :json }
-    )
+    begin
+      response = RestClient.post(
+        'https://www.strava.com/oauth/token',
+        params.to_query,
+        { content_type: :url_encoded, accept: :json }
+      )
 
-    Rails.logger.info "Received response: #{response.code} - #{response.body}"
+      Rails.logger.info "Received response: #{response.code} - #{response.body}"
 
-    unless response.code == 200
-      Rails.logger.error "Strava OAuth token exchange failed for user #{current_user.id}: #{response.body}"
-      Rails.logger.error "Full response: #{response.inspect}"
-      return false
+      unless response.code == 200
+        Rails.logger.error "Strava OAuth token exchange failed for user #{current_user.id}: #{response.body}"
+        Rails.logger.error "Full response: #{response.inspect}"
+        return false
+      end
+
+      body = JSON.parse(response.body)
+      Rails.logger.info "Strava OAuth token exchange success for user #{current_user.id}: Access token received."
+
+      current_user.update(
+        strava_uid: body.dig('athlete', 'id'),
+        strava_access_token: body['access_token'],
+        strava_refresh_token: body['refresh_token'],
+        strava_token_expires_at: Time.at(body['expires_at'])
+      )
+    rescue RestClient::BadRequest => e
+      Rails.logger.error "Strava OAuth token exchange error for user #{current_user.id}: #{e.response}"
+      false
+    rescue JSON::ParserError => e
+      Rails.logger.error "Error parsing JSON response: #{e.message} - Response body: #{response.body}"
+      false
+    rescue StandardError => e
+      Rails.logger.error "An unexpected error occurred during Strava OAuth token exchange for user #{current_user.id}: #{e.message}"
+      false
     end
-
-    body = JSON.parse(response.body)
-    Rails.logger.info "Strava OAuth token exchange success for user #{current_user.id}: Access token received."
-
-    current_user.update(
-      strava_uid: body.dig('athlete', 'id'),
-      strava_access_token: body['access_token'],
-      strava_refresh_token: body['refresh_token'],
-      strava_token_expires_at: Time.at(body['expires_at'])
-    )
-  rescue RestClient::BadRequest => e
-    Rails.logger.error "Strava OAuth token exchange error for user #{current_user.id}: #{e.response}"
-    false
-  rescue StandardError => e
-    Rails.logger.error "An unexpected error occurred during Strava OAuth token exchange for user #{current_user.id}: #{e.message}"
-    false
   end
 
   def handle_successful_authentication
