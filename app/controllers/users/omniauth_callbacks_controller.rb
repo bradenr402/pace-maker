@@ -128,10 +128,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # Log the request parameters to inspect them
     Rails.logger.info "Sending params: #{params}"
 
-    params_query = params.to_query
-    Rails.logger.info "Converting to query: #{params_query}"
-
-    response = RestClient.post('https://www.strava.com/oauth/token', params_query)
+    response = RestClient.post('https://www.strava.com/oauth/token', params)
 
     unless response.code == 200
       Rails.logger.error "Strava OAuth token exchange failed for user #{current_user.id}: #{response.body}"
@@ -148,6 +145,12 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       strava_refresh_token: body['refresh_token'],
       strava_token_expires_at: Time.at(body['expires_at'])
     )
+  rescue RestClient::BadRequest => e
+    Rails.logger.error "Strava OAuth token exchange error for user #{current_user.id}: #{e.response}"
+    false
+  rescue StandardError => e
+    Rails.logger.error "An unexpected error occurred during Strava OAuth token exchange for user #{current_user.id}: #{e.message}"
+    false
   end
 
   def handle_successful_authentication
