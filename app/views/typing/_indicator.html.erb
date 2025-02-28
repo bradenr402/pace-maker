@@ -1,4 +1,4 @@
-<div id="typing_user_<%= user.id %>" class="bg-slate-100 dark:bg-slate-700 border dark:border-slate-600 shadow dark:shadow-none p-2 m-6 w-max rounded-2xl rounded-bl-sm">
+<div id="typing_user_<%= user.id %>" class="bg-slate-100 dark:bg-slate-700 border dark:border-slate-600 shadow dark:shadow-none p-2 w-max rounded-2xl rounded-bl-sm">
   <div class="flex gap-x-3 gap-y-1 items-center flex-wrap">
     <% text_colors = ['text-rose-500', 'text-orange-500', 'text-amber-500', 'text-emerald-500', 'text-blue-500', 'text-indigo-500'] %>
     <% text_color = text_colors[user.id % text_colors.size] %>
