@@ -82,20 +82,6 @@
         Disconnect from Strava
       </button>
 
-      <div class="py-6 mt-6 border-t border-slate-200 dark:border-slate-700">
-        <h3 class="mb-2 text-sm font-normal text-slate-700 dark:text-slate-200">Data Management</h3>
-        <p class="text-xs text-slate-600 dark:text-slate-400">Manage your Strava data using the options below.</p>
-      </div>
-
-      <div class="flex items-center gap-x-4 gap-y-2 flex-wrap">
-        <button data-action="mousedown->modal#open" data-modal-id="importStravaRunsModal" class="btn btn-white">
-          Import runs from Strava
-        </button>
-        <button data-action="mousedown->modal#open" data-modal-id="deleteStravaRunsModal" class="btn btn-destructive">
-          Delete imported Strava runs
-        </button>
-      </div>
-
       <div class="mt-5 pt-6 border-t border-slate-200 dark:border-slate-700 ">
         <%= form_with model: @user, url: user_settings_path(@user), local: true do |form| %>
           <!-- Hidden fields to ensure that unchecked checkboxes submit 'false' -->
@@ -111,7 +97,7 @@
 
         <div class="flex items-center gap-2 md:gap-3 p-2 md:p-3 mt-4 rounded-lg border border-slate-200 dark:border-slate-700">
           <%= inline_svg_tag 'icons/info.svg', class: 'size-4 shrink-0' %>
-          <p class="text-light text-xs text-pretty">Currently, activities can only be synced from Strava to PaceMaker. Syncing from PaceMaker to Strava will be available in a future update. If you have opted in to automatically sync Strava activities, this feature will be enabled automatically when it becomes available.</p>
+          <p class="text-light text-xs text-pretty">Currently, activities can only sync from Strava to PaceMaker. Syncing from PaceMaker to Strava will be available in a future update. Reverse syncing will be enabled automatically when it becomes available if you opt in.</p>
         </div>
       </div>
 
@@ -187,6 +173,29 @@
           <span class="sr-only">Close</span>
         </button>
       </div>
+    <% else %>
+      <p class="text-soft text-sm text-pretty mt-1 mb-6">PaceMaker is compatible with Strava! Connect your Strava account to sync your activities with PaceMaker. By connecting your Strava account, you agree to our <%= link_to 'Strava Data Usage Policy', strava_policy_path, class: 'btn-link' %>.</p>
+      <%= button_to user_strava_omniauth_authorize_path, data: { turbo: 'false' }, class: 'inline-block rounded-lg hover:brightness-[85%] transition-all duration-200 ease-in-out', form: { class: '-mb-1' } do %>
+        <%= image_tag 'btn_strava_connect.svg', alt: 'Connect to Strava', class: 'rounded-lg' %>
+      <% end %>
+    <% end %>
+
+    <% if current_user.strava_account_linked? || current_user.strava_runs.exists? %>
+      <div class="py-6 mt-6 border-t border-slate-200 dark:border-slate-700">
+        <h3 class="mb-2 text-sm font-normal text-slate-700 dark:text-slate-200">Data Management</h3>
+        <p class="text-xs text-slate-600 dark:text-slate-400">Manage your Strava data using the options below.</p>
+      </div>
+
+      <div class="flex items-center gap-x-4 gap-y-2 flex-wrap">
+        <% if current_user.strava_account_linked? %>
+          <button data-action="mousedown->modal#open" data-modal-id="importStravaRunsModal" class="btn btn-white">
+            Import runs from Strava
+          </button>
+        <% end %>
+        <button data-action="mousedown->modal#open" data-modal-id="deleteStravaRunsModal" class="btn btn-destructive">
+          Delete imported Strava runs
+        </button>
+      </div>
 
       <!-- Delete Strava Runs Modal Backdrop -->
       <div
@@ -220,11 +229,6 @@
           <span class="sr-only">Close</span>
         </button>
       </div>
-    <% else %>
-      <p class="text-soft text-sm text-pretty mt-1 mb-6">PaceMaker is compatible with Strava! Connect your Strava account to sync your activities with PaceMaker. By connecting your Strava account, you agree to our <%= link_to 'Strava Data Usage Policy', strava_policy_path, class: 'btn-link' %>.</p>
-      <%= button_to user_strava_omniauth_authorize_path, data: { turbo: 'false' }, class: 'inline-block rounded-lg hover:brightness-[85%] transition-all duration-200 ease-in-out', form: { class: '-mb-1' } do %>
-        <%= image_tag 'btn_strava_connect.svg', alt: 'Connect to Strava', class: 'rounded-lg' %>
-      <% end %>
     <% end %>
   </div>
 </div>

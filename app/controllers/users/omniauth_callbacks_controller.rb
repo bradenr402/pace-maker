@@ -53,36 +53,31 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
                          alert: 'Please sign in to link your Strava account.'
     end
 
-    Rails.logger.info "Received authorization code: #{params[:code]}"
-
-    code = params[:code]
-    unless code.present?
-      Rails.logger.error 'Strava OAuth failed: Missing authorization code.'
-      return redirect_to edit_user_registration_path, alert: 'Authentication data missing.'
-    end
-
-    Rails.logger.info "Strava OAuth success: Authorization code received for user #{current_user.id}"
-
-    if exchange_strava_code_for_tokens(code)
+    if current_user.update(
+      strava_uid: auth.uid,
+      strava_access_token: auth.credentials.token,
+      strava_refresh_token: auth.credentials.refresh_token,
+      strava_token_expires_at: Time.at(auth.credentials.expires_at)
+    )
       Rails.logger.info "Strava OAuth success: Account linked for user #{current_user.id}."
-      flash[:success] = 'Your Strava account was successfully linked.'
+      flash[:success] = 'Your Strava account was successfully connected.'
     else
-      Rails.logger.error "Strava OAuth failed: Unable to exchange code for tokens for user #{current_user.id}."
-      flash[:error] = 'There was an issue linking your Strava account.'
+      Rails.logger.error "Strava OAuth failed: Unable to link account for user #{current_user.id}."
+      flash[:error] = 'There was an issue connecting your Strava account.'
     end
 
     redirect_to edit_user_registration_path
   end
 
   def failure
-    if params[:error].present? && params[:error] == 'access_denied'
+    if params[:error] == 'access_denied'
       Rails.logger.info 'Strava OAuth failed: Access denied.'
       return redirect_to edit_user_registration_path,
-                         alert: 'You denied access to your Strava accont. If this was a mistake, please try again.'
+                         alert: 'You denied access to your Strava account. If this was a mistake, please try again.'
     end
 
-    redirect_back fallback_location: edit_user_registration_path,
-                  error: "There was an issue linking your #{pretty_provider_name(auth)} account."
+    redirect_to edit_user_registration_path,
+                error: 'There was an issue connecting your Strava account.'
   end
 
   private
@@ -92,26 +87,23 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def handle_signed_in_user
-    if auth.provider == 'google_oauth2' && current_user.email != auth.info.email
-      flash[:error] =
-        "The email on your #{pretty_provider_name(auth.provider)} account does not match the one on your account."
-      redirect_to edit_user_registration_path
-      return
+    if current_user.email != auth.info.email
+      return redirect_to(
+        edit_user_registration_path,
+        error: 'The email on the Google account you selected does not match the one on your PaceMaker account.'
+      )
     end
 
-    if auth.provider == 'google_oauth2'
-      link_google_account
-    elsif auth.provider == 'strava'
-      link_strava_account
-    else
-      redirect_to edit_user_registration_path, error: 'There was an issue linking your account.'
-    end
+    link_google_account
+    redirect_to edit_user_registration_path, error: 'There was an issue linking your account.'
   end
 
   def handle_not_signed_in_user
     store_location_for(:user, edit_user_registration_path)
-    redirect_to new_user_session_path,
-                alert: "An account already exists with the email <b>#{auth.info.email}</b>. Please sign in to link your #{pretty_provider_name(auth.provider)} account."
+    redirect_to(
+      new_user_session_path,
+      alert: "An account already exists with the email <b>#{auth.info.email}</b>. Please sign in to link your Google account."
+    )
   end
 
   def link_google_account
@@ -123,79 +115,23 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     redirect_to edit_user_registration_path
   end
 
-  def exchange_strava_code_for_tokens(code)
-    Rails.logger.info "Strava OAuth: Exchanging authorization code for tokens for user #{current_user.id}."
-
-    params = {
-      client_id: Rails.application.credentials[:strava_client_id],
-      client_secret: Rails.application.credentials[:strava_client_secret],
-      code:,
-      grant_type: 'authorization_code'
-    }
-
-    Rails.logger.info "Sending params: #{params}"
-
-    begin
-      response = RestClient.post(
-        'https://www.strava.com/api/v3/oauth/token',
-        params.to_query,
-        { content_type: 'application/x-www-form-urlencoded', accept: :json }
-      )
-
-      Rails.logger.info "Received response: #{response.code} - #{response.body}"
-
-      unless response.code == 200
-        Rails.logger.error "Strava OAuth token exchange failed for user #{current_user.id}: #{response.body}"
-        Rails.logger.error "Full response: #{response.inspect}"
-        return false
-      end
-
-      body = JSON.parse(response.body)
-      Rails.logger.info "Strava OAuth token exchange success for user #{current_user.id}: Access token received."
-
-      current_user.update(
-        strava_uid: body.dig('athlete', 'id'),
-        strava_access_token: body['access_token'],
-        strava_refresh_token: body['refresh_token'],
-        strava_token_expires_at: Time.at(body['expires_at'])
-      )
-    rescue RestClient::BadRequest => e
-      Rails.logger.error "Strava OAuth token exchange error for user #{current_user.id}: #{e.response}"
-      false
-    rescue JSON::ParserError => e
-      Rails.logger.error "Error parsing JSON response: #{e.message} - Response body: #{response.body}"
-      false
-    rescue StandardError => e
-      Rails.logger.error "An unexpected error occurred during Strava OAuth token exchange for user #{current_user.id}: #{e.message}"
-      false
-    end
-  end
-
   def handle_successful_authentication
     sign_out_all_scopes
-    flash[:success] = t 'devise.omniauth_callbacks.success', kind: pretty_provider_name(auth.provider)
+    flash[:success] = t 'devise.omniauth_callbacks.success', kind: 'Google'
     sign_in_and_redirect @user, event: :authentication
   end
 
   def handle_failed_authentication
     session["devise.#{auth.provider}_data"] = request.env['omniauth.auth'].except('extra')
-    flash[:error] = t 'devise.omniauth_callbacks.failure',
-                      kind: pretty_provider_name(auth.provider),
-                      reason: "#{auth.info.email} is not authorized."
-    redirect_to new_user_session_path
+    redirect_to(
+      new_user_session_path,
+      error: t('devise.omniauth_callbacks.failure',
+               kind: 'Google',
+               reason: "#{auth.info.email} is not authorized.")
+    )
   end
 
   def auth
     @auth ||= request.env['omniauth.auth']
-  end
-
-  def pretty_provider_name(provider)
-    if provider == 'google_oauth2'
-      'Google'
-    elsif provider == 'strava'
-      'Strava'
-    else
-      provider.capitalize
-    end
   end
 end

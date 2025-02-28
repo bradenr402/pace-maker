@@ -47,7 +47,8 @@ class StravaService
   end
 
   def self.fetch_activity(user, activity_id)
-    refresh_strava_token(user) if user.strava_token_expired?
+    refresh_strava_token(user)
+
     url = "#{STRAVA_API_BASE}/activities/#{activity_id}"
     response = RestClient.get(url, headers(user))
     JSON.parse(response.body)
@@ -58,7 +59,8 @@ class StravaService
   end
 
   def self.fetch_activities(user)
-    refresh_strava_token(user) if user.strava_token_expired?
+    refresh_strava_token(user)
+
     activities = []
     url = "#{STRAVA_API_BASE}/athlete/activities"
     params = { per_page: 100, page: 1 }
@@ -140,6 +142,8 @@ class StravaService
   def self.refresh_strava_token(user)
     success = user.refresh_strava_token!
     raise 'Unable to connect to Strava. Please try again.' unless success
+
+    success
   end
 
   def self.log_and_raise_error(action, error, user)
