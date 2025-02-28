@@ -12,7 +12,7 @@
   </div>
 
   <div class="flex <%= message.pinned? ? 'mt-3' : 'mt-1' %> <%= user == current_user ? 'ml-20 sm:ml-24 md:ml-28 justify-end' : 'mr-20 sm:mr-24 md:mr-28' %>">
-    <div class="relative">
+    <div id="<%= dom_id(message) %>_bubble" class="relative">
       <% if parent.present? && show_parent %>
         <div data-scroll-target-id="<%= dom_id(parent) %>_bubble" data-action="click->scroll#scrollToTarget" class="pointer-events-auto relative top-3 z-0 <%= details_view ? '' : 'cursor-pointer' %>">
           <div class="inline-flex gap-1 mt-2 <%= parent.deleted? ? 'text-red-600 dark:text-red-300' : details_view ? 'text-light' : 'text-soft' %>">
@@ -31,7 +31,7 @@
         </div>
       <% end %>
 
-      <div id="<%= dom_id(message) %>_bubble" class="relative z-10 p-2 pb-1 sm:p-3 sm:pb-2 rounded-2xl <%= user == current_user ? 'rounded-br-sm' : 'rounded-bl-sm' %> <%= user == current_user ? 'bg-gradient-to-b from-indigo-500 to-indigo-600 selection:bg-white/80 selection:text-indigo-500' : 'bg-slate-100 dark:bg-slate-700 border dark:border-slate-600' %> shadow dark:shadow-none">
+      <div class="relative z-10 p-2 pb-1 sm:p-3 sm:pb-2 rounded-2xl <%= user == current_user ? 'rounded-br-sm' : 'rounded-bl-sm' %> <%= user == current_user ? 'bg-gradient-to-b from-indigo-500 to-indigo-600 selection:bg-white/80 selection:text-indigo-500' : 'bg-slate-100 dark:bg-slate-700 border dark:border-slate-600' %> shadow dark:shadow-none">
         <% unless user == current_user %>
           <% text_colors = ['text-rose-500', 'text-orange-500', 'text-amber-500', 'text-emerald-500', 'text-blue-500', 'text-indigo-500'] %>
           <% text_color = text_colors[message.user_id % text_colors.size] %>
