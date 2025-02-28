@@ -53,6 +53,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
                          alert: 'Please sign in to link your Strava account.'
     end
 
+    Rails.logger.info "Received authorization code: #{params[:code]}"
+
     code = params[:code]
     unless code.present?
       Rails.logger.error 'Strava OAuth failed: Missing authorization code.'
@@ -65,7 +67,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       Rails.logger.info "Strava OAuth success: Account linked for user #{current_user.id}."
       flash[:success] = 'Your Strava account was successfully linked.'
     else
-      Rails.logger.error "Strava OAuth failure: Unable to exchange code for tokens for user #{current_user.id}."
+      Rails.logger.error "Strava OAuth failed: Unable to exchange code for tokens for user #{current_user.id}."
       flash[:error] = 'There was an issue linking your Strava account.'
     end
 
@@ -73,8 +75,14 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def failure
+    if params[:error].present? && params[:error] == 'access_denied'
+      Rails.logger.info 'Strava OAuth failed: Access denied.'
+      return redirect_to edit_user_registration_path,
+                         alert: 'You denied access to your Strava accont. If this was a mistake, please try again.'
+    end
+
     redirect_back fallback_location: edit_user_registration_path,
-                  error: 'There was an issue linking your account.'
+                  error: "There was an issue linking your #{pretty_provider_name(auth)} account."
   end
 
   private
