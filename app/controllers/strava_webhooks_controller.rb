@@ -19,7 +19,7 @@ class StravaWebhooksController < ApplicationController
       user = User.find_by(strava_uid: params[:object_id])
       return render json: { error: 'User not found' }, status: :not_found unless user
 
-      user.delete_strava_data!
+      user.delete_strava_data!(true)
       return render json: { status: 'success' }, status: :ok
     end
 
