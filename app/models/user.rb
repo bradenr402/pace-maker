@@ -155,12 +155,9 @@ class User < ApplicationRecord
 
   def strava_account_linked? = strava_uid? && strava_access_token?
 
-  def strava_token_expired? = strava_token_expires_at && Time.current >= strava_token_expires_at
-
   def refresh_strava_token!
-    return unless strava_refresh_token
-
-    Rails.logger.info "Strava OAuth: Refreshing token for user #{id}."
+    return false unless strava_refresh_token.present?
+    return true if strava_token_expires_at && strava_token_expires_at > 1.hour.from_now
 
     params = {
       client_id: Rails.application.credentials[:strava_client_id],
@@ -169,25 +166,28 @@ class User < ApplicationRecord
       refresh_token: strava_refresh_token
     }
 
-    response = RestClient.post('https://www.strava.com/oauth/token', params.to_json, content_type: :json, accept: :json)
+    begin
+      response = RestClient.post(
+        'https://www.strava.com/api/v3/oauth/token',
+        params,
+        { content_type: :json, accept: :json }
+      )
 
-    unless response.code == 200
-      Rails.logger.error "Failed to refresh Strava token for user #{id}: #{response.body}"
-      return
+      data = JSON.parse(response.body)
+
+      update(
+        strava_access_token: data['access_token'],
+        strava_refresh_token: data['refresh_token'],
+        strava_token_expires_at: Time.at(data['expires_at'])
+      )
+    rescue StandardError => e
+      Rails.logger.error "Failed to refresh Strava token: #{e.message}"
+      false
     end
-
-    data = JSON.parse(response.body)
-    Rails.logger.info "Strava OAuth: Token refreshed successfully for user #{id}."
-
-    update!(
-      strava_access_token: data['access_token'],
-      strava_refresh_token: data['refresh_token'],
-      strava_token_expires_at: Time.at(data['expires_at'])
-    )
   end
 
   def deauthorize_strava_account!
-    refresh_strava_token! if strava_token_expired?
+    return false unless refresh_strava_token!
 
     response = RestClient.post(
       'https://www.strava.com/oauth/deauthorize', {

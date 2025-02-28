@@ -281,10 +281,8 @@ Devise.setup do |config|
 
   config.omniauth :strava,
                   Rails.application.credentials[:strava_client_id],
-                  Rails.application.credentials[:strava_client_secret],
-                  redirect_uri: 'https://pace-maker.onrender.com/users/auth/strava/callback',
+                  redirect_uri: 'https://localhost:300/users/auth/strava/callback',
                   response_type: 'code',
-                  approval_prompt: 'force',
                   scope: 'read,activity:read,profile:read_all'
 
   # ==> Warden configuration
