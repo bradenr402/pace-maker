@@ -152,14 +152,14 @@ class User < ApplicationRecord
 
     Rails.logger.info "Strava OAuth: Refreshing token for user #{id}."
 
-    response = RestClient.post(
-      'https://www.strava.com/oauth/token', {
-        client_id: Rails.application.credentials[:strava_client_id],
-        client_secret: Rails.application.credentials[:strava_client_secret],
-        grant_type: 'refresh_token',
-        refresh_token: strava_refresh_token
-      }
-    )
+    params = {
+      client_id: Rails.application.credentials[:strava_client_id],
+      client_secret: Rails.application.credentials[:strava_client_secret],
+      grant_type: 'refresh_token',
+      refresh_token: strava_refresh_token
+    }
+
+    response = RestClient.post('https://www.strava.com/oauth/token', params.to_json, content_type: :json, accept: :json)
 
     unless response.code == 200
       Rails.logger.error "Failed to refresh Strava token for user #{id}: #{response.body}"
@@ -177,10 +177,12 @@ class User < ApplicationRecord
   end
 
   def deauthorize_strava_account!
+    refresh_strava_token! if strava_token_expired?
+
     response = RestClient.post(
       'https://www.strava.com/oauth/deauthorize', {
         access_token: strava_access_token
-      }
+      }, content_type: :json, accept: :json
     )
 
     response.code == 200
