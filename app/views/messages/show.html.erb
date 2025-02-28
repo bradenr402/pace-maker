@@ -14,11 +14,11 @@
 
     <div class="card">
       <% if @message.deleted? %>
-        <%= render 'deleted_message', message: @message, link: false, show_parent: false %>
+        <%= render 'deleted_message', message: @message, link: false %>
       <% elsif @message.pinned? %>
-        <%= render 'pinned_message', message: @message, link: false, show_parent: false %>
+        <%= render 'pinned_message', message: @message, link: false %>
       <% else %>
-        <%= render @message, link: false, show_parent: false %>
+        <%= render @message, link: false, details_view: true %>
       <% end %>
 
       <div class="mt-3">
@@ -95,7 +95,7 @@
 
       <div class="card">
         <% @message.replies.order(created_at: :asc).each do |reply| %>
-          <%= render 'message', message: reply, show_parent: false %>
+          <%= render 'message', message: reply, details_view: true, show_parent: false %>
         <% end %>
       </div>
     </div>
