@@ -53,15 +53,15 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
                          alert: 'Please sign in to link your Strava account.'
     end
 
-    @code = params[:code]
-    unless @code.present?
+    code = params[:code]
+    unless code.present?
       Rails.logger.error 'Strava OAuth failed: Missing authorization code.'
       return redirect_to edit_user_registration_path, alert: 'Authentication data missing.'
     end
 
     Rails.logger.info "Strava OAuth success: Authorization code received for user #{current_user.id}"
 
-    if exchange_strava_code_for_tokens
+    if exchange_strava_code_for_tokens(code)
       Rails.logger.info "Strava OAuth success: Account linked for user #{current_user.id}."
       flash[:success] = 'Your Strava account was successfully linked.'
     else
@@ -115,13 +115,13 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     redirect_to edit_user_registration_path
   end
 
-  def exchange_strava_code_for_tokens
+  def exchange_strava_code_for_tokens(code)
     Rails.logger.info "Strava OAuth: Exchanging authorization code for tokens for user #{current_user.id}."
 
     params = {
       client_id: Rails.application.credentials[:strava_client_id],
       client_secret: Rails.application.credentials[:strava_client_secret],
-      code: @code,
+      code:,
       grant_type: 'authorization_code'
     }
 
