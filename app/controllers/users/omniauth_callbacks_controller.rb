@@ -131,7 +131,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       response = RestClient.post(
         'https://www.strava.com/oauth/token',
         params.to_query,
-        { content_type: :url_encoded, accept: :json }
+        { content_type: 'application/x-www-form-urlencoded', accept: :json }
       )
 
       Rails.logger.info "Received response: #{response.code} - #{response.body}"
