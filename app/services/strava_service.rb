@@ -1,6 +1,4 @@
 class StravaService
-  require 'rest-client'
-
   STRAVA_API_BASE = 'https://www.strava.com/api/v3'
 
   def self.import_runs(user)
