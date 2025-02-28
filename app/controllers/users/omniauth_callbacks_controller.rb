@@ -129,7 +129,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     begin
       response = RestClient.post(
-        'https://www.strava.com/oauth/token',
+        'https://www.strava.com/api/v3/oauth/token',
         params.to_query,
         { content_type: 'application/x-www-form-urlencoded', accept: :json }
       )
