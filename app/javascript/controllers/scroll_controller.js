@@ -14,17 +14,23 @@ export default class extends Controller {
 
       window.scrollBy(0, -offset);
 
-      target.classList.add('motion-safe:attention-animation');
+      setTimeout(() => {
+        target.classList.add('motion-safe:attention-animation');
+      }, 200);
+
       setTimeout(() => {
         target.classList.remove('motion-safe:attention-animation');
-      }, 1000);
+      }, 1200);
     } else {
       this.loadMoreButtonTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-      this.loadMoreButtonTarget.classList.add('motion-safe:pulse-hover-animation');
+      setTimeout(() => {
+        this.loadMoreButtonTarget.classList.add('motion-safe:pulse-hover-animation');
+      }, 350);
+
       setTimeout(() => {
         this.loadMoreButtonTarget.classList.remove('motion-safe:pulse-hover-animation');
-      }, 1000);
+      }, 1350);
     }
   }
 }
