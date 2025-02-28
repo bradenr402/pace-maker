@@ -53,7 +53,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
                          alert: 'Please sign in to link your Strava account.'
     end
 
-    unless params[:code].present?
+    @code = params[:code]
+    unless @code.present?
       Rails.logger.error 'Strava OAuth failed: Missing authorization code.'
       return redirect_to edit_user_registration_path, alert: 'Authentication data missing.'
     end
@@ -120,7 +121,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     params = {
       client_id: Rails.application.credentials[:strava_client_id],
       client_secret: Rails.application.credentials[:strava_client_secret],
-      code: params[:code],
+      code: @code,
       grant_type: 'authorization_code'
     }
 
@@ -132,9 +133,11 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       { content_type: :json, accept: :json }
     )
 
+    Rails.logger.info "Received response: #{response.code} - #{response.body}"
+
     unless response.code == 200
       Rails.logger.error "Strava OAuth token exchange failed for user #{current_user.id}: #{response.body}"
-      Rails.logger.error "Full response: #{response.inspect}" # Log the entire response object
+      Rails.logger.error "Full response: #{response.inspect}"
       return false
     end
 
