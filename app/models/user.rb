@@ -129,7 +129,7 @@ class User < ApplicationRecord
   def last_read_at(topic)
     user_topic = user_topics.find_by(topic:)
 
-    user_topic&.last_read_at
+    user_topic&.last_read_at || user_topic&.topic&.created_at
   end
 
   def formatted_phone_number(format = :national)

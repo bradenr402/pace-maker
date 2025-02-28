@@ -6,7 +6,7 @@ export default class extends Controller {
   static values = { loadMorePath: String };
 
   connect() {
-    this.scrollToBottom();
+    this.scrollToUnread();
   }
 
   loadMore(event) {
@@ -54,11 +54,13 @@ export default class extends Controller {
       });
   }
 
-  scrollToBottom() {
-    const element = document.getElementById('new_message_form');
+  scrollToUnread() {
+    const form = document.getElementById('new_message_form');
+    const unreadBanner = document.getElementById('unread_banner');
     const offset = 50;
 
-    element.scrollIntoView({ behavior: 'smooth' });
+    if (unreadBanner) unreadBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    else form.scrollIntoView({ behavior: 'smooth' });
 
     window.scrollBy(0, -offset);
   }
