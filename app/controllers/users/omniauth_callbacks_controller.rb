@@ -59,7 +59,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       return redirect_to edit_user_registration_path, alert: 'Authentication data missing.'
     end
 
-    Rails.logger.info "Strava OAuth success: Authorization code received for user #{current_user.id}: #{code}"
+    Rails.logger.info "Strava OAuth success: Authorization code received for user #{current_user.id}"
 
     if exchange_strava_code_for_tokens(code)
       Rails.logger.info "Strava OAuth success: Account linked for user #{current_user.id}."
@@ -118,17 +118,24 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def exchange_strava_code_for_tokens(code)
     Rails.logger.info "Strava OAuth: Exchanging authorization code for tokens for user #{current_user.id}."
 
-    response = RestClient.post(
-      'https://www.strava.com/oauth/token', {
-        client_id: Rails.application.credentials[:strava_client_id],
-        client_secret: Rails.application.credentials[:strava_client_secret],
-        code: code,
-        grant_type: 'authorization_code'
-      }
-    )
+    params = {
+      client_id: Rails.application.credentials[:strava_client_id],
+      client_secret: Rails.application.credentials[:strava_client_secret],
+      code: code,
+      grant_type: 'authorization_code'
+    }
+
+    # Log the request parameters to inspect them
+    Rails.logger.info "Sending params: #{params}"
+
+    params_query = params.to_query
+    Rails.logger.info "Converting to query: #{params_query}"
+
+    response = RestClient.post('https://www.strava.com/oauth/token', params_query)
 
     unless response.code == 200
       Rails.logger.error "Strava OAuth token exchange failed for user #{current_user.id}: #{response.body}"
+      Rails.logger.error "Full response: #{response.inspect}" # Log the entire response object
       return false
     end
 
