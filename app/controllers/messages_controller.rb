@@ -74,6 +74,8 @@ class MessagesController < ApplicationController
     @users_liked_list = []
 
     @team.members.each do |user|
+      next if user == current_user
+
       user_topic = @topic.user_topics.find_by(user:)
 
       @users_read_list << user if user_topic&.last_read_at&.after?(@message.created_at)
