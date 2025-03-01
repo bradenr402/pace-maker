@@ -65,7 +65,7 @@ class MessagesController < ApplicationController
                  @messages = @messages.sort_by(&:created_at)
                end
 
-    html = render_to_string(partial: 'messages/messages_list', locals: { objects: @objects })
+    html = render_to_string(partial: 'messages/messages_list', locals: { objects: @objects, topic: @topic })
     render json: { html:, more_messages:, oldest_timestamp: @oldest_timestamp }
   end
 
