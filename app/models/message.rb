@@ -41,6 +41,8 @@ class Message < ApplicationRecord
 
   def replies = topic.messages.where(parent_id: id, deleted_at: nil)
 
+  def nested_replies = replies + replies.flat_map(&:nested_replies)
+
   def author_name = user&.default_name || 'Deleted User'
 
   def team = topic.team

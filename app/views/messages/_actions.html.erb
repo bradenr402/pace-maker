@@ -1,5 +1,6 @@
 <% pinned = defined?(pinned) ? pinned : false %>
 <% link = local_assigns.fetch(:link, true) %>
+<% replies_list = local_assigns.fetch(:replies_list, false) %>
 
 <% user = message.user %>
 <% topic = message.topic %>
@@ -22,7 +23,7 @@
 
   <%= render 'messages/like_button', message: message, current_user: current_user, pinned: pinned %>
 
-  <%= render 'messages/reply_button', message: message, current_user: current_user, pinned: pinned %>
+  <%= render 'messages/reply_button', message: message, current_user: current_user, pinned: pinned unless replies_list %>
 
   <% if current_user.owns?(team) %>
     <% unless message.pinned? %>
@@ -76,7 +77,7 @@
   <% end %>
 
   <% if user == current_user && message.editable? %>
-    <%= link_to edit_team_topic_message_path(message.team, message.topic, message, pinned: pinned),
+    <%= link_to edit_team_topic_message_path(message.team, message.topic, message, pinned: pinned, replies_list: replies_list),
                 data: { turbo_stream: true, turbo_frame: @pin ? "pinned_#{dom_id(message)}" : dom_id(message) },
                 class: 'p-1 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-700/40 hover:text-orange-500 transition duration-200 ease-in-out' do
     %>
