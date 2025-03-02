@@ -46,7 +46,7 @@
         <div class="flex items-center justify-between <%= user == current_user ? 'flex-row-reverse' : '' %>">
           <p class="text-xs <%= user == current_user ? 'text-right text-slate-300' : 'text-soft' %>">
             <% if message.edited? %>
-              <time class="whitespace-nowrap" datetime="<%= message.updated_at.to_formatted_s(:long) %>">Edited: <%= pretty_time(message.updated_at, include_seconds: false) %></time>
+              <time class="whitespace-nowrap" datetime="<%= message.updated_at.to_formatted_s(:long) %>"><span class="font-semibold">Edited</span> <%= pretty_time(message.updated_at, include_seconds: false) %></time>
             <% else %>
               <time class="whitespace-nowrap" datetime="<%= message.created_at.to_formatted_s(:long) %>"><%= pretty_time(message.created_at, include_seconds: false) %></time>
             <% end %>
