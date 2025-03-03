@@ -12,7 +12,7 @@
   data-modal-show-modal-class="opacity-100 scale-100 pointer-events-auto"
   data-modal-hide-backdrop-class="opacity-0 pointer-events-none"
   data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
-  class="flex items-center gap-2.5 mt-1 <%= user == current_user || pinned ? 'justify-end' : 'ml-1' %>"
+  class="flex items-center gap-4 mt-1 <%= user == current_user || pinned ? 'justify-end' : 'ml-1' %>"
 >
   <% if link %>
     <%= link_to team_topic_message_path(team, topic, message), class: 'p-1 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-700/40 hover:text-indigo-500 transition duration-200 ease-in-out' do %>
