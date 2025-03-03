@@ -11,62 +11,75 @@ class MessagesController < ApplicationController
     add_breadcrumb 'Teams', teams_path
     add_breadcrumb @team.name, team_path(@team)
     add_breadcrumb 'Topics', team_topics_path(@team)
-    add_breadcrumb @topic.title, team_topic_path(@team, @topic)
+    add_breadcrumb @topic.title, team_topic_messages_path(@team, @topic)
 
-    @messages = @topic.messages.includes(:user, :likes).order(created_at: :desc).limit(50)
+    last_read_at = current_user.last_read_at(@topic) || @topic.created_at
+
+    first_unseen_at = @topic.messages.where('created_at > ?', last_read_at).pick(:created_at)
+
+    # Prepare a base query for fetching messages sorted by creation time (ascending order for unread, descending for latest)
+    base_query = @topic.messages.order(created_at: :asc)
+
+    @messages = if first_unseen_at # There are unread messages, get those plus 5 earlier messages
+                  unseen_messages = base_query.where('created_at > ?', last_read_at)
+                  earlier_messages = base_query.where('created_at <= ?', first_unseen_at).limit(5).reverse_order
+                  earlier_messages + unseen_messages
+                else # No unread messages, just get the latest 50
+                  base_query.reverse_order.limit(50)
+                end
+
+    # Ensure @messages is an ActiveRecord relation
+    @messages = @topic.messages.where(id: @messages.pluck(:id)).includes(:user, :likes)
+
     @oldest_timestamp = @messages.last&.created_at
-    @more_messages = @messages.size >= 50
-    @pinned_message = @messages.find_by(pinned: true)
+    @more_messages = @topic.messages.where('created_at < ?', @oldest_timestamp).exists?
 
-    @messages = @messages.first(50)
+    # Avoid an additional query if the pinned message is already included in @messages
+    @pinned_message = @messages.find(&:pinned?) || @topic.pinned_message
 
     @objects = if @topic == @team.main_chat_topic
                  topics = @team.topics
                                .where(main: false)
                                .where.not(id: @topic.id)
                                .where('created_at > ?', @oldest_timestamp)
+
                  team_memberships = @team.team_memberships.includes(:user)
                                          .where('created_at > ?', @oldest_timestamp)
+
                  (team_memberships + topics + @messages).sort_by(&:created_at)
                else
-                 @messages = @messages.sort_by(&:created_at)
+                 @messages
                end
   end
 
   def load_more
+    # Retrieve the timestamp of the oldest message from the front-end
     end_timestamp = params[:oldest_message_timestamp]
-    @messages = @topic.messages
-                      .where('created_at < ?', end_timestamp)
-                      .includes(:user, :likes)
-                      .order(created_at: :desc)
-                      .limit(50)
+
+    # Prepare the base query for fetching messages older than the given timestamp
+    base_query = @topic.messages.where('created_at < ?', end_timestamp).order(created_at: :desc)
+
+    @messages = base_query.limit(50).includes(:user, :likes)
+    @more_messages = base_query.offset(50).exists?
 
     @oldest_timestamp = @messages.last&.created_at
-    more_messages = @messages.size >= 50
-    @messages = @messages.first(50)
 
     @objects = if @topic == @team.main_chat_topic
                  topics = @team.topics
                                .where(main: false)
                                .where.not(id: @topic.id)
-                               .where(
-                                 'created_at BETWEEN ? AND ?',
-                                 @oldest_timestamp,
-                                 end_timestamp
-                               )
+                               .where('created_at < ?', @oldest_timestamp)
+
                  team_memberships = @team.team_memberships.includes(:user)
-                                         .where(
-                                           'created_at BETWEEN ? AND ?',
-                                           @oldest_timestamp,
-                                           end_timestamp
-                                         )
+                                         .where('created_at < ?', @oldest_timestamp)
+
                  (team_memberships + topics + @messages).sort_by(&:created_at)
                else
-                 @messages = @messages.sort_by(&:created_at)
+                 @messages
                end
 
     html = render_to_string(partial: 'messages/messages_list', locals: { objects: @objects, topic: @topic })
-    render json: { html:, more_messages:, oldest_timestamp: @oldest_timestamp }
+    render json: { html:, more_messages: @more_messages, oldest_timestamp: @oldest_timestamp }
   end
 
   def show
