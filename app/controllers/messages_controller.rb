@@ -83,6 +83,12 @@ class MessagesController < ApplicationController
   end
 
   def show
+    add_breadcrumb 'Teams', teams_path
+    add_breadcrumb @team.name, team_path(@team)
+    add_breadcrumb 'Topics', team_topics_path(@team)
+    add_breadcrumb @topic.title, team_topic_messages_path(@team, @topic)
+    add_breadcrumb 'Message Details', team_topic_messages_path(@team, @topic)
+
     @users_read_list = []
     @users_liked_list = []
 
