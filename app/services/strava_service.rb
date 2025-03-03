@@ -52,8 +52,6 @@ class StravaService
     url = "#{STRAVA_API_BASE}/activities/#{activity_id}"
     response = RestClient.get(url, headers(user))
     JSON.parse(response.body)
-  rescue RestClient::NotFound
-    nil
   rescue StandardError => e
     log_and_raise_error('fetching activity from Strava', e, user)
   end
