@@ -1,14 +1,18 @@
-<div id="typing_user_<%= user.id %>" class="bg-slate-100 dark:bg-slate-700 border dark:border-slate-600 shadow dark:shadow-none p-2 w-max rounded-2xl rounded-bl-sm">
-  <div class="flex gap-x-3 gap-y-1 items-center flex-wrap">
+<div id="typing_user_<%= user.id %>" class="flex items-end gap-1.5">
+  <%= render 'shared/user_photo', user: user, size: :thumb, icon_background: :darker %>
+
+  <div class="w-max rounded-2xl rounded-bl-sm border bg-slate-100 p-2 shadow dark:border-slate-600 dark:bg-slate-700 dark:shadow-none">
+    <div class="flex flex-wrap items-center gap-x-2 gap-y-1.5">
     <% text_colors = ['text-rose-500', 'text-orange-500', 'text-amber-500', 'text-emerald-500', 'text-blue-500', 'text-indigo-500'] %>
     <% text_color = text_colors[user.id % text_colors.size] %>
-    <p class="font-semibold italic text-xs <%= text_color %>"><%= user.default_name %> is typing...</p>
+    <p class="font-semibold italic text-xs <%= text_color %>"><%= user.default_name %></p>
 
-    <div class="w-max flex gap-2 items-center">
-      <!-- Typing dots -->
-      <div class="size-2 bg-slate-400 dark:bg-slate-300 rounded-full animate-pulse"></div>
-      <div class="size-2 bg-slate-400 dark:bg-slate-300 rounded-full animate-pulse" style="animation-delay: 300ms;"></div>
-      <div class="size-2 bg-slate-400 dark:bg-slate-300 rounded-full animate-pulse" style="animation-delay: 600ms;""></div>
+      <div class="flex w-max items-center gap-2">
+        <!-- Typing dots -->
+        <div class="typing-dot size-2 rounded-full bg-slate-400 dark:bg-slate-300"></div>
+        <div class="typing-dot size-2 rounded-full bg-slate-400 dark:bg-slate-300"></div>
+        <div class="typing-dot size-2 rounded-full bg-slate-400 dark:bg-slate-300"></div>
+      </div>
     </div>
   </div>
 </div>
