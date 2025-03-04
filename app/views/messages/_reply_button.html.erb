@@ -1,4 +1,4 @@
-<% pinned = defined?(pinned) ? pinned : false %>
+<% pinned = local_assigns.fetch(:pinned, false) %>
 
 <div id="<%= pinned ? 'pinned_' : '' %><%= dom_id(message, :replies) %>">
   <% reply = message.replies.find_by(user: current_user) %>

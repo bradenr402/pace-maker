@@ -1,4 +1,4 @@
-<% modal_style_buttons = defined?(modal_style_buttons) ? modal_style_buttons : true %>
+<% modal_style_buttons = local_assigns.fetch(:modal_style_buttons, false) %>
 
 <%= form_with model: run, data: { controller: 'form-validation calculate-pace' }, html: { novalidate: true, turbo_frame: 'run_modal' } do |form| %>
   <%= render 'shared/error_messages', resource: run %>

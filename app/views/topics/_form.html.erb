@@ -1,4 +1,4 @@
-<% editing = defined?(editing) ? editing : false %>
+<% editing = local_assigns.fetch(:editing, false) %>
 
 <%= form_with model: [@team, topic], local: true do |form| %>
   <div class="form-group">

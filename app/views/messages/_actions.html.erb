@@ -1,4 +1,4 @@
-<% pinned = defined?(pinned) ? pinned : false %>
+<% pinned = local_assigns.fetch(:pinned, false) %>
 <% link = local_assigns.fetch(:link, true) %>
 <% details_view = local_assigns.fetch(:details_view, false) %>
 <% replies_list = local_assigns.fetch(:replies_list, false) %>

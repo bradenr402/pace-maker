@@ -1,4 +1,4 @@
-<% show_members = defined?(show_members) ? show_members : false %>
+<% show_members = local_assigns.fetch(:show_members, false) %>
 
 <div class="space-y-4">
   <% teams.each do |team| %>
