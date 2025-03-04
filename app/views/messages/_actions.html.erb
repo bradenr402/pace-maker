@@ -22,9 +22,9 @@
     <% end %>
   <% end %>
 
-  <%= render 'messages/like_button', message: message, current_user: current_user, pinned: pinned %>
+  <%= render 'messages/like_button', message:, current_user:, pinned: %>
 
-  <%= render 'messages/reply_button', message: message, current_user: current_user, pinned: pinned unless replies_list %>
+  <%= render('messages/reply_button', message:, current_user:, pinned:) unless replies_list %>
 
   <% if current_user.owns?(team) && !details_view && !replies_list %>
     <% unless message.pinned? %>
