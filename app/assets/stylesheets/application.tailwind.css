@@ -116,19 +116,19 @@
   }
 
   .dropdown-menu {
-    @apply pointer-events-none absolute z-50 w-max scale-75 rounded-lg bg-white p-1 opacity-0 shadow-md transition duration-200 ease-in-out dark:bg-slate-800 border border-slate-300 dark:border-slate-700 dark:shadow-none flex flex-col gap-1;
+    @apply pointer-events-none absolute z-50 w-max scale-75 min-w-32 rounded-lg bg-white p-1 opacity-0 shadow-md transition duration-200 ease-in-out dark:bg-slate-800 border border-slate-300 dark:border-slate-700 dark:shadow-none flex flex-col gap-1;
   }
 
   .dropdown-option {
-    @apply flex items-center gap-2.5 py-2 px-4 rounded text-sm transition duration-200 ease-in-out w-full hover:bg-slate-200/80 dark:hover:bg-slate-700/80;
+    @apply flex items-center gap-2.5 p-2 rounded text-sm transition duration-200 ease-in-out w-full hover:bg-slate-200/80 dark:hover:bg-slate-700/80;
   }
 
   .dropdown-option-primary {
-    @apply flex items-center gap-2.5 py-2 px-4 rounded text-sm transition duration-200 ease-in-out w-full hover:bg-indigo-100 dark:hover:bg-indigo-900/80 hover:text-indigo-700 dark:hover:text-indigo-200;
+    @apply flex items-center gap-2.5 p-2 rounded text-sm transition duration-200 ease-in-out w-full hover:bg-indigo-100 dark:hover:bg-indigo-900/80 hover:text-indigo-700 dark:hover:text-indigo-200;
   }
 
   .dropdown-option-destructive {
-    @apply flex items-center gap-2.5 py-2 px-4 rounded text-sm transition duration-200 ease-in-out w-full hover:bg-rose-100 dark:hover:bg-rose-900/80 text-rose-600 dark:text-rose-300 hover:text-rose-700 dark:hover:text-rose-200;
+    @apply flex items-center gap-2.5 p-2 rounded text-sm transition duration-200 ease-in-out w-full hover:bg-rose-100 dark:hover:bg-rose-900/80 text-rose-600 dark:text-rose-300 hover:text-rose-700 dark:hover:text-rose-200;
   }
 
   .breadcrumbs {
