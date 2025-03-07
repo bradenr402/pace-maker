@@ -59,7 +59,44 @@
   }
 
   .modal {
-    @apply fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] sm:w-full -translate-x-[calc(50%+1rem)] sm:-translate-x-1/2 -translate-y-1/2 max-w-lg gap-4 bg-white dark:bg-[#131c2f] border border-slate-100 dark:border-slate-800 p-6 shadow-md transition duration-200 ease-in-out rounded-xl mx-4 sm:mx-0 overflow-y-auto max-h-[calc(100svh-10rem)] mt-0 mb-10 sm:max-h-none sm:mb-0 max-sm:[@media(display-mode:standalone)]:max-h-[calc(100svh-16rem)] max-sm:[@media(display-mode:standalone)]:mb-12;
+    @apply fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] sm:w-full -translate-x-[calc(50%+1rem)] sm:-translate-x-1/2 -translate-y-1/2 max-w-2xl gap-4 bg-white dark:bg-[#131c2f] border border-slate-100 dark:border-slate-800 p-6 shadow-md transition duration-200 ease-in-out rounded-2xl mx-4 sm:mx-0 overflow-y-auto max-h-[calc(100svh-10rem)] mt-0 mb-10 sm:mb-0 max-sm:[@media(display-mode:standalone)]:max-h-[calc(100svh-16rem)] max-sm:[@media(display-mode:standalone)]:mb-12;
+  }
+
+  /* Firefox - Higher specificity */
+  .modal,
+  .modal-large,
+  .modal *,
+  .modal-large * {
+    scrollbar-width: thin;
+    scrollbar-color: #9ca3af white; /* Light mode */
+  }
+
+  html.dark .modal,
+  html.dark .modal-large,
+  html.dark .modal,
+  html.dark .modal-large * {
+    scrollbar-color: #374151 #131c2f; /* Dark mode */
+  }
+
+  /* Chrome, Edge, and Safari */
+  .modal::-webkit-scrollbar,
+  .modal-large::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  .modal::-webkit-scrollbar-track,
+  .modal-large::-webkit-scrollbar-track {
+    @apply bg-white dark:bg-[#131c2f]; /* Overrides global styles */
+  }
+
+  .modal::-webkit-scrollbar-thumb,
+  .modal-large::-webkit-scrollbar-thumb {
+    @apply bg-gray-400 dark:bg-gray-500; /* Thumb styling */
+  }
+
+  .modal::-webkit-scrollbar-thumb:hover,
+  .modal-large::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-500 dark:bg-gray-600;
   }
 
   .modal-backdrop {
