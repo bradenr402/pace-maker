@@ -94,7 +94,7 @@ class RunsController < ApplicationController
 
   def destroy
     if @run.destroy
-      redirect_to root_path, success: 'Run was successfully deleted.'
+      redirect_back fallback_location: root_path, success: 'Run was successfully deleted.'
     else
       redirect_back fallback_location: root_path, error: 'Unable to delete run.'
     end
