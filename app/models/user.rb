@@ -195,7 +195,8 @@ class User < ApplicationRecord
       strava_uid: nil,
       strava_access_token: nil,
       strava_refresh_token: nil,
-      strava_token_expires_at: nil
+      strava_token_expires_at: nil,
+      strava_accepted_scope: nil
     )
   end
 

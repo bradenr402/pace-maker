@@ -57,7 +57,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       strava_uid: auth.uid,
       strava_access_token: auth.credentials.token,
       strava_refresh_token: auth.credentials.refresh_token,
-      strava_token_expires_at: Time.at(auth.credentials.expires_at)
+      strava_token_expires_at: Time.at(auth.credentials.expires_at),
+      strava_accepted_scope: params[:scope]
     )
       Rails.logger.info "Strava OAuth success: Account linked for user #{current_user.id}."
       flash[:success] = 'Your Strava account was successfully connected.'
