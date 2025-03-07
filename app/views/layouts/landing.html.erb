@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" data-controller="theme" data-theme-user-theme-value="system">
+  <head>
+    <%= render 'layouts/head' %>
+  </head>
+
+  <body class="relative antialiased font-sans font-normal leading-normal text-normal bg-slate-50 dark:bg-slate-900 selection:bg-indigo-500/40">
+    <header class="fixed inset-x-0 top-0 z-10 py-2 px-4 sm:px-6 bg-slate-50 dark:bg-slate-900 border-b border-slate-900/5 dark:border-slate-100/10">
+      <nav class="relative z-50 flex items-center justify-between max-w-5xl mx-auto">
+        <%= inline_svg_tag 'logo.svg', class: 'h-6 sm:h-7' %>
+
+        <div class="flex items-center gap-2 sm:gap-3">
+          <button onclick="document.documentElement.classList.toggle('dark')" class="rounded-lg p-2 btn-transparent transition duration-200 ease-in-out">
+            <%= inline_svg_tag 'icons/sun.svg', class: 'size-4.5 block dark:hidden text-yellow-500' %>
+            <%= inline_svg_tag 'icons/moon.svg', class: 'size-4.5 hidden dark:block text-indigo-600 dark:text-indigo-500' %>
+          </button>
+
+          <%= link_to 'Sign In', new_user_session_path, class: 'btn-link-soft text-xs whitespace-nowrap p-2 -ml-2' %>
+          <%= link_to 'Sign Up', new_user_registration_path, class: 'btn btn-sm btn-primary font-semibold whitespace-nowrap' %>
+        </div>
+      </nav>
+    </header>
+
+    <main
+      data-controller="modal"
+      data-modal-hide-modal-class="opacity-0 scale-75 pointer-events-none"
+      data-modal-show-modal-class="opacity-100 scale-100 pointer-events-auto"
+      data-modal-hide-backdrop-class="opacity-0 pointer-events-none"
+      data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
+    >
+      <%= yield %>
+    </main>
+
+    <%= render 'shared/footer' %>
+  </body>
+</html>

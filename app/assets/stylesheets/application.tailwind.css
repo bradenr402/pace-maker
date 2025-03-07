@@ -62,6 +62,10 @@
     @apply fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] sm:w-full -translate-x-[calc(50%+1rem)] sm:-translate-x-1/2 -translate-y-1/2 max-w-2xl gap-4 bg-white dark:bg-[#131c2f] border border-slate-100 dark:border-slate-800 p-6 shadow-md transition duration-200 ease-in-out rounded-2xl mx-4 sm:mx-0 overflow-y-auto max-h-[calc(100svh-10rem)] mt-0 mb-10 sm:mb-0 max-sm:[@media(display-mode:standalone)]:max-h-[calc(100svh-16rem)] max-sm:[@media(display-mode:standalone)]:mb-12;
   }
 
+  .modal-large {
+    @apply fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] -translate-x-[calc(50%+1rem)] -translate-y-1/2 max-w-6xl gap-4 bg-white dark:bg-[#131c2f] border border-slate-100 dark:border-slate-800 p-6 shadow-md transition duration-200 ease-in-out rounded-2xl mx-4 overflow-y-auto max-h-[calc(100svh-10rem)] mt-0 mb-10;
+  }
+
   /* Firefox - Higher specificity */
   .modal,
   .modal-large,
@@ -109,6 +113,10 @@
 
   .card {
     @apply p-4 sm:p-6 rounded-xl bg-white dark:bg-slate-800/60 shadow-md dark:shadow-none border border-slate-200 dark:border-slate-700;
+  }
+
+  .card-opaque {
+    @apply p-4 sm:p-6 rounded-xl bg-white dark:bg-slate-800 shadow-md dark:shadow-none border border-slate-200 dark:border-slate-700;
   }
 
   .dropdown-toggle {
@@ -202,5 +210,13 @@
   .hide-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
+  }
+
+  /* Hide outline for Safari */
+  @supports (hanging-punctuation: first) and (font: -apple-system-body) and
+    (-webkit-appearance: none) {
+    .no-outline-safari {
+      outline: none !important;
+    }
   }
 }

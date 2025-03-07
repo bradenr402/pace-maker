@@ -1,7 +1,15 @@
 Rails.application.routes.draw do
   # Home
   get 'home/index'
-  root 'home#index'
+
+  authenticated :user do
+    root 'home#index', as: :authenticated_root
+  end
+
+  unauthenticated do
+    root 'pages#landing'
+  end
+  get :landing, to: 'pages#landing'
 
   # Devise
   devise_for :users, controllers: {
