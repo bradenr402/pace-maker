@@ -13,7 +13,18 @@ export default class extends Controller {
     document.documentElement.addEventListener('turbo:submit-end', (event) => {
       if (event.detail.success) this.closeAllModals();
     });
+
+    // Listen for Escape key
+    document.addEventListener('keydown', this.handleKeydown);
   }
+
+  disconnect() {
+    document.removeEventListener('keydown', this.handleKeydown);
+  }
+
+  handleKeydown = (event) => {
+    if (event.key === 'Escape') this.closeAllModals();
+  };
 
   clearResetTimeout() {
     if (this.resetTimeout) {
