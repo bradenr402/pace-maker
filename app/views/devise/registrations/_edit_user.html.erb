@@ -70,7 +70,10 @@
   </div>
 
   <div class="card w-full mt-6">
-    <h2 class="font-semibold">Strava</h2>
+    <div class="flex items-center gap-3 mb-1">
+      <%= inline_svg_tag 'icons/strava-filled.svg', class: 'size-5 text-[#fc5200]' %>
+      <h2 class="font-semibold">Strava</h2>
+    </div>
 
     <% if current_user.strava_account_linked? %>
       <div class="flex gap-4 mb-6">
