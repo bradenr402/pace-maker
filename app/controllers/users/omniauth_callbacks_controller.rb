@@ -53,6 +53,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
                          alert: 'Please sign in to link your Strava account.'
     end
 
+    Rails.logger.info "Strava OAuth uid received for user #{current_user.id}: #{auth.uid}"
+
     if current_user.update(
       strava_uid: auth.uid,
       strava_access_token: auth.credentials.token,
