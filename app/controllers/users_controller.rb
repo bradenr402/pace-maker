@@ -34,13 +34,11 @@ class UsersController < ApplicationController
     if current_user.deauthorize_strava_account!
       delete_runs = params[:delete_strava_data] == 'true'
 
-      if current_user.delete_strava_data!(delete_runs:)
-        flash[:success] = if delete_runs
-                            'Your Strava account was successfully disconnected and all your runs from Strava were deleted.'
-                          else
-                            'Your Strava account was successfully disconnected. Your runs from Strava were not deleted.'
-                          end
-      end
+      flash[:success] = if current_user.delete_strava_data!(delete_runs:)
+                          'Your Strava account was successfully disconnected and all your runs from Strava were deleted.'
+                        else
+                          'Your Strava account was successfully disconnected. Your runs from Strava were not deleted.'
+                        end
     else
       flash[:error] = 'There was an issue disconnecting your Strava account.'
     end
