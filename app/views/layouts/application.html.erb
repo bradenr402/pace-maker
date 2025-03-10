@@ -4,7 +4,7 @@
     <%= render 'layouts/head' %>
   </head>
 
-  <body data-user-id="<%= current_user&.id %>" class='relative antialiased font-sans font-normal leading-normal bg-slate-50 text-slate-800 dark:text-slate-100 selection:bg-indigo-500/40 dark:bg-slate-900'>
+  <body data-user-id="<%= current_user&.id %>" class="relative antialiased font-sans font-normal leading-normal text-normal bg-slate-50 dark:bg-slate-900 selection:bg-indigo-500/40">
     <%= render 'shared/flash' %>
     <div class="flex w-full h-svh max-h-svh">
       <%= render 'shared/sidebar' if user_signed_in? %>

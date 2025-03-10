@@ -1,0 +1,278 @@
+<section id="hero" class="py-48 md:py-56 px-4 md:px-6">
+  <div class="flex flex-col items-center gap-4 text-center">
+    <div class="flex flex-col items-center mb-6">
+      <%= inline_svg_tag 'logo.svg', class: 'h-8 sm:h-9 md:h-10' %>
+      <%= inline_svg_tag 'compatible_with_strava.svg', class: 'h-7 sm:h-8 md:h-9' %>
+    </div>
+
+    <h1 class="mx-auto max-w-7xl font-extrabold tracking-tight text-balance text-5xl sm:text-6xl md:text-7xl">
+      <p>Measure Your Progress.</p>
+      <p class="mt-2 bg-gradient-to-r from-violet-500 via-indigo-500 to-indigo-600 bg-clip-text text-transparent">Maximize Your Performance.</p>
+    </h1>
+    <p class="mx-auto mt-4 max-w-2xl text-lg tracking-tight text-soft">
+      The all&hyphen;in&hyphen;one platform for cross&hyphen;country runners and teams to set goals, track progress, and stay connected.
+    </p>
+    <div class="mt-6 flex justify-center">
+      <%= link_to 'Get Started', new_user_registration_path, class: 'btn btn-primary' %>
+    </div>
+  </div>
+</section>
+
+<section id="impact" class="py-32 md:py-40 px-4 md:px-6 bg-gradient-to-br from-violet-500 via-indigo-500 to-indigo-600 text-white">
+  <div class="mx-auto flex max-w-4xl flex-col items-center justify-center gap-4 text-center">
+    <h2 class="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl text-balance">
+      Simple. Intuitive. Powerful.
+    </h2>
+    <p class="mx-auto mt-6 max-w-2xl text-lg tracking-tight text-white text-pretty">
+      A feature&hyphen;rich platform with a clean, user&hyphen;friendly design that makes logging runs, analyzing stats, and managing your team effortless.
+    </p>
+  </div>
+
+  <% images = [
+    { image_name: 'home', desc: 'Home Page' },
+    { image_name: 'search', desc: 'Search Page' },
+    { image_name: 'user', desc: 'User Profile' },
+    { image_name: 'account', desc: 'Account Settings' },
+    { image_name: 'user_settings', desc: 'User Preferences' },
+    { image_name: 'team', desc: 'Team Page' },
+    { image_name: 'team_form', desc: 'Team Settings Page' },
+    { image_name: 'member', desc: 'Team Member Profile' },
+    { image_name: 'trends', desc: 'Team Member Trends' },
+    { image_name: 'rankings', desc: 'Team Rankings' },
+    { image_name: 'featured', desc: 'Team Featured Runs' },
+    { image_name: 'run_form', desc: 'New Run Form' },
+    { image_name: 'topics', desc: 'Team Message Topics' },
+    { image_name: 'messages', desc: 'Team Messages' },
+    { image_name: 'feedback', desc: 'Feedback Page' },
+  ] %>
+
+  <div data-controller="show-more" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto my-12 px-2">
+    <% images.each_with_index do |image, index| %>
+      <div data-show-more-target="item" data-action="mousedown->modal#open" data-modal-id="<%= image[:image_name] %>PictureModal" data-hideable="<%= index >= 6 ? 'true' : 'false' %>" class="<%= 'hidden' if index >= 6 %> card-opaque cursor-pointer hover:shadow-2xl hover:scale-[101.5%] active:scale-100 transition duration-200 ease-in-out flex flex-col items-center gap-4 ring-8 ring-slate-100/30 dark:ring-slate-300/30 outline outline-1 outline-slate-200/40 dark:outline-slate-500/40 outline-offset-8 no-outline-safari">
+        <%= image_tag asset_path("screenshots/#{image[:image_name]}_light.png"), class: 'block dark:hidden rounded sm:rounded-md border-[0.5px] border-slate-200 dark:border-slate-700' %>
+        <%= image_tag asset_path("screenshots/#{image[:image_name]}_dark.png"), class: 'hidden dark:block rounded sm:rounded-md border-[0.5px] border-slate-200 dark:border-slate-700' %>
+        <p class="font-bold text-normal -mb-2"><%= image[:desc] %></p>
+      </div>
+
+      <!-- Image Modal Backdrop -->
+      <div
+        data-modal-target="backdrop"
+        data-modal-id="<%= image[:image_name] %>PictureModal"
+        data-action="mousedown->modal#backdropClose"
+        class="modal-backdrop opacity-0 pointer-events-none"></div>
+
+      <!-- Image Modal -->
+      <div
+        id="<%= image[:image_name] %>PictureModal"
+        role="dialog"
+        aria-label="<%= image[:desc] %> Page"
+        tabindex="-1"
+        data-modal-target="modal"
+        class="modal-large opacity-0 scale-75 pointer-events-none"
+      >
+        <div class="flex flex-col space-y-1.5 text-center sm:text-left mb-6">
+          <h2 class="text-lg font-semibold leading-none tracking-tight text-normal"><%= image[:desc] %></h2>
+        </div>
+
+        <%= image_tag asset_path("screenshots/#{image[:image_name]}_light.png"), class: 'block dark:hidden rounded sm:rounded-md md:rounded-lg lg:rounded-xl border border-slate-200 dark:border-slate-700' %>
+        <%= image_tag asset_path("screenshots/#{image[:image_name]}_dark.png"), class: 'hidden dark:block rounded sm:rounded-md md:rounded-lg lg:rounded-xl border border-slate-200 dark:border-slate-700' %>
+
+        <!-- Close button -->
+        <button data-action="mousedown->modal#close" type="button" data-modal-id="<%= image[:image_name] %>PictureModal" class="modal-x-btn">
+          <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4 text-normal' %>
+          <span class="sr-only">Close</span>
+        </button>
+      </div>
+    <% end %>
+
+    <!-- Show More Button -->
+    <div data-show-more-target="showMoreButton" class="col-span-full text-center mt-10">
+      <button type="button" data-action="click->show-more#toggleItems" class="btn btn-white">
+        <span data-show-more-target="buttonText">Show more</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section id="features" class="py-32 md:py-40 px-4 md:px-6">
+  <div class="mx-auto flex max-w-4xl flex-col items-center justify-center gap-4 text-center">
+    <h2 class="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl text-balance">
+      <span class="bg-gradient-to-r from-violet-500 via-indigo-500 to-indigo-600 bg-clip-text text-transparent">Powerful Features</span>
+      to Elevate Your Running Experience.
+    </h2>
+    <p class="mx-auto mt-6 max-w-2xl text-lg tracking-tight text-soft text-pretty">
+      Behind PaceMaker&#8217;s simple design is a powerhouse of features designed to help you&mdash;and your team&mdash;reach your full potential.
+    </p>
+  </div>
+
+  <% colors = [
+    'from-rose-400 via-rose-500 to-red-600',
+    'from-yellow-400 to-amber-500',
+    'from-emerald-400 via-emerald-500 to-green-600',
+    'from-violet-400 via-violet-500 to-indigo-600',
+    'from-sky-400 via-blue-500 to-blue-600',
+    'from-amber-400 to-orange-600',
+  ] %>
+
+  <% features = [
+    { name: 'Performance Tracking', desc: 'Track your runs with detailed stats, insights, and historical comparisons to measure your progress over time.', icon: 'analytics', span_md: false, span_lg: false },
+    { name: 'Team Management', desc: 'Lead your team to success by setting season dates, creating team goals, and tracking progress over time. Analyze performance trends with intuitive graphs, helping you make data-driven decisions to optimize training and maximize results.', icon: 'team-filled', span_md: false, span_lg: true },
+    { name: 'Goal Setting', desc: 'Set personal and team goals to push your limits and stay on track. Stay motivated with personalized messages that let you know if you’re falling behind, on track, or ahead of your goal.', icon: 'medal-filled', span_md: true, span_lg: true },
+    { name: 'Team Communication', desc: 'Stay connected with your team through built-in real-time messaging and topic-based discussions.', icon: 'chat-filled', span_md: false, span_lg: false },
+    { name: 'PWA Support', desc: 'Install PaceMaker as a progressive web app on your device for quick and easy access.', icon: 'smart-phone-filled', span_md: false, span_lg: false },
+    { name: 'Strava Integration', desc: 'Seamlessly connect your Strava account to sync both historical and real-time run data automatically. Keep your training logs up to date without manual entry, ensuring your stats always reflect your latest activities and achievements.', icon: 'strava-filled', span_md: true, span_lg: true },
+  ] %>
+
+  <div class="mx-auto grid max-w-5xl grid-cols-1 gap-4 my-12 sm:grid-cols-2 lg:grid-cols-3">
+    <% features.each_with_index do |feature, index| %>
+      <div class="card flex items-center gap-4 md:flex-col col-span-1 <%= feature[:span_lg] ? 'lg:col-span-2' : '' %> <%= feature[:span_md] ? 'md:col-span-2 lg:col-span-1' : '' %>">
+        <div class="rounded-full p-3 bg-gradient-to-br <%= colors[index] %> shrink-0">
+          <%= inline_svg_tag "icons/#{feature[:icon]}.svg", class: 'size-6 text-white' %>
+        </div>
+        <div class="md:text-center">
+          <p class="text-xl font-bold text-normal"><%= feature[:name] %></p>
+          <p class="text-sm text-soft text-pretty"><%= feature[:desc] %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</section>
+
+<section id="testimonials" class="py-32 md:py-40 px-4 md:px-6 bg-gradient-to-br from-violet-500 via-indigo-500 to-indigo-600 text-white">
+  <div class="mx-auto flex max-w-4xl flex-col items-center justify-center gap-4 text-center">
+    <h2 class="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl text-balance">
+      Trusted by Coaches &amp; Athletes.
+    </h2>
+    <p class="mx-auto mt-6 max-w-2xl text-lg tracking-tight text-white text-pretty">
+      Hear what our users have to say about PaceMaker.
+    </p>
+  </div>
+
+  <% testimonials = [
+    { author_name: 'Trenton Roth', author_title: 'Head Coach, Florida College Cross Country', highlight: 'FAR exceeded my original hopes and expectations.', paragraphs: [
+      'As a college cross country coach, I am always looking for ways to stay in touch with my athletes (especially in the offseason when they all go home over the summer) and have a convenient way of sharing our data and progress that everyone can quickly and easily enter and view. I asked Braden to create a program that would allow my team to do that. Of course, I had no idea how much work it would prove to be, nor how good of a product he would ultimately end up designing. It has FAR exceeded my original hopes and expectations for the project.',
+      'Braden poured his heart and soul into designing the web app &#8220;<span class="font-semibold italic">Pacemaker</span>.&#8221; Working with him was extremely satisfying and productive. While I would sometimes ask for new features or changes, and he was quick to incorporate them, I was much more impressed with how often he would recommend various revisions and new functionality. Even though he is not a runner at all, I could tell that he had really put a lot of thought into his suggestions beforehand. Not only was he often able to correctly predict things that coaches and athletes would like and use, he also anticipated how some of those changes would require redesigning some of the framework so that it would remain user-friendly and intuitive to navigate. He was always thinking about and aware of potential problems that adding new features might cause app users to encounter, and has a very good eye for choosing defaults that make the most sense.',
+      'Although there is much more that I could say, let me just highlight two illustrations of how Braden&#8217;s &#8220;customer service&#8221; (even though he did all of this work for free) and attention to detail benefits those he works with. First, he volunteered an hour of his time to come meet with my team and demonstrate the app&#8217;s features. This consisted of showing some of the features, as well as explaining the structure of how it was designed and the logic behind how to navigate in it, and included a question and answer session at the end which he handled very smoothly and clearly. His understanding and command of his work is obvious.',
+      'Finally, many of my athletes already use a free fitness app called Strava when they run. Several of them had asked if it was possible to adapt Pacemaker to integrate and automatically sync with and pull data from Strava, so they would not have to manually enter it. I hesitated to even ask Braden to do this, as I felt that it might be too much of a demand of his time (donated for free, I might add) and might not even be possible. However, he did not balk at a challenge. I expected this to be a significant amount of work that could take weeks. He did it in one day! To say that I was pleased with this outcome would be a gross understatement&mdash;I am ecstatic!! I am confident that whoever hires him will also be thrilled with their decision and return on investment.',
+    ] },
+  ] %>
+
+  <div class="my-12">
+    <div data-controller="carousel" class="mx-auto max-w-4xl">
+      <% if testimonials.size > 1 %>
+        <div class="flex items-center flex-row-reverse justify-between gap-5 px-1">
+          <div class="flex items-center gap-2">
+            <button type="button" data-action="click->carousel#scrollLeft" class="rounded-full bg-slate-100/30 dark:bg-slate-800/30 border-[0.5px] border-slate-200/40 dark:border-slate-700/50 p-2 text-white dark:text-slate-300 transition duration-200 ease-in-out hover:bg-slate-200/70 hover:dark:bg-slate-700/70">
+              <%= inline_svg_tag 'icons/chevron-left-mini.svg', class: 'size-4.5' %>
+              <span class="sr-only">Scroll left</span>
+            </button>
+
+            <button type="button" data-action="click->carousel#scrollRight" class="rounded-full bg-slate-100/30 dark:bg-slate-800/30 border-[0.5px] border-slate-200/40 dark:border-slate-700/50 p-2 text-white dark:text-slate-300 transition duration-200 ease-in-out hover:bg-slate-200/70 hover:dark:bg-slate-700/70">
+              <%= inline_svg_tag 'icons/chevron-right-mini.svg', class: 'size-4.5' %>
+              <span class="sr-only">Scroll right</span>
+            </button>
+          </div>
+
+          <div class="hidden w-[0.5px] h-4 bg-slate-100/30"></div>
+
+          <div class="flex items-center gap-2">
+            <span class="text-white dark:text-slate-200 text-sm font-semibold">Scroll to see more</span>
+            <%= inline_svg_tag 'icons/chevron-right-bold.svg', class: 'size-3.5' %>
+          </div>
+        </div>
+      <% end %>
+
+      <div data-carousel-target="carousel" class="p-2.5 pt-4 flex items-stretch gap-6 sm:gap-8 overflow-x-scroll snap-x snap-mandatory hide-scrollbar">
+        <% testimonials.each do |testimonial| %>
+          <div data-carousel-target="item" class="card-opaque w-full shrink-0 snap-center flex flex-col ring-8 ring-slate-100/30 dark:ring-slate-300/30 outline outline-1 outline-slate-200/40 dark:outline-slate-500/40 outline-offset-8 no-outline-safari">
+            <div class="mb-4">
+              <%= inline_svg_tag 'icons/quote-start.svg', class: 'size-8 text-muted' %>
+            </div>
+
+            <p class="mb-3.5 border-b border-slate-300 dark:border-slate-700 pb-3.5 font-semibold text-base/6 text-normal">
+              <%= testimonial[:highlight] %>
+            </p>
+
+            <p class="text-pretty text-light mb-4">
+              <%= testimonial[:paragraphs].first %>
+
+              <% if testimonial[:paragraphs].size > 1 %>
+                <span data-action="mousedown->modal#open" data-modal-id="<%= testimonial[:author_name].split(' ').join('') %>TestimonialModal" class="cursor-pointer btn-link">
+                  See more...
+                </span>
+              <% end %>
+            </p>
+
+            <div class="mt-auto text-right justify-self-end">
+              <cite class="block italic">
+                <span class="block font-semibold text-normal"><%= testimonial[:author_name] %></span>
+                <span class="block text-soft text-sm text-balance">
+                  <%= testimonial[:author_title] %>
+                </span>
+              </cite>
+            </div>
+          </div>
+
+          <!-- Testimonial Modal Backdrop -->
+          <div
+            data-modal-target="backdrop"
+            data-modal-id="<%= testimonial[:author_name].split(' ').join('') %>TestimonialModal"
+            data-action="mousedown->modal#backdropClose"
+            class="modal-backdrop opacity-0 pointer-events-none"></div>
+
+          <!-- Testimonial Modal -->
+          <div
+            id="<%= testimonial[:author_name].split(' ').join('') %>TestimonialModal"
+            role="dialog"
+            aria-label="Testimonial by Trenton Roth"
+            tabindex="-1"
+            data-modal-target="modal"
+            class="modal opacity-0 scale-75 pointer-events-none"
+          >
+            <div class="flex flex-col space-y-1.5 text-center sm:text-left mb-6">
+              <h2 class="text-lg font-semibold leading-none tracking-tight text-normal">Testimonial by <%= testimonial[:author_name] %></h2>
+            </div>
+
+            <div class="-mr-6 pr-6 space-y-4">
+              <% testimonial[:paragraphs].each do |paragraph| %>
+                <p class="text-pretty text-light">
+                  <%= raw paragraph %>
+                </p>
+              <% end %>
+
+              <div class="mt-4 text-right">
+                <cite class="block italic">
+                  <span class="block font-semibold text-normal"><%= testimonial[:author_name] %></span>
+                  <span class="block text-soft text-sm">
+                    <%= testimonial[:author_title] %>
+                  </span>
+                </cite>
+              </div>
+            </div>
+
+            <!-- Close button -->
+            <button data-action="mousedown->modal#close" type="button" data-modal-id="<%= testimonial[:author_name].split(' ').join('') %>TestimonialModal" class="modal-x-btn">
+              <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4 text-normal' %>
+              <span class="sr-only">Close</span>
+            </button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cta" class="py-32 md:py-40 px-4 md:px-6">
+  <div class="mx-auto flex max-w-4xl flex-col items-center justify-center gap-4 text-center">
+    <h2 class="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl text-balance">
+      Peak Performance
+      <span class="bg-gradient-to-r from-violet-500 via-indigo-500 to-indigo-600 bg-clip-text text-transparent">Starts Here.</span>
+    </h2>
+    <p class="mx-auto mt-4 max-w-2xl text-lg tracking-tight text-soft text-pretty">
+      Join the runners and coaches who are transforming their running experience with PaceMaker.
+    </p>
+    <div class="mt-6 flex items-center justify-center gap-4">
+      <%= link_to 'Sign Up Now', new_user_registration_path, class: 'btn btn-primary' %>
+    </div>
+  </div>
+</section>

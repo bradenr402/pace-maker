@@ -70,12 +70,15 @@
   </div>
 
   <div class="card w-full mt-6">
-    <h2 class="font-semibold">Strava</h2>
+    <div class="flex items-center gap-3 mb-1">
+      <%= inline_svg_tag 'icons/strava-filled.svg', class: 'size-5 text-[#fc5200]' %>
+      <h2 class="font-semibold">Strava</h2>
+    </div>
 
     <% if current_user.strava_account_linked? %>
       <div class="flex gap-4 mb-6">
         <p class="text-soft text-sm">Connected.</p>
-        <%= link_to 'View your Strava account', "https://strava.com/athletes/#{current_user.strava_uid}", class: 'btn-link text-sm' %>
+        <%= link_to 'View your Strava account', current_user.strava_url, class: 'cursor-pointer font-semibold text-[#fc5200] hover:underline focus:ring-transparent text-sm' %>
       </div>
 
       <button data-action="mousedown->modal#open" data-modal-id="unlinkStravaAccountModal" class="btn btn-destructive">

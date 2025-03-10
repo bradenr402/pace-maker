@@ -155,6 +155,8 @@ class User < ApplicationRecord
 
   def strava_account_linked? = strava_uid? && strava_access_token?
 
+  def strava_url = "https://strava.com/athletes/#{strava_uid}"
+
   def refresh_strava_token!
     return false unless strava_refresh_token.present?
     return true if strava_token_expires_at && strava_token_expires_at > 1.hour.from_now

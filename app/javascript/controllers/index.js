@@ -13,6 +13,9 @@ application.register("calculate-pace", CalculatePaceController)
 import CalendarController from "./calendar_controller"
 application.register("calendar", CalendarController)
 
+import CarouselController from "./carousel_controller"
+application.register("carousel", CarouselController)
+
 import ChartTypeController from "./chart_type_controller"
 application.register("chart-type", ChartTypeController)
 
@@ -81,6 +84,9 @@ application.register("scroll", ScrollController)
 
 import SearchFormController from "./search_form_controller"
 application.register("search-form", SearchFormController)
+
+import ShowMoreController from "./show_more_controller"
+application.register("show-more", ShowMoreController)
 
 import SortTableController from "./sort_table_controller"
 application.register("sort-table", SortTableController)
