@@ -132,6 +132,16 @@ class User < ApplicationRecord
     user_topic&.last_read_at || user_topic&.topic&.created_at
   end
 
+  def any_unread_messages_for_team?(team)
+    team.topics.any? do |topic|
+      user_topic = user_topics.find_by(topic:)
+      next false unless user_topic
+
+      last_message = topic.last_message
+      last_message && last_message.created_at > user_topic.last_read_at
+    end
+  end
+
   def formatted_phone_number(format = :national)
     parsed_number = Phonelib.parse(phone_number, phone_country_code)
 

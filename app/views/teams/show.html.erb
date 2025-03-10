@@ -14,7 +14,18 @@
     <%= simple_format @team.description, class: 'text-soft text-sm md:max-w-[80%] md:mx-auto text-pretty' unless @team.description.blank? %>
 
     <div class="flex items-center <%= current_user.member_of?(@team) ? 'justify-between' : 'justify-center' %> mt-4">
-      <%= link_to 'Team Chat', team_topics_path(@team), class: 'btn btn-primary btn-muted' if current_user.member_of?(@team) %>
+      <% if current_user.member_of?(@team) %>
+        <div class="relative">
+          <%= link_to 'Team Chat', team_topics_path(@team), class: 'btn btn-primary btn-muted' %>
+
+          <% if current_user.any_unread_messages_for_team?(@team) %>
+            <span class="absolute -top-1 -right-1 grid place-items-center size-3">
+              <span class="motion-reduce:hidden animate-ping-slow absolute inline-flex size-full rounded-full bg-indigo-400 dark:bg-indigo-500 opacity-60"></span>
+              <span class="relative inline-flex rounded-full size-3 bg-indigo-500"></span>
+            </span>
+          <% end %>
+        </div>
+      <% end %>
 
       <% if @current_user_member_of_team || @current_user_owns_team %>
         <div
