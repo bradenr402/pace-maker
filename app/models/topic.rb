@@ -65,5 +65,9 @@ class Topic < ApplicationRecord
     errors.add(:main, 'There can only be one main topic per team')
   end
 
-  def create_user_topics = team.members.each { |user| user_topics.find_or_create_by(user:) }
+  def create_user_topics
+    return unless ActiveRecord::Base.connection.table_exists?('user_topics')
+
+    team.members.each { |user| user_topics.find_or_create_by(user:) }
+  end
 end
