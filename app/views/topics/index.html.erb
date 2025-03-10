@@ -1,0 +1,53 @@
+<% content_for :title, "#{@team.name} Topics" %>
+
+<div
+  data-controller="modal"
+  data-modal-hide-modal-class="opacity-0 scale-75 pointer-events-none"
+  data-modal-show-modal-class="opacity-100 scale-100 pointer-events-auto"
+  data-modal-hide-backdrop-class="opacity-0 pointer-events-none"
+  data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
+  class="max-w-3xl mx-auto my-16"
+>
+  <%= link_to @team, class: 'group flex items-center gap-3 pt-4 pb-2 pr-2 btn-link-soft w-max', aria: { label: "Back to #{@team.name}" } do %>
+    <%= inline_svg_tag 'icons/chevron-left-bold.svg', class: 'size-4 transition ease-in-out duration-200' %>
+
+    <span class="text-sm transition ease-in-out duration-200">Back to <%= @team.name %></span>
+  <% end %>
+
+  <div class="mb-24">
+    <%= render 'main_chat_topic', team: @team %>
+
+    <h2 class="text-lg font-semibold mb-3">Topics</h2>
+    <% if @open_topics.present? || @favorite_topics.present? %>
+      <div>
+        <%= render @favorite_topics %>
+        <%= render @open_topics %>
+      </div>
+
+      <% if current_user.owns?(@team) %>
+        <div class="flex justify-center mt-12">
+          <button data-action="mousedown->modal#open" data-modal-id="newTopicModal" class="btn btn-sm btn-primary btn-muted">New topic</button>
+        </div>
+      <% end %>
+    <% elsif @favorite_topics.blank? %>
+      <div class="flex flex-col items-center justify-center gap-6 mt-12">
+        <p class="text-soft text-center">There are no open topics.</p>
+        <% if current_user.owns?(@team) %>
+          <button data-action="mousedown->modal#open" data-modal-id="newTopicModal" class="btn btn-primary">New topic</button>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @closed_topics.present? %>
+    <div class="mb-24">
+      <h2 class="text-lg font-semibold mb-3">Closed Topics</h2>
+
+      <div>
+        <%= render @closed_topics %>
+      </div>
+    </div>
+  <% end %>
+
+  <%= render 'topics/new_topic_modal' if current_user.owns?(@team) %>
+</div>

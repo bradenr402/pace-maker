@@ -1,0 +1,32 @@
+<% topic = team.main_chat_topic %>
+<% preview_message = topic.last_message %>
+<% unread_count = topic.unread_count_for(current_user) || 0 %>
+<% any_unread = unread_count.positive? && preview_message.present? %>
+
+<%= link_to team_main_chat_path(team), data: { turbo: false }, class: 'group flex items-center gap-4 sm:gap-6 grow py-6 mb-6 border-b border-slate-200 dark:border-slate-700' do %>
+  <div class="grid place-items-center size-12 rounded-lg bg-gradient-to-b from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800 shrink-0">
+    <%= inline_svg_tag "icons/chat.svg", class: 'size-6 text-light' %>
+  </div>
+
+  <div class="grow">
+    <p class='text-lg font-bold transition duration-200 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500'>
+      Main Chat
+    </p>
+    <% if preview_message.present? %>
+      <span class="text-sm line-clamp-1 <%= any_unread ? 'font-semibold text-light' : 'text-soft' %>"><%= "#{preview_message.user == current_user ? 'You' : preview_message.author_name}: #{preview_message.content}" %></span>
+    <% else %>
+      <span class="text-soft text-sm line-clamp-1 italic">No messages</span>
+    <% end %>
+  </div>
+
+  <% if preview_message %>
+    <div class="flex items-center gap-2">
+      <% if any_unread %>
+        <div class="inline-flex items-center rounded-full px-2 py-0.5 text-xxs font-semibold bg-blue-100 text-blue-600 dark:bg-blue-950 dark:text-blue-400">
+          <%= unread_count %>
+        </div>
+      <% end %>
+      <span class="text-xs whitespace-nowrap <%= any_unread ? 'font-semibold text-light' : 'text-soft' %>"><%= time_ago_abbr_format(preview_message&.created_at || topic.created_at) %></span>
+    </div>
+  <% end %>
+<% end %>

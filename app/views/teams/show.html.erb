@@ -13,7 +13,9 @@
 
     <%= simple_format @team.description, class: 'text-soft text-sm md:max-w-[80%] md:mx-auto text-pretty' unless @team.description.blank? %>
 
-    <div class="flex items-center justify-center md:justify-end mt-4">
+    <div class="flex items-center <%= current_user.member_of?(@team) ? 'justify-between' : 'justify-center' %> mt-4">
+      <%= link_to 'Team Chat', team_topics_path(@team), class: 'btn btn-primary btn-muted' if current_user.member_of?(@team) %>
+
       <% if @current_user_member_of_team || @current_user_owns_team %>
         <div
           data-controller="modal"
@@ -44,7 +46,7 @@
             <!-- Team Actions Dropdown Menu -->
             <div
               data-dropdown-target="dropdown"
-              class="dropdown-menu origin-top sm:origin-top-right left-1/2 -translate-x-1/2 top-12 sm:right-0 sm:left-auto sm:-translate-x-0"
+              class="dropdown-menu origin-top-right right-0 top-12"
             >
               <%= render 'teams/shared/team_links', team: @team %>
             </div>
@@ -53,7 +55,7 @@
           <%= render 'teams/shared/leave_team_modal', team: @team if @current_user_member_of_team && !@current_user_owns_team %>
         </div>
       <% else %>
-        <%= render 'teams/shared/team_buttons', team: @team %>
+        <%= render 'teams/shared/join_button', team: @team %>
       <% end %>
     </div>
   </div>

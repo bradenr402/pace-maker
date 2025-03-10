@@ -32,6 +32,7 @@ class TeamJoinRequestsController < ApplicationController
       )
     end
 
+    Rails.cache.delete([@team, 'members', params[:query]])
     @team.team_memberships.create(user: @join_request.user)
     redirect_back fallback_location: @team, success: 'Join request approved.'
   end

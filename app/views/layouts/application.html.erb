@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" data-controller="theme" data-theme-user-theme-value="<%= user_signed_in? ? current_user.settings(:appearance).theme : 'system' %>">
+<html lang="en" data-controller="theme" data-theme-user-theme-value="<%= user_signed_in? ? current_user.settings(:appearance).theme : 'system' %>" class="overflow-hidden">
   <head>
     <%= render 'layouts/head' %>
   </head>
 
-  <body class='relative antialiased font-sans font-normal leading-normal bg-slate-50 text-slate-800 dark:text-slate-100 selection:bg-indigo-500/40 dark:bg-slate-900'>
+  <body data-user-id="<%= current_user&.id %>" class='relative antialiased font-sans font-normal leading-normal bg-slate-50 text-slate-800 dark:text-slate-100 selection:bg-indigo-500/40 dark:bg-slate-900'>
     <%= render 'shared/flash' %>
     <div class="flex w-full h-svh max-h-svh">
       <%= render 'shared/sidebar' if user_signed_in? %>
@@ -20,8 +20,8 @@
           <% else %>
             <div class="flex justify-end mt-4 mr-4">
               <button onclick="document.documentElement.classList.toggle('dark')" class="rounded-lg p-2 hover:bg-slate-200 dark:hover:bg-slate-800 active:bg-slate-200 dark:active:bg-slate-800 transition duration-200 ease-in-out">
-                <%= inline_svg_tag 'icons/sun.svg', class: 'size-6 block dark:hidden text-yellow-500' %>
-                <%= inline_svg_tag 'icons/moon.svg', class: 'size-6 hidden dark:block text-indigo-600' %>
+                <%= inline_svg_tag 'icons/sun.svg', class: 'size-5 block dark:hidden text-yellow-500' %>
+                <%= inline_svg_tag 'icons/moon.svg', class: 'size-5 hidden dark:block text-indigo-600 dark:text-indigo-500' %>
               </button>
             </div>
           <% end %>
@@ -32,14 +32,7 @@
             <%= yield %>
           </main>
 
-          <footer class="text-center mt-4 text-sm text-soft p-4">
-            <p class="mb-1">&copy; <%= Time.current.year %> PaceMaker. All rights reserved.</p>
-            <div class="flex justify-center gap-x-6">
-                <%= link_to 'Privacy Policy', privacy_policy_path, class: 'btn-link underline' %>
-                <%= link_to 'Strava Data Usage Policy', strava_policy_path, class: 'btn-link underline' %>
-                <%= link_to 'Google Data Usage Policy', google_policy_path, class: 'btn-link underline' %>
-            </div>
-          </footer>
+          <%= render 'shared/footer' %>
         </div>
       </div>
     </div>

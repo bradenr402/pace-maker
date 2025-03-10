@@ -1,0 +1,259 @@
+<% team = topic.team %>
+<% preview_message = topic.last_message %>
+<% unread_count = topic.unread_count_for(current_user) || 0 %>
+<% any_unread = unread_count.positive? && preview_message.present? %>
+
+<div class="flex items-center gap-2 group/container">
+  <%= link_to team_topic_messages_path(team, topic), data: { turbo: false }, class: 'group/link flex items-center gap-3 sm:gap-4 grow py-2 group-first/container:pt-0 group-last/container:pb-0' do %>
+
+    <div class="grid place-items-center size-10 rounded-lg bg-gradient-to-b from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800 shrink-0">
+      <%= inline_svg_tag "icons/hashtag.svg", class: 'size-5 text-light' %>
+    </div>
+
+    <div class="grow">
+      <div class="flex items-center gap-1.5">
+        <%= inline_svg_tag 'icons/star-filled.svg', class: 'size-3 text-yellow-400' if topic.favorited_by?(current_user) %>
+        <p class='font-bold transition duration-200 ease-in-out group-hover/link:text-indigo-600 dark:group-hover/link:text-indigo-500'>
+          <%= topic.title %>
+        </p>
+      </div>
+
+      <% if preview_message.present? %>
+        <span class="text-xs line-clamp-1 <%= any_unread ? 'font-semibold text-light' : 'text-soft' %>"><%= "#{preview_message.user == current_user ? 'You' : preview_message.author_name}: #{preview_message.content}" %></span>
+      <% else %>
+        <span class="text-soft text-xs line-clamp-1 italic">No messages</span>
+      <% end %>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <% if any_unread %>
+        <div class="inline-flex items-center rounded-full px-2 py-0.5 text-xxs font-semibold bg-blue-100 text-blue-600 dark:bg-blue-950 dark:text-blue-400">
+          <%= unread_count %>
+        </div>
+      <% end %>
+      <span class="text-xs whitespace-nowrap <%= any_unread ? 'font-semibold text-light' : 'text-soft' %>"><%= time_ago_abbr_format(preview_message&.created_at || topic.created_at) %></span>
+    </div>
+  <% end %>
+
+  <% if current_user.owns?(team) %>
+    <div
+      data-controller="dropdown"
+      data-dropdown-hide-dropdown-class="pointer-events-none scale-75 opacity-0"
+      data-dropdown-show-dropdown-class="pointer-events-auto scale-100 opacity-100"
+      data-dropdown-dropdown-open-class="bg-slate-200/50 dark:bg-slate-700/50 ring-2 ring-indigo-500/50"
+      class="relative rounded-lg grid place-items-center my-2 group-first/container:mt-0 group-last/container:mb-0"
+    >
+      <button
+        type="button"
+        data-action="mousedown->dropdown#toggle"
+        class="z-0 p-1 rounded-lg opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-slate-200/50 dark:hover:bg-slate-700/50"
+      >
+        <%= inline_svg_tag 'icons/ellipsis-vertical.svg', class: 'size-5.5 shrink-0 text-slate-700 dark:text-slate-300' %>
+        <span class="sr-only">Actions</span>
+      </button>
+
+      <div
+        data-dropdown-target="dropdown"
+        class="dropdown-menu origin-top-right right-0 top-10"
+      >
+        <% if topic.open? %>
+          <!-- Open Edit Topic Modal Button -->
+          <button data-action="mousedown->modal#open" data-modal-id="editTopicModal_<%= topic.id %>" class="dropdown-option-primary">
+            <%= inline_svg_tag 'icons/pencil.svg', class: 'size-5' %>
+            Edit topic
+          </button>
+
+          <% if topic.favorited_by?(current_user) %>
+            <%= button_to unfavorite_team_topic_path(team, topic), method: :patch, class: 'dropdown-option' do %>
+              <%= inline_svg_tag 'icons/star-slash.svg', class: 'size-5' %>
+              Unfavorite topic
+            <% end %>
+          <% else %>
+            <%= button_to favorite_team_topic_path(team, topic), method: :patch, class: 'dropdown-option' do %>
+              <%= inline_svg_tag 'icons/star.svg', class: 'size-5' %>
+              Favorite topic
+            <% end %>
+          <% end %>
+
+          <!-- Open Close Topic Modal Button -->
+          <button data-action="mousedown->modal#open" data-modal-id="closeTopicModal_<%= topic.id %>" class="dropdown-option">
+            <%= inline_svg_tag 'icons/lock.svg', class: 'size-5' %>
+            Close topic
+          </button>
+        <% else %>
+          <!-- Open Reopen Topic Modal Button -->
+          <button data-action="mousedown->modal#open" data-modal-id="reopenTopicModal_<%= topic.id %>" class="dropdown-option">
+            <%= inline_svg_tag 'icons/unlock.svg', class: 'size-5' %>
+            Reopen topic
+          </button>
+        <% end %>
+
+        <!-- Open Delete Topic Modal Button -->
+        <button data-action="mousedown->modal#open" data-modal-id="deleteTopicModal_<%= topic.id %>" class="dropdown-option-destructive">
+          <%= inline_svg_tag 'icons/trash.svg', class: 'size-5' %>
+          Delete topic
+        </button>
+      </div>
+    </div>
+  <% else %>
+    <% if topic.open? %>
+      <div class="my-2 group-first/container:mt-0 group-last/container:mb-0">
+        <% if topic.favorited_by?(current_user) %>
+          <%= button_to unfavorite_team_topic_path(team, topic), method: :patch, class: 'z-0 p-[5px] rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 text-yellow-400' do %>
+            <%= inline_svg_tag 'icons/star-filled.svg', class: 'size-5' %>
+            <span class="sr-only">Unfavorite topic</span>
+          <% end %>
+        <% else %>
+          <%= button_to favorite_team_topic_path(team, topic), method: :patch, class: 'z-0 p-[5px] rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 text-light hover:text-yellow-400' do %>
+            <%= inline_svg_tag 'icons/star.svg', class: 'size-5' %>
+            <span class="sr-only">Favorite topic</span>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<% if current_user.owns?(team) %>
+  <% if topic.open? %>
+    <!-- Edit Topic Modal Backdrop -->
+    <div
+      data-modal-target="backdrop"
+      data-modal-id="editTopicModal_<%= topic.id %>"
+      data-action="mousedown->modal#backdropClose"
+      class="modal-backdrop opacity-0 pointer-events-none"></div>
+
+    <!-- Edit Topic Modal -->
+    <div
+      id="editTopicModal_<%= topic.id %>"
+      role="dialog"
+      aria-label="Edit Topic Form"
+      tabindex="-1"
+      data-modal-target="modal"
+      class="modal opacity-0 scale-75 pointer-events-none"
+    >
+      <div class="flex flex-col space-y-1.5 text-center sm:text-left mb-6">
+        <h2 class="text-lg font-semibold leading-none tracking-tight">Edit Topic</h2>
+      </div>
+
+      <%= render 'form', topic: topic, editing: true %>
+
+      <!-- Close button -->
+      <button data-action="mousedown->modal#close" type="button" data-modal-id="editTopicModal_<%= topic.id %>" class="modal-x-btn">
+        <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
+        <span class="sr-only">Close</span>
+      </button>
+    </div>
+
+    <!-- Close Topic Modal Backdrop -->
+    <div
+      data-modal-target="backdrop"
+      data-modal-id="closeTopicModal_<%= topic.id %>"
+      data-action="mousedown->modal#backdropClose"
+      class="modal-backdrop opacity-0 pointer-events-none"></div>
+
+    <!-- Close Topic Modal -->
+    <div
+      id="closeTopicModal_<%= topic.id %>"
+      role="dialog"
+      aria-label="Close Topic Confirmation"
+      tabindex="-1"
+      data-modal-target="modal"
+      class="modal opacity-0 scale-75 pointer-events-none"
+    >
+      <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+        <h2 class="text-lg font-semibold leading-none tracking-tight">Close Topic?</h2>
+        <p class="text-soft text-sm">Are you sure you want to close the topic <%= topic.title %>? This will prevent team members from sending new messages in this topic.</p>
+      </div>
+
+      <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
+        <button data-action="mousedown->modal#close" data-modal-id="closeTopicModal_<%= topic.id %>" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+        <%= button_to 'Close topic',
+              close_team_topic_path(team, topic),
+              method: :patch,
+              data: { turbo: false },
+              class: 'btn btn-primary font-bold w-full whitespace-nowrap'
+        %>
+      </div>
+
+      <button data-action="mousedown->modal#close" type="button" data-modal-id="closeTopicModal_<%= topic.id %>" class="modal-x-btn">
+        <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
+        <span class="sr-only">Close</span>
+      </button>
+    </div>
+  <% else %>
+    <!-- Reopen Topic Modal Backdrop -->
+    <div
+      data-modal-target="backdrop"
+      data-modal-id="reopenTopicModal_<%= topic.id %>"
+      data-action="mousedown->modal#backdropClose"
+      class="modal-backdrop opacity-0 pointer-events-none"></div>
+
+    <!-- Reopen Topic Modal -->
+    <div
+      id="reopenTopicModal_<%= topic.id %>"
+      role="dialog"
+      aria-label="Reopen Topic Confirmation"
+      tabindex="-1"
+      data-modal-target="modal"
+      class="modal opacity-0 scale-75 pointer-events-none"
+    >
+      <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+        <h2 class="text-lg font-semibold leading-none tracking-tight">Reopen Topic?</h2>
+        <p class="text-soft text-sm">Are you sure you want to reopen the topic <%= topic.title %>? This will allow team members to send new messages in this topic again.</p>
+      </div>
+
+      <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
+        <button data-action="mousedown->modal#close" data-modal-id="reopenTopicModal_<%= topic.id %>" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+        <%= button_to 'Reopen topic',
+              reopen_team_topic_path(team, topic),
+              method: :patch,
+              data: { turbo: false },
+              class: 'btn btn-primary font-bold w-full whitespace-nowrap'
+        %>
+      </div>
+
+      <button data-action="mousedown->modal#close" type="button" data-modal-id="reopenTopicModal_<%= topic.id %>" class="modal-x-btn">
+        <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
+        <span class="sr-only">Close modal</span>
+      </button>
+    </div>
+  <% end %>
+
+  <!-- Delete Topic Modal Backdrop -->
+  <div
+    data-modal-target="backdrop"
+    data-modal-id="deleteTopicModal_<%= topic.id %>"
+    data-action="mousedown->modal#backdropClose"
+    class="modal-backdrop opacity-0 pointer-events-none"></div>
+
+  <!-- Delete Topic Modal -->
+  <div
+    id="deleteTopicModal_<%= topic.id %>"
+    role="dialog"
+    aria-label="Delete Topic Confirmation"
+    tabindex="-1"
+    data-modal-target="modal"
+    class="modal opacity-0 scale-75 pointer-events-none"
+  >
+    <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+      <h2 class="text-lg font-semibold leading-none tracking-tight">Delete Topic?</h2>
+      <p class="text-soft text-sm">Are you sure you want to delete the topic <%= topic.title %>? This action cannot be undone.</p>
+    </div>
+
+    <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
+      <button data-action="mousedown->modal#close" data-modal-id="deleteTopicModal_<%= topic.id %>" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+      <%= button_to 'Delete topic',
+                    team_topic_path(team, topic),
+                    method: :delete,
+                    data: { turbo: false },
+                    class: 'btn btn-destructive font-bold w-full whitespace-nowrap'
+        %>
+    </div>
+
+    <button data-action="mousedown->modal#close" type="button" data-modal-id="deleteTopicModal_<%= topic.id %>" class="modal-x-btn">
+      <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
+      <span class="sr-only">Close</span>
+    </button>
+  </div>
+<% end %>

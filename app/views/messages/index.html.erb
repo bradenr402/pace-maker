@@ -1,0 +1,51 @@
+<% content_for :title, "#{@team.name} • #{@topic.title}" %>
+
+<%= turbo_stream_from "user_#{current_user.id}_topic_#{@topic.id}", data: { controller: 'topic-reader', topic_reader_update_last_read_path_value: update_last_read_team_topic_path(@team, @topic) } %>
+
+<div data-controller="reply-message" class="max-w-3xl mx-auto mt-16 mb-80 md:mb-16">
+  <div class="mb-6 border-b border-slate-200 dark:border-slate-700 sticky top-0 bg-slate-50 dark:bg-slate-900 z-20">
+    <div class="flex items-center justify-between">
+      <%= link_to team_topics_path(@team), class: 'group flex items-center gap-4 pt-4 pb-2 pr-2 btn-link-soft w-max', aria: { label: "Back to #{@team.name} topics" } do %>
+        <%= inline_svg_tag 'icons/chevron-left-bold.svg', class: 'size-4 transition ease-in-out duration-200' %>
+        <div>
+          <p class="font-bold text-normal group-hover:text-soft transition ease-in-out duration-200"><%= @topic.title %></p>
+          <p class="text-xs transition ease-in-out duration-200">Back to topics</p>
+        </div>
+      <% end %>
+      <button type="button" onclick="window.location.reload()" class="p-[5px] rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-slate-200/50 dark:hover:bg-slate-700/50">
+        <%= inline_svg_tag 'icons/reload.svg', class: 'size-4' %>
+        <span class="sr-only">Refresh page</span>
+      </button>
+    </div>
+
+    <%= render 'pinned_message', message: @pinned_message.presence %>
+  </div>
+
+  <div data-controller="pagination scroll" data-pagination-load-more-path-value="<%= load_more_team_topic_messages_path(@team, @topic) %>">
+    <% if @more_messages %>
+      <div class="flex justify-center my-3">
+        <button data-pagination-target="button" data-scroll-target="loadMoreButton" data-action="click->pagination#loadMore" class="btn btn-sm btn-white gap-2">Load more</button>
+        <div data-pagination-target="spinner" class="hidden">
+          <%= inline_svg_tag 'icons/spinner.svg', class: 'size-6 animate-spin' %>
+        </div>
+      </div>
+    <% end %>
+
+    <div id="messages" class="mb-6" data-pagination-target="messages" data-oldest-timestamp="<%= @oldest_timestamp %>">
+      <%= render 'messages_list', objects: @objects, topic: @topic %>
+    </div>
+  </div>
+
+  <div>
+    <% if @topic.open? %>
+      <div id="typing_indicators_<%= @topic.id %>" class="my-3 space-y-1"></div>
+
+      <%= render 'form', message: Message.new(topic: @topic) %>
+    <% else %>
+      <div class="flex flex-col items-center justify-center gap-4 mt-16 text-red-600 dark:text-red-400">
+        <%= inline_svg_tag 'icons/lock.svg', class: 'size-14' %>
+        <p class="text-center">This topic has been closed by the team coach. No further activity is allowed.</p>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -70,12 +70,12 @@ class RunsController < ApplicationController
             turbo_stream.replace("turbo_run_#{@run.id}", partial: 'runs/turbo_run', locals: { run: @run })
           ]
         end
-        format.html { redirect_to @run, success: 'Run was successfully created.' }
+        format.html { redirect_to @run, success: 'Run was successfully updated.' }
       end
     else
       render :new,
              status: :unprocessable_entity,
-             error: 'Run could not be created.'
+             error: 'Run could not be updated.'
 
       respond_to do |format|
         format.turbo_stream do

@@ -39,9 +39,9 @@ class TeamMembership < ApplicationRecord
   end
 
   def mileage_goal_progress
-    Rails.cache.fetch("#{cache_key_with_version}/mileage_goal_progress") do
-      return nil unless mileage_goal?
+    return 0 unless mileage_goal?
 
+    Rails.cache.fetch("#{cache_key_with_version}/mileage_goal_progress") do
       progress = (miles_completed_in_goal / mileage_goal.to_f) * 100.0
 
       [progress, 0.0].max.round(2) # Ensures progess stays above 0%
@@ -57,7 +57,7 @@ class TeamMembership < ApplicationRecord
   def mileage_goal_complete? = mileage_goal_progress >= 100
 
   def long_run_goal_progress
-    return nil unless long_run_goal?
+    return 0 unless long_run_goal?
 
     progress = (long_runs_completed_in_goal / long_run_goal.to_f) * 100.0
 

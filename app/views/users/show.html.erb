@@ -36,7 +36,7 @@
         <span>Teams</span>
       </button>
 
-      <button type="button" id="runsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'runsTab' ? 'btn-tab-active' : '' %>">
+      <button type="button" id="runsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab gap-2 <%= params[:tab] == 'runsTab' ? 'btn-tab-active' : '' %>">
         <%= inline_svg_tag 'icons/runner.svg', class: 'size-3.5 md:size-4.5' %>
         <span>Runs</span>
       </button>

@@ -204,9 +204,10 @@ class TeamsController < ApplicationController
       TeamJoinRequest.find_by(user_id: current_user, team_id: @team)
 
     if ActiveRecord::Base.transaction do
-         join_request.pending! if join_request.present?
+         join_request&.canceled
          team_membership&.destroy
        end
+      Rails.cache.delete([@team, 'members', params[:query]])
       redirect_back fallback_location: @team,
                     success: 'You have successfully left this team.'
     else
@@ -232,6 +233,7 @@ class TeamsController < ApplicationController
     if ActiveRecord::Base.transaction do
          join_request.rejected! && team_membership.destroy
        end
+      Rails.cache.delete([@team, 'members', params[:query]])
       redirect_back fallback_location: team,
                     success:
                       "#{member.default_name} was successfully removed from this team."
@@ -303,6 +305,17 @@ class TeamsController < ApplicationController
       @member.long_runs_in_date_range(@team, @team.season_range).group_by(
         &:date
       )
+  end
+
+  def main_chat
+    @team = Team.find(params[:team_id])
+    main_topic = @team.main_chat_topic
+
+    if main_topic
+      redirect_to team_topic_messages_path(@team, main_topic)
+    else
+      redirect_to team_topics_path(@team), error: 'Main Chat not found.'
+    end
   end
 
   private

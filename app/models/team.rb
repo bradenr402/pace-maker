@@ -15,10 +15,12 @@ class Team < ApplicationRecord
            dependent: :destroy
   has_one_attached :photo
   has_many :team_audits, dependent: :destroy
+  has_many :topics, dependent: :destroy
 
   # Callbacks
   before_validation :convert_empty_string_season_dates_to_nil
   after_update :track_changes
+  after_create :create_main_chat_topic
 
   # Validations
   validates :name, presence: true
@@ -58,6 +60,10 @@ class Team < ApplicationRecord
     team_members = team_members.where.not(id: owner.id) unless include_coach?
     team_members
   end
+
+  def main_chat_topic = topics.find_by(main: true)
+
+  def main_chat_messages = main_chat_topic.messages
 
   private
 
@@ -104,5 +110,9 @@ class Team < ApplicationRecord
       end
     end
     # rubocop:enable Style/HashEachMethods
+  end
+
+  def create_main_chat_topic
+    topics.create!(title: 'Main Chat', main: true)
   end
 end

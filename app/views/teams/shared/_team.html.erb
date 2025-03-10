@@ -1,41 +1,36 @@
-<div class="card">
-  <div class="flex flex-wrap-reverse items-end gap-3">
-    <div class="flex items-center gap-3 flex-1">
-      <%= link_to render('shared/team_photo', team: team, size: :xs, icon_background: :darker), team, data: { turbo: false }, class: 'peer', aria: { label: "View #{team.name}" } %>
-      <div class="flex-1 leading-tight peer-hover:text-indigo-600 dark:peer-hover:text-indigo-500">
-        <%= link_to team.name, team, data: { turbo: false }, class: 'font-bold transition ease-in-out duration-200 hover:text-indigo-600 dark:hover:text-indigo-500' %>
-        <p class="text-soft text-xs">
-          Coach: <%= link_to team.owner.default_name, team_member_path(team, team.owner), data: { turbo: false }, class: 'hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-200' %>
-        </p>
+<%= link_to team, data: { turbo: false }, class: 'block group', aria: { label: "View #{team.name}" } do %>
+  <div class="card">
+    <div class="flex flex-wrap-reverse items-end gap-3">
+      <div class="flex items-center gap-3 flex-1">
+        <%= render('shared/team_photo', team: team, size: :xs, icon_background: :darker) %>
+        <div class="flex-1 leading-tight">
+          <p class="font-bold transition ease-in-out duration-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= team.name %></p>
+          <p class="text-soft text-xs">
+            Coach: <%= team.owner.default_name %>
+          </p>
+        </div>
       </div>
     </div>
 
-    <div class="shrink-0">
-      <%= render 'teams/shared/team_buttons', team: team %>
-    </div>
+    <% season_dates_check = team.season_dates? %>
+    <% show_members_check = show_members && team.any_members_in_common?(current_user) && !current_user.member_of?(team) %>
+
+    <% if season_dates_check || show_members_check %>
+      <div class="mt-4 space-y-2 pt-4 border-t dark:border-slate-700">
+        <% if season_dates_check %>
+          <div class="flex items-start gap-1.5">
+            <%= inline_svg_tag 'icons/calendar.svg', class: 'size-4 text-soft shrink-0' %>
+            <p class="text-soft text-xs">Season: <%= pretty_date(team.season_start_date, month_format: :short, date_style: :absolute) %> &ndash; <%= pretty_date(team.season_end_date, month_format: :short, date_style: :absolute) %></p>
+          </div>
+        <% end %>
+
+        <% if show_members_check %>
+          <div class="flex items-start gap-1.5">
+            <%= inline_svg_tag 'icons/user.svg', class: 'size-4 text-soft shrink-0' %>
+            <p class="text-soft text-xs">Members: <%= list items: team.members_in_common(current_user).map { _1.default_name } %></p>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
   </div>
-
-  <% season_dates_check = team.season_dates? %>
-  <% show_members_check = show_members && team.any_members_in_common?(current_user) && !current_user.member_of?(team) %>
-  <% member_page_check = @user.present? && !@user.owns?(team) && current_page?(user_path(@user)) %>
-
-  <% if season_dates_check || show_members_check || member_page_check %>
-    <div class="mt-4 space-y-2 pt-4 border-t dark:border-slate-700">
-      <% if season_dates_check %>
-        <div class="flex items-start gap-1.5">
-          <%= inline_svg_tag 'icons/calendar.svg', class: 'size-4 text-soft shrink-0' %>
-          <p class="text-soft text-xs">Season: <%= pretty_date(team.season_start_date, month_format: :short, date_style: :absolute) %> &ndash; <%= pretty_date(team.season_end_date, month_format: :short, date_style: :absolute) %></p>
-        </div>
-      <% end %>
-
-      <% if show_members_check %>
-        <div class="flex items-start gap-1.5">
-          <%= inline_svg_tag 'icons/user.svg', class: 'size-4 text-soft shrink-0' %>
-          <p class="text-soft text-xs">Members: <%= list(items: team.members_in_common(current_user).map { |user| link_to(user.default_name, team_member_path(team, user), data: { turbo: false }, class: 'btn-link') }).html_safe %></p>
-        </div>
-      <% end %>
-
-      <%= link_to "View #{@user == current_user ? 'your' : "#{@user.first_name}'s"} member page", team_member_path(team, @user), class: 'btn-link text-xs' if member_page_check %>
-    </div>
-  <% end %>
-</div>
+<% end %>

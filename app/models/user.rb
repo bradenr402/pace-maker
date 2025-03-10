@@ -37,6 +37,8 @@ class User < ApplicationRecord
            dependent: :destroy
   has_one_attached :avatar
   has_many :pinned_pages, dependent: :destroy
+  has_many :messages, dependent: :nullify
+  has_many :user_topics, dependent: :destroy
 
   # Attributes
   attr_writer :login
@@ -120,6 +122,14 @@ class User < ApplicationRecord
     return 'their' unless gender?
 
     male? ? 'his' : 'her'
+  end
+
+  def favorite_topics(team) = Topic.where(team: team.id).select { _1.favorited_by? self }
+
+  def last_read_at(topic)
+    user_topic = user_topics.find_by(topic:)
+
+    user_topic&.last_read_at || user_topic&.topic&.created_at
   end
 
   def formatted_phone_number(format = :national)

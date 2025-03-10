@@ -1,0 +1,2 @@
+module TypingHelper
+end

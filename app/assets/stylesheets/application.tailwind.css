@@ -18,12 +18,24 @@
     @apply text-slate-800 dark:text-slate-100;
   }
 
+  .text-normal-reverse {
+    @apply text-slate-100 dark:text-slate-800;
+  }
+
   .text-light {
     @apply text-slate-700 dark:text-slate-300;
   }
 
+  .text-light-reverse {
+    @apply text-slate-300 dark:text-slate-700;
+  }
+
   .text-soft {
     @apply text-slate-600 dark:text-slate-400;
+  }
+
+  .text-soft-reverse {
+    @apply text-slate-400 dark:text-slate-600;
   }
 
   .text-muted {
@@ -47,7 +59,44 @@
   }
 
   .modal {
-    @apply fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] sm:w-full -translate-x-[calc(50%+1rem)] sm:-translate-x-1/2 -translate-y-1/2 max-w-lg gap-4 bg-slate-50 dark:bg-slate-800 border dark:border-slate-700 p-6 shadow-md transition duration-200 ease-in-out rounded-xl mx-4 sm:mx-0 overflow-y-auto max-h-[calc(100svh-10rem)] mt-0 mb-10 sm:max-h-none sm:mb-0 max-sm:[@media(display-mode:standalone)]:max-h-[calc(100svh-16rem)] max-sm:[@media(display-mode:standalone)]:mb-12;
+    @apply fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] sm:w-full -translate-x-[calc(50%+1rem)] sm:-translate-x-1/2 -translate-y-1/2 max-w-2xl gap-4 bg-white dark:bg-[#131c2f] border border-slate-100 dark:border-slate-800 p-6 shadow-md transition duration-200 ease-in-out rounded-2xl mx-4 sm:mx-0 overflow-y-auto max-h-[calc(100svh-10rem)] mt-0 mb-10 sm:mb-0 max-sm:[@media(display-mode:standalone)]:max-h-[calc(100svh-16rem)] max-sm:[@media(display-mode:standalone)]:mb-12;
+  }
+
+  /* Firefox - Higher specificity */
+  .modal,
+  .modal-large,
+  .modal *,
+  .modal-large * {
+    scrollbar-width: thin;
+    scrollbar-color: #9ca3af white; /* Light mode */
+  }
+
+  html.dark .modal,
+  html.dark .modal-large,
+  html.dark .modal,
+  html.dark .modal-large * {
+    scrollbar-color: #374151 #131c2f; /* Dark mode */
+  }
+
+  /* Chrome, Edge, and Safari */
+  .modal::-webkit-scrollbar,
+  .modal-large::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  .modal::-webkit-scrollbar-track,
+  .modal-large::-webkit-scrollbar-track {
+    @apply bg-white dark:bg-[#131c2f]; /* Overrides global styles */
+  }
+
+  .modal::-webkit-scrollbar-thumb,
+  .modal-large::-webkit-scrollbar-thumb {
+    @apply bg-gray-400 dark:bg-gray-500; /* Thumb styling */
+  }
+
+  .modal::-webkit-scrollbar-thumb:hover,
+  .modal-large::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-500 dark:bg-gray-600;
   }
 
   .modal-backdrop {
@@ -59,7 +108,7 @@
   }
 
   .card {
-    @apply p-4 sm:p-6 rounded-xl bg-white dark:bg-slate-800/60 shadow-md dark:shadow-none border dark:border-slate-700;
+    @apply p-4 sm:p-6 rounded-xl bg-white dark:bg-slate-800/60 shadow-md dark:shadow-none border border-slate-200 dark:border-slate-700;
   }
 
   .dropdown-toggle {
@@ -67,19 +116,19 @@
   }
 
   .dropdown-menu {
-    @apply pointer-events-none absolute z-50 w-max scale-75 rounded-lg bg-white p-1 opacity-0 shadow-md transition duration-200 ease-in-out dark:bg-slate-800 border border-slate-300 dark:border-slate-700 dark:shadow-none flex flex-col gap-1;
+    @apply pointer-events-none absolute z-50 w-max scale-75 min-w-32 rounded-lg bg-white p-1 opacity-0 shadow-md transition duration-200 ease-in-out dark:bg-slate-800 border border-slate-300 dark:border-slate-700 dark:shadow-none flex flex-col gap-1;
   }
 
   .dropdown-option {
-    @apply flex items-center gap-2.5 py-2 px-4 rounded text-sm transition duration-200 ease-in-out w-full hover:bg-slate-200/80 dark:hover:bg-slate-700/80;
+    @apply flex items-center gap-2.5 p-2 rounded text-sm transition duration-200 ease-in-out w-full hover:bg-slate-200/80 dark:hover:bg-slate-700/80;
   }
 
   .dropdown-option-primary {
-    @apply flex items-center gap-2.5 py-2 px-4 rounded text-sm transition duration-200 ease-in-out w-full hover:bg-indigo-100 dark:hover:bg-indigo-900/80 hover:text-indigo-700 dark:hover:text-indigo-200;
+    @apply flex items-center gap-2.5 p-2 rounded text-sm transition duration-200 ease-in-out w-full hover:bg-indigo-100 dark:hover:bg-indigo-900/80 hover:text-indigo-700 dark:hover:text-indigo-200;
   }
 
   .dropdown-option-destructive {
-    @apply flex items-center gap-2.5 py-2 px-4 rounded text-sm transition duration-200 ease-in-out w-full hover:bg-rose-100 dark:hover:bg-rose-900/80 text-rose-600 dark:text-rose-300 hover:text-rose-700 dark:hover:text-rose-200;
+    @apply flex items-center gap-2.5 p-2 rounded text-sm transition duration-200 ease-in-out w-full hover:bg-rose-100 dark:hover:bg-rose-900/80 text-rose-600 dark:text-rose-300 hover:text-rose-700 dark:hover:text-rose-200;
   }
 
   .breadcrumbs {

@@ -1,0 +1,40 @@
+<% last_message_date = nil %>
+<% unread_banner_shown = false %>
+
+<% @objects.each do |object| %>
+  <% if !unread_banner_shown && current_user.last_read_at(topic)&.before?(object.created_at) %>
+    <div id="unread_banner" class="flex items-center my-6 font-semibold">
+      <hr class="flex-grow border-t-[0.5px] border-indigo-600 dark:border-indigo-500">
+      <span class="px-3 text-indigo-600 dark:text-indigo-500 text-sm">Unread messages</span>
+      <hr class="flex-grow border-t-[0.5px] border-indigo-600 dark:border-indigo-500">
+    </div>
+
+    <% unread_banner_shown = true %>
+  <% end %>
+
+  <% if last_message_date != object.created_at.to_date %>
+    <div class="flex items-center my-6 font-semibold" data-date="<%= object.created_at.to_date %>">
+      <hr class="flex-grow border-t-[0.5px] border-slate-400 dark:border-slate-600">
+      <span class="px-3 text-light text-sm">
+        <%= pretty_date(object.created_at, date_style: :relative, include_weekday: true, weekday_format: :short, month_format: :short, include_year: object.created_at.year != Time.current.year) %>
+      </span>
+      <hr class="flex-grow border-t-[0.5px] border-slate-400 dark:border-slate-600">
+    </div>
+
+    <% last_message_date = object.created_at.to_date %>
+  <% end %>
+
+  <% if object.is_a?(Message) %>
+    <% if object.deleted? %>
+        <%= render 'deleted_message', message: object %>
+    <% else %>
+      <%= render object %>
+    <% end %>
+  <% elsif object.is_a?(Topic) %>
+    <%= render 'topic_banner', topic: object %>
+  <% elsif object.is_a?(TeamMembership) %>
+    <div class="flex justify-center" data-timestamp="<%= object.created_at %>">
+      <p class="text-soft text-sm text-center my-1"><%= object.user.default_name %> joined the team!</p>
+    </div>
+  <% end %>
+<% end %>

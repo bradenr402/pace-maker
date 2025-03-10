@@ -16,9 +16,10 @@ export default class extends Controller {
     document.removeEventListener('mousedown', this.closeOnOutsideClick);
   }
 
-  toggle() {
-    if (this.dropdownTarget.classList.contains(...this.hideDropdownClasses))
-      this.show();
+  toggle(event) {
+    event.preventDefault();
+
+    if (this.dropdownTarget.classList.contains(...this.hideDropdownClasses)) this.show();
     else this.hide();
   }
 
@@ -26,16 +27,14 @@ export default class extends Controller {
     this.dropdownTarget.classList.remove(...this.hideDropdownClasses);
     this.dropdownTarget.classList.add(...this.showDropdownClasses);
     this.element.classList.add(...this.dropdownOpenClasses);
-    if (this.hasArrowIconTarget)
-      this.arrowIconTarget.classList.add(...this.iconOpenClasses);
+    if (this.hasArrowIconTarget) this.arrowIconTarget.classList.add(...this.iconOpenClasses);
   }
 
   hide() {
     this.dropdownTarget.classList.remove(...this.showDropdownClasses);
     this.dropdownTarget.classList.add(...this.hideDropdownClasses);
     this.element.classList.remove(...this.dropdownOpenClasses);
-    if (this.hasArrowIconTarget)
-      this.arrowIconTarget.classList.remove(...this.iconOpenClasses);
+    if (this.hasArrowIconTarget) this.arrowIconTarget.classList.remove(...this.iconOpenClasses);
   }
 
   _closeOnOutsideClick(event) {

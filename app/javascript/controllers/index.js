@@ -34,6 +34,9 @@ application.register("filter-gender", FilterGenderController)
 import FormHelpTextController from "./form_help_text_controller"
 application.register("form-help-text", FormHelpTextController)
 
+import FormSubmitController from "./form_submit_controller"
+application.register("form-submit", FormSubmitController)
+
 import FormValidationController from "./form_validation_controller"
 application.register("form-validation", FormValidationController)
 
@@ -48,6 +51,9 @@ application.register("modal", ModalController)
 
 import NotificationsController from "./notifications_controller"
 application.register("notifications", NotificationsController)
+
+import PaginationController from "./pagination_controller"
+application.register("pagination", PaginationController)
 
 import PasswordVisibilityController from "./password_visibility_controller"
 application.register("password-visibility", PasswordVisibilityController)
@@ -67,6 +73,12 @@ application.register("pwa-banner", PwaBannerController)
 import PwaController from "./pwa_controller"
 application.register("pwa", PwaController)
 
+import ReplyMessageController from "./reply_message_controller"
+application.register("reply-message", ReplyMessageController)
+
+import ScrollController from "./scroll_controller"
+application.register("scroll", ScrollController)
+
 import SearchFormController from "./search_form_controller"
 application.register("search-form", SearchFormController)
 
@@ -84,3 +96,9 @@ application.register("theme", ThemeController)
 
 import ToggleCheckboxController from "./toggle_checkbox_controller"
 application.register("toggle-checkbox", ToggleCheckboxController)
+
+import TopicReaderController from "./topic_reader_controller"
+application.register("topic-reader", TopicReaderController)
+
+import TypingController from "./typing_controller"
+application.register("typing", TypingController)

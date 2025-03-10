@@ -18,6 +18,67 @@ module TimeHelper
     end
   end
 
+  def pretty_time(time, options = {})
+    og_time = time
+    time = time.to_time if time.respond_to?(:to_time)
+    raise ArgumentError, "Invalid time: #{og_time.inspect}." unless time.is_a?(Time)
+
+    defaults = {
+      include_seconds: true,
+      time_format: :long,
+      include_meridian: true,
+      leading_zero: false
+    }
+    options = defaults.merge(options)
+
+    time_format = if options[:time_format] == :short
+                    '%H:%M'
+                  else
+                    options[:leading_zero] ? '%I:%M' : '%-I:%M'
+                  end
+
+    time_format += ':%S' if options[:include_seconds]
+    time_format += ' %p' if options[:include_meridian]
+
+    time.strftime(time_format).strip
+  end
+
+  def pretty_datetime(datetime, options = {})
+    og_datetime = datetime
+    datetime = datetime.to_time if datetime.respond_to?(:to_time)
+    raise ArgumentError, "Invalid datetime: #{og_datetime.inspect}." unless datetime.is_a?(Time)
+
+    date_options = options.slice(:include_weekday, :weekday_format, :month_format, :include_year, :year_format, :date_style)
+    time_options = options.slice(:include_seconds, :time_format, :include_meridian, :leading_zero)
+
+    date_str = pretty_date(datetime.to_date, date_options)
+    time_str = pretty_time(datetime, time_options)
+
+    "#{date_str}, #{time_str}"
+  end
+
+  def time_ago_abbr_format(time)
+    distance_in_minutes = ((Time.current - time).abs / 60).round
+    distance_in_seconds = (Time.current - time).abs.round
+
+    case distance_in_minutes
+    when 0..1
+      distance_in_seconds < 60 ? 'now' : '1 min'
+    when 2..59
+      "#{distance_in_minutes} min"
+    when 60..1439
+      "#{(distance_in_minutes / 60).round} h"
+    when 1440..10_079
+      "#{(distance_in_minutes / 1440).round} d"
+    when 10_080..43_199
+      "#{(distance_in_minutes / 10080).round} w"
+    when 43_200..525_599
+      "#{(distance_in_minutes / 43_200).round} mo"
+    else
+      "#{(distance_in_minutes / 525_600).round} y"
+    end
+  end
+
   def precise_time_ago(from_time, options = {})
     options = {
       include_seconds: true,

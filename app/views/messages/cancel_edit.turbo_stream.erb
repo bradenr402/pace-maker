@@ -1,0 +1,7 @@
+<%= turbo_stream.replace (@pin ? 'pinned_message' : dom_id(@message)) do %>
+  <%= render (@pin ? 'pinned_message' : @message), message: @message %>
+<% end %>
+
+<%= turbo_stream.replace 'new_message_form' do %>
+  <%= render 'form', message: Message.new(topic: @topic) %>
+<% end %>

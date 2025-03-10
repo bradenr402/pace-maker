@@ -97,9 +97,9 @@ module TeamCalculations
 
   # Mileage goal progress
   def mileage_goal_progress
-    Rails.cache.fetch("#{cache_key_with_version}/mileage_goal_progress/#{total_miles_in_season}") do
-      return nil unless mileage_goal?
+    return 0 unless mileage_goal?
 
+    Rails.cache.fetch("#{cache_key_with_version}/mileage_goal_progress/#{total_miles_in_season}") do
       progress = (total_miles_in_season / mileage_goal.to_f) * 100.0
 
       [progress, 0.0].max.round(2) # Ensures progess stays above 0%
@@ -118,9 +118,9 @@ module TeamCalculations
 
   # Long run goal progress
   def long_run_goal_progress
-    Rails.cache.fetch("#{cache_key_with_version}/long_run_goal_progress/#{total_long_runs_in_season}") do
-      return nil unless long_run_goal?
+    return 0 unless long_run_goal?
 
+    Rails.cache.fetch("#{cache_key_with_version}/long_run_goal_progress/#{total_long_runs_in_season}") do
       progress = (total_long_runs_in_season / long_run_goal.to_f) * 100.0
 
       [progress, 0.0].max.round(2) # Ensures progess stays above 0%
