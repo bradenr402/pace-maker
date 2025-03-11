@@ -24,7 +24,11 @@
 
   <%= turbo_frame_tag 'runs' do %>
     <% if @runs.present? %>
-      <p class="mt-6 mb-2 text-sm text-light"><%= user == current_user ? 'You' : user.first_name %> went on <%= pluralize(@runs.count, 'run') %> <%= @date_range %>.</p>
+      <% if 'this'.in?(@date_range) %>
+        <p class="mt-6 mb-2 text-sm text-light"><%= user == current_user ? 'You have' : "#{user.first_name} has" %> logged <%= pluralize(@runs.count, 'run') %> <%= @date_range %>.</p>
+      <% else %>
+        <p class="mt-6 mb-2 text-sm text-light"><%= user == current_user ? 'You' : user.first_name %> logged <%= pluralize(@runs.count, 'run') %> <%= @date_range %>.</p>
+      <% end %>
     <% end %>
 
     <div class="mb-10 space-y-4 sm:space-y-6">
