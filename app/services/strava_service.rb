@@ -66,7 +66,7 @@ class StravaService
     loop do
       page_activities = fetch_activities_page(user, url, params)
       activities.concat(page_activities)
-      break if activities.size < 100
+      break if page_activities.size < 100
 
       params[:page] += 1
     end
