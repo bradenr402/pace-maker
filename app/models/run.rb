@@ -12,7 +12,7 @@ class Run < ApplicationRecord
             numericality: {
               greater_than_or_equal_to: 0
             }
-  validate :date_not_in_future
+  validate :date_not_in_future, unless: -> { strava_id.present? }
   validate :duration_requirements
 
   # Attributes
@@ -41,9 +41,7 @@ class Run < ApplicationRecord
     return if duration.blank?
 
     begin
-      unless duration.is_a?(ActiveSupport::Duration)
-        errors.add(:duration, 'Invalid interval format')
-      end
+      errors.add(:duration, 'Invalid interval format') unless duration.is_a?(ActiveSupport::Duration)
     rescue ArgumentError
       errors.add(:duration, 'Invalid duration format')
     end
@@ -51,6 +49,7 @@ class Run < ApplicationRecord
     errors.add(:duration, 'Duration must be positive') if duration.negative?
   end
 
-  def date_not_in_future =
-    (errors.add(:date, 'cannot be in the future.') if date.future?)
+  def date_not_in_future
+    errors.add(:date, 'cannot be in the future.') if date.future?
+  end
 end
