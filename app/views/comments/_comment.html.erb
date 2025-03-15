@@ -9,12 +9,12 @@
       <div class="flex items-center gap-2">
         <span class="font-bold text-xs <%= user == current_user ? 'text-blue-500' : 'text-normal' %>"><%= user == current_user ? 'You' : comment.author_name %></span>
 
-        <span class="rounded-full size-0.5 shrink-0 bg-slate-600 dark:bg-slate-400"></span>
+        <span class="bg-slate-500 rounded-full size-0.5 shrink-0"></span>
         <span class="text-xs text-soft flex items-center gap-2">
           <time class="whitespace-nowrap" datetime="<%= comment.created_at.to_formatted_s(:long) %>"><%= time_ago_custom_format(comment.created_at) %></time>
 
           <% if comment.edited? %>
-            <span class="rounded-full size-0.5 shrink-0 bg-slate-600 dark:bg-slate-400"></span>
+            <span class="bg-slate-500 rounded-full size-0.5 shrink-0"></span>
             <time datetime="<%= comment.updated_at.to_formatted_s(:long) %>"><span class="font-semibold">Edited</span> <span class="whitespace-nowrap"><%= time_ago_custom_format(comment.updated_at) %> ago</span></time>
           <% end %>
         </span>
