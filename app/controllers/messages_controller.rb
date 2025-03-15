@@ -90,7 +90,6 @@ class MessagesController < ApplicationController
     add_breadcrumb 'Message Details', team_topic_messages_path(@team, @topic)
 
     @users_read_list = []
-    @users_liked_list = []
 
     @team.members.each do |user|
       next if user == current_user
@@ -98,14 +97,10 @@ class MessagesController < ApplicationController
       user_topic = @topic.user_topics.find_by(user:)
 
       @users_read_list << user if user_topic&.last_read_at&.after?(@message.created_at)
-
-      like = @message.likes.find_by(user:)
-
-      @users_liked_list << user if like.present?
     end
-
     @users_read_list.sort_by!(&:default_name)
-    @users_liked_list.sort_by!(&:default_name)
+
+    @likes = @message.likes.includes(:user).where.not(user: nil)
   end
 
   def create

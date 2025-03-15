@@ -1,6 +1,8 @@
+<% content_for :title, "Message from #{@message.author_name}" %>
+
 <%= turbo_stream_from "user_#{current_user.id}_topic_#{@topic.id}" %>
 
-<div data-controller="reply-message" class="max-w-3xl mx-auto my-16">
+<div class="max-w-3xl mx-auto my-16">
   <%= link_to team_topic_messages_path(@team, @topic), class: 'group flex items-center gap-3 py-4 pr-2 btn-link-soft w-max', aria: { label: "Back to #{@topic.title}" } do %>
     <%= inline_svg_tag 'icons/chevron-left-bold.svg', class: 'size-4 transition ease-in-out duration-200' %>
 
@@ -28,17 +30,15 @@
           <span class="text-light"><%= pretty_datetime(@message.created_at, date_style: :absolute, include_seconds: false, month_format: :short) %></span>
         </p>
 
-        <% if @message.edited? %>
-          <p class="text-sm">
-            <span class="font-semibold">Edited</span>
-            <span class="text-light"><%= pretty_datetime(@message.updated_at, date_style: :absolute, include_seconds: false, month_format: :short) %></span>
-          </p>
-        <% end %>
-
         <% if @message.deleted? %>
           <p class="text-sm">
             <span class="font-semibold">Deleted</span>
             <span class="text-light"><%= pretty_datetime(@message.deleted_at, date_style: :absolute, include_seconds: false, month_format: :short) %></span>
+          </p>
+        <% elsif @message.edited? %>
+          <p class="text-sm">
+            <span class="font-semibold">Edited</span>
+            <span class="text-light"><%= pretty_datetime(@message.updated_at, date_style: :absolute, include_seconds: false, month_format: :short) %></span>
           </p>
         <% end %>
       </div>
@@ -54,19 +54,23 @@
 
       <div class="card">
         <% @users_read_list.each do |user| %>
-          <div class="flex items-center justify-between py-3 border-b border-slate-200 dark:border-slate-700 last:border-b-0 first:pt-0 last:pb-0">
+          <div class="flex flex-wrap items-center justify-between gap-1.5 py-3 border-b border-slate-200 dark:border-slate-700 last:border-b-0 first:pt-0 last:pb-0">
             <div class="flex items-center gap-2">
               <%= render 'shared/user_photo', user: user, size: :thumb, icon_background: :darker %>
-              <span><%= user.default_name %></span>
+              <span class="font-semibold text-sm"><%= user.default_name %></span>
             </div>
-            <%= inline_svg_tag 'icons/check-circle.svg', class: 'size-3 text-soft' %>
+            <span class="text-soft text-xs inline-flex items-center gap-1.5">
+              <%= inline_svg_tag 'icons/check-circle.svg', class: 'size-3 text-emerald-500' %>
+              <span class="font-semibold text-emerald-500">Last seen</span>
+              <%= pretty_datetime(user.last_read_at(@topic), date_style: :absolute, include_seconds: false, month_format: :short) %>
+            </span>
           </div>
         <% end %>
       </div>
     </div>
   <% end %>
 
-  <% if @users_liked_list.present? %>
+  <% if @likes.exists? %>
     <div class="mb-12">
       <div class="flex items-center gap-2 mb-3">
         <%= inline_svg_tag 'icons/like-filled.svg', class: 'size-4 text-light' %>
@@ -74,13 +78,43 @@
       </div>
 
       <div class="card">
-        <% @users_liked_list.each do |user| %>
-          <div class="flex items-center justify-between py-3 border-b border-slate-200 dark:border-slate-700 last:border-b-0 first:pt-0 last:pb-0">
+        <% @likes.each do |like| %>
+          <% user = like.user %>
+          <% is_self_like = user == current_user %>
+
+          <div class="sm:flex sm:flex-wrap sm:items-center sm:justify-between sm:gap-1.5 max-sm:space-y-1.5 py-3 border-b border-slate-200 dark:border-slate-700 last:border-b-0 first:pt-0 last:pb-0">
             <div class="flex items-center gap-2">
-              <%= render 'shared/user_photo', user: user, size: :thumb, icon_background: :darker %>
-              <span><%= user.default_name %></span>
+              <%= render 'shared/user_photo', user:, size: :thumb, icon_background: :darker %>
+              <div>
+                <% if user == current_user %>
+                  <span class="font-semibold text-sm">You</span>
+                  <% if is_self_like %>
+                    <% messages = [
+                      { text: "I see you’ve treated yourself to a like! Self-love is the best love, isn’t it?", icon: 'heart-filled', icon_color: 'text-pink-500' },
+                      { text: "Pat yourself on the back! You’ve earned that like.", icon: 'medal-filled', icon_color: 'text-amber-500' },
+                      { text: "You’re a self-love champion! Keep those likes coming.", icon: 'star-filled', icon_color: 'text-yellow-500' },
+                      { text: "Who’s got the best taste? You do, liking your own message!", icon: 'like-filled', icon_color: 'text-blue-500' },
+                      { text: "And the Best Self-Hype Award goes to… <i>drumroll…</i> YOU!", icon: 'trophy-filled', icon_color: 'text-amber-500' },
+                      { text: "Nothing says “main character energy” quite like liking your own message." },
+                      { text: 'You just liked your own message? A bold move for a bold soul.' },
+                    ] %>
+
+                    <% selected_message = messages.sample %>
+                    <p class="text-xs text-soft">
+                      <span><%= raw selected_message[:text] %></span>
+                      <%= inline_svg_tag "icons/#{selected_message[:icon]}.svg", class: "inline mb-px ml-1.5 size-3 #{selected_message[:icon_color]}" if selected_message[:icon] %>
+                    </p>
+                  <% end %>
+                <% else %>
+                  <span class="font-semibold text-sm"><%= user.default_name %></span>
+                <% end %>
+              </div>
             </div>
-            <span class="text-soft text-xs"><%= pretty_datetime(user.last_read_at(@topic), date_style: :absolute, include_seconds: false, month_format: :short) %></span>
+            <span class="text-soft text-xs inline-flex items-center gap-1.5">
+              <%= inline_svg_tag 'icons/like-filled.svg', class: 'size-3 text-blue-500' %>
+              <span class="font-semibold text-blue-500">Liked</span>
+              <%= pretty_datetime(like.created_at, date_style: :absolute, include_seconds: false, month_format: :short) %>
+            </span>
           </div>
         <% end %>
       </div>
