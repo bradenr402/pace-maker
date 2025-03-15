@@ -124,7 +124,7 @@
   }
 
   .dropdown-menu {
-    @apply pointer-events-none absolute z-50 w-max scale-75 min-w-32 rounded-lg bg-white p-1 opacity-0 shadow-md transition duration-200 ease-in-out dark:bg-slate-800 border border-slate-300 dark:border-slate-700 dark:shadow-none flex flex-col gap-1;
+    @apply pointer-events-none absolute z-50 w-max scale-75 min-w-32 rounded-lg bg-white p-1 opacity-0 shadow-md transition duration-200 ease-in-out dark:bg-slate-800 border border-slate-300 dark:border-slate-700 dark:shadow-none flex flex-col;
   }
 
   .dropdown-option {
