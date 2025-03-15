@@ -32,7 +32,7 @@
         </div>
       <% end %>
 
-      <div class="relative z-10 p-2 pb-1 sm:p-3 sm:pb-2 rounded-2xl <%= user == current_user ? 'rounded-br-sm' : 'rounded-bl-sm' %> <%= user == current_user ? 'bg-gradient-to-b from-indigo-500 to-indigo-600 selection:bg-white/80 selection:text-indigo-500' : 'bg-slate-100 dark:bg-slate-700 border dark:border-slate-600' %> shadow dark:shadow-none">
+      <div class="relative z-10 p-2 pb-1 sm:p-3 sm:pb-2 rounded-2xl <%= user == current_user ? 'rounded-br-sm' : 'rounded-bl-sm' %> <%= user == current_user ? 'bg-gradient-to-b from-violet-500 to-indigo-600 selection:bg-white/80 selection:text-indigo-500' : 'bg-slate-100 dark:bg-slate-700 border dark:border-slate-600' %> shadow dark:shadow-none">
         <% unless user == current_user %>
           <% text_colors = ['text-rose-500', 'text-orange-500', 'text-amber-500', 'text-emerald-500', 'text-blue-500', 'text-indigo-500'] %>
           <% text_color = text_colors[message.user_id % text_colors.size] %>
