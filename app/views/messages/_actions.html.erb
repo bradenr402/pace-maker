@@ -16,7 +16,7 @@
   class="flex items-center gap-1.5 mt-1 <%= user == current_user || pinned ? 'justify-end' : 'ml-1' %>"
 >
   <% if link %>
-    <%= link_to team_topic_message_path(team, topic, message), class: 'p-2 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-700/40 hover:text-indigo-500 transition duration-200 ease-in-out' do %>
+    <%= link_to team_topic_message_path(team, topic, message), class: 'p-2 rounded-full hover:bg-indigo-100/60 dark:hover:bg-indigo-900/30 hover:text-indigo-500 transition duration-200 ease-in-out' do %>
       <%= inline_svg_tag 'icons/info.svg', class: 'size-4 shrink-0' %>
       <span class="sr-only">View message details</span>
     <% end %>
@@ -31,7 +31,7 @@
       <% pinned_message = topic.messages.find_by(pinned: true) %>
       <% if pinned_message.present? %>
 
-        <button type="button" data-action="mousedown->modal#open" data-modal-id="pinMessage_<%= message.id %>" class="p-2 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-700/40 hover:text-yellow-500 transition duration-200 ease-in-out">
+        <button type="button" data-action="mousedown->modal#open" data-modal-id="pinMessage_<%= message.id %>" class="p-2 rounded-full hover:bg-yellow-100/60 dark:hover:bg-yellow-900/30 hover:text-yellow-500 transition duration-200 ease-in-out">
           <%= inline_svg_tag 'icons/pin.svg', class: 'size-4 shrink-0' %>
           <span class="sr-only">Pin message</span>
         </button>
@@ -69,7 +69,7 @@
           </button>
         </div>
       <% else %>
-        <%= button_to pin_team_topic_message_path(team, topic, message), method: :patch, data: { turbo_stream: true }, class: 'p-2 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-700/40 hover:text-yellow-500 transition duration-200 ease-in-out' do %>
+        <%= button_to pin_team_topic_message_path(team, topic, message), method: :patch, data: { turbo_stream: true }, class: 'p-2 rounded-full hover:bg-yellow-100/60 dark:hover:bg-yellow-900/30 hover:text-yellow-500 transition duration-200 ease-in-out' do %>
           <%= inline_svg_tag 'icons/pin.svg', class: 'size-4 shrink-0' %>
           <span class="sr-only">Pin message</span>
         <% end %>
@@ -80,7 +80,7 @@
   <% if user == current_user && message.editable? %>
     <%= link_to edit_team_topic_message_path(message.team, message.topic, message, pinned:, replies_list:),
                 data: { turbo_stream: true, turbo_frame: @pin ? "pinned_#{dom_id(message)}" : dom_id(message) },
-                class: 'p-2 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-700/40 hover:text-orange-500 transition duration-200 ease-in-out' do
+                class: 'p-2 rounded-full hover:bg-orange-100/60 dark:hover:bg-orange-900/30 hover:text-orange-500 transition duration-200 ease-in-out' do
     %>
       <%= inline_svg_tag 'icons/edit.svg', class: 'size-4 shrink-0' %>
       <span class="sr-only">Edit message</span>
@@ -88,7 +88,7 @@
   <% end %>
 
   <% if (user == current_user && message.deletable?) || current_user.owns?(team) %>
-    <button type="button" data-action="mousedown->modal#open" data-modal-id="deleteMessage_<%= message.id %>" class="p-2 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-700/40 hover:text-rose-500 transition duration-200 ease-in-out">
+    <button type="button" data-action="mousedown->modal#open" data-modal-id="deleteMessage_<%= message.id %>" class="p-2 rounded-full hover:bg-rose-100/60 dark:hover:bg-rose-900/30 hover:text-rose-500 transition duration-200 ease-in-out">
       <%= inline_svg_tag 'icons/trash.svg', class: 'size-4 shrink-0' %>
       <span class="sr-only">Delete message</span>
     </button>

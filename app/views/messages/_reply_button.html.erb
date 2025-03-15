@@ -4,14 +4,14 @@
   <% reply = message.replies.find_by(user: current_user) %>
 
   <% if reply.present? %>
-    <button type="button" data-action="click->reply-message#reply" data-message-id="<%= message.id %>" data-message-user-name="<%= message.user == current_user ? 'yourself' : message.author_name %>" data-message-content="<%= truncate(message.content, length: 100) %>" class="p-2 rounded-full flex items-center gap-1 hover:bg-slate-200/60 dark:hover:bg-slate-700/40 text-emerald-500 transition duration-200 ease-in-out">
-      <%= inline_svg_tag 'icons/reply-filled.svg', class: 'size-4 shrink-0' %>
+    <button type="button" data-action="click->reply-message#reply" data-message-id="<%= message.id %>" data-message-user-name="<%= message.user == current_user ? 'yourself' : message.author_name %>" data-message-content="<%= truncate(message.content, length: 100) %>" class="p-2 rounded-full flex items-center gap-1 hover:bg-emerald-100/60 dark:hover:bg-emerald-900/30 text-emerald-500 transition duration-200 ease-in-out">
+      <%= inline_svg_tag 'icons/reply-filled.svg', class: 'size-4.5 -my-px shrink-0' %>
       <span class="sr-only">Reply to message</span>
       <span class="text-xs font-bold text-emerald-500"><%= message.reply_count %></span>
     </button>
   <% else %>
-    <button type="button" data-action="click->reply-message#reply" data-message-id="<%= message.id %>" data-message-user-name="<%= message.user == current_user ? 'yourself' : message.author_name %>" data-message-content="<%= truncate(message.content, length: 100) %>" class="p-2 rounded-full flex items-center gap-1 hover:bg-slate-200/60 dark:hover:bg-slate-700/40 hover:text-emerald-500 transition duration-200 ease-in-out">
-      <%= inline_svg_tag 'icons/reply.svg', class: 'size-4 shrink-0' %>
+    <button type="button" data-action="click->reply-message#reply" data-message-id="<%= message.id %>" data-message-user-name="<%= message.user == current_user ? 'yourself' : message.author_name %>" data-message-content="<%= truncate(message.content, length: 100) %>" class="p-2 rounded-full flex items-center gap-1 hover:bg-emerald-100/60 dark:hover:bg-emerald-900/30 hover:text-emerald-500 transition duration-200 ease-in-out">
+      <%= inline_svg_tag 'icons/reply.svg', class: 'size-4.5 -my-px shrink-0' %>
       <span class="sr-only">Reply to message</span>
 
       <% if message.reply_count.positive? %>
