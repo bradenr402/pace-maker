@@ -17,7 +17,7 @@ class Message < ApplicationRecord
   after_update_commit :broadcast_deleted, if: -> { deleted_at_changed? && deleted_at.present? }
 
   # Validations
-  validates :content, presence: true, unless: -> { deleted_at.present? }
+  validates :content, presence: true
 
   # Scopes
   scope :active, -> { where(deleted_at: nil) }
