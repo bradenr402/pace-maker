@@ -42,9 +42,9 @@
 
       <%= render 'form', message: Message.new(topic: @topic) %>
     <% else %>
-      <div class="flex flex-col items-center justify-center gap-4 mt-16 text-red-600 dark:text-red-400">
+      <div class="flex flex-col items-center justify-center gap-4 mt-16 text-rose-600 dark:text-rose-400">
         <%= inline_svg_tag 'icons/lock.svg', class: 'size-14' %>
-        <p class="text-center">This topic has been closed by the team coach. No further activity is allowed.</p>
+        <p class="text-center font-semibold">This topic has been closed by the team coach. No further activity is allowed.</p>
       </div>
     <% end %>
   </div>
