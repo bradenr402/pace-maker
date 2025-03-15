@@ -1,3 +1,5 @@
+<% details_view = local_assigns.fetch(:details_view, false) %>
+
 <% if message.present? && message.pinned? %>
   <% link = local_assigns.fetch(:link, true) %>
 
@@ -7,7 +9,7 @@
 
   <div id="pinned_message" class="grid grid-cols-[auto_1fr] gap-x-1.5 mb-1">
     <div class="flex flex-col justify-end">
-      <%= render 'shared/user_photo', user: user, size: :thumb, icon_background: :darker unless user == current_user %>
+      <%= render 'shared/user_photo', user:, size: :thumb, icon_background: :darker unless user == current_user %>
     </div>
 
     <div class="mt-2 w-full relative">
@@ -22,29 +24,31 @@
         </div>
       <% end %>
 
-      <div class="z-10 p-2 pb-1 sm:p-3 sm:pb-2 rounded-2xl <%= user == current_user ? 'rounded-br-sm' : 'rounded-bl-sm' %> border border-blue-300 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
-        <% unless user == current_user %>
-          <p class="font-semibold italic text-xs"><%= message.author_name %></p>
+      <div class="z-10 p-2 sm:p-3 <%= details_view ? '' : 'pb-1 sm:pb-2' %> rounded-2xl <%= user == current_user ? 'rounded-br-sm' : 'rounded-bl-sm' %> border border-blue-300 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
+        <% if user != current_user || details_view %>
+          <p class="font-semibold italic text-xs"><%= user == current_user ? 'You' : message.author_name %></p>
         <% end %>
 
           <div class="text-pretty text-normal">
             <%= format_message(message) %>
           </div>
 
-        <p class="text-xs text-right text-soft">
-          <% if message.edited? %>
-            <time class="whitespace-nowrap" datetime="<%= message.updated_at.to_formatted_s(:long) %>"><span class="font-semibold">Edited</span> <%= pretty_datetime(message.updated_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
-          <% else %>
-            <time class="whitespace-nowrap" datetime="<%= message.created_at.to_formatted_s(:long) %>"><%= pretty_datetime(message.created_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
-          <% end %>
-        </p>
+        <% unless details_view %>
+          <p class="text-xs text-right text-soft">
+            <% if message.edited? %>
+              <time class="whitespace-nowrap" datetime="<%= message.updated_at.to_formatted_s(:long) %>"><span class="font-semibold">Edited</span> <%= pretty_datetime(message.updated_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
+            <% else %>
+              <time class="whitespace-nowrap" datetime="<%= message.created_at.to_formatted_s(:long) %>"><%= pretty_datetime(message.created_at, date_style: :relative, include_seconds: false, month_format: :short) %></time>
+            <% end %>
+          </p>
+        <% end %>
       </div>
     </div>
 
     <div></div>
 
     <% if topic.open? %>
-      <%= render 'messages/actions', message: message, current_user: current_user, pinned: true, link: link %>
+      <%= render 'messages/actions', message:, current_user:, pinned: true, link: %>
     <% else %>
       <div class="h-2"></div>
     <% end %>

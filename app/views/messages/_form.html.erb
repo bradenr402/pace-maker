@@ -3,7 +3,7 @@
 
 <div id="new_message_form">
   <%= form_with(model: message, url: team_topic_messages_path(team, topic), id: 'messageForm', data: { controller: 'form-submit typing', form_submit_target: 'form', typing_user_id_value: current_user.id, typing_typing_path_value: team_topic_typing_path(team, topic) }) do |form| %>
-    <%= form.hidden_field :parent_id, value: nil, data: { reply_message_target: 'parent' } %>
+    <%= form.hidden_field :parent_id, value: params[:parent_id] || nil, data: { reply_message_target: 'parent' } %>
 
     <div class="hidden mb-2" data-reply-message-target="replyMessage">
       <div class="flex items-center gap-1 text-soft">

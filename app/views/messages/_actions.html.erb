@@ -16,7 +16,7 @@
   class="flex items-center gap-1.5 mt-1 <%= user == current_user || pinned ? 'justify-end' : 'ml-1' %>"
 >
   <% if link %>
-    <%= link_to team_topic_message_path(team, topic, message), class: 'p-2 rounded-full hover:bg-indigo-100/60 dark:hover:bg-indigo-900/30 hover:text-indigo-500 transition duration-200 ease-in-out' do %>
+    <%= link_to team_topic_message_path(team, topic, message), data: { turbo: false }, class: 'p-2 rounded-full hover:bg-indigo-100/60 dark:hover:bg-indigo-900/30 hover:text-indigo-500 transition duration-200 ease-in-out' do %>
       <%= inline_svg_tag 'icons/info.svg', class: 'size-4 shrink-0' %>
       <span class="sr-only">View message details</span>
     <% end %>
@@ -24,7 +24,7 @@
 
   <%= render 'messages/like_button', message:, current_user:, pinned: %>
 
-  <%= render('messages/reply_button', message:, current_user:, pinned:) unless replies_list %>
+  <%= render('messages/reply_button', message:, current_user:, pinned:, details_view:) unless replies_list %>
 
   <% if current_user.owns?(team) && !details_view && !replies_list %>
     <% unless message.pinned? %>

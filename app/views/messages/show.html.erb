@@ -17,29 +17,33 @@
 
     <div class="card">
       <% if @message.deleted? %>
-        <%= render 'deleted_message', message: @message, link: false %>
+        <%= render 'deleted_message', message: @message, link: false, details_view: true %>
       <% elsif @message.pinned? %>
-        <%= render 'pinned_message', message: @message, link: false %>
+        <%= render 'pinned_message', message: @message, link: false, details_view: true %>
       <% else %>
         <%= render @message, link: false, details_view: true %>
       <% end %>
 
       <div class="mt-3">
-        <p class="text-sm">
-          <span class="font-semibold">Sent</span>
-          <span class="text-light"><%= pretty_datetime(@message.created_at, date_style: :absolute, include_seconds: false, month_format: :short) %></span>
-        </p>
+        <span class="text-soft text-sm flex items-center gap-1.5">
+          <%= inline_svg_tag 'icons/arrow-up.svg', class: 'size-3.5 -mr-0.5 -my-px text-blue-500' %>
+          <span class="font-semibold text-blue-500">Sent</span>
+          <%= pretty_datetime(@message.created_at, date_style: :absolute, include_seconds: false, month_format: :short) %>
+        </span>
 
         <% if @message.deleted? %>
-          <p class="text-sm">
-            <span class="font-semibold">Deleted</span>
-            <span class="text-light"><%= pretty_datetime(@message.deleted_at, date_style: :absolute, include_seconds: false, month_format: :short) %></span>
-          </p>
+          <span class="text-soft text-sm flex items-center gap-1.5">
+            <%= inline_svg_tag 'icons/trash-filled.svg', class: 'size-3 text-red-500' %>
+            <span class="font-semibold text-red-500">Deleted</span>
+            <%= pretty_datetime(@message.deleted_at, date_style: :absolute, include_seconds: false, month_format: :short) %>
+          </span>
+
         <% elsif @message.edited? %>
-          <p class="text-sm">
-            <span class="font-semibold">Edited</span>
-            <span class="text-light"><%= pretty_datetime(@message.updated_at, date_style: :absolute, include_seconds: false, month_format: :short) %></span>
-          </p>
+          <span class="text-soft text-sm flex items-center gap-1.5">
+            <%= inline_svg_tag 'icons/edit-filled.svg', class: 'size-3.5 text-orange-500' %>
+            <span class="font-semibold text-orange-500">Edited</span>
+            <%= pretty_datetime(@message.updated_at, date_style: :absolute, include_seconds: false, month_format: :short) %>
+          </span>
         <% end %>
       </div>
     </div>

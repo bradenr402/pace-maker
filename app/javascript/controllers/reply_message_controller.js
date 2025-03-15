@@ -4,12 +4,19 @@ import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
   static targets = ['parent', 'replyMessage', 'messageUserName', 'messageContent', 'input'];
 
+  connect() {
+    if (this.parentTarget.value) {
+      const button = document.querySelector(`[data-message-id="${this.parentTarget.value}"]`);
+      button.click();
+    }
+  }
+
   reply(event) {
     const button = event.currentTarget;
     const messageId = button.dataset.messageId;
 
     this.parentTarget.value = messageId;
-    this.replyMessageTarget.classList.remove('hidden')
+    this.replyMessageTarget.classList.remove('hidden');
     this.messageUserNameTarget.textContent = button.dataset.messageUserName;
     this.messageContentTarget.textContent = button.dataset.messageContent;
     this.inputTarget.focus();
