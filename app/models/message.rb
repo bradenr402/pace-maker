@@ -28,6 +28,8 @@ class Message < ApplicationRecord
 
   def deletable? = created_at.after?(15.minutes.ago) && topic.open?
 
+  def soft_delete = update(content: Message.deleted_text, deleted_at: Time.current, pinned: false)
+
   def editable? = created_at.after?(60.minutes.ago) && topic.open? && (!pinned? || user.owns?(team))
 
   def unpin! = update!(pinned: false)

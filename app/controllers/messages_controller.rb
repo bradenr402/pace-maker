@@ -173,7 +173,7 @@ class MessagesController < ApplicationController
       return redirect_to team_topic_messages_path(@team, @topic), alert: 'You cannot delete this message.'
     end
 
-    if @message.update(content: Message.deleted_text, deleted_at: Time.current, pinned: false)
+    if @message.soft_delete
       respond_to do |format|
         format.turbo_stream { flash.now[:success] = 'Message deleted.' }
         format.html { redirect_to team_topic_messages_path(@team, @topic), success: 'Message deleted.' }
