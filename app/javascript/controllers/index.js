@@ -103,6 +103,9 @@ application.register("theme", ThemeController)
 import ToggleCheckboxController from "./toggle_checkbox_controller"
 application.register("toggle-checkbox", ToggleCheckboxController)
 
+import ToggleRepliesController from "./toggle_replies_controller"
+application.register("toggle-replies", ToggleRepliesController)
+
 import TopicReaderController from "./topic_reader_controller"
 application.register("topic-reader", TopicReaderController)
 

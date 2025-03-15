@@ -1,0 +1,17 @@
+<div id="<%= dom_id(comment) %>" class="my-6">
+  <%= form_with(model: comment, url: comment_path(comment), method: :put, data: { controller: 'form-submit', form_submit_target: 'form' }) do |form| %>
+    <div class="flex items-center justify-end gap-3">
+      <%= link_to cancel_edit_comment_path(comment), data: { turbo_stream: true, turbo_frame: dom_id(comment) }, class: 'btn btn-dark btn-muted p-2 ml-2 rounded-full grid place-items-center' do %>
+        <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-6' %>
+        <span class="sr-only">Cancel</span>
+      <% end %>
+
+      <%= form.text_area :content, value: comment.content, class: 'form-textarea grow rounded-t-2xl rounded-bl-2xl', autofocus: true, data: { controller: 'autogrow', form_submit_target: 'input', action: 'input->autogrow#grow keydown.ctrl+enter@window->form-submit#submit keydown.meta+enter@window->form-submit#submit' } %>
+
+      <%= form.button type: 'submit', class: 'btn btn-primary p-2 rounded-full grid place-items-center' do %>
+        <%= inline_svg_tag 'icons/check.svg', class: 'size-6' %>
+        <span class="sr-only">Save</span>
+      <% end %>
+    </div>
+  <% end %>
+</div>

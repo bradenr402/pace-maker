@@ -90,7 +90,7 @@ def seed_runs_for_user(user)
         user:,
         distance: rand(1.0..26.2).round(2),
         date: Date.today - i,
-        comments: [
+        notes: [
           'Great run!',
           'Feeling tired',
           'Personal best!',
@@ -107,7 +107,7 @@ def seed_runs_for_user(user)
         user:,
         distance: rand(1.0..26.2).round(2),
         date: Date.today - rand(30),
-        comments: [
+        notes: [
           'Great run!',
           'Feeling tired',
           'Personal best!',
@@ -173,7 +173,7 @@ puts 'Creating runs for admin user...'
     user: me,
     distance: rand(1.0..26.2).round(2),
     date: Date.today - rand(30),
-    comments: [
+    notes: [
       'Great run!',
       'Feeling tired',
       'Personal best!',

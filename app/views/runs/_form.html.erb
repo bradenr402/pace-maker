@@ -1,6 +1,9 @@
 <% modal_style_buttons = local_assigns.fetch(:modal_style_buttons, false) %>
 
 <%= form_with model: run, data: { controller: 'form-validation calculate-pace' }, html: { novalidate: true, turbo_frame: 'run_modal' } do |form| %>
+  <!-- Hidden fields to ensure that unchecked checkboxes submit 'false' -->
+  <%= hidden_field_tag 'run[allow_comments]', 'false' %>
+
   <%= render 'shared/error_messages', resource: run %>
 
   <div class="form-group">
@@ -63,17 +66,28 @@
   </div>
 
   <div class="form-group">
-    <%= form.label :comments, class: 'form-label' do %>
-      <p> Any additional comments?
+    <%= form.label :notes, class: 'form-label' do %>
+      <p> Any additional notes?
         <span class="help-text">(optional)</span>
       </p>
     <% end %>
-    <%= form.text_area :comments, placeholder: 'Add comments...', class: 'form-input', data: { controller: 'autogrow', action: 'input->autogrow#grow' } %>
+    <%= form.text_area :notes, placeholder: 'Add notes...', class: 'form-input', data: { controller: 'autogrow', action: 'input->autogrow#grow' } %>
   </div>
+
+    <div class="form-group flex gap-x-2.5">
+      <div class="form-input-toggle shrink-0" data-controller="toggle-checkbox" data-action="mousedown->toggle-checkbox#toggle">
+        <span class="form-input-toggle-switch"></span>
+        <%= form.check_box :allow_comments, { checked: run.allow_comments?, class: 'sr-only', data: { toggle_checkbox_target: 'checkbox' } }, true, false %>
+      </div>
+      <div>
+        <%= form.label :allow_comments, 'Enable comments?', class: 'select-none text-slate-700 dark:text-slate-300' %>
+        <p class="my-1 help-text">This allows users to post comments on this run.</p>
+      </div>
+    </div>
 
   <% if modal_style_buttons %>
     <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-      <button data-action="mousedown->modal#close" data-modal-id="<%= form.object.new_record? ? 'newRunModal' : 'editRunModal' %>" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+      <button data-action="mousedown->modal#close" data-modal-id="<%= form.object.new_record? ? 'newRunModal' : "editRunModal_#{run.id}" %>" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
       <%= form.submit  form.object.new_record? ? 'Create run' : 'Update run', class: 'btn btn-primary w-full sm:w-auto', data: { action: 'mousedown->modal#close' } %>
     </div>
   <% else %>

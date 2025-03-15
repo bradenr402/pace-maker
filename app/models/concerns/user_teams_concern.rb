@@ -112,6 +112,8 @@ module UserTeamsConcern
 
   def any_teams_in_common?(other_user) = teams_in_common(other_user).any?
 
+  def no_teams_in_common?(other_user) = teams_in_common(other_user).blank?
+
   def owned_teams_in_common(other_user) =
     Rails.cache.fetch([cache_key_with_version, other_user.cache_key_with_version, 'owned_teams_in_common']) do
       owned_teams.select { |team| other_user.teams.include?(team) }

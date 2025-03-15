@@ -1,0 +1,7 @@
+<%= turbo_stream.replace dom_id(@comment.top_comment) do %>
+  <%= render 'comments/comment', comment: @comment.top_comment %>
+<% end %>
+
+<%= turbo_stream.replace 'new_comment_form' do %>
+  <%= render 'comments/new_form', comment: @comment.parent_run.comments.new %>
+<% end %>

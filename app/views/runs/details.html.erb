@@ -1,0 +1,69 @@
+<% content_for :title, 'Run Details' %>
+
+<div class="max-w-3xl mx-auto my-16">
+    <%= link_to run_path(@run), class: 'group flex items-center gap-3 py-4 pr-2 btn-link-soft w-max', aria: { label: 'Back to Run' } do %>
+      <%= inline_svg_tag 'icons/chevron-left-bold.svg', class: 'size-4 transition ease-in-out duration-200' %>
+
+      <span class="text-sm transition ease-in-out duration-200">Back to Run</span>
+    <% end %>
+
+  <div class="mb-12">
+    <div class="flex items-center gap-2 mb-3">
+      <%= inline_svg_tag 'icons/runner.svg', class: 'size-4 text-light' %>
+      <h2 class="font-semibold">Run Details</h2>
+    </div>
+
+    <%= render 'turbo_run', run: @run, team: local_assigns[:team] %>
+  </div>
+
+  <% if @likes.exists? %>
+    <div class="mb-12">
+      <div class="flex items-center gap-2 mb-3">
+        <%= inline_svg_tag 'icons/heart-filled.svg', class: 'size-4 text-light' %>
+        <h2 class="font-semibold">Liked by</h2>
+      </div>
+
+      <div class="card">
+        <% @likes.each do |like| %>
+          <% user = like.user %>
+          <% is_self_like = user == current_user %>
+
+          <div class="sm:flex sm:flex-wrap sm:items-center sm:justify-between sm:gap-1.5 max-sm:space-y-1.5 py-3 border-b border-slate-200 dark:border-slate-700 last:border-b-0 first:pt-0 last:pb-0">
+            <div class="flex items-center gap-2">
+              <%= render 'shared/user_photo', user:, size: :thumb, icon_background: :darker %>
+              <div>
+                <% if user == current_user %>
+                  <span class="font-semibold text-sm">You</span>
+                  <% if is_self_like %>
+                    <% messages = [
+                      { text: "I see you’ve treated yourself to a like! Self-love is the best love, isn’t it?", icon: 'heart-filled', icon_color: 'text-pink-500' },
+                      { text: "Confidence level: 100%", icon: 'lightning-filled', icon_color: 'text-yellow-500' },
+                      { text: "Pat yourself on the back! You’ve earned that like.", icon: 'medal-filled', icon_color: 'text-amber-500' },
+                      { text: "You’re a self-love champion! Keep those likes coming.", icon: 'star-filled', icon_color: 'text-yellow-500' },
+                      { text: "And the Best Self-Hype Award goes to… <i>drumroll…</i> YOU!", icon: 'trophy-filled', icon_color: 'text-amber-500' },
+                      { text: 'The “Like” button wasn’t ready for this level of self-assurance.', icon: 'fire-filled', icon_color: 'text-orange-500' },
+                      { text: 'You deserve it, champ. Never forget who your real MVP is.', icon: 'trophy-filled', icon_color: 'text-amber-500' },
+                    ] %>
+
+                    <% selected_message = messages.sample %>
+                    <p class="text-xs text-soft">
+                      <span><%= raw selected_message[:text] %></span>
+                      <%= inline_svg_tag "icons/#{selected_message[:icon]}.svg", class: "inline mb-px ml-1.5 size-3 #{selected_message[:icon_color]}" if selected_message[:icon] %>
+                    </p>
+                  <% end %>
+                <% else %>
+                  <span class="font-semibold text-sm"><%= user.default_name %></span>
+                <% end %>
+              </div>
+            </div>
+            <span class="text-soft text-xs inline-flex items-center gap-1.5">
+              <%= inline_svg_tag 'icons/heart-filled.svg', class: 'size-3 text-pink-500' %>
+              <span class="font-semibold text-pink-500">Liked</span>
+              <%= pretty_datetime(like.created_at, date_style: :absolute, include_seconds: false, month_format: :short) %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

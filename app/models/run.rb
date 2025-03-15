@@ -4,6 +4,8 @@ class Run < ApplicationRecord
 
   # Associations
   belongs_to :user
+  has_many :comments, as: :commentable, dependent: :destroy
+  has_many :likes, as: :likeable, dependent: :destroy
 
   # Validations
   validates :date, presence: true

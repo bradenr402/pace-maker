@@ -13,6 +13,8 @@ class Like < ApplicationRecord
   private
 
   def broadcast_like_update
+    return unless likeable_type == 'Message'
+
     message = likeable
     topic = message.topic
 

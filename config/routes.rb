@@ -26,7 +26,36 @@ Rails.application.routes.draw do
   end
 
   # Runs
-  resources :runs, except: %i[index]
+  resources :runs, except: %i[index] do
+    member do
+      post :enable_comments
+      post :disable_comments
+    end
+
+    # Liking runs
+    resources :likes, only: %i[create destroy], module: :runs
+
+    # Commenting on runs
+    resources :comments, only: %i[create], module: :runs do
+      get :load_more, on: :collection
+    end
+  end
+  get 'runs/:id/details', to: 'runs#details', as: 'run_details'
+
+  # Comments
+  resources :comments, only: %i[show edit update destroy] do
+    member do
+      get :cancel_edit
+      get :reply
+      get :cancel_reply
+    end
+
+    # Liking comments
+    resources :likes, only: %i[create destroy], module: :comments
+
+    # Commenting on comments
+    resources :comments, only: %i[create], module: :comments
+  end
 
   # Users & Settings
   resources :users, only: %i[show] do

@@ -10,7 +10,7 @@ class StravaService
       run.date = Date.parse(activity['start_date'])
       run.distance = meters_to_miles(activity['distance'])
       run.duration = ActiveSupport::Duration.build(activity['moving_time'])
-      run.comments = activity['description']
+      run.notes = activity['description']
       run.strava_id = activity['id']
       run.strava_url = "https://www.strava.com/activities/#{activity['id']}"
       run.save!
@@ -27,7 +27,7 @@ class StravaService
     run.date = Date.parse(activity['start_date'])
     run.distance = meters_to_miles(activity['distance'])
     run.duration = ActiveSupport::Duration.build(activity['moving_time'])
-    run.comments = activity['description']
+    run.notes = activity['description']
     run.strava_id = activity['id']
     run.strava_url = "https://www.strava.com/activities/#{activity['id']}"
     run.save!

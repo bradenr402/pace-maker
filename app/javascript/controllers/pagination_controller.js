@@ -2,8 +2,8 @@ import { Controller } from '@hotwired/stimulus';
 
 // Connects to data-controller="pagination"
 export default class extends Controller {
-  static targets = ['messages', 'button', 'spinner'];
-  static values = { loadMorePath: String };
+  static targets = ['container', 'button', 'spinner'];
+  static values = { loadMorePath: String, insertion: { type: String, default: 'afterbegin' } };
 
   connect() {
     this.scrollToUnread();
@@ -16,7 +16,7 @@ export default class extends Controller {
     this.showSpinner();
 
     const url = new URL(this.loadMorePathValue, window.location.origin);
-    url.searchParams.set('oldest_message_timestamp', this.messagesTarget.dataset.oldestTimestamp);
+    url.searchParams.set('oldest_timestamp', this.containerTarget.dataset.oldestTimestamp);
 
     fetch(url.toString(), {
       headers: {
@@ -34,17 +34,17 @@ export default class extends Controller {
         dateMarkers.forEach((marker) => {
           const date = marker.dataset.date;
 
-          const existingMarker = this.messagesTarget.querySelector(`[data-date="${date}"]`);
+          const existingMarker = this.containerTarget.querySelector(`[data-date="${date}"]`);
 
           if (existingMarker && tempDiv.querySelector(`[data-date="${date}"]`)) {
             existingMarker.remove();
           }
         });
 
-        this.messagesTarget.insertAdjacentHTML('afterbegin', tempDiv.innerHTML);
-        this.messagesTarget.dataset.oldestTimestamp = data.oldest_timestamp;
+        this.containerTarget.insertAdjacentHTML(this.insertionValue, tempDiv.innerHTML);
+        this.containerTarget.dataset.oldestTimestamp = data.oldest_timestamp;
 
-        if (data.more_messages) {
+        if (data.more_data) {
           this.showButton();
           this.hideSpinner();
         } else {
@@ -59,10 +59,13 @@ export default class extends Controller {
     const unreadBanner = document.getElementById('unread_banner');
     const offset = 50;
 
-    if (unreadBanner) unreadBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    else form.scrollIntoView({ behavior: 'smooth' });
-
-    window.scrollBy(0, -offset);
+    if (unreadBanner) {
+      unreadBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      window.scrollBy(0, -offset);
+    } else if (form) {
+      form.scrollIntoView({ behavior: 'smooth' });
+      window.scrollBy(0, -offset);
+    }
   }
 
   showButton() {

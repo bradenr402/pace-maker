@@ -31,7 +31,7 @@
       </div>
     <% end %>
 
-    <div id="messages" class="mb-6" data-pagination-target="messages" data-oldest-timestamp="<%= @oldest_timestamp %>">
+    <div id="messages" class="mb-6" data-pagination-target="container" data-oldest-timestamp="<%= @oldest_timestamp %>">
       <%= render 'messages_list', objects: @objects, topic: @topic %>
     </div>
   </div>

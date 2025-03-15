@@ -54,7 +54,7 @@ class MessagesController < ApplicationController
 
   def load_more
     # Retrieve the timestamp of the oldest message from the front-end
-    end_timestamp = params[:oldest_message_timestamp]
+    end_timestamp = params[:oldest_timestamp]
 
     # Prepare the base query for fetching messages older than the given timestamp
     base_query = @topic.messages.where('created_at < ?', end_timestamp).order(created_at: :desc)
@@ -79,7 +79,7 @@ class MessagesController < ApplicationController
                end
 
     html = render_to_string(partial: 'messages/messages_list', locals: { objects: @objects, topic: @topic })
-    render json: { html:, more_messages: @more_messages, oldest_timestamp: @oldest_timestamp }
+    render json: { html:, more_data: @more_messages, oldest_timestamp: @oldest_timestamp }
   end
 
   def show

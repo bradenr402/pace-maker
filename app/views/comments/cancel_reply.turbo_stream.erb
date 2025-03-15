@@ -1,0 +1,5 @@
+<%= turbo_stream.replace 'new_comment_form' do %>
+  <%= render 'comments/new_form', comment: @comment.parent_run.comments.new %>
+<% end %>
+
+<%= turbo_stream.remove "reply_comment_form" %>

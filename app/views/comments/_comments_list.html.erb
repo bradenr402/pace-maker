@@ -1,0 +1,9 @@
+<% comments.each do |comment| %>
+  <% level ||= comment.level %>
+
+  <% if comment.deleted? %>
+  <%= render 'comments/deleted_comment', comment:, level: %>
+  <% else %>
+  <%= render 'comments/comment', comment:, level: %>
+  <% end %>
+<% end %>

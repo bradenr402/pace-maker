@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
 
   def add_breadcrumb(name, url = '') = @breadcrumbs << { name:, url: }
 
+  def prepend_breadcrumb(name, url = '') = @breadcrumbs.prepend({ name:, url: })
+
   private
 
   def set_breadcrumbs = @breadcrumbs = []

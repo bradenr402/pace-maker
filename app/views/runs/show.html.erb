@@ -1,5 +1,39 @@
-<% content_for :title, "Run • #{format_date(@run.date)}" %>
+<% content_for :title, "Run • #{@run.user.default_name}" %>
 
 <div class="max-w-3xl mx-auto my-16">
   <%= render 'turbo_run', run: @run, team: local_assigns[:team] %>
+
+  <div class="pb-4 mt-10 mb-6 border-b dark:border-slate-700 flex items-center gap-6">
+    <h2 class="subheading">Comments</h2>
+  </div>
+
+  <% if current_user.no_teams_in_common?(@run.user) %>
+    <div class="flex flex-col items-center justify-center gap-4 my-16 text-rose-600 dark:text-rose-400">
+      <%= inline_svg_tag 'icons/lock.svg', class: 'size-14' %>
+      <p class="text-center font-semibold">You can only comment on this run if you&#8217;re part of at least one team with this user.</p>
+    </div>
+  <% elsif @run.allow_comments? || @run.user == current_user %>
+    <%= render 'comments/new_form', comment: @run.comments.new, run: @run %>
+    <%= render 'locked_comments_notice', locked: !@run.allow_comments? %>
+  <% else %>
+    <div class="flex flex-col items-center justify-center gap-4 my-16 text-rose-600 dark:text-rose-400">
+      <%= inline_svg_tag 'icons/lock.svg', class: 'size-14' %>
+      <p class="text-center font-semibold"><%= @run.user.default_name %> has disabled comments on this run.</p>
+    </div>
+  <% end %>
+
+  <div data-controller="pagination" data-pagination-insertion-value="beforeend" data-pagination-load-more-path-value="<%= load_more_run_comments_path(@run) %>" class="mt-6">
+    <div id="run_comments" class="mb-6" data-pagination-target="container" data-oldest-timestamp="<%= @oldest_timestamp %>">
+      <%= render 'comments/comments_list', comments: @comments %>
+    </div>
+
+    <% if @more_comments %>
+      <div class="flex justify-center my-3">
+        <button data-pagination-target="button" data-action="click->pagination#loadMore" class="btn btn-sm btn-white gap-2">Show more comments</button>
+        <div data-pagination-target="spinner" class="hidden">
+          <%= inline_svg_tag 'icons/spinner.svg', class: 'size-6 animate-spin' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>

@@ -1,11 +1,29 @@
 class RunsController < ApplicationController
+  before_action :set_run, only: %i[show details edit update destroy enable_comments disable_comments]
   before_action :authenticate_user!
-  before_action :set_run, only: %i[show edit update destroy]
+  before_action :authorize_owner!, only: %i[edit update destroy enable_comments disable_comments]
 
   def show
     add_breadcrumb @run.user.default_name, user_path(@run.user)
     add_breadcrumb 'Runs', user_path(@run.user, tab: 'runsTab')
     add_breadcrumb "#{@run.distance} mi run by #{@run.user.default_name}", run_path(@run)
+
+    @comments = @run.comments.active
+                    .order(created_at: :desc)
+                    .limit(10)
+                    .includes(:user, :likes, { comments: [:user, :likes, { comments: %i[user likes] }] })
+
+    @oldest_timestamp = @comments.last&.created_at
+    @more_comments = @run.comments.where('created_at < ?', @oldest_timestamp).exists?
+  end
+
+  def details
+    add_breadcrumb @run.user.default_name, user_path(@run.user)
+    add_breadcrumb 'Runs', user_path(@run.user, tab: 'runsTab')
+    add_breadcrumb "#{@run.distance} mi run by #{@run.user.default_name}", run_path(@run)
+    add_breadcrumb 'Run Details', run_details_path(@run)
+
+    @likes = @run.likes.includes(:user).where.not(user: nil)
   end
 
   def new
@@ -65,9 +83,22 @@ class RunsController < ApplicationController
           flash.now[:success] = 'Run was successfully updated.'
           render turbo_stream: [
             turbo_stream.update('flash', partial: 'shared/flash'),
-            turbo_stream.replace('run_modal', partial: 'runs/form_modal',
-                                              locals: { run: @run, modal_style_buttons: true }),
-            turbo_stream.replace("turbo_run_#{@run.id}", partial: 'runs/turbo_run', locals: { run: @run })
+            turbo_stream.replace(
+              'run_modal',
+              partial: 'runs/form_modal',
+              locals: { run: @run, modal_style_buttons: true }
+            ),
+            turbo_stream.replace(
+              "turbo_run_#{@run.id}",
+              partial: 'runs/turbo_run',
+              locals: { run: @run, details_view: true }
+            ),
+
+            turbo_stream.replace(
+              'locked_comments_notice',
+              partial: 'runs/locked_comments_notice',
+              locals: { locked: !@run.allow_comments? }
+            )
           ]
         end
         format.html { redirect_to @run, success: 'Run was successfully updated.' }
@@ -82,8 +113,11 @@ class RunsController < ApplicationController
           flash.now[:error] = 'Run could not be updated.'
           render turbo_stream: [
             turbo_stream.update('flash', partial: 'shared/flash'),
-            turbo_stream.replace('run_modal', partial: 'runs/form_modal',
-                                              locals: { run: @run, modal_style_buttons: true }),
+            turbo_stream.replace(
+              'run_modal',
+              partial: 'runs/form_modal',
+              locals: { run: @run, modal_style_buttons: true }
+            ),
             turbo_stream.replace("turbo_run_#{@run.id}", partial: 'runs/turbo_run', locals: { run: @run })
           ]
         end
@@ -100,6 +134,26 @@ class RunsController < ApplicationController
     end
   end
 
+  def enable_comments
+    if @run.update(allow_comments: true)
+      flash[:success] = 'Comments have been enabled.'
+    else
+      flash[:error] = 'Comments could not be enabled.'
+    end
+
+    redirect_back fallback_location: root_path
+  end
+
+  def disable_comments
+    if @run.update(allow_comments: false)
+      flash[:success] = 'Comments have been disabled.'
+    else
+      flash[:error] = 'Comments could not be disabled.'
+    end
+
+    redirect_back fallback_location: root_path
+  end
+
   private
 
   def set_run = @run = Run.find(params[:id])
@@ -109,9 +163,17 @@ class RunsController < ApplicationController
       :distance,
       :duration,
       :date,
-      :comments,
-      :duration_input
+      :notes,
+      :duration_input,
+      :allow_comments
     )
+
+  def authorize_owner!
+    run = Run.find(params[:id])
+    return if current_user == run.user
+
+    redirect_to run, alert: 'You are not authorized to perform this action.'
+  end
 
   def parse_duration(input)
     parts = input.split(':').map(&:to_i)
@@ -120,13 +182,13 @@ class RunsController < ApplicationController
     when 2
       minutes, seconds = parts
       sql = ActiveRecord::Base.sanitize_sql_array(
-        ["SELECT ?::interval", "#{minutes} minutes #{seconds} seconds"]
+        ['SELECT ?::interval', "#{minutes} minutes #{seconds} seconds"]
       )
       ActiveRecord::Base.connection.select_value(sql)
     when 3
       hours, minutes, seconds = parts
       sql = ActiveRecord::Base.sanitize_sql_array(
-        ["SELECT ?::interval", "#{hours} hours #{minutes} minutes #{seconds} seconds"]
+        ['SELECT ?::interval', "#{hours} hours #{minutes} minutes #{seconds} seconds"]
       )
       ActiveRecord::Base.connection.select_value(sql)
     end

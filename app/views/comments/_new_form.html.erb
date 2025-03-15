@@ -1,0 +1,12 @@
+<div id="new_comment_form" class="my-6">
+  <%= form_with(model: comment, url: run_comments_path(comment.parent_run), data: { controller: 'form-submit', form_submit_target: 'form' }) do |form| %>
+    <div class="flex items-center justify-end gap-3">
+      <%= form.text_area :content, rows: 2, class: 'form-textarea grow rounded-t-2xl rounded-bl-2xl', placeholder: 'Add a comment...', data: { controller: 'autogrow', form_submit_target: 'input', action: 'input->autogrow#grow keydown.ctrl+enter@window->form-submit#submit keydown.meta+enter@window->form-submit#submit' } %>
+
+      <%= form.button type: 'submit', class: 'btn btn-primary p-2 rounded-full grid place-items-center' do %>
+        <%= inline_svg_tag 'icons/arrow-up.svg', class: 'size-6' %>
+        <span class="sr-only">Send</span>
+      <% end %>
+    </div>
+  <% end %>
+</div>

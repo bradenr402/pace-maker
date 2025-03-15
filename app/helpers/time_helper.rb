@@ -48,7 +48,8 @@ module TimeHelper
     datetime = datetime.to_time if datetime.respond_to?(:to_time)
     raise ArgumentError, "Invalid datetime: #{og_datetime.inspect}." unless datetime.is_a?(Time)
 
-    date_options = options.slice(:include_weekday, :weekday_format, :month_format, :include_year, :year_format, :date_style)
+    date_options = options.slice(:include_weekday, :weekday_format, :month_format, :include_year, :year_format,
+                                 :date_style)
     time_options = options.slice(:include_seconds, :time_format, :include_meridian, :leading_zero)
 
     date_str = pretty_date(datetime.to_date, date_options)
@@ -63,19 +64,37 @@ module TimeHelper
 
     case distance_in_minutes
     when 0..1
-      distance_in_seconds < 60 ? 'now' : '1 min'
+      distance_in_seconds < 60 ? 'now' : '1m'
     when 2..59
-      "#{distance_in_minutes} min"
+      "#{distance_in_minutes}m"
     when 60..1439
-      "#{(distance_in_minutes / 60).round} h"
+      "#{(distance_in_minutes / 60).round}h"
     when 1440..10_079
-      "#{(distance_in_minutes / 1440).round} d"
+      "#{(distance_in_minutes / 1440).round}d"
     when 10_080..43_199
-      "#{(distance_in_minutes / 10080).round} w"
+      "#{(distance_in_minutes / 10_080).round}w"
     when 43_200..525_599
-      "#{(distance_in_minutes / 43_200).round} mo"
+      "#{(distance_in_minutes / 43_200).round}mo"
     else
-      "#{(distance_in_minutes / 525_600).round} y"
+      "#{(distance_in_minutes / 525_600).round}y"
+    end
+  end
+
+  def time_ago_custom_format(time)
+    distance_in_minutes = ((Time.current - time).abs / 60).round
+    distance_in_seconds = (Time.current - time).abs.round
+
+    case distance_in_minutes
+    when 0..1
+      distance_in_seconds < 60 ? 'now' : '1m'
+    when 2..59
+      "#{distance_in_minutes}m"
+    when 60..1439
+      "#{(distance_in_minutes / 60).round}h"
+    when 1440..14_399
+      "#{(distance_in_minutes / 1440).round}d"
+    else
+      pretty_datetime(time, include_seconds: false, include_year: time.year != Time.current.year, month_format: :short)
     end
   end
 

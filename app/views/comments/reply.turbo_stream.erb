@@ -1,0 +1,9 @@
+<%= turbo_stream.remove "reply_comment_form" %>
+
+<%= turbo_stream.append dom_id(@comment) do %>
+  <%= render 'comments/reply_form', comment: @comment.comments.new %>
+<% end %>
+
+<%= turbo_stream.replace 'new_comment_form' do %>
+  <div id="new_comment_form"></div>
+<% end %>
