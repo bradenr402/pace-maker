@@ -20,7 +20,7 @@
 
     <%= run_content_wrapper(run, team, local_assigns[:turbo_frame]) do %>
       <% if run.duration? %>
-        <div class="flex items-center justify-around mt-8 mb-6">
+        <div class="flex items-center justify-around mt-8">
           <div class="flex flex-col items-center">
             <%= inline_svg_tag 'icons/ruler.svg', class: 'size-10 text-muted shrink-0 mb-1' %>
             <p class="font-bold">
@@ -63,7 +63,7 @@
       <% if run.notes? %>
         <% sanitized_notes = sanitize(run.notes, tags: %w(strong em b i p br)) %>
 
-        <div class="flex items-start gap-2 sm:gap-3 mt-4">
+        <div class="flex items-start gap-2 sm:gap-3 mt-6">
           <%= inline_svg_tag 'icons/comment.svg', class: 'size-5.5 text-soft shrink-0 mt-0.5' %>
           <div class="text-light text-sm space-y-1.5">
             <%= simple_format(
@@ -79,11 +79,20 @@
 
       <% if details_view %>
         <div class="max-lg:space-y-2 lg:flex items-center justify-between pt-4 mt-4 border-t dark:border-slate-700">
-          <div class="flex items-center gap-2 text-soft text-xs">
-            <time class="whitespace-nowrap" datetime="<%= run.created_at.to_formatted_s(:long) %>"><span class="font-semibold">Posted</span> <%= format_date(run.created_at) %></time>
+          <div class="flex items-center gap-3 text-soft text-xs">
+            <span class="flex items-center gap-1.5">
+              <span class="font-semibold text-blue-500">Posted</span>
+              <%= pretty_datetime(run.created_at, date_style: :absolute, include_seconds: false, month_format: :short) %>
+            </span>
+
             <% if run.edited? %>
               <span class="bg-slate-500 rounded-full size-0.5 shrink-0"></span>
-              <time class="whitespace-nowrap" datetime="<%= run.updated_at.to_formatted_s(:long) %>"><span class="font-semibold">Edited</span> <%= format_date(run.updated_at) %></time>
+
+              <span class="flex items-center gap-1.5">
+                <%= inline_svg_tag 'icons/edit-filled.svg', class: 'size-3.5 -mr-0.5 text-orange-500' %>
+                <span class="font-semibold text-orange-500">Edited</span>
+                <%= pretty_datetime(run.updated_at, date_style: :absolute, include_seconds: false, month_format: :short) %>
+              </span>
             <% end %>
           </div>
 
@@ -93,9 +102,14 @@
             <%= render 'runs/streak_badge', streak: streak unless streak.nil? || streak.zero? || streak.negative? || streak == 1 %>
           </div>
         </div>
-
-        <%= link_to 'View on Strava', run.strava_url, class: 'cursor-pointer font-semibold text-[#fc5200] hover:underline focus:ring-transparent text-xs' if run.strava_url? %>
       <% end %>
+    <% end %>
+
+    <% if run.strava_url? %>
+      <div class="mt-4 text-[#fc5200] flex items-center gap-1.5">
+        <%= link_to 'View on Strava', run.strava_url, target: :_blank, class: 'cursor-pointer font-semibold hover:underline focus:ring-transparent text-xs' %>
+        <%= inline_svg_tag 'icons/external-link-filled.svg', class: 'size-3 shrink-0' %>
+      </div>
     <% end %>
   </div>
 

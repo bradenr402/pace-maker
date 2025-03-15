@@ -13,7 +13,7 @@
       <h2 class="font-semibold">Run Details</h2>
     </div>
 
-    <%= render 'turbo_run', run: @run, team: local_assigns[:team] %>
+    <%= render 'turbo_run', run: @run, team: local_assigns[:team], details_view: true %>
   </div>
 
   <% if @likes.exists? %>
