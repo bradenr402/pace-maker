@@ -5,14 +5,14 @@
     <% if like.present? %>
       <div class="p-2 rounded-full flex items-center gap-1 text-pink-500">
         <%= inline_svg_tag 'icons/heart-filled.svg', class: 'size-4.5 -my-px shrink-0' %>
-        <span class="text-xs font-bold text-pink-500"><%= comment.like_count %></span>
+        <span class="text-xs font-bold text-pink-500"><%= number_with_delimiter comment.like_count %> <span class="sr-only">likes</span></span>
       </div>
     <% else %>
       <div class="p-2 rounded-full flex items-center gap-1">
         <%= inline_svg_tag 'icons/heart.svg', class: 'size-4.5 -my-px shrink-0' %>
 
         <% if comment.like_count.positive? %>
-          <span class="text-xs font-bold"><%= comment.like_count %></span>
+          <span class="text-xs font-bold"><%= number_with_delimiter comment.like_count %> <span class="sr-only">likes</span></span>
         <% end %>
       </div>
     <% end %>
@@ -21,7 +21,7 @@
       <%= button_to comment_like_path(comment, like), method: :delete, data: { turbo_method: :delete }, class: 'p-2 rounded-full flex items-center gap-1 hover:bg-pink-100/60 dark:hover:bg-pink-900/30 text-pink-500 transition duration-200 ease-in-out' do %>
         <%= inline_svg_tag 'icons/heart-filled.svg', class: 'size-4.5 -my-px shrink-0 motion-safe:pulse-hover-animation' %>
         <span class="sr-only">Unlike comment</span>
-        <span class="text-xs font-bold text-pink-500"><%= comment.like_count %></span>
+        <span class="text-xs font-bold text-pink-500"><%= number_with_delimiter comment.like_count %> <span class="sr-only">likes</span></span>
       <% end %>
     <% else %>
       <%= button_to comment_likes_path(comment), method: :post, data: { turbo_method: :post }, class: 'p-2 rounded-full flex items-center gap-1 hover:bg-pink-100/60 dark:hover:bg-pink-900/30 hover:text-pink-500 transition duration-200 ease-in-out' do %>
@@ -29,7 +29,7 @@
         <span class="sr-only">Like comment</span>
 
         <% if comment.like_count.positive? %>
-          <span class="text-xs font-bold"><%= comment.like_count %></span>
+          <span class="text-xs font-bold"><%= number_with_delimiter comment.like_count %> <span class="sr-only">likes</span></span>
         <% end %>
       <% end %>
     <% end %>

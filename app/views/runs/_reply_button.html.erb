@@ -5,14 +5,14 @@
     <% if reply.present? %>
       <div class="p-2 rounded-full flex items-center gap-1 text-emerald-500">
         <%= inline_svg_tag 'icons/message-bubble-filled.svg', class: 'size-4.5 -my-px shrink-0' %>
-        <span class="text-xs font-bold text-pink-500"><%= run.reply_count %></span>
+        <span class="text-xs font-bold text-pink-500"><%= number_with_delimiter run.reply_count %> <span class="sr-only">comments</span></span>
       </div>
     <% else %>
       <div class="p-2 rounded-full flex items-center gap-1">
         <%= inline_svg_tag 'icons/message-bubble.svg', class: 'size-4.5 -my-px shrink-0' %>
 
         <% if run.reply_count.positive? %>
-          <span class="text-xs font-bold"><%= run.reply_count %></span>
+          <span class="text-xs font-bold"><%= number_with_delimiter run.reply_count %> <span class="sr-only">comments</span></span>
         <% end %>
       </div>
     <% end %>
@@ -21,7 +21,7 @@
       <%= link_to run, class: 'p-2 rounded-full flex items-center gap-1 hover:bg-emerald-100/60 dark:hover:bg-emerald-900/30 text-emerald-500 transition duration-200 ease-in-out' do %>
         <%= inline_svg_tag 'icons/message-bubble-filled.svg', class: 'size-4.5 -my-px shrink-0' %>
         <span class="sr-only">Comment on run</span>
-        <span class="text-xs font-bold text-emerald-500"><%= run.reply_count %></span>
+        <span class="text-xs font-bold text-emerald-500"><%= number_with_delimiter run.reply_count %> <span class="sr-only">comments</span></span>
       <% end %>
     <% else %>
       <%= link_to run, class: 'p-2 rounded-full flex items-center gap-1 hover:bg-emerald-100/60 dark:hover:bg-emerald-900/30 hover:text-emerald-500 transition duration-200 ease-in-out' do %>
@@ -29,7 +29,7 @@
         <span class="sr-only">Comment on run</span>
 
         <% if run.reply_count.positive? %>
-          <span class="text-xs font-bold"><%= run.reply_count %></span>
+          <span class="text-xs font-bold"><%= number_with_delimiter run.reply_count %> <span class="sr-only">comments</span></span>
         <% end %>
       <% end %>
     <% end %>

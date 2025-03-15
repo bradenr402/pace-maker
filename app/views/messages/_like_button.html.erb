@@ -7,7 +7,7 @@
     <%= button_to team_topic_message_like_path(message.team, message.topic, message, like), method: :delete, data: { turbo_method: :delete }, class: 'p-2 rounded-full flex items-center gap-1 hover:bg-blue-100/60 dark:hover:bg-blue-900/30 text-blue-500 transition duration-200 ease-in-out' do %>
       <%= inline_svg_tag 'icons/like-filled.svg', class: 'size-4 shrink-0 motion-safe:pulse-hover-animation' %>
       <span class="sr-only">Unlike message</span>
-      <span class="text-xs font-bold text-blue-500"><%= message.like_count %></span>
+      <span class="text-xs font-bold text-blue-500"><%= number_with_delimiter message.like_count %> <span class="sr-only">likes</span></span>
     <% end %>
   <% else %>
     <%= button_to team_topic_message_likes_path(message.team, message.topic, message), method: :post, data: { turbo_method: :post }, class: 'p-2 rounded-full flex items-center gap-1 hover:bg-blue-100/60 dark:hover:bg-blue-900/30 hover:text-blue-500 transition duration-200 ease-in-out' do %>
@@ -15,7 +15,7 @@
       <span class="sr-only">Like message</span>
 
       <% if message.like_count.positive? %>
-        <span class="text-xs font-bold"><%= message.like_count %></span>
+        <span class="text-xs font-bold"><%= number_with_delimiter message.like_count %> <span class="sr-only">likes</span></span>
       <% end %>
     <% end %>
   <% end %>
