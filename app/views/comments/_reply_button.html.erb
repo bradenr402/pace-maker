@@ -1,7 +1,7 @@
 <% reply = comment.replies.find_by(user: current_user) %>
 
 <div id="<%= dom_id(comment, :replies) %>">
-  <% if current_user.no_teams_in_common?(comment.parent_run.user) %>
+  <% if comment.user != current_user && current_user.no_teams_in_common?(comment.user) %>
     <% if reply.present? %>
       <div class="p-2 rounded-full flex items-center gap-1 text-emerald-500">
         <%= inline_svg_tag 'icons/reply-filled.svg', class: 'size-4.5 -my-px shrink-0' %>
