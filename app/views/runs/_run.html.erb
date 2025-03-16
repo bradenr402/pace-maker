@@ -10,7 +10,7 @@
         <%= render 'shared/user_photo', user: run_user, size: :xs, icon_background: :darker %>
         <div>
           <p>
-            <span class="font-bold transition duration-200 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500 mr-0.5"><%= run_user.default_name %></span>
+            <span class="font-bold transition duration-200 ease-in-out group-hover:text-indigo-500 mr-0.5"><%= run_user.default_name %></span>
             <%= content_tag(:span, run_user.username, class: 'text-soft text-xs font-normal') if run_user.display_name? %>
           </p>
           <p class="text-xs text-soft"><%= pretty_date(run.date, include_weekday: true, month_format: :long, include_year: run.date.year != Date.current.year) %></p>
@@ -22,37 +22,37 @@
       <% if run.duration? %>
         <div class="flex items-center justify-around mt-8">
           <div class="flex flex-col items-center">
-            <%= inline_svg_tag 'icons/ruler.svg', class: 'size-10 text-muted shrink-0 mb-1' %>
-            <p class="font-bold">
+            <%= inline_svg_tag 'icons/ruler.svg', class: 'size-10 text-muted shrink-0 mb-1 transition duration-200 ease-in-out group-hover:text-indigo-500' %>
+            <p class="font-bold transition duration-200 ease-in-out group-hover:text-indigo-500">
               <span class="text-xl"><%= run.distance %></span>
               <span class="text-base">mi</span>
             </p>
-            <p class="text-soft text-xs">Distance</p>
+            <p class="text-soft transition duration-200 ease-in-out group-hover:text-indigo-500 text-xs">Distance</p>
           </div>
 
           <div class="flex flex-col items-center">
-            <%= inline_svg_tag 'icons/clock.svg', class: 'size-10 text-muted shrink-0 mb-1' %>
-            <p class="font-bold">
+            <%= inline_svg_tag 'icons/clock.svg', class: 'size-10 text-muted shrink-0 mb-1 transition duration-200 ease-in-out group-hover:text-indigo-500' %>
+            <p class="font-bold transition duration-200 ease-in-out group-hover:text-indigo-500">
               <span class="text-xl"><%= clock_time_display(run.duration) %></span>
               <span class="text-base"></span>
             </p>
-            <p class="text-soft text-xs">Time</p>
+            <p class="text-soft transition duration-200 ease-in-out group-hover:text-indigo-500 text-xs">Time</p>
           </div>
 
           <div class="flex flex-col items-center">
-            <%= inline_svg_tag 'icons/speedometer.svg', class: 'size-10 text-muted shrink-0 mb-1' %>
-            <p class="font-bold">
+            <%= inline_svg_tag 'icons/speedometer.svg', class: 'size-10 text-muted shrink-0 mb-1 transition duration-200 ease-in-out group-hover:text-indigo-500' %>
+            <p class="font-bold transition duration-200 ease-in-out group-hover:text-indigo-500">
               <span class="text-xl"><%= clock_time_display(run.pace) %> /</span><span class="text-base">mi</span>
             </p>
-            <p class="text-soft text-xs">Pace</p>
+            <p class="text-soft transition duration-200 ease-in-out group-hover:text-indigo-500 text-xs">Pace</p>
           </div>
         </div>
       <% else %>
         <div class="flex items-center gap-2 sm:gap-3 mt-4">
-          <%= inline_svg_tag 'icons/ruler.svg', class: 'size-5.5 text-soft shrink-0' %>
+          <%= inline_svg_tag 'icons/ruler.svg', class: 'size-5.5 text-soft shrink-0 transition duration-200 ease-in-out group-hover:text-indigo-500' %>
           <div class="flex items-end gap-2">
-            <p class="text-light">Distance:</p>
-            <p class="font-bold">
+            <p class="text-soft transition duration-200 ease-in-out group-hover:text-indigo-500">Distance:</p>
+            <p class="font-bold transition duration-200 ease-in-out group-hover:text-indigo-500">
               <span class="text-xl"><%= run.distance %></span>
               <span class="text-base">mi</span>
             </p>
