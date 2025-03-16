@@ -1,7 +1,7 @@
 class CommentsController < ApplicationController
   before_action :set_comment
   before_action :authenticate_user!
-  before_action :authorize_member!, only: %i[show]
+  before_action :authorize_member!, only: %i[show edit update reply]
 
   def show
     parent = @comment
