@@ -1,15 +1,15 @@
-<div id="reply_comment_form" class="ml-8 my-6">
-  <%= form_with(model: comment, url: comment_comments_path(comment.commentable), data: { controller: 'form-submit', form_submit_target: 'form' }) do |form| %>
+<div id="reply_comment_form" class="ml-2 sm:ml-5 my-6">
+  <%= form_with(model: comment, url: comment_comments_path(comment.parent_comment), data: { controller: 'form-submit', form_submit_target: 'form' }) do |form| %>
     <div class="flex items-center justify-end gap-3">
-      <%= link_to cancel_reply_comment_path(comment.commentable), data: { turbo_stream: true }, class: 'btn btn-dark btn-muted p-2 ml-2 rounded-full grid place-items-center' do %>
-        <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-6' %>
+      <%= link_to cancel_reply_comment_path(comment.parent_comment), data: { turbo_stream: true }, class: 'btn btn-dark btn-muted p-2 rounded-full grid place-items-center' do %>
+        <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4 sm:size-5 md:size-6' %>
         <span class="sr-only">Cancel</span>
       <% end %>
 
-      <%= form.text_area :content, rows: 2, class: 'form-textarea grow rounded-t-2xl rounded-bl-2xl', autofocus: true, placeholder: "Replying to #{comment.commentable.user == current_user ? 'yourself' : comment.commentable.author_name}...", data: { controller: 'autogrow', form_submit_target: 'input', action: 'input->autogrow#grow keydown.ctrl+enter@window->form-submit#submit keydown.meta+enter@window->form-submit#submit' } %>
+      <%= form.text_area :content, rows: 2, class: 'form-textarea grow rounded-t-2xl rounded-bl-2xl', autofocus: true, placeholder: "Replying to #{comment.parent_comment.user == current_user ? 'yourself' : comment.parent_comment.author_name}...", data: { controller: 'autogrow', form_submit_target: 'input', action: 'input->autogrow#grow keydown.ctrl+enter@window->form-submit#submit keydown.meta+enter@window->form-submit#submit' } %>
 
       <%= form.button type: 'submit', class: 'btn btn-primary p-2 rounded-full grid place-items-center' do %>
-        <%= inline_svg_tag 'icons/arrow-up.svg', class: 'size-6' %>
+        <%= inline_svg_tag 'icons/arrow-up.svg', class: 'size-4 sm:size-5 md:size-6' %>
         <span class="sr-only">Send</span>
       <% end %>
     </div>
