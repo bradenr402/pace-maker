@@ -31,7 +31,7 @@ class Comments::CommentsController < ApplicationController
   def authorize_member!
     comment = Comment.find(params[:comment_id])
 
-    return if current_user.any_teams_in_common?(comment.parent_run.user)
+    return if comment.parent_run.user == current_user || current_user.any_teams_in_common?(comment.parent_run.user)
 
     redirect_back fallback_location: comment, alert: 'You are not authorized to perform this action.'
   end

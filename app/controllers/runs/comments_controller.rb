@@ -54,7 +54,7 @@ class Runs::CommentsController < ApplicationController
   def comment_params = params.require(:comment).permit(:content)
 
   def authorize_member!
-    return if current_user.any_teams_in_common?(@run.user)
+    return if @run.user == current_user || current_user.any_teams_in_common?(@run.user)
 
     redirect_back fallback_location: run_path(@run), alert: 'You are not authorized to perform this action.'
   end
