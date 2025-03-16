@@ -35,8 +35,8 @@
       data-controller="toggle-replies"
       data-toggle-replies-hidden-value="true"
       data-toggle-replies-parent-id-value="<%= comment.id %>"
-      data-toggle-replies-button-hide-text-value="Hide <%= pluralize(total_replies_count(comment), 'reply') %> to <%= comment.author_name %>"
-      data-toggle-replies-button-show-text-value="Show <%= pluralize(total_replies_count(comment), 'reply') %> to <%= comment.author_name %>"
+      data-toggle-replies-button-hide-text-value="Hide <%= pluralize(comment.reply_count, 'reply') %>"
+      data-toggle-replies-button-show-text-value="Show <%= pluralize(comment.reply_count, 'reply') %>"
     >
       <div
         data-toggle-replies-target="container"
@@ -73,7 +73,7 @@
       >
         <%= inline_svg_tag 'icons/chevron-down-bold.svg', class: 'size-3.5 transition-transform duration-200 ease-in-out', data: { toggle_replies_target: 'icon' } %>
         <span class="text-xs whitespace-nowrap font-semibold" data-toggle-replies-target="text">
-          Show <%= pluralize(total_replies_count(comment), 'reply') %> to <%= comment.author_name %>
+          Show <%= pluralize(comment.reply_count, 'reply') %>
         </span>
       </button>
     </div>

@@ -1,12 +1,13 @@
 class Comment < ApplicationRecord
   # Associations
   belongs_to :user
-  belongs_to :commentable, polymorphic: true, counter_cache: :reply_count
+  belongs_to :commentable, polymorphic: true
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
 
   # Callbacks
   before_update :decrement_parent_reply_count, if: -> { deleted_at_changed? && deleted_at.present? }
+  after_create :increment_parent_reply_count
 
   # Scopes
   scope :active, -> { where(deleted_at: nil) }
@@ -53,7 +54,23 @@ class Comment < ApplicationRecord
 
   private
 
+  def increment_parent_reply_count
+    parent = commentable
+    while parent.is_a?(Comment)
+      parent.increment!(:reply_count)
+      parent = parent.commentable
+    end
+
+    parent_run&.increment!(:reply_count)
+  end
+
   def decrement_parent_reply_count
-    commentable&.decrement!(:reply_count)
+    parent = commentable
+    while parent.is_a?(Comment)
+      parent.decrement!(:reply_count)
+      parent = parent.commentable
+    end
+
+    parent_run&.decrement!(:reply_count)
   end
 end
