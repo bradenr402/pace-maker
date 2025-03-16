@@ -1,7 +1,7 @@
 <% like = run.likes.find_by(user: current_user) %>
 
 <div id="<%= dom_id(run, :likes) %>">
-  <% if current_user.no_teams_in_common?(run.user) %>
+  <% if run.user != current_user && current_user.no_teams_in_common?(run.user) %>
     <% if like.present? %>
       <div class="p-2 rounded-full flex items-center gap-1 text-pink-500">
         <%= inline_svg_tag 'icons/heart-filled.svg', class: 'size-4.5 -my-px shrink-0' %>
