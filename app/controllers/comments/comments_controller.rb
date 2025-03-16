@@ -1,7 +1,7 @@
 class Comments::CommentsController < ApplicationController
   before_action :set_parent
   before_action :authenticate_user!
-  before_action :authorize_member!, only: %i[create load_more]
+  before_action :authorize_member!, only: %i[create]
 
   def create
     @comment = @parent.comments.build(comment_params.merge(user: current_user))
