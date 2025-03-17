@@ -3,7 +3,7 @@
 <div class="mb-24">
   <div class="pb-6 mt-10 mb-6 border-b border-slate-200 dark:border-slate-700">
     <h1 class="heading"><%= user_is_current ? 'Your' : "#{user.first_name}’s" %> Runs</h1>
-    <p class="text-soft">Use the filters to find runs by date, distance, duration, or pace.</p>
+    <p class="text-soft">Use the filters to find runs by date.</p>
   </div>
 
   <%= render 'users/runs_date_form', user: %>
