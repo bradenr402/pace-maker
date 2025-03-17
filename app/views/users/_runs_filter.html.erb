@@ -4,25 +4,9 @@
     <p class="text-sm text-soft">Filter <%= user == current_user ? 'your' : "#{user.first_name}'s" %> runs by date.</p>
   </div>
 
-  <%= form_with url: user_path(user), method: :get, local: true, html: { novalidate: true }, data: { turbo_frame: 'runs', controller: 'custom-date-range form-validation' } do %>
-    <div class="form-group">
-      <%= label_tag :run_date_range, 'Select date range', class: 'form-label' %>
-      <%= select_tag :run_date_range, options_for_select(['This week', 'Last week', 'This month', 'Last month', 'Custom range'], params[:run_date_range]), data: { custom_date_range_target: 'select', action: 'custom-date-range#update custom-date-range#search' }, class: 'form-select' %>
-    </div>
+  <%= render 'users/runs_date_form', user: %>
 
-    <div class="hidden form-group" data-custom-date-range-target="startDate">
-      <%= label_tag :run_start_date, 'Start date', class: 'form-label' %>
-      <%= date_field_tag :run_start_date, nil, max: Date.yesterday, class: 'form-input', data: { form_validation_target: 'startDate', custom_date_range_target: 'startDateField', action: 'input->form-validation#validateEndDate custom-date-range#search' } %>
-    </div>
-
-    <div class="hidden form-group" data-custom-date-range-target="endDate">
-      <%= label_tag :run_end_date, 'End date', class: 'form-label' %>
-      <%= date_field_tag :run_end_date, nil, max: Date.today, class: 'form-input', data: { form_validation_target: 'endDate', custom_date_range_target: 'endDateField', action: 'input->form-validation#validateEndDate custom-date-range#search' } %>
-      <span class="hidden my-1 error-message" data-form-validation-target="endDateError">End date must be today or earlier and must be after start date</span>
-    </div>
-  <% end %>
-
-  <%= turbo_frame_tag 'runs' do %>
+  <div id="runs">
     <% if @runs.present? %>
       <% if 'this'.in?(@date_range) %>
         <p class="mt-6 mb-2 text-sm text-light"><%= user == current_user ? 'You have' : "#{user.first_name} has" %> logged <%= pluralize(@runs.count, 'run') %> <%= @date_range %>.</p>
@@ -40,5 +24,5 @@
         </div>
       <% end %>
     </div>
-  <% end %>
+  </div>
 </div>

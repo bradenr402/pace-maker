@@ -1,3 +1,25 @@
 <%= turbo_stream.replace 'runs' do %>
-  <%= render partial: 'runs_list', locals: { runs: @runs } %>
+  <div id="runs">
+    <% if @runs.present? %>
+      <% if 'this'.in?(@date_range) %>
+        <p class="mt-6 mb-2 text-sm text-light"><%= @user == current_user ? 'You have' : "#{@user.first_name} has" %> logged <%= pluralize(@runs.size, 'run') %> <%= @date_range %>.</p>
+      <% else %>
+        <p class="mt-6 mb-2 text-sm text-light"><%= @user == current_user ? 'You' : @user.first_name %> logged <%= pluralize(@runs.size, 'run') %> <%= @date_range %>.</p>
+      <% end %>
+    <% end %>
+
+    <div class="mb-10 space-y-4 sm:space-y-6">
+      <% if @runs.present? %>
+        <%= render @runs %>
+      <% else %>
+        <div class="flex flex-col items-center justify-center gap-6 py-12">
+          <p class="text-soft text-center">No runs found for the selected date range.</p>
+        </div>
+      <% end %>
+    </div>
+    <% end %>
+  </div>
+
+<%= turbo_stream.replace 'runs_date_form' do %>
+  <%= render 'users/runs_date_form', user: @user %>
 <% end %>

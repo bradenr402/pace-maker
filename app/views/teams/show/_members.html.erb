@@ -3,7 +3,7 @@
   <p class="text-soft">Find team members by name.</p>
 </div>
 
-<%= form_with url: team, method: :get, html: { novalidate: true }, data: { turbo_frame: 'teamMembers', turbo_action: 'advance', controller: 'search-form' } do |form| %>
+<%= form_with url: team, method: :get, html: { novalidate: true }, data: { turbo_stream: true, controller: 'search-form' } do |form| %>
   <%= form.label :query, 'Find a team member by name:', class: 'sr-only' %>
 
   <div class="form-group relative">
@@ -12,14 +12,6 @@
   </div>
 <% end %>
 
-<%= turbo_frame_tag 'teamMembers' do %>
-  <div class="mb-10">
-    <% if members.present? %>
-      <%= render 'teams/show/member_list', team: team, members: members %>
-    <% else %>
-      <div class="flex flex-col items-center justify-center gap-6 py-12">
-        <p class="text-soft text-center">No team members found.</p>
-      </div>
-    <% end %>
-  </div>
-<% end %>
+<div class="mb-10">
+  <%= render 'teams/show/member_list', team:, members: %>
+</div>

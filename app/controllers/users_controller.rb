@@ -6,6 +6,8 @@ class UsersController < ApplicationController
     add_breadcrumb @user.default_name, user_path(@user)
 
     @runs, @date_range = get_runs_and_date_range
+    @date_range_param = params[:run_date_range] || 'this_week'
+
     @owned_teams = @user.owned_teams.with_attached_photo.includes(:owner)
     @membered_teams = @user.membered_teams.with_attached_photo.includes(:owner)
 
@@ -54,12 +56,12 @@ class UsersController < ApplicationController
 
     if params[:run_date_range].present?
       case params[:run_date_range]
-      when 'This week'
+      when 'this_week'
         [
           @user.runs_in_date_range(today.beginning_of_week..today),
           'this week'
         ]
-      when 'Last week'
+      when 'last_week'
         one_week_ago = today - 1.week
         [
           @user.runs_in_date_range(
@@ -67,12 +69,12 @@ class UsersController < ApplicationController
           ),
           'last week'
         ]
-      when 'This month'
+      when 'this_month'
         [
           @user.runs_in_date_range(today.beginning_of_month..today),
           'this month'
         ]
-      when 'Last month'
+      when 'last_month'
         one_month_ago = today - 1.month
         [
           @user.runs_in_date_range(
@@ -80,12 +82,12 @@ class UsersController < ApplicationController
           ),
           'last month'
         ]
-      when 'Custom range'
-        start_date = params[:run_start_date].to_date
-        end_date = params[:run_end_date].to_date
+      when 'custom_range'
+        @run_start_date = params[:run_start_date].to_date
+        @run_end_date = params[:run_end_date].to_date
         [
-          @user.runs_in_date_range(start_date..end_date),
-          "between #{start_date.strftime('%m/%d/%Y')} and #{end_date.strftime('%m/%d/%Y')}"
+          @user.runs_in_date_range(@run_start_date..@run_end_date),
+          "from #{@run_start_date.strftime('%m/%d/%Y')} to #{@run_end_date.strftime('%m/%d/%Y')}"
         ]
       end
     else

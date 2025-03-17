@@ -8,7 +8,7 @@ export default class extends Controller {
     'row',
     'maleTotal',
     'femaleTotal',
-    'turboFrame',
+    'rankingsTable',
   ];
 
   filter() {
@@ -39,7 +39,7 @@ export default class extends Controller {
     });
   }
 
-  turboFrameTargetConnected() {
+  rankingsTableTargetConnected() {
     if (this.hasFilterTarget) this.filter();
   }
 }

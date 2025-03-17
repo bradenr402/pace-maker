@@ -1,5 +1,9 @@
+<%= turbo_stream.replace 'trends_date_form' do %>
+  <%= render 'teams/member/trends_date_form', team: @team, member: @member %>
+<% end %>
+
 <%= turbo_stream.replace 'memberTrends' do %>
-  <%= turbo_frame_tag 'memberTrends' do %>
+  <div id="memberTrends">
     <%= render 'teams/member/trends_graphs', team: @team, member: @member, date_range: @trends_date_range, date_range_description: @trends_date_range_description %>
-  <% end %>
+  </div>
 <% end %>

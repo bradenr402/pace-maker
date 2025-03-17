@@ -1,107 +1,109 @@
-<div class="flex flex-wrap items-end justify-between mt-10 mb-4 space-y-2">
-  <h2 class="subheading">Rankings <%= date_range_description.titlecase %></h2>
-  <%= link_to team_path(@team, format: :xlsx, rankings_date_range: params[:rankings_date_range], rankings_start_date: params[:rankings_start_date], rankings_end_date: params[:rankings_end_date]), class: 'btn btn-dark btn-muted gap-2' do %>
-    <%= inline_svg_tag 'icons/download.svg', class: 'size-5 shrink-0' %>
-    <span>Download as Excel</span>
-  <% end %>
-</div>
+<div id="teamRankings" data-filter-gender-target="rankingsTable">
+  <div class="flex flex-wrap items-end justify-between mt-10 mb-4 space-y-2">
+    <h2 class="subheading">Rankings <%= date_range_description.titlecase %></h2>
+    <%= link_to team_path(@team, format: :xlsx, rankings_date_range: params[:rankings_date_range], rankings_start_date: params[:rankings_start_date], rankings_end_date: params[:rankings_end_date]), class: 'btn btn-dark btn-muted gap-2' do %>
+      <%= inline_svg_tag 'icons/download.svg', class: 'size-5 shrink-0' %>
+      <span>Download as Excel</span>
+    <% end %>
+  </div>
 
-<div data-controller="sort-table" class="relative overflow-x-auto border rounded-lg shadow-md dark:shadow-none border-slate-200 dark:border-slate-700">
-  <table data-sort-table-target="table" class="w-full overflow-x-auto text-sm text-left table-auto rtl:text-right text-soft row-numbers">
-    <thead class="text-xs uppercase text-normal bg-slate-200/70 dark:bg-slate-700/70">
-      <tr>
-        <th scope="col" data-action="mousedown->sort-table#sort" data-sort-table-target="th" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
-          <div class="flex items-center">
-            Team member
-            <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
-          </div>
-        </th>
-        <% if team.require_gender? %>
+  <div data-controller="sort-table" class="relative overflow-x-auto border rounded-lg shadow-md dark:shadow-none border-slate-200 dark:border-slate-700">
+    <table data-sort-table-target="table" class="w-full overflow-x-auto text-sm text-left table-auto rtl:text-right text-soft row-numbers">
+      <thead class="text-xs uppercase text-normal bg-slate-200/70 dark:bg-slate-700/70">
+        <tr>
           <th scope="col" data-action="mousedown->sort-table#sort" data-sort-table-target="th" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
             <div class="flex items-center">
-              Gender
+              Team member
               <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
             </div>
           </th>
-        <% end %>
-        <th scope="col" data-action="mousedown->sort-table#sort" data-sort-table-target="th defaultSort" data-numeric="true" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
-          <div class="flex items-center">
-            # of miles
-            <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 rotate-180' %>
-          </div>
-        </th>
-        <th scope="col" data-action="mousedown->sort-table#sort" data-sort-table-target="th" data-numeric="true" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
-          <div class="flex items-center">
-            # of long runs
-            <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
-          </div>
-        </th>
-        <th scope="col" data-action="mousedown->sort-table#sort" data-sort-table-target="th" data-numeric="true" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
-          <div class="flex items-center">
-            Current streak
-            <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
-          </div>
-        </th>
-        <th scope="col" data-action="mousedown->sort-table#sort" data-sort-table-target="th" data-numeric="true" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
-          <div class="flex items-center">
-            Record streak
-            <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
-          </div>
-        </th>
-      </tr>
-    </thead>
-
-    <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
-      <% @all_members.reject { |data| !team.include_coach? && data[:member].owns?(team) }.sort_by { |member| -(member[:total_miles]) }.each do |data| %>
-        <tr data-filter-gender-target="row" class="bg-slate-50/85 dark:bg-slate-800/85 hover:bg-slate-200/70 dark:hover:bg-slate-700/70">
-          <th scope="row" class="px-6 py-4 font-medium text-normal whitespace-nowrap">
+          <% if team.require_gender? %>
+            <th scope="col" data-action="mousedown->sort-table#sort" data-sort-table-target="th" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
+              <div class="flex items-center">
+                Gender
+                <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
+              </div>
+            </th>
+          <% end %>
+          <th scope="col" data-action="mousedown->sort-table#sort" data-sort-table-target="th defaultSort" data-numeric="true" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
             <div class="flex items-center">
-              <span class="mr-4 -ml-1 font-mono row-number"></span>
-              <%= link_to team_member_path(team, data[:member]), data: { turbo: false }, class: 'group flex gap-2 items-center mr-auto' do %>
-                <%= render 'shared/user_photo', user: data[:member], size: :xs, icon_background: :darker %>
-
-                <div class="flex flex-col-reverse">
-                  <p class="transition duration-200 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= data[:member].default_name %></p>
-                  <%= content_tag(:p, data[:member] == current_user ? 'You' : 'Coach', class: 'help-text') if data[:member].owns?(team) || data[:member] == current_user %>
-                </div>
-              <% end %>
+              # of miles
+              <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 rotate-180' %>
             </div>
           </th>
+          <th scope="col" data-action="mousedown->sort-table#sort" data-sort-table-target="th" data-numeric="true" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
+            <div class="flex items-center">
+              # of long runs
+              <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
+            </div>
+          </th>
+          <th scope="col" data-action="mousedown->sort-table#sort" data-sort-table-target="th" data-numeric="true" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
+            <div class="flex items-center">
+              Current streak
+              <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
+            </div>
+          </th>
+          <th scope="col" data-action="mousedown->sort-table#sort" data-sort-table-target="th" data-numeric="true" class="px-6 py-3 select-none whitespace-nowrap hover:cursor-pointer">
+            <div class="flex items-center">
+              Record streak
+              <%= inline_svg_tag 'icons/arrow-down.svg', class: 'size-3.5 ml-2 transition ease duration-200 hidden' %>
+            </div>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+        <% @all_members.reject { |data| !team.include_coach? && data[:member].owns?(team) }.sort_by { |member| -(member[:total_miles]) }.each do |data| %>
+          <tr data-filter-gender-target="row" class="bg-slate-50/85 dark:bg-slate-800/85 hover:bg-slate-200/70 dark:hover:bg-slate-700/70">
+            <th scope="row" class="px-6 py-4 font-medium text-normal whitespace-nowrap">
+              <div class="flex items-center">
+                <span class="mr-4 -ml-1 font-mono row-number"></span>
+                <%= link_to team_member_path(team, data[:member]), data: { turbo: false }, class: 'group flex gap-2 items-center mr-auto' do %>
+                  <%= render 'shared/user_photo', user: data[:member], size: :xs, icon_background: :darker %>
+
+                  <div class="flex flex-col-reverse">
+                    <p class="transition duration-200 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= data[:member].default_name %></p>
+                    <%= content_tag(:p, data[:member] == current_user ? 'You' : 'Coach', class: 'help-text') if data[:member].owns?(team) || data[:member] == current_user %>
+                  </div>
+                <% end %>
+              </div>
+            </th>
+            <% if team.require_gender? %>
+              <td data-filter-gender-target="genderCell" class="px-6 py-4">
+                <%= data[:member].gender.present? ? data[:member].gender.capitalize : '—' %>
+              </td>
+            <% end %>
+            <td class="px-6 py-4 font-mono">
+              <%= data[:total_miles] %>
+            </td>
+            <td class="px-6 py-4 font-mono">
+              <%= data[:total_long_runs] %>
+            </td>
+            <td class="px-6 py-4 font-mono">
+              <%= data[:current_streak] %> <span class="font-sans text-xs"><%= 'day'.pluralize(data[:current_streak]) %></span>
+            </td>
+            <td class="px-6 py-4 font-mono">
+              <%= data[:record_streak] %> <span class="font-sans text-xs"><%= 'day'.pluralize(data[:record_streak]) %></span>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+
+      <tfoot>
+        <tr class="text-sm font-semibold text-normal bg-slate-200/70 dark:bg-slate-700/70">
+          <th scope="row" class="px-6 py-3">Totals</th>
           <% if team.require_gender? %>
-            <td data-filter-gender-target="genderCell" class="px-6 py-4">
-              <%= data[:member].gender.present? ? data[:member].gender.capitalize : '—' %>
+            <td class="px-6 py-3">
+              <p data-filter-gender-target="maleTotal" class="text-xs whitespace-nowrap"><%= @all_members.count { |data| data[:member].gender == 'male' } %> male</p>
+              <p data-filter-gender-target="femaleTotal" class="text-xs whitespace-nowrap"><%= @all_members.count { |data| data[:member].gender == 'female' } %> female</p>
             </td>
           <% end %>
-          <td class="px-6 py-4 font-mono">
-            <%= data[:total_miles] %>
-          </td>
-          <td class="px-6 py-4 font-mono">
-            <%= data[:total_long_runs] %>
-          </td>
-          <td class="px-6 py-4 font-mono">
-            <%= data[:current_streak] %> <span class="font-sans text-xs"><%= 'day'.pluralize(data[:current_streak]) %></span>
-          </td>
-          <td class="px-6 py-4 font-mono">
-            <%= data[:record_streak] %> <span class="font-sans text-xs"><%= 'day'.pluralize(data[:record_streak]) %></span>
-          </td>
+          <td class="px-6 py-3 font-mono"><%= team.miles_in_date_range(date_range) %> <span class="font-sans text-xs">mi</span></td>
+          <td class="px-6 py-3 font-mono"><%= team.total_long_runs_in_date_range(date_range) %> <span class="font-sans text-xs">long runs</span></td>
+          <td class="px-6 py-3 font-mono"></td>
+          <td class="px-6 py-3 font-mono"></td>
         </tr>
-      <% end %>
-    </tbody>
-
-    <tfoot>
-      <tr class="text-sm font-semibold text-normal bg-slate-200/70 dark:bg-slate-700/70">
-        <th scope="row" class="px-6 py-3">Totals</th>
-        <% if team.require_gender? %>
-          <td class="px-6 py-3">
-            <p data-filter-gender-target="maleTotal" class="text-xs whitespace-nowrap"><%= @all_members.count { |data| data[:member].gender == 'male' } %> male</p>
-            <p data-filter-gender-target="femaleTotal" class="text-xs whitespace-nowrap"><%= @all_members.count { |data| data[:member].gender == 'female' } %> female</p>
-          </td>
-        <% end %>
-        <td class="px-6 py-3 font-mono"><%= team.miles_in_date_range(date_range) %> <span class="font-sans text-xs">mi</span></td>
-        <td class="px-6 py-3 font-mono"><%= team.total_long_runs_in_date_range(date_range) %> <span class="font-sans text-xs">long runs</span></td>
-        <td class="px-6 py-3 font-mono"></td>
-        <td class="px-6 py-3 font-mono"></td>
-      </tr>
-    </tfoot>
-  </table>
+      </tfoot>
+    </table>
+  </div>
 </div>

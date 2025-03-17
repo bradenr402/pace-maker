@@ -1,19 +1,23 @@
 <%= turbo_stream.replace 'teamMembers' do %>
-  <%= turbo_frame_tag 'teamMembers' do %>
-    <div class="mb-10 divide-y dark:divide-slate-700 dark:text-slate-700">
-      <%= render 'teams/show/member_list', team: @team, members: @members %>
-    </div>
-  <% end %>
+  <div class="mb-10">
+    <%= render 'teams/show/member_list', team: @team, members: @members %>
+  </div>
+<% end %>
+
+<%= turbo_stream.replace 'rankings_date_form' do %>
+  <%= render 'teams/show/rankings_date_form', team: @team %>
 <% end %>
 
 <%= turbo_stream.replace 'teamRankings' do %>
-  <%= turbo_frame_tag 'teamRankings', data: { filter_gender_target: 'turboFrame' } do %>
-    <%= render 'teams/show/rankings_table', team: @team, date_range: @rankings_date_range, date_range_description: @rankings_date_range_description %>
-  <% end %>
+  <%= render 'teams/show/rankings_table', team: @team, date_range: @rankings_date_range, date_range_description: @rankings_date_range_description %>
+<% end %>
+
+<%= turbo_stream.replace 'trends_date_form' do %>
+  <%= render 'teams/show/trends_date_form', team: @team %>
 <% end %>
 
 <%= turbo_stream.replace 'teamTrends' do %>
-  <%= turbo_frame_tag 'teamTrends' do %>
+  <div id="teamTrends">
     <%= render 'teams/show/trends_graphs', team: @team, date_range: @trends_date_range, date_range_description: @trends_date_range_description %>
-  <% end %>
+  </div>
 <% end %>

@@ -1,5 +1,13 @@
-<div class="space-y-4">
-  <% members.each do |member| %>
-    <%= render 'teams/show/member', team: team, member: member %>
+<div id="teamMembers">
+  <% if members.present? %>
+    <div class="space-y-4">
+      <% members.each do |member| %>
+        <%= render 'teams/show/member', team: team, member: member %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="flex flex-col items-center justify-center gap-6 py-12">
+      <p class="text-soft text-center">No team members found.</p>
+    </div>
   <% end %>
 </div>

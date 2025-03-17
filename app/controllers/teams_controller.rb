@@ -33,33 +33,6 @@ class TeamsController < ApplicationController
         get_members
       end
 
-    @rankings_date_range, @rankings_date_range_description =
-      Rails
-      .cache
-      .fetch([@team, 'rankings_data'], expires_in: 1.hour) do
-        get_rankings_data
-      end
-
-    @trends_date_range, @trends_date_range_description =
-      Rails
-      .cache
-      .fetch([@team, 'trends_data'], expires_in: 1.hour) { get_trends_data }
-
-    @miles_data =
-      Rails
-      .cache
-      .fetch([@team, 'miles_data', @trends_date_range], expires_in: 1.hour) do
-        get_team_miles_data
-      end
-
-    @long_runs_data =
-      Rails
-      .cache
-      .fetch(
-        [@team, 'long_runs_data', @trends_date_range],
-        expires_in: 1.hour
-      ) { get_team_long_runs_data }
-
     if current_user.owns?(@team)
       @join_requests =
         @team
@@ -73,6 +46,16 @@ class TeamsController < ApplicationController
 
     if current_user.member_of?(@team)
       @current_user_member_of_team = true
+
+      @rankings_date_range_param = params[:rankings_date_range] || @team.season_dates? ? 'all_season' : 'this_week'
+      @trends_date_range_param = params[:trends_date_range] || @team.season_dates? ? 'all_season' : 'this_week'
+      @group_by_param = params[:group_by] || 'day'
+
+      @rankings_date_range, @rankings_date_range_description = get_rankings_data
+      @trends_date_range, @trends_date_range_description = get_trends_data
+      @miles_data = get_team_miles_data
+      @long_runs_data = get_team_long_runs_data
+
       @featured_runs =
         Rails
         .cache
@@ -274,37 +257,16 @@ class TeamsController < ApplicationController
     add_breadcrumb @team.name, team_path(@team)
     add_breadcrumb @member.default_name, team_member_path(@team, @member)
 
-    @trends_date_range, @trends_date_range_description =
-      Rails
-      .cache
-      .fetch(
-        "#{@team.cache_key}/#{@member.cache_key}/trends_data",
-        expires_in: 1.hour
-      ) { get_trends_data }
+    @trends_date_range_param = params[:trends_date_range] || 'this_week'
+    @group_by_param = params[:group_by] || 'day'
 
-    @miles_data =
-      Rails
-      .cache
-      .fetch(
-        "#{@team.cache_key}/#{@member.cache_key}/miles_data",
-        expires_in: 1.hour
-      ) { get_member_miles_data }
+    @trends_date_range, @trends_date_range_description = get_trends_data
 
-    @long_runs_data =
-      Rails
-      .cache
-      .fetch(
-        "#{@team.cache_key}/#{@member.cache_key}/long_runs_data",
-        expires_in: 1.hour
-      ) { get_member_long_runs_data }
+    @miles_data = get_member_miles_data
+    @long_runs_data = get_member_long_runs_data
 
-    @runs_by_date =
-      @member.runs_in_date_range(@team.season_range).group_by(&:date)
-
-    @long_runs_by_date =
-      @member.long_runs_in_date_range(@team, @team.season_range).group_by(
-        &:date
-      )
+    @runs_by_date = @member.runs_in_date_range(@team.season_range).group_by(&:date)
+    @long_runs_by_date = @member.long_runs_in_date_range(@team, @team.season_range).group_by(&:date)
   end
 
   def main_chat
@@ -356,7 +318,7 @@ class TeamsController < ApplicationController
   end
 
   def get_members
-    @members ||=
+    @members =
       if params[:query].present?
         sanitized_query = ActiveRecord::Base.connection.quote(params[:query])
         @team
@@ -386,75 +348,69 @@ class TeamsController < ApplicationController
   end
 
   def get_rankings_data
-    if @rankings_date_range.present? && @rankings_date_range_description.present?
-      return @rankings_date_range, @rankings_date_range_description
-    end
+    today = Date.today
 
     if params[:rankings_date_range].present?
-      today = Date.today
-
       case params[:rankings_date_range]
-      when 'All season'
+      when 'all_season'
         [@team.season_start_date..@team.season_end_date, 'this season']
-      when 'This week'
+      when 'this_week'
         [today.beginning_of_week(@team.week_start)..today, 'this week']
-      when 'Last week'
+      when 'last_week'
         one_week_ago = today - 1.week
         beginning_of_week = one_week_ago.beginning_of_week(@team.week_start)
         end_of_week = one_week_ago.end_of_week(@team.week_start)
         [beginning_of_week..end_of_week, 'last week']
-      when 'This month'
+      when 'this_month'
         [today.beginning_of_month..today, 'this month']
-      when 'Last month'
+      when 'last_month'
         one_month_ago = today - 1.month
         beginning_of_month = one_month_ago.beginning_of_month
         end_of_month = one_month_ago.end_of_month
         [beginning_of_month..end_of_month, 'last month']
-      when 'Custom range'
-        start_date = params[:rankings_start_date].to_date
-        end_date = params[:rankings_end_date].to_date
+      when 'custom_range'
+        @rankings_start_date = params[:rankings_start_date].to_date
+        @rankings_end_date = params[:rankings_end_date].to_date
         [
-          start_date..end_date,
-          "between #{format_date(start_date, separator: '.')} and #{pretty_date(end_date, separator: '.')}"
+          @rankings_start_date..@rankings_end_date,
+          "from #{@rankings_start_date.strftime('%m/%d/%Y')} to #{@rankings_end_date.strftime('%m/%d/%Y')}"
         ]
       end
-    else
+    elsif @team.season_dates?
       [@team.season_start_date..@team.season_end_date, 'this season']
+    else
+      [today.beginning_of_week(@team.week_start)..today, 'this week']
     end
   end
 
   def get_trends_data
-    # if @trends_date_range.present? && @trends_date_range_description.present?
-    #   return @trends_date_range, @trends_date_range_description
-    # end
-
     today = Date.today
 
     if params[:trends_date_range].present?
       case params[:trends_date_range]
-      when 'All season'
+      when 'all_season'
         [@team.season_start_date..@team.season_end_date, 'this season']
-      when 'This week'
+      when 'this_week'
         [
           week_range(current_date: today, week_start: @team.week_start),
           'this week'
         ]
-      when 'Last week'
+      when 'last_week'
         [
           week_range(current_date: today - 1.week, week_start: @team.week_start),
           'last week'
         ]
-      when 'This month'
+      when 'this_month'
         [month_range(current_date: today), 'this month']
-      when 'Last month'
+      when 'last_month'
         [month_range(current_date: today - 1.month), 'last month']
-      when 'Custom range'
-        start_date = params[:trends_start_date].to_date
-        end_date = params[:trends_end_date].to_date
+      when 'custom_range'
+        @trends_start_date = params[:trends_start_date].to_date
+        @trends_end_date = params[:trends_end_date].to_date
 
         [
-          start_date..end_date,
-          "between #{format_date(start_date, separator: '.')} and #{format_date(end_date, separator: '.')}"
+          @trends_start_date..@trends_end_date,
+          "from #{@trends_start_date.strftime('%m/%d/%Y')} to #{@trends_end_date.strftime('%m/%d/%Y')}"
         ]
       end
     else
@@ -468,7 +424,7 @@ class TeamsController < ApplicationController
   def get_team_miles_data
     group_by = params[:group_by] || 'day'
 
-    @miles_data ||=
+    @miles_data =
       if group_by == 'week'
         @trends_date_range
           .group_by { |date| date.beginning_of_week(@team.week_start) }
@@ -495,7 +451,7 @@ class TeamsController < ApplicationController
   def get_team_long_runs_data
     group_by = params[:group_by] || 'day'
 
-    @long_runs_data ||=
+    @long_runs_data =
       if group_by == 'week'
         @trends_date_range
           .group_by { |date| date.beginning_of_week(@team.week_start) }
@@ -522,7 +478,7 @@ class TeamsController < ApplicationController
   def get_member_miles_data
     group_by = params[:group_by] || 'day'
 
-    @miles_data ||=
+    @miles_data =
       if group_by == 'week'
         @trends_date_range
           .group_by { |date| date.beginning_of_week(@team.week_start) }
@@ -549,7 +505,7 @@ class TeamsController < ApplicationController
   def get_member_long_runs_data
     group_by = params[:group_by] || 'day'
 
-    @long_runs_data ||=
+    @long_runs_data =
       if group_by == 'week'
         @trends_date_range
           .group_by { |date| date.beginning_of_week(@team.week_start) }

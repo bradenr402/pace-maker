@@ -1,0 +1,40 @@
+<% rankings_date_range_param = params[:rankings_date_range] || @rankings_date_range_param %>
+
+<div id="rankings_date_form">
+  <%= form_with url: team_path(team), method: :get, html: { novalidate: true }, data: { turbo_stream: true, controller: 'custom-date-range form-validation' } do |form| %>
+    <div class="form-group">
+      <%= form.label :rankings_date_range, 'Select date range', class: 'form-label' %>
+
+      <div class="flex flex-wrap items-center gap-x-2 gap-y-5 my-4">
+        <% date_options = [
+          { name: 'This Week', value: 'this_week' },
+          { name: 'Last Week', value: 'last_week' },
+          { name: 'This Month', value: 'this_month' },
+          { name: 'Last Month', value: 'last_month' },
+          { name: 'Custom Date Range', value: 'custom_range' }
+        ] %>
+
+        <% date_options.unshift({ name: 'All season', value: 'all_season' }) if team.season_dates? %>
+
+        <% date_options.each do |option| %>
+          <div>
+            <%= form.radio_button :rankings_date_range, option[:value], id: "rankings_date_range_#{option[:value]}", checked: (option[:value] == rankings_date_range_param), class: 'hidden peer', data: { custom_date_range_target: 'radio', action: "custom-date-range##{option[:value] == 'custom_range' ? 'update' : 'search'}" } %>
+            <%= form.label "rankings_date_range_#{option[:value]}", option[:name], class: 'form-radio-chip-label' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Custom Date Range Fields -->
+    <div class="<%= (rankings_date_range_param) == 'custom_range' ? '' : 'hidden' %> form-group" data-custom-date-range-target="startDate">
+      <%= form.label :rankings_start_date, 'Start date', class: 'form-label' %>
+      <%= form.date_field :rankings_start_date, max: Date.yesterday, value: @rankings_start_date, class: 'form-input', data: { form_validation_target: 'startDate', custom_date_range_target: 'startDateField', action: 'input->form-validation#validateEndDate custom-date-range#search' } %>
+    </div>
+
+    <div class="<%= (rankings_date_range_param) == 'custom_range' ? '' : 'hidden' %> form-group" data-custom-date-range-target="endDate">
+      <%= form.label :rankings_end_date, 'End date', class: 'form-label' %>
+      <%= form.date_field :rankings_end_date, max: Date.today, value: @rankings_end_date, class: 'form-input', data: { form_validation_target: 'endDate', custom_date_range_target: 'endDateField', action: 'input->form-validation#validateEndDate custom-date-range#search' } %>
+      <span class="hidden my-1 error-message" data-form-validation-target="endDateError">End date must be today or earlier and must be after start date</span>
+    </div>
+  <% end %>
+</div>
