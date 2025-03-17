@@ -297,7 +297,7 @@
     </div>
 
     <div class="flex items-center gap-4 pt-6 border-t border-slate-200 dark:border-slate-700">
-      <%= f.submit 'Save', data: { turbo: false }, class: 'btn btn-primary' %>
+      <%= f.submit 'Save changes', data: { turbo: false }, class: 'btn btn-primary' %>
     </div>
   </div>
 <% end %>
@@ -384,7 +384,7 @@
     </div>
 
     <div class="flex items-center gap-4 pt-6 border-t border-slate-200 dark:border-slate-700">
-      <%= f.submit 'Save', data: { turbo: false }, class: 'btn btn-primary' %>
+      <%= f.submit 'Save changes', data: { turbo: false }, class: 'btn btn-primary' %>
     </div>
   </div>
 <% end %>
@@ -419,7 +419,7 @@
           <%= teams_requiring_gender.map { |team| content_tag(:li, link_to(team.name, team, class: 'btn-link')) }.join.html_safe %>
         </ul>
 
-        <p class="my-1 help-text">You must leave <%= teams_requiring_gender.count == 1 ? 'this team' : 'these teams' %> to remove your gender.</p>
+        <p class="my-1 help-text">You cannot remove your gender unless you leave <%= teams_requiring_gender.count == 1 ? 'this team' : 'these teams' %> or the <%= 'owner'.pluralize(teams_requiring_gender.size) %> of the <%= 'team'.pluralize(teams_requiring_gender.size) %> disables the gender requirement.</p>
       <% else %>
         <div class="relative">
           <%= inline_svg_tag 'icons/gender.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
@@ -429,7 +429,7 @@
     </div>
 
     <div class="flex items-center gap-4 pt-6 border-t border-slate-200 dark:border-slate-700">
-      <%= f.submit 'Save', data: { turbo: false }, class: 'btn btn-primary' %>
+      <%= f.submit 'Save changes', data: { turbo: false }, class: 'btn btn-primary' %>
     </div>
   </div>
 <% end %>
@@ -439,7 +439,7 @@
 
   <div class="py-6 mt-6 border-t border-slate-200 dark:border-slate-700">
     <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Password</h2>
-    <p class="text-sm text-slate-600 dark:text-slate-400">Leave the fields below blank if you don't want to change your password.</p>
+    <p class="text-sm text-slate-600 dark:text-slate-400">This information will not be visible to anyone.</p>
   </div>
 
   <div class="card">
@@ -459,7 +459,6 @@
           <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-5 hidden' %>
         </button>
       </div>
-      <p class="my-1 help-text">Leave this blank if you don't want to change your password.</p>
 
       <div class="hidden" data-form-validation-target="passwordRequirements">
         <p class="my-1 help-text">Password must contain:</p>
@@ -521,12 +520,12 @@
             <%= inline_svg_tag 'icons/eye-slash.svg', data: { password_visibility_target: 'hiddenIcon' }, class: 'size-5 hidden' %>
           </button>
         </div>
-        <p class="my-1 text-xs text-slate-700 dark:text-slate-400">Your current password is required to change your password.</p>
+        <p class="my-1 text-xs text-slate-700 dark:text-slate-400">Enter your current password to confirm your new password.</p>
       </div>
     <% end %>
 
     <div class="flex items-center gap-4 pt-6 border-t border-slate-200 dark:border-slate-700">
-      <%= f.submit 'Save', data: { turbo: false }, class: 'btn btn-primary' %>
+      <%= f.submit 'Save changes', data: { turbo: false }, class: 'btn btn-primary' %>
     </div>
   </div>
 <% end %>
