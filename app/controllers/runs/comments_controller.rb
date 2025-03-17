@@ -43,7 +43,7 @@ class Runs::CommentsController < ApplicationController
 
     @oldest_timestamp = @comments.last&.created_at
 
-    html = render_to_string(partial: 'comments/comments_list', locals: { comments: @comments })
+    html = render_to_string(partial: 'comments/comments_list', locals: { comments: @comments, run: @run })
     render json: { html:, more_data: @more_comments, oldest_timestamp: @oldest_timestamp }
   end
 

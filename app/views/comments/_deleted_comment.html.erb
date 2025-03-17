@@ -1,4 +1,5 @@
 <% user = comment.user %>
+<% run = comment.parent_run %>
 <% level ||= comment.level %>
 
 <div id="<%= dom_id(comment) %>" class="my-2">
@@ -47,7 +48,7 @@
               </span>
             </div>
 
-            <%= render 'comments/comments_list', comments: comment.replies, level: %>
+            <%= render 'comments/comments_list', comments: comment.replies, run:, level: %>
           </div>
         <% else %>
           <div class="inline-flex gap-1 mt-2 text-soft">
@@ -57,7 +58,7 @@
             </span>
           </div>
 
-          <%= render 'comments/comments_list', comments: comment.replies, level: %>
+          <%= render 'comments/comments_list', comments: comment.replies, run:, level: %>
         <% end %>
       </div>
 

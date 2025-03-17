@@ -1,40 +1,67 @@
 <% last_message_date = nil %>
 <% unread_banner_shown = false %>
 
-<% @objects.each do |object| %>
-  <% if !unread_banner_shown && current_user.last_read_at(topic)&.before?(object.created_at) %>
-    <div id="unread_banner" class="flex items-center my-6 font-semibold">
-      <hr class="flex-grow border-t-[0.5px] border-indigo-600 dark:border-indigo-500">
-      <span class="px-3 text-indigo-600 dark:text-indigo-500 text-sm">Unread messages</span>
-      <hr class="flex-grow border-t-[0.5px] border-indigo-600 dark:border-indigo-500">
-    </div>
+<% if @objects.present? %>
+  <% @objects.each do |object| %>
+    <% if !unread_banner_shown && current_user.last_read_at(topic)&.before?(object.created_at) %>
+      <div id="unread_banner" class="flex items-center my-6 font-semibold">
+        <hr class="flex-grow border-t-[0.5px] border-indigo-600 dark:border-indigo-500">
+        <span class="px-3 text-indigo-600 dark:text-indigo-500 text-sm">Unread messages</span>
+        <hr class="flex-grow border-t-[0.5px] border-indigo-600 dark:border-indigo-500">
+      </div>
 
-    <% unread_banner_shown = true %>
-  <% end %>
-
-  <% if last_message_date != object.created_at.to_date %>
-    <div class="flex items-center my-6 font-semibold" data-date="<%= object.created_at.to_date %>">
-      <hr class="flex-grow border-t-[0.5px] border-slate-400 dark:border-slate-600">
-      <span class="px-3 text-light text-sm">
-        <%= pretty_date(object.created_at, date_style: :relative, include_weekday: true, weekday_format: :short, month_format: :short, include_year: object.created_at.year != Time.current.year) %>
-      </span>
-      <hr class="flex-grow border-t-[0.5px] border-slate-400 dark:border-slate-600">
-    </div>
-
-    <% last_message_date = object.created_at.to_date %>
-  <% end %>
-
-  <% if object.is_a?(Message) %>
-    <% if object.deleted? %>
-        <%= render 'deleted_message', message: object %>
-    <% else %>
-      <%= render object %>
+      <% unread_banner_shown = true %>
     <% end %>
-  <% elsif object.is_a?(Topic) %>
-    <%= render 'topic_banner', topic: object %>
-  <% elsif object.is_a?(TeamMembership) %>
-    <div class="flex justify-center" data-timestamp="<%= object.created_at %>">
-      <p class="text-soft text-sm text-center my-1"><%= object.user.default_name %> joined the team!</p>
-    </div>
+
+    <% if last_message_date != object.created_at.to_date %>
+      <div class="flex items-center my-6 font-semibold" data-date="<%= object.created_at.to_date %>">
+        <hr class="flex-grow border-t-[0.5px] border-slate-400 dark:border-slate-600">
+        <span class="px-3 text-light text-sm">
+          <%= pretty_date(object.created_at, date_style: :relative, include_weekday: true, weekday_format: :short, month_format: :short, include_year: object.created_at.year != Time.current.year) %>
+        </span>
+        <hr class="flex-grow border-t-[0.5px] border-slate-400 dark:border-slate-600">
+      </div>
+
+      <% last_message_date = object.created_at.to_date %>
+    <% end %>
+
+    <% if object.is_a?(Message) %>
+      <% if object.deleted? %>
+          <%= render 'deleted_message', message: object %>
+      <% else %>
+        <%= render object %>
+      <% end %>
+    <% elsif object.is_a?(Topic) %>
+      <%= render 'topic_banner', topic: object %>
+    <% elsif object.is_a?(TeamMembership) %>
+      <div class="flex justify-center" data-timestamp="<%= object.created_at %>">
+        <p class="text-soft text-sm text-center my-1"><%= object.user.default_name %> joined the team!</p>
+      </div>
+    <% end %>
   <% end %>
+<% else %>
+  <% messages =
+    if current_user.owns?(topic.team)
+      [
+        'Your team is following your lead—straight into complete silence.',
+        'Either your team is ultra-focused or really shy.',
+        'Maybe they’re all out running? Or maybe they’re just waiting for their coach to break the ice.',
+        'Your team looks up to you! Break the silence and get the conversation rolling.',
+      ]
+    else
+      [
+        'This topic is currently a ghost town. Population: <i>0 messages.</i>',
+        'This topic is currently starring in a documentary called <i>“The Sound of Silence.”</i>',
+        '<i>Shhh…</i> do you hear that? That’s the sound of pure, unfiltered awkwardness.',
+        'It’s so boring in here, even the crickets left.',
+        'This team is setting records—for the longest silence streak!',
+        'If “ghosting your team chat” was a sport, y’all would be champions.',
+      ]
+    end
+  %>
+
+  <div class="flex flex-col items-center justify-center gap-4 my-24 md:my-32">
+    <p class="font-semibold">No messages yet</p>
+    <p class="text-soft text-center text-sm text-pretty md:max-w-[70%]"><%= raw messages.sample %></p>
+  </div>
 <% end %>

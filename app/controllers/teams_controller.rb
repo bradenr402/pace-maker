@@ -26,10 +26,12 @@ class TeamsController < ApplicationController
     add_breadcrumb 'Teams', teams_path
     add_breadcrumb @team.name, team_path(@team)
 
+    @query = params[:query]
+
     @members =
       Rails
       .cache
-      .fetch([@team, 'members', params[:query]], expires_in: 1.hour) do
+      .fetch("#{@team.cache_key}/members/#{@query}", expires_in: 1.hour) do
         get_members
       end
 
@@ -190,7 +192,12 @@ class TeamsController < ApplicationController
          join_request&.canceled
          team_membership&.destroy
        end
-      Rails.cache.delete([@team, 'members', params[:query]])
+      if Rails.cache.respond_to?(:delete_matched)
+        Rails.cache.delete_matched("#{@team.cache_key}/members/*")
+      else
+        Rails.logger.warn 'Cache store does not support delete_matched'
+      end
+
       redirect_back fallback_location: @team,
                     success: 'You have successfully left this team.'
     else
@@ -216,7 +223,12 @@ class TeamsController < ApplicationController
     if ActiveRecord::Base.transaction do
          join_request.rejected! && team_membership.destroy
        end
-      Rails.cache.delete([@team, 'members', params[:query]])
+      if Rails.cache.respond_to?(:delete_matched)
+        Rails.cache.delete_matched("#{@team.cache_key}/members/*")
+      else
+        Rails.logger.warn 'Cache store does not support delete_matched'
+      end
+
       redirect_back fallback_location: team,
                     success:
                       "#{member.default_name} was successfully removed from this team."

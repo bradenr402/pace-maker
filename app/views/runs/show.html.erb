@@ -24,7 +24,7 @@
 
   <div data-controller="pagination" data-pagination-insertion-value="beforeend" data-pagination-load-more-path-value="<%= load_more_run_comments_path(@run) %>" class="mt-6">
     <div id="run_comments" class="mb-6" data-pagination-target="container" data-oldest-timestamp="<%= @oldest_timestamp %>">
-      <%= render 'comments/comments_list', comments: @comments %>
+      <%= render 'comments/comments_list', comments: @comments, run: @run %>
     </div>
 
     <% if @more_comments %>
