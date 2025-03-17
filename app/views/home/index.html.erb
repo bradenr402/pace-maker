@@ -69,7 +69,7 @@
         <div id="stravaActivityTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'stravaActivityTab' ? '' : 'hidden' %>">
           <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
             <h1 class="subheading">Recent Strava Activity</h1>
-            <p class="text-sm text-soft">Your runs that have been added or updated by Strava recently.</p>
+            <p class="text-sm text-soft">Your runs that have been created or updated by Strava recently.</p>
           </div>
 
         <% if @recent_updates[:strava_activity].any? %>
@@ -79,20 +79,21 @@
             <% end %>
           </div>
         <% else %>
-          <div class="mt-12">
-            <p class="text-soft text-center">No activities have been imported from Strava recently.</p>
+          <div class="flex flex-col items-center justify-center gap-4 my-24 md:my-32">
+            <p class="font-semibold">No recent Strava activities</p>
+            <p class="text-soft text-center text-sm text-pretty md:max-w-[70%]">No activities have been imported from Strava recently. You can manually import Strava activities from your <%= link_to 'settings', edit_user_registration_path, class: 'btn-link' %>.</p>
           </div>
         <% end %>
         </div>
       <% end %>
 
       <div id="teamUpdatesTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? && !current_user.strava_account_linked? || params[:tab] == 'teamUpdatesTab' ? '' : 'hidden' %>">
-        <% if @recent_updates[:team_updates].any? %>
-          <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
-            <h1 class="subheading">Team Updates</h1>
-            <p class="text-sm text-soft">Recent changes to teams you are a member of.</p>
-          </div>
+        <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
+          <h1 class="subheading">Team Updates</h1>
+          <p class="text-sm text-soft">Recent changes to teams you are a member of.</p>
+        </div>
 
+        <% if @recent_updates[:team_updates].any? %>
           <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <% @recent_updates[:team_updates].each do |audit| %>
               <% updated_team = Team.find(audit.team_id) %>
@@ -134,27 +135,29 @@
             <% end %>
           </div>
         <% else %>
-          <div class="mt-12">
-            <p class="text-soft text-center">No updates have been made to any of your teams recently. Come back later!</p>
+          <div class="flex flex-col items-center justify-center gap-4 my-24 md:my-32">
+            <p class="font-semibold">No recent team updates</p>
+            <p class="text-soft text-center text-sm text-pretty md:max-w-[70%]">No updates have been made to any of your teams recently.</p>
           </div>
         <% end %>
       </div>
 
       <div id="newTeamsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'newTeamsTab' ? '' : 'hidden' %>">
-        <% if @recent_updates[:new_teams].any? %>
-          <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
-            <h1 class="subheading">New Teams</h1>
-            <p class="text-sm text-soft">Teams recently created by users you know.</p>
-          </div>
+        <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
+          <h1 class="subheading">New Teams</h1>
+          <p class="text-sm text-soft">Teams recently created by users you know.</p>
+        </div>
 
+        <% if @recent_updates[:new_teams].any? %>
           <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <% @recent_updates[:new_teams].each do |team| %>
               <%= render 'teams/shared/team', team: team, show_members: true %>
             <% end %>
           </div>
         <% else %>
-          <div class="mt-12">
-            <p class="text-soft text-center text-pretty">No teams have been created recently by users you know. Come back later!</p>
+          <div class="flex flex-col items-center justify-center gap-4 my-24 md:my-32">
+            <p class="font-semibold">No new teams</p>
+            <p class="text-soft text-center text-sm text-pretty md:max-w-[70%]">No teams have been created recently by users you know. Check back later!</p>
           </div>
         <% end %>
       </div>
@@ -163,43 +166,33 @@
         <div id="joinRequestsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'joinRequestsTab' ? '' : 'hidden' %>">
           <% requests = @recent_updates[:join_requests] %>
 
+          <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
+            <h1 class="subheading">Pending Join Requests</h1>
+            <p class="text-sm text-soft">Users that have requested to join any of your teams will show up here.</p>
+          </div>
+
           <% if requests.any? %>
-            <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
-              <h1 class="subheading">Pending Join Requests</h1>
-              <p class="text-sm text-soft">
-                <% num = requests.count %>
-                <% first_team = requests.first.team %>
-
-                <% if num == 0 %>
-                  There are no pending join requests for any of your teams.
-                <% elsif num == 1 %>
-                  There is 1 pending join request for your team <%= link_to first_team.name, first_team, class: 'btn-link' %>.
-                <% else %>
-                  There are <%= num %> pending join requests for <%= requests.all? { |r| r.team.name == first_team.name } ? link_to(first_team.name, first_team, class: 'btn-link') : 'your teams' %>.
-                <% end %>
-              </p>
-            </div>
-
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
               <% requests.each do |request| %>
                 <%= render 'teams/show/join_request', request: request %>
               <% end %>
             </div>
           <% else %>
-            <div class="mt-12">
-              <p class="text-soft text-center text-pretty">No pending join requests were found for any of your teams. Check back later!</p>
+            <div class="flex flex-col items-center justify-center gap-4 my-24 md:my-32">
+              <p class="font-semibold">No pending join requests</p>
+              <p class="text-soft text-center text-sm text-pretty md:max-w-[70%]">There are no pending join requests for any of your teams. Check back later!</p>
             </div>
           <% end %>
         </div>
       <% end %>
 
       <div id="streakAdvancementsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'streakAdvancementsTab' ? '' : 'hidden' %>">
-        <% if @recent_updates[:streak_advancements].any? %>
-          <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
-            <h1 class="subheading">Streak Advancements</h1>
-            <p class="text-sm text-soft">Recent streak advancements by users you know.</p>
-          </div>
+        <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
+          <h1 class="subheading">Streak Advancements</h1>
+          <p class="text-sm text-soft">Recent streak advancements by users you know.</p>
+        </div>
 
+        <% if @recent_updates[:streak_advancements].any? %>
           <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <% @recent_updates[:streak_advancements].each do |streak| %>
               <% streak_user = streak[:user] %>
@@ -234,27 +227,29 @@
             <% end %>
           </div>
         <% else %>
-          <div class="mt-12">
-            <p class="text-soft text-center text-pretty">No recent streak advancements by users you know. Come back later!</p>
+          <div class="flex flex-col items-center justify-center gap-4 my-24 md:my-32">
+            <p class="font-semibold">No recent streak advancements</p>
+            <p class="text-soft text-center text-sm text-pretty md:max-w-[70%]">There are no recent streak advancements by users you know. Check back later!</p>
           </div>
         <% end %>
       </div>
 
       <div id="recentRunsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'recentRunsTab' ? '' : 'hidden' %>">
-        <% if @recent_updates[:new_runs].any? %>
-          <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
-            <h1 class="subheading">Recent Runs</h1>
-            <p class="text-sm text-soft">Recent runs logged by users you know.</p>
-          </div>
+        <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
+          <h1 class="subheading">Recent Runs</h1>
+          <p class="text-sm text-soft">Recent runs logged by users you know.</p>
+        </div>
 
+        <% if @recent_updates[:new_runs].any? %>
           <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <% @recent_updates[:new_runs].each do |run| %>
               <%= render 'runs/run', run: run %>
             <% end %>
           </div>
         <% else %>
-          <div class="mt-12">
-            <p class="text-soft text-center text-pretty">No recent runs by users you know. Come back later!</p>
+          <div class="flex flex-col items-center justify-center gap-4 my-24 md:my-32">
+            <p class="font-semibold">No recent runs</p>
+            <p class="text-soft text-center text-sm text-pretty md:max-w-[70%]">There are no recent runs by users you know. Check back later!</p>
           </div>
         <% end %>
       </div>

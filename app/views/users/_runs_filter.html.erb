@@ -19,8 +19,9 @@
       <% if @runs.present? %>
         <%= render @runs %>
       <% else %>
-        <div class="flex flex-col items-center justify-center gap-6 py-12">
-          <p class="text-soft text-center">No runs found for the selected date range.</p>
+        <div class="flex flex-col items-center justify-center gap-4 my-24 md:my-32">
+          <p class="font-semibold">No runs found</p>
+          <p class="text-soft text-center text-sm text-pretty md:max-w-[70%]">Sorry, we couldn&#8217;t find any runs in the selected date range.</p>
         </div>
       <% end %>
     </div>

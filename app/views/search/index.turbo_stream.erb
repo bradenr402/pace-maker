@@ -11,8 +11,13 @@
         <% end %>
       </div>
     <% else %>
-      <div class="flex flex-col items-center justify-center gap-6 mt-12">
-        <%= content_tag(:p, @query.present? ? 'No results found.' : 'Start typing to find teams or other members.', class: 'text-soft text-center') %>
+      <div class="flex flex-col items-center justify-center gap-4 my-24 md:my-32">
+        <% if @query.present? %>
+          <p class="font-semibold">No search results</p>
+          <p class="text-soft text-center text-sm text-pretty md:max-w-[70%]">Sorry, we couldn&#8217;t find any results for &#8220;<%= @query %>&#8221;.</p>
+        <% else %>
+          <p class="text-soft text-center text-sm text-pretty md:max-w-[70%]">Start typing to find teams or other members.</p>
+        <% end %>
       </div>
     <% end %>
   <% end %>
