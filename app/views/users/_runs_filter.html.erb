@@ -1,7 +1,9 @@
+<% user_is_current = user == current_user %>
+
 <div class="mb-24">
-  <div class="pb-6 my-6 border-b border-slate-200 dark:border-slate-700">
-    <h2 id="runs_title" class="subheading">Filter Runs</h2>
-    <p class="text-sm text-soft">Filter <%= user == current_user ? 'your' : "#{user.first_name}'s" %> runs by date.</p>
+  <div class="pb-6 mt-10 mb-6 border-b border-slate-200 dark:border-slate-700">
+    <h1 class="heading"><%= user_is_current ? 'Your' : "#{user.first_name}’s" %> Runs</h1>
+    <p class="text-soft">Use the filters to find runs by date, distance, duration, or pace.</p>
   </div>
 
   <%= render 'users/runs_date_form', user: %>
@@ -9,9 +11,9 @@
   <div id="runs">
     <% if @runs.present? %>
       <% if 'this'.in?(@date_range) %>
-        <p class="mt-6 mb-2 text-sm text-light"><%= user == current_user ? 'You have' : "#{user.first_name} has" %> logged <%= pluralize(@runs.count, 'run') %> <%= @date_range %>.</p>
+        <p class="mt-6 mb-2 text-sm text-light"><%= user_is_current ? 'You have' : "#{user.first_name} has" %> logged <%= pluralize(@runs.count, 'run') %> <%= @date_range %>.</p>
       <% else %>
-        <p class="mt-6 mb-2 text-sm text-light"><%= user == current_user ? 'You' : user.first_name %> logged <%= pluralize(@runs.count, 'run') %> <%= @date_range %>.</p>
+        <p class="mt-6 mb-2 text-sm text-light"><%= user_is_current ? 'You' : user.first_name %> logged <%= pluralize(@runs.count, 'run') %> <%= @date_range %>.</p>
       <% end %>
     <% end %>
 
