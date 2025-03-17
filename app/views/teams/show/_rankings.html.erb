@@ -4,14 +4,29 @@
 </div>
 
 <div data-controller="filter-gender">
+  <%= render 'teams/show/rankings_date_form', team: %>
+
   <% if team.require_gender? %>
-    <div class="form-group">
+    <div class="form-group ">
       <%= label_tag :gender_filter, 'Filter by gender', class: 'form-label' %>
-      <%= select_tag :gender_filter, options_for_select([['All', 'all'], ['Male', 'male'], ['Female', 'female']]), data: { action: 'change->filter-gender#filter', filter_gender_target: 'filter' }, class: 'form-select' %>
+
+      <div class="flex flex-wrap items-center gap-x-2 gap-y-5 my-4">
+        <% gender_options = [
+          { name: 'All athletes', value: 'all' },
+          { name: 'Male athletes', value: 'male' },
+          { name: 'Female athletes', value: 'female' },
+          { name: 'Unspecified athletes', value: 'unspecified' },
+        ] %>
+
+        <% gender_options.each do |option| %>
+          <div>
+            <%= radio_button_tag :gender_filter, option[:value], id: "gender_filter_#{option[:value]}", checked: option[:value] == 'all', class: 'hidden peer', data: { action: 'change->filter-gender#filter', filter_gender_target: 'radio' } %>
+            <%= label_tag "gender_filter_#{option[:value]}", option[:name], class: 'form-radio-chip-label' %>
+          </div>
+        <% end %>
+      </div>
     </div>
   <% end %>
-
-  <%= render 'teams/show/rankings_date_form', team: %>
 
   <%= render 'teams/show/rankings_table', team:, date_range: @rankings_date_range, date_range_description: @rankings_date_range_description %>
 </div>

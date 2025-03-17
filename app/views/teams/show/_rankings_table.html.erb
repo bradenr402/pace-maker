@@ -69,8 +69,9 @@
               </div>
             </th>
             <% if team.require_gender? %>
-              <td data-filter-gender-target="genderCell" class="px-6 py-4">
-                <%= data[:member].gender.present? ? data[:member].gender.capitalize : '—' %>
+            <% gender = data[:member].gender.present? ? data[:member].gender.capitalize : '—' %>
+              <td data-filter-gender-target="genderCell" class="px-6 py-4" data-gender="<%= gender == '—' ? 'unspecified' : gender %>">
+                <%= gender %>
               </td>
             <% end %>
             <td class="px-6 py-4 font-mono">
@@ -96,6 +97,9 @@
             <td class="px-6 py-3">
               <p data-filter-gender-target="maleTotal" class="text-xs whitespace-nowrap"><%= @all_members.count { |data| data[:member].gender == 'male' } %> male</p>
               <p data-filter-gender-target="femaleTotal" class="text-xs whitespace-nowrap"><%= @all_members.count { |data| data[:member].gender == 'female' } %> female</p>
+              <% if @all_members.any? { |data| data[:member].gender.blank? } %>
+                <p data-filter-gender-target="unspecifiedTotal" class="text-xs whitespace-nowrap"><%= @all_members.count { |data| data[:member].gender.blank? } %> unspecified</p>
+              <% end %>
             </td>
           <% end %>
           <td class="px-6 py-3 font-mono"><%= team.miles_in_date_range(date_range) %> <span class="font-sans text-xs">mi</span></td>
