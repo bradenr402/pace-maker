@@ -92,9 +92,12 @@
       </button>
 
       <% if @current_user_owns_team %>
-        <button type="button" id="joinRequestsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'joinRequestsTab' ? 'btn-tab-active' : '' %>">
+        <button type="button" id="joinRequestsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="group btn-tab <%= params[:tab] == 'joinRequestsTab' ? 'btn-tab-active' : '' %>">
           <%= inline_svg_tag 'icons/user-plus.svg', class: 'size-4 md:size-5' %>
           <span>Join Requests</span>
+          <% if @join_requests.present? %>
+            <span class="rounded-full size-1.5 bg-indigo-500 shrink-0 group-hover:brightness-75 animate-pulse"></span>
+          <% end %>
         </button>
       <% end %>
 
