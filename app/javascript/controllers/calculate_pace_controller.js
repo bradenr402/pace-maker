@@ -9,38 +9,17 @@ export default class extends Controller {
   }
 
   update() {
-    const distance = parseFloat(this.distanceTarget.value);
-    const durationString = this.durationTarget.value;
-    const durationRegex = /^((2[0-3]|1\d|0?\d):)?([0-5]?\d):([0-5]\d)$/; // refer to form_validation_controller.js
+    const distance = parseFloat(this.distanceTarget.value) || 0;
+    const totalSeconds = parseInt(this.durationTarget.value) || 0;
 
-    if (!this.isValidInput(distance, durationString, durationRegex)) return;
-
-    const totalSeconds = this.calculateTotalSeconds(durationString);
-    if (!totalSeconds) return;
+    if (isNaN(distance) || isNaN(totalSeconds) || distance === 0 || totalSeconds === 0) {
+      this.resetPaceDisplay();
+      return;
+    }
 
     const paceInSeconds = totalSeconds / distance;
     const formattedPace = this.formatPace(paceInSeconds);
-
     this.paceTarget.textContent = formattedPace;
-  }
-
-  isValidInput(distance, durationString, durationRegex) {
-    if (durationString === '') {
-      this.resetPaceDisplay();
-      return false;
-    }
-    return !(isNaN(distance) || distance < 0 || !durationRegex.test(durationString));
-  }
-
-  calculateTotalSeconds(durationString) {
-    const durationParts = durationString.split(':').map(Number);
-
-    if (durationParts.length === 2) {
-      return durationParts[0] * 60 + durationParts[1];
-    } else if (durationParts.length === 3) {
-      return durationParts[0] * 3600 + durationParts[1] * 60 + durationParts[2];
-    }
-    return null;
   }
 
   formatPace(paceInSeconds) {
@@ -48,7 +27,7 @@ export default class extends Controller {
     const paceSeconds = Math.round(paceInSeconds % 60);
     return `${paceMinutes}:${paceSeconds.toString().padStart(2, '0')}`;
   }
-  
+
   resetPaceDisplay() {
     this.paceTarget.textContent = 'XX:XX';
   }

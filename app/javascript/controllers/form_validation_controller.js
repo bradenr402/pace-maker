@@ -26,8 +26,6 @@ export default class extends Controller {
     'dateError',
     'distance',
     'distanceError',
-    'duration',
-    'durationError',
     'teamName',
     'teamNameError',
     'teamDescription',
@@ -353,18 +351,6 @@ export default class extends Controller {
     } else {
       this.distanceTarget.classList.remove('form-input-error');
       this.distanceErrorTarget.classList.add('hidden');
-    }
-  }
-
-  validateDuration(event) {
-    const duration = this.durationTarget.value;
-    const durationRegex = /^((2[0-3]|1\d|0?\d):)?([0-5]?\d):([0-5]\d)$/;
-    if (duration && !durationRegex.test(duration)) {
-      this.durationTarget.classList.add('form-input-error');
-      this.durationErrorTarget.classList.remove('hidden');
-    } else {
-      this.durationTarget.classList.remove('form-input-error');
-      this.durationErrorTarget.classList.add('hidden');
     }
   }
 

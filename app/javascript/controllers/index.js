@@ -31,6 +31,9 @@ application.register("distance-shortcuts", DistanceShortcutsController)
 import DropdownController from "./dropdown_controller"
 application.register("dropdown", DropdownController)
 
+import DurationPickerController from "./duration_picker_controller"
+application.register("duration-picker", DurationPickerController)
+
 import FilterGenderController from "./filter_gender_controller"
 application.register("filter-gender", FilterGenderController)
 

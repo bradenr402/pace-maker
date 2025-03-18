@@ -1,6 +1,6 @@
 <% modal_style_buttons = local_assigns.fetch(:modal_style_buttons, false) %>
 
-<%= form_with model: run, data: { controller: 'form-validation calculate-pace' }, html: { novalidate: true, turbo_frame: 'run_modal' } do |form| %>
+<%= form_with model: run, data: { controller: 'form-validation calculate-pace duration-picker' }, html: { novalidate: true, turbo_frame: 'run_modal' } do |form| %>
   <!-- Hidden fields to ensure that unchecked checkboxes submit 'false' -->
   <%= hidden_field_tag 'run[allow_comments]', 'false' %>
 
@@ -46,12 +46,106 @@
         <span class="help-text">(optional)</span>
       </p>
     <% end %>
+
+    <%= form.hidden_field :duration_input, value: run&.duration, data: { calculate_pace_target: 'duration', duration_picker_target: 'duration', action: 'change->calculate-pace#update' } %>
+
     <div class="relative">
-      <%= inline_svg_tag 'icons/clock.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= form.text_field :duration_input, value: form.object.new_record? ? '' : clock_time_display(run.duration), placeholder: '00:00:00', class: 'form-input pl-10', data: { form_validation_target: 'duration', action: 'input->form-validation#validateDuration input->calculate-pace#update', calculate_pace_target: 'duration' } %>
+      <%= inline_svg_tag 'icons/clock.svg', class: 'size-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 max-sm:hidden z-30' %>
+
+      <div class="p-1.5 rounded-md shadow-inner bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 flex items-center justify-center h-[200px] overflow-hidden">
+        <div class="relative flex justify-center size-full">
+          <!-- Highlight bar -->
+          <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[36px] bg-slate-200/50 dark:bg-slate-700/50 rounded-lg pointer-events-none"></div>
+
+          <!-- Hours list -->
+          <div class="flex grow select-none">
+            <div data-duration-picker-target="hours" class="px-6 ml-auto h-full overflow-auto hide-scrollbar snap-y snap-mandatory relative">
+              <!-- Partially transparent overlay for dimming -->
+              <div class="pointer-events-none sticky -top-2 z-20 h-[81px] w-full bg-white/60 dark:bg-slate-800/60"></div>
+
+              <!-- Gradient overlay for fading -->
+              <div class="pointer-events-none sticky -top-2 z-20 h-[81px] w-full bg-gradient-to-b from-white dark:from-slate-800 to-transparent"></div>
+
+              <!-- Empty container for padding -->
+              <div class="h-[66px]"></div>
+              <% 24.times do |h| %>
+                <div data-value="<%= h %>" data-list="hours" data-action="click->duration-picker#scrollTo" class="h-[33px] grid place-items-center snap-center text-light text-xl z-10">
+                  <%= h %>
+                </div>
+              <% end %>
+
+              <!-- Empty container for padding -->
+              <div class="h-[66px]"></div>
+
+              <!-- Partially transparent overlay for dimming -->
+              <div class="pointer-events-none sticky -bottom-2 z-20 h-[81px] w-full bg-white/60 dark:bg-slate-800/60"></div>
+
+              <!-- Gradient overlay for fading -->
+              <div class="pointer-events-none sticky -bottom-2 z-20 h-[81px] w-full bg-gradient-to-t from-white dark:from-slate-800 to-transparent"></div>
+            </div>
+            <div class="grid place-items-center text-sm text-slate-800 dark:text-white font-semibold z-10 -ml-4.5 mr-auto pointer-events-none"><div>hour<span data-duration-picker-target="hourPlural" class="transition duration-[250ms] linear">s</span></div></div>
+          </div>
+
+          <!-- Minutes list -->
+          <div class="flex grow select-none">
+            <div data-duration-picker-target="minutes" class="px-6 ml-auto h-full overflow-auto hide-scrollbar snap-y snap-mandatory relative">
+              <!-- Partially transparent overlay for dimming -->
+              <div class="pointer-events-none sticky -top-2 z-20 h-[81px] w-full bg-white/60 dark:bg-slate-800/60"></div>
+
+              <!-- Gradient overlay for fading -->
+              <div class="pointer-events-none sticky -top-2 z-20 h-[81px] w-full bg-gradient-to-b from-white dark:from-slate-800 to-transparent"></div>
+
+              <!-- Empty container for padding -->
+              <div class="h-[66px]"></div>
+              <% 60.times do |m| %>
+                <div data-value="<%= m %>" data-list="minutes" data-action="click->duration-picker#scrollTo" class="h-[33px] grid place-items-center snap-center text-light text-xl z-10">
+                  <%= m %>
+                </div>
+              <% end %>
+
+              <!-- Empty container for padding -->
+              <div class="h-[66px]"></div>
+
+              <!-- Partially transparent overlay for dimming -->
+              <div class="pointer-events-none sticky -bottom-2 z-20 h-[81px] w-full bg-white/60 dark:bg-slate-800/60"></div>
+
+              <!-- Gradient overlay for fading -->
+              <div class="pointer-events-none sticky -bottom-2 z-20 h-[81px] w-full bg-gradient-to-t from-white dark:from-slate-800 to-transparent"></div>
+            </div>
+            <div class="grid place-items-center text-sm text-slate-800 dark:text-white font-semibold z-10 -ml-4.5 mr-auto pointer-events-none">min</div>
+          </div>
+
+          <!-- Seconds list -->
+          <div class="flex grow select-none max-sm:pr-6">
+            <div data-duration-picker-target="seconds" class="px-6 ml-auto h-full overflow-auto hide-scrollbar snap-y snap-mandatory relative">
+              <!-- Partially transparent overlay for dimming -->
+              <div class="pointer-events-none sticky -top-2 z-20 h-[81px] w-full bg-white/60 dark:bg-slate-800/60"></div>
+
+              <!-- Gradient overlay for fading -->
+              <div class="pointer-events-none sticky -top-2 z-20 h-[81px] w-full bg-gradient-to-b from-white dark:from-slate-800 to-transparent"></div>
+
+              <!-- Empty container for padding -->
+              <div class="h-[66px]"></div>
+              <% 60.times do |s| %>
+                <div data-value="<%= s %>" data-list="seconds" data-action="click->duration-picker#scrollTo" class="h-[33px] grid place-items-center snap-center text-light text-xl z-10">
+                  <%= s %>
+                </div>
+              <% end %>
+
+              <!-- Empty container for padding -->
+              <div class="h-[66px]"></div>
+
+              <!-- Partially transparent overlay for dimming -->
+              <div class="pointer-events-none sticky -bottom-2 z-20 h-[81px] w-full bg-white/60 dark:bg-slate-800/60"></div>
+
+              <!-- Gradient overlay for fading -->
+              <div class="pointer-events-none sticky -bottom-2 z-20 h-[81px] w-full bg-gradient-to-t from-white dark:from-slate-800 to-transparent"></div>
+            </div>
+            <div class="grid place-items-center text-sm text-slate-800 dark:text-white font-semibold z-10 -ml-4.5 mr-auto pointer-events-none">sec</div>
+          </div>
+        </div>
+      </div>
     </div>
-    <p class="help-text my-1">Enter time as MM:SS or HH:MM:SS (e.g. 30:00 or 1:30:00)</p>
-    <p class="hidden my-1 error-message" data-form-validation-target="durationError">Duration must be formatted as MM:SS or HH:MM:SS and less than 24 hours</p>
   </div>
 
   <div class="form-group">
