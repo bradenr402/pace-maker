@@ -184,7 +184,7 @@
   <% elsif team_membership.mileage_goal? %>
     <p class="text-soft">No season dates have been set for this team.</p>
   <% else %>
-    <p class="text-soft"><%= member_is_current ? 'You have' : "#{member.first_name} has" %> not set a personal mileage goal and season dates have not been set for this team.</p>
+    <p class="text-soft"><%= member_is_current ? 'You have' : "#{member.first_name} has" %> not set a personal mileage goal, and season dates have not been set for this team.</p>
   <% end %>
 </div>
 
@@ -210,6 +210,6 @@
   <% elsif team_membership.long_run_goal? %>
     <p class="text-soft">No season dates have been set for this team.</p>
   <% else %>
-    <p class="text-soft"><%= member_is_current ? 'You have' : "#{member.first_name} has" %> not set a personal long run goal and season dates have not been set for this team.</p>
+    <p class="text-soft"><%= member_is_current ? 'You have' : "#{member.first_name} has" %> not set a personal long run goal, and season dates have not been set for this team.</p>
   <% end %>
 </div>
