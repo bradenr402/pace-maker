@@ -12,13 +12,13 @@
     <%= streak %>
     <span class="text-base font-normal text-soft"><%= 'day'.pluralize(streak) %></span>
   </p>
-  <p class="mt-1 mb-4 text-soft">
+  <p class="mt-1 mb-4 text-soft text-sm">
     <% if streak.zero? %>
       No current streak recorded.
     <% elsif start_date == end_date %>
-      <%= pretty_date(start_date, date_style: :relative) %>
+      <%= pretty_date(start_date, month_format: :short, include_year: Date.current.year != start_date.year) %>
     <% else %>
-      <%= pretty_date(start_date, date_style: :relative) %> &ndash; <%= pretty_date(end_date, date_style: :relative) %>
+      <%= pretty_date(start_date, month_format: :short, include_year: Date.current.year != start_date.year) %> &ndash; <%= pretty_date(end_date, month_format: :short, include_year: Date.current.year != end_date.year) %>
     <% end %>
   </p>
 
