@@ -16,22 +16,22 @@
   </div>
 
   <div data-controller="distance-shortcuts" class="form-group">
-    <%= form.label :distance, 'How many miles did you run?', class: 'form-label' %>
+    <%= form.label :distance, 'How far did you run?', class: 'form-label' %>
 
-    <div class="flex items-center gap-2.5">
-      <!-- Decrease distance button -->
-      <%= button_tag type: 'button', data: { action: 'mousedown->distance-shortcuts#updateDistance mousedown->form-validation#validateDistance mousedown->calculate-pace#update', update_distance_value: '-1' }, class: 'btn btn-white size-10' do %>
+    <div class="relative flex items-stretch mb-2">
+      <%= button_tag type: 'button', data: { action: 'mousedown->distance-shortcuts#updateDistance mousedown->form-validation#validateDistance mousedown->calculate-pace#update', update_distance_value: '-1' }, class: 'px-3 py-2 border border-slate-300 shadow-inner bg-white font-normal text-base placeholder:text-slate-500 block focus:outline-none focus:ring-4 focus:ring-indigo-50 focus:border-indigo-500 text-slate-900 dark:bg-slate-800 dark:border-slate-700 dark:focus:ring-slate-700/30 dark:focus:border-indigo-700 dark:text-white dark:placeholder:text-slate-400 rounded-l-md active:scale-95 origin-right' do %>
         <%= inline_svg_tag 'icons/minus.svg', class: 'size-5 shrink-0' %>
         <span class="sr-only">Decrease by 1 mile</span>
       <% end %>
 
-      <div class="relative flex-1">
-        <%= inline_svg_tag 'icons/ruler.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-        <%= form.number_field :distance, step: 0.1, min: 0, placeholder: '0.0', class: 'form-input pl-10', data: { form_validation_target: 'distance', action: 'input->form-validation#validateDistance input->calculate-pace#update', distance_shortcuts_target: 'distance', calculate_pace_target: 'distance' } %>
+      <%= form.number_field :distance, step: 0.1, min: 0, inputmode: 'numeric', placeholder: '0.0', class: 'z-10 px-3 pt-1 pb-4 border border-slate-300 shadow-inner bg-white font-normal text-base placeholder:text-slate-500 block w-full focus:outline-none focus:ring-4 focus:ring-indigo-50 focus:border-indigo-500 text-slate-900 dark:bg-slate-800 dark:border-slate-700 dark:focus:ring-slate-700/30 dark:focus:border-indigo-700 dark:text-white dark:placeholder:text-slate-400 text-center', data: { form_validation_target: 'distance', action: 'input->form-validation#validateDistance input->calculate-pace#update', distance_shortcuts_target: 'distance', calculate_pace_target: 'distance' } %>
+
+      <div class="z-10 absolute bottom-0.5 left-1/2 -translate-x-1/2 flex items-center text-xs text-soft gap-1">
+        <%= inline_svg_tag 'icons/ruler.svg', class: 'size-3' %>
+        <span>Miles</span>
       </div>
 
-      <!-- Increase distance button -->
-      <%= button_tag type: 'button', data: { action: 'mousedown->distance-shortcuts#updateDistance mousedown->form-validation#validateDistance mousedown->calculate-pace#update', update_distance_value: '1' }, class: 'btn btn-white size-10' do %>
+      <%= button_tag type: 'button', data: { action: 'mousedown->distance-shortcuts#updateDistance mousedown->form-validation#validateDistance mousedown->calculate-pace#update', update_distance_value: '1' }, class: 'px-3 py-2 border border-slate-300 shadow-inner bg-white font-normal text-base placeholder:text-slate-500 block focus:outline-none focus:ring-4 focus:ring-indigo-50 focus:border-indigo-500 text-slate-900 dark:bg-slate-800 dark:border-slate-700 dark:focus:ring-slate-700/30 dark:focus:border-indigo-700 dark:text-white dark:placeholder:text-slate-400 rounded-r-md active:scale-95 origin-left' do %>
         <%= inline_svg_tag 'icons/plus.svg', class: 'size-5 shrink-0' %>
         <span class="sr-only">Increase by 1 mile</span>
       <% end %>
@@ -42,7 +42,7 @@
 
   <div class="form-group">
     <%= form.label :duration_input, class: 'form-label' do %>
-      <p> How much time did you run for?
+      <p> How long did you run for?
         <span class="help-text">(optional)</span>
       </p>
     <% end %>
@@ -67,15 +67,15 @@
               <div class="pointer-events-none sticky -top-2 z-20 h-[81px] w-full bg-gradient-to-b from-white dark:from-slate-800 to-transparent"></div>
 
               <!-- Empty container for padding -->
-              <div class="h-[66px]"></div>
+              <div class="h-[60px]"></div>
               <% 24.times do |h| %>
-                <div data-value="<%= h %>" data-list="hours" data-action="click->duration-picker#scrollTo" class="h-[33px] grid place-items-center snap-center text-light text-xl z-10">
+                <div data-value="<%= h %>" data-list="hours" data-action="click->duration-picker#scrollTo" class="h-[30px] grid place-items-center snap-center text-light text-lg z-10">
                   <%= h %>
                 </div>
               <% end %>
 
               <!-- Empty container for padding -->
-              <div class="h-[66px]"></div>
+              <div class="h-[60px]"></div>
 
               <!-- Partially transparent overlay for dimming -->
               <div class="pointer-events-none sticky -bottom-2 z-20 h-[81px] w-full bg-white/60 dark:bg-slate-800/60"></div>
@@ -96,15 +96,15 @@
               <div class="pointer-events-none sticky -top-2 z-20 h-[81px] w-full bg-gradient-to-b from-white dark:from-slate-800 to-transparent"></div>
 
               <!-- Empty container for padding -->
-              <div class="h-[66px]"></div>
+              <div class="h-[60px]"></div>
               <% 60.times do |m| %>
-                <div data-value="<%= m %>" data-list="minutes" data-action="click->duration-picker#scrollTo" class="h-[33px] grid place-items-center snap-center text-light text-xl z-10">
+                <div data-value="<%= m %>" data-list="minutes" data-action="click->duration-picker#scrollTo" class="h-[30px] grid place-items-center snap-center text-light text-lg z-10">
                   <%= m %>
                 </div>
               <% end %>
 
               <!-- Empty container for padding -->
-              <div class="h-[66px]"></div>
+              <div class="h-[60px]"></div>
 
               <!-- Partially transparent overlay for dimming -->
               <div class="pointer-events-none sticky -bottom-2 z-20 h-[81px] w-full bg-white/60 dark:bg-slate-800/60"></div>
@@ -125,15 +125,15 @@
               <div class="pointer-events-none sticky -top-2 z-20 h-[81px] w-full bg-gradient-to-b from-white dark:from-slate-800 to-transparent"></div>
 
               <!-- Empty container for padding -->
-              <div class="h-[66px]"></div>
+              <div class="h-[60px]"></div>
               <% 60.times do |s| %>
-                <div data-value="<%= s %>" data-list="seconds" data-action="click->duration-picker#scrollTo" class="h-[33px] grid place-items-center snap-center text-light text-xl z-10">
+                <div data-value="<%= s %>" data-list="seconds" data-action="click->duration-picker#scrollTo" class="h-[30px] grid place-items-center snap-center text-light text-lg z-10">
                   <%= s %>
                 </div>
               <% end %>
 
               <!-- Empty container for padding -->
-              <div class="h-[66px]"></div>
+              <div class="h-[60px]"></div>
 
               <!-- Partially transparent overlay for dimming -->
               <div class="pointer-events-none sticky -bottom-2 z-20 h-[81px] w-full bg-white/60 dark:bg-slate-800/60"></div>
@@ -148,14 +148,11 @@
     </div>
   </div>
 
-  <div class="form-group">
-    <p class="form-label">Calculated pace:</p>
-    <div class="flex items-center gap-2 mx-3">
-      <%= inline_svg_tag 'icons/lightning.svg', class: 'size-5 text-slate-500' %>
-      <span>
-        <span class="font-mono" data-calculate-pace-target="pace"><%= form.object.persisted? && run.duration? ? clock_time_display(run.pace_per_mile) : 'XX:XX' %></span>
-        <span class="text-soft text-sm">/mi</span>
-      </span>
+  <div class="form-group flex items-center gap-2">
+    <p class="form-label mb-0">Calculated pace:</p>
+    <div class="px-3 py-1 rounded-lg bg-slate-300/35 dark:bg-slate-700/50">
+      <span class="font-mono" data-calculate-pace-target="pace"><%= form.object.persisted? && run.duration? ? clock_time_display(run.pace_per_mile) : 'XX:XX' %></span>
+      <span class="text-soft text-sm">/mi</span>
     </div>
   </div>
 
@@ -175,7 +172,7 @@
       </div>
       <div>
         <%= form.label :allow_comments, 'Enable comments?', class: 'select-none text-slate-700 dark:text-slate-300' %>
-        <p class="my-1 help-text">This allows users to post comments on this run.</p>
+        <p class="my-1 help-text">This allows other users to post comments on this run.</p>
       </div>
     </div>
 
