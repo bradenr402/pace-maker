@@ -22,7 +22,7 @@
     <% messages.append(
       'Apparently, your run was so legendary that it left everyone speechless!',
       'Did you run so fast that everyone missed it?',
-    ) if run.pace < 360 %>
+    ) if run.duration && run.pace < 360 %>
   <% else %>
     <% messages = [
       'It’s quieter than a mime convention in here!',
@@ -32,7 +32,7 @@
 
     <% messages.append(
       'This run was so fast, even the comments haven’t caught up yet!'
-    ) if run.pace < 360 %>
+    ) if run.duration && run.pace < 360 %>
   <% end %>
 
   <div class="flex flex-col items-center justify-center gap-4 my-24 md:my-32">
