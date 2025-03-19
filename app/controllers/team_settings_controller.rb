@@ -61,9 +61,9 @@ class TeamSettingsController < ApplicationController
          )
 
         @team.track_settings_changes
-        redirect_back fallback_location: team_path(@team), success: 'Team settings updated successfully.'
+        redirect_to team_path(@team), success: 'Team settings updated successfully.'
       else
-        redirect_back fallback_location: team_path(@team), error: 'Unable to update team settings.'
+        redirect_back fallback_location: team_path(@team, tab: 'settingsTab'), error: 'Unable to update team settings.'
       end
     end
   end

@@ -58,19 +58,8 @@ class TeamsController < ApplicationController
       @miles_data = get_team_miles_data
       @long_runs_data = get_team_long_runs_data
 
-      @featured_runs =
-        Rails
-        .cache
-        .fetch([@team, 'featured_runs'], expires_in: 1.hour) do
-          @team.featured_runs
-        end
-
-      @recent_runs =
-        Rails
-        .cache
-        .fetch([@team, 'recent_runs'], expires_in: 1.hour) do
-          @team.recent_runs
-        end
+      @featured_runs = @team.featured_runs
+      @recent_runs = @team.recent_runs
 
       @all_members =
         @team
@@ -146,7 +135,7 @@ class TeamsController < ApplicationController
   def update
     @team.photo.attach(params[:photo])
     if @team.update(team_params)
-      redirect_back fallback_location: team_path(@team), success: 'Team was successfully updated.'
+      redirect_to team_path(@team), success: 'Team was successfully updated.'
     else
       render :edit,
              status: :unprocessable_entity,
