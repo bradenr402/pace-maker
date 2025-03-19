@@ -70,7 +70,7 @@
               <div class="h-[60px]"></div>
               <% 24.times do |h| %>
                 <div data-value="<%= h %>" data-list="hours" data-action="click->duration-picker#scrollTo" class="h-[30px] grid place-items-center snap-center text-light text-lg z-10">
-                  <%= h %>
+                  <%= h.zero? ? '–' : h %>
                 </div>
               <% end %>
 
@@ -99,7 +99,7 @@
               <div class="h-[60px]"></div>
               <% 60.times do |m| %>
                 <div data-value="<%= m %>" data-list="minutes" data-action="click->duration-picker#scrollTo" class="h-[30px] grid place-items-center snap-center text-light text-lg z-10">
-                  <%= m %>
+                  <%= m.zero? ? '–' : m %>
                 </div>
               <% end %>
 
@@ -128,7 +128,7 @@
               <div class="h-[60px]"></div>
               <% 60.times do |s| %>
                 <div data-value="<%= s %>" data-list="seconds" data-action="click->duration-picker#scrollTo" class="h-[30px] grid place-items-center snap-center text-light text-lg z-10">
-                  <%= s %>
+                  <%= s.zero? ? '–' : s %>
                 </div>
               <% end %>
 
