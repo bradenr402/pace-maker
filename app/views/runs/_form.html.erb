@@ -151,7 +151,7 @@
   <div class="form-group flex items-center gap-2">
     <p class="form-label mb-0">Calculated pace:</p>
     <div class="px-3 py-1 rounded-lg bg-slate-300/35 dark:bg-slate-700/50">
-      <span class="font-mono" data-calculate-pace-target="pace"><%= form.object.persisted? && run.duration? ? clock_time_display(run.pace_per_mile) : 'XX:XX' %></span>
+      <span class="font-mono" data-calculate-pace-target="pace"><%= form.object.persisted? && run.duration? ? clock_time_display(run.pace_per_mile) : '--:--' %></span>
       <span class="text-soft text-sm">/mi</span>
     </div>
   </div>

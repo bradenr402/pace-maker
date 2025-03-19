@@ -25,10 +25,10 @@ export default class extends Controller {
   formatPace(paceInSeconds) {
     const paceMinutes = Math.floor(paceInSeconds / 60);
     const paceSeconds = Math.round(paceInSeconds % 60);
-    return `${paceMinutes}:${paceSeconds.toString().padStart(2, '0')}`;
+    return `${paceMinutes.toString().padStart(2, '0')}:${paceSeconds.toString().padStart(2, '0')}`;
   }
 
   resetPaceDisplay() {
-    this.paceTarget.textContent = 'XX:XX';
+    this.paceTarget.textContent = '--:--';
   }
 }
