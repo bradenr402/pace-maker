@@ -114,68 +114,88 @@ module UserCalculations
   end
 
   # Streak calculations
-  def current_streak(team = nil, current_date = Date.current)
-    required_distance = team&.streak_distance_for_user(self) || 0
+  def streak_on_date(team = nil, starting_date = Date.current)
+    min_distance = min_distance team
 
-    Rails.cache.fetch("#{cache_key_with_version}/current_streak/#{required_distance}/#{current_date}/#{runs.maximum(:updated_at)}") do
-      all_runs = runs.select(:date, :distance)
-      return { streak: 0, start_date: nil, end_date: nil } if all_runs.empty?
+    expires_in_seconds = Time.now.end_of_day - Time.now
+    Rails.cache.fetch(
+      "#{cache_key_with_version}/streak_on_date/#{starting_date}/#{min_distance}",
+      expires_in: expires_in_seconds
+    ) do
+      dates_with_runs = runs.where('distance >= ? AND date <= ?', min_distance, starting_date)
+                            .order(date: :desc).pluck(:date).uniq
 
-      streak = 0
-      start_date = nil
-      end_date = nil
+      return { streak: 0, start_date: nil, end_date: nil } unless dates_with_runs.present?
 
-      loop do
-        runs_on_date = all_runs.where(date: current_date)
-
-        if runs_on_date.any? { |run| run.distance >= required_distance }
-          end_date ||= current_date
-          start_date = current_date
-          streak += 1
+      streak, start_date, end_date =
+        if dates_with_runs.first == starting_date || dates_with_runs.first == starting_date - 1.day
+          [1, dates_with_runs.first, dates_with_runs.first]
         else
-          break unless current_date.today? || team&.exclude_date_from_streak?(current_date)
+          [0, nil, nil]
         end
 
-        current_date = current_date.prev_day
+      return { streak:, start_date:, end_date: } unless dates_with_runs.size > 1
+
+      dates_with_runs.each_cons(2) do |curr_date, prev_date|
+        if prev_date == curr_date - 1.day
+          streak += 1
+          start_date = prev_date
+          end_date ||= curr_date
+        elsif curr_date != starting_date && !team&.exclude_date_from_streak?(curr_date)
+          break
+        end
       end
 
       { streak:, start_date:, end_date: }
     end
   end
 
+  def current_streak(team = nil)
+    Rails.cache.fetch("#{cache_key_with_version}/current_streak/#{Date.current}",
+                      expires_in: Time.now.end_of_day - Time.now) do
+      streak_on_date(team, Date.current)
+    end
+  end
+
   def record_streak(team = nil)
-    required_distance = team&.streak_distance_for_user(self) || 0
+    min_distance = min_distance team
 
-    Rails.cache.fetch("#{cache_key_with_version}/record_streak/#{required_distance}/#{runs.maximum(:updated_at)}") do
-      return { streak: 0, start_date: nil, end_date: nil } if runs.empty?
+    # Cache expiration based on the most recent `updated_at` of user's runs
+    last_updated_at = runs.maximum(:updated_at)
+    Rails.cache.fetch("#{cache_key_with_version}/record_streak/#{last_updated_at}") do
+      dates_with_runs = runs.where('distance >= ?', min_distance)
+                            .order(date: :desc).pluck(:date).uniq
 
-      run_dates = runs.order(:date).pluck(:date)
-      oldest_date = run_dates.first
-      newest_date = run_dates.last
-      current_date = newest_date
+      return { streak: 0, start_date: nil, end_date: nil } unless dates_with_runs.present?
 
       longest_streak = 0
       longest_start_date = nil
       longest_end_date = nil
 
-      while current_date >= oldest_date
-        streak_data = current_streak(team, current_date)
+      dates_with_runs.each_cons(2) do |curr_date, prev_date|
+        streak_data = streak_on_date(team, curr_date)
         streak = streak_data[:streak]
+        start_date = streak_data[:start_date]
+        end_date = streak_data[:end_date]
 
-        if streak > longest_streak
-          longest_streak = streak
-          longest_start_date = streak_data[:start_date]
-          longest_end_date = streak_data[:end_date]
+        if prev_date != curr_date - 1.day
+          streak = 1
+          start_date = curr_date
+          end_date = curr_date
         end
 
-        current_date = (streak_data[:start_date] || current_date).prev_day
+        next unless streak > longest_streak
+
+        longest_streak = streak
+        longest_start_date = start_date
+        longest_end_date = end_date
       end
 
-      {
-        streak: longest_streak,
-        start_date: longest_start_date,
-        end_date: longest_end_date
-      }
+      { streak: longest_streak, start_date: longest_start_date, end_date: longest_end_date }
     end
   end
+
+  private
+
+  def min_distance(team) = team&.streak_distance_for_user(self) || 0
 end
