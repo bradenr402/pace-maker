@@ -24,38 +24,56 @@
           <!-- Tab Indicator -->
           <span data-tabs-target="indicator" class="sliding-tab-indicator"></span>
 
-        <% if current_user.strava_account_linked? %>
+          <% if current_user.strava_account_linked? %>
             <button type="button" id="stravaActivityTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'stravaActivityTab' ? 'btn-tab-active' : '' %>">
               <%= inline_svg_tag 'icons/strava.svg', class: 'size-4 md:size-5' %>
               <span>Recent Strava Activity</span>
+              <% if @recent_updates[:strava_activity].present? %>
+                <span class="rounded-full size-1.5 bg-indigo-500 shrink-0 group-hover:brightness-75 animate-pulse"></span>
+              <% end %>
+            </button>
+          <% end %>
+
+          <% if current_user.owned_teams.any? %>
+            <button type="button" id="joinRequestsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'joinRequestsTab' ? 'btn-tab-active' : '' %>">
+              <%= inline_svg_tag 'icons/user-plus.svg', class: 'size-4 md:size-5' %>
+              <span>Join Requests</span>
+              <% if @recent_updates[:join_requests].present? %>
+                <span class="rounded-full size-1.5 bg-indigo-500 shrink-0 group-hover:brightness-75 animate-pulse"></span>
+              <% end %>
             </button>
           <% end %>
 
           <button type="button" id="teamUpdatesTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab].blank? && !current_user.strava_account_linked? || params[:tab] == 'teamUpdatesTab' ? 'btn-tab-active' : '' %>">
             <%= inline_svg_tag 'icons/team.svg', class: 'size-4 md:size-5' %>
             <span>Team Updates</span>
+              <% if @recent_updates[:team_updates].present? %>
+                <span class="rounded-full size-1.5 bg-indigo-500 shrink-0 group-hover:brightness-75 animate-pulse"></span>
+              <% end %>
           </button>
 
           <button type="button" id="newTeamsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'newTeams' ? 'btn-tab-active' : '' %>">
             <%= inline_svg_tag 'icons/team-plus.svg', class: 'size-4 md:size-5' %>
             <span>New Teams</span>
+              <% if @recent_updates[:new_teams].present? %>
+                <span class="rounded-full size-1.5 bg-indigo-500 shrink-0 group-hover:brightness-75 animate-pulse"></span>
+              <% end %>
           </button>
-
-          <% if current_user.owned_teams.any? %>
-            <button type="button" id="joinRequestsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'joinRequestsTab' ? 'btn-tab-active' : '' %>">
-              <%= inline_svg_tag 'icons/user-plus.svg', class: 'size-4 md:size-5' %>
-              <span>Join Requests</span>
-            </button>
-          <% end %>
 
           <button type="button" id="streakAdvancementsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'streakAdvancementsTab' ? 'btn-tab-active' : '' %>">
             <%= inline_svg_tag 'icons/medal.svg', class: 'size-4 md:size-5' %>
             <span>Streak Advancements</span>
+              <% if @recent_updates[:streak_advancements].present? %>
+                <span class="rounded-full size-1.5 bg-indigo-500 shrink-0 group-hover:brightness-75 animate-pulse"></span>
+              <% end %>
           </button>
 
           <button type="button" id="recentRunsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab gap-2 <%= params[:tab] == 'recentRunsTab' ? 'btn-tab-active' : '' %>">
             <%= inline_svg_tag 'icons/runner.svg', class: 'size-3.5 md:size-4.5' %>
             <span>Recent Runs</span>
+              <% if @recent_updates[:new_runs].present? %>
+                <span class="rounded-full size-1.5 bg-indigo-500 shrink-0 group-hover:brightness-75 animate-pulse"></span>
+              <% end %>
           </button>
         </div>
 
@@ -69,7 +87,7 @@
         <div id="stravaActivityTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'stravaActivityTab' ? '' : 'hidden' %>">
           <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
             <h1 class="subheading">Recent Strava Activity</h1>
-            <p class="text-sm text-soft">Your runs that have been created or updated by Strava recently.</p>
+            <p class="text-sm text-soft">Activities imported from your Strava account recently.</p>
           </div>
 
         <% if @recent_updates[:strava_activity].any? %>
@@ -87,88 +105,13 @@
         </div>
       <% end %>
 
-      <div id="teamUpdatesTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? && !current_user.strava_account_linked? || params[:tab] == 'teamUpdatesTab' ? '' : 'hidden' %>">
-        <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
-          <h1 class="subheading">Team Updates</h1>
-          <p class="text-sm text-soft">Recent changes to teams you are a member of.</p>
-        </div>
-
-        <% if @recent_updates[:team_updates].any? %>
-          <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <% @recent_updates[:team_updates].each do |audit| %>
-              <% updated_team = Team.find(audit.team_id) %>
-
-              <div class="card flex flex-col">
-                <%= link_to updated_team ? team_member_path(updated_team, current_user) : user_path(current_user), data: { turbo: false }, class: 'group flex items-center gap-3 mb-4' do %>
-                  <%= render 'shared/team_photo', team: updated_team, size: :xs, icon_background: :darker, image_classes: 'shrink-0' %>
-
-                  <div class="grow">
-                    <p class="text-light leading-tight"><span class="font-semibold transition duration-200 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= updated_team.name %></span> has been updated.</p>
-                    <p class="text-xs text-soft"><%= pretty_date(audit.changed_at, include_weekday: true, month_format: :long, include_year: audit.changed_at.year != Date.current.year) %></p>
-                  </div>
-
-                  <%= inline_svg_tag 'icons/edit-filled.svg', class: 'size-5 text-indigo-500 self-start shrink-0' %>
-                <% end %>
-
-                <div class="text-base mb-2">
-                  <% if audit.attribute_name == 'description' && audit.old_value.blank? %>
-                    <p class="text-normal">Description added:</p>
-                  <% else %>
-                    <p class="text-normal"><%= audit.attribute_name.humanize %> changed:</p>
-                  <% end %>
-                  <div class="text-light mx-6 mt-2">
-                    <% if audit.attribute_name == 'season_start_date' || audit.attribute_name == 'season_end_date' %>
-                      <p><span class="text-soft">from:</span> <%= pretty_date(audit.old_value, month_format: :short, date_style: :absolute) %></p>
-                      <p><span class="text-soft">to:</span> <%= pretty_date(audit.new_value, month_format: :short, date_style: :absolute) %></p>
-                    <% elsif audit.attribute_name == 'description' && audit.old_value.blank? %>
-                      <p> <%= audit.new_value %></p>
-                    <% else %>
-                      <p><span class="text-soft">from:</span> <%= humanize_boolean(audit.old_value) %></p>
-                      <p><span class="text-soft">to:</span> <%= humanize_boolean(audit.new_value) %></p>
-                    <% end %>
-                  </div>
-                </div>
-
-                <% description = updated_team.setting_explanation_for(audit.attribute_key, audit.new_value) %>
-                <%= content_tag(:p, description, class: 'mt-auto text-soft text-sm text-pretty') if description.present? %>
-              </div>
-            <% end %>
-          </div>
-        <% else %>
-          <div class="flex flex-col items-center justify-center gap-4 my-24 md:my-32">
-            <p class="font-semibold">No recent team updates</p>
-            <p class="text-soft text-center text-sm text-pretty md:max-w-[70%]">No updates have been made to any of your teams recently.</p>
-          </div>
-        <% end %>
-      </div>
-
-      <div id="newTeamsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'newTeamsTab' ? '' : 'hidden' %>">
-        <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
-          <h1 class="subheading">New Teams</h1>
-          <p class="text-sm text-soft">Teams recently created by users you know.</p>
-        </div>
-
-        <% if @recent_updates[:new_teams].any? %>
-          <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <% @recent_updates[:new_teams].each do |team| %>
-              <%= render 'teams/shared/team', team: team, show_members: true %>
-            <% end %>
-          </div>
-        <% else %>
-          <div class="flex flex-col items-center justify-center gap-4 my-24 md:my-32">
-            <p class="font-semibold">No new teams</p>
-            <p class="text-soft text-center text-sm text-pretty md:max-w-[70%]">No teams have been created recently by users you know. Check back later!</p>
-          </div>
-        <% end %>
-      </div>
-
       <% if current_user.owned_teams.any? %>
         <div id="joinRequestsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'joinRequestsTab' ? '' : 'hidden' %>">
           <% requests = @recent_updates[:join_requests] %>
 
           <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
             <h1 class="subheading">Pending Join Requests</h1>
-            <p class="text-sm text-soft">Users that have requested to join any of your teams will show up here.</p>
+            <p class="text-sm text-soft">Join requests for your teams.</p>
           </div>
 
           <% if requests.any? %>
@@ -185,6 +128,97 @@
           <% end %>
         </div>
       <% end %>
+
+      <div id="teamUpdatesTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? && !current_user.strava_account_linked? || params[:tab] == 'teamUpdatesTab' ? '' : 'hidden' %>">
+        <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
+          <h1 class="subheading">Team Updates</h1>
+          <p class="text-sm text-soft">Recent changes to teams you are a member of.</p>
+        </div>
+
+        <% if @recent_updates[:team_updates].any? %>
+          <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <% @recent_updates[:team_updates].each do |audit| %>
+              <% next if audit.old_value.to_s.strip == audit.new_value.to_s.strip %>
+
+              <% updated_team = Team.find(audit.team_id) %>
+
+              <%= link_to team_path(updated_team), data: { turbo: false }, class: 'group card flex flex-col' do %>
+                <div class="flex items-center gap-3 mb-4">
+                  <%= render 'shared/team_photo', team: updated_team, size: :xs, icon_background: :darker, image_classes: 'shrink-0' %>
+
+                  <div class="grow">
+                    <p class="text-light leading-tight"><span class="font-semibold transition duration-200 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= updated_team.name %></span> has been updated.</p>
+                    <div class="text-soft text-xs font-semibold flex items-center gap-1">
+                      <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 shrink-0' %>
+                      <span class="whitespace-nowrap"><%= pretty_date(audit.changed_at, date_style: :absolute, include_weekday: true, weekday_format: :short, month_format: :short, include_year: audit.changed_at.year != Date.current.year) %></span>
+                    </div>
+                  </div>
+
+                  <%= inline_svg_tag 'icons/edit-filled.svg', class: 'size-5 text-indigo-500 self-start shrink-0' %>
+                </div>
+
+                <div class="mb-2">
+                  <% if audit.attr_added? %>
+                    <p class="text-light"><%= audit.attribute_name.humanize %> added:
+                      <span class="text-normal font-bold">
+                        <%= audit.attr_is_date? ? pretty_date(audit.new_value, month_format: :short, date_style: :absolute) : audit.new_value %> <%= audit.attr_is_long_run_goal? ? 'long run'.pluralize(audit.old_value) : audit.attr_is_mileage_goal? ? 'mile'.pluralize(audit.old_value) : '' %>
+                      </span>
+                    </p>
+                  <% elsif audit.attr_removed? %>
+                    <p class="text-light"><%= audit.attribute_name.humanize %> removed:</p>
+                    <div class="text-light mx-6 mt-2">
+                      <p>
+                        <%= audit.attr_is_date? ? pretty_date(audit.old_value, month_format: :short, date_style: :absolute) : audit.old_value %> <%= audit.attr_is_long_run_goal? ? 'long run'.pluralize(audit.new_value) : audit.attr_is_mileage_goal? ? 'mile'.pluralize(audit.new_value) : '' %>
+                      </p>
+                    </div>
+                  <% else %>
+                    <p class="text-light"><%= audit.attribute_name.humanize %> changed:</p>
+                    <div class="mx-6 mt-2">
+                      <% if audit.attr_is_date? %>
+                        <p><span class="text-light">from:</span> <span class="font-bold"><%= pretty_date(audit.old_value, month_format: :short, date_style: :absolute) %></span></p>
+                        <p><span class="text-light">to:</span> <span class="font-bold"><%= pretty_date(audit.new_value, month_format: :short, date_style: :absolute) %></span></p>
+                      <% elsif audit.attr_is_description? %>
+                        <p><%= audit.new_value %></p>
+                      <% else %>
+                        <p><span class="text-light">from:</span> <span class="font-bold"><%= humanize_boolean audit.old_value %> <%= audit.attr_is_long_run_goal? ? 'long run'.pluralize(audit.old_value) : audit.attr_is_mileage_goal? ? 'mile'.pluralize(audit.old_value) : '' %></span></p>
+                        <p><span class="text-light">to:</span> <span class="font-bold"><%= humanize_boolean audit.new_value %> <%= audit.attr_is_long_run_goal? ? 'long run'.pluralize(audit.new_value) : audit.attr_is_mileage_goal? ? 'mile'.pluralize(audit.new_value) : '' %></span></p>
+                      <% end %>
+                    </div>
+                  <% end %>
+                </div>
+
+                <% description = updated_team.setting_explanation_for(audit.attribute_key, audit.new_value) %>
+                <%= content_tag(:p, description, class: 'mt-auto text-soft text-sm text-pretty') if description.present? %>
+              <% end %>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="flex flex-col items-center justify-center gap-4 my-24 md:my-32">
+            <p class="font-semibold">No recent team updates</p>
+            <p class="text-soft text-center text-sm text-pretty md:max-w-[70%]">No updates have been made to any of your teams recently.</p>
+          </div>
+        <% end %>
+      </div>
+
+      <div id="newTeamsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'newTeamsTab' ? '' : 'hidden' %>">
+        <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
+          <h1 class="subheading">New Teams</h1>
+          <p class="text-sm text-soft">New teams recently created by users you know.</p>
+        </div>
+
+        <% if @recent_updates[:new_teams].any? %>
+          <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <% @recent_updates[:new_teams].each do |team| %>
+              <%= render 'teams/shared/team', team: team, show_members: true %>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="flex flex-col items-center justify-center gap-4 my-24 md:my-32">
+            <p class="font-semibold">No new teams</p>
+            <p class="text-soft text-center text-sm text-pretty md:max-w-[70%]">No teams have been created recently by users you know. Check back later!</p>
+          </div>
+        <% end %>
+      </div>
 
       <div id="streakAdvancementsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'streakAdvancementsTab' ? '' : 'hidden' %>">
         <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
@@ -204,7 +238,7 @@
                   <%= render 'shared/user_photo', user: streak_user, size: :xs, icon_background: :darker, image_classes: 'shrink-0' %>
 
                   <div class="grow">
-                    <p class="text-light leading-tight"><span class="font-semibold transition duration-200 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= streak_user.default_name %></span> advanced their streak!</p>
+                    <p class="text-light leading-tight"><span class="font-bold transition duration-200 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= streak_user.default_name %></span> advanced their streak!</p>
                     <p class="text-xs text-soft"><%= pretty_date(streak_end_date, include_weekday: true, month_format: :long, include_year: streak_end_date.year != Date.current.year) %></p>
                   </div>
 
