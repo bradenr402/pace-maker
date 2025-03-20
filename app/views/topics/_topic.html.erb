@@ -35,7 +35,7 @@
     </div>
   <% end %>
 
-  <% if current_user.owns?(team) %>
+  <% if topic.open? || current_user.owns?(team) %>
     <div
       data-controller="dropdown"
       data-dropdown-hide-dropdown-class="pointer-events-none scale-75 opacity-0"
@@ -56,13 +56,20 @@
         data-dropdown-target="dropdown"
         class="dropdown-menu origin-top-right right-0 top-10"
       >
-        <% if topic.open? %>
+        <%= link_to team_topic_path(@team, topic), class: 'dropdown-option-primary' do %>
+          <%= inline_svg_tag 'icons/info.svg', class: 'size-5' %>
+          View details
+        <% end %>
+
+        <% if topic.open? && current_user.owns?(team) %>
           <!-- Open Edit Topic Modal Button -->
-          <button data-action="mousedown->modal#open" data-modal-id="editTopicModal_<%= topic.id %>" class="dropdown-option-primary">
+          <button data-action="mousedown->modal#open" data-modal-id="editTopicModal_<%= topic.id %>" class="dropdown-option">
             <%= inline_svg_tag 'icons/pencil.svg', class: 'size-5' %>
             Edit topic
           </button>
+        <% end %>
 
+        <% if topic.open? %>
           <% if topic.favorited_by?(current_user) %>
             <%= button_to unfavorite_team_topic_path(team, topic), method: :patch, class: 'dropdown-option' do %>
               <%= inline_svg_tag 'icons/star-slash.svg', class: 'size-5' %>
@@ -74,42 +81,35 @@
               Favorite topic
             <% end %>
           <% end %>
-
-          <!-- Open Close Topic Modal Button -->
-          <button data-action="mousedown->modal#open" data-modal-id="closeTopicModal_<%= topic.id %>" class="dropdown-option">
-            <%= inline_svg_tag 'icons/lock.svg', class: 'size-5' %>
-            Close topic
-          </button>
-        <% else %>
-          <!-- Open Reopen Topic Modal Button -->
-          <button data-action="mousedown->modal#open" data-modal-id="reopenTopicModal_<%= topic.id %>" class="dropdown-option">
-            <%= inline_svg_tag 'icons/unlock.svg', class: 'size-5' %>
-            Reopen topic
-          </button>
         <% end %>
 
-        <!-- Open Delete Topic Modal Button -->
-        <button data-action="mousedown->modal#open" data-modal-id="deleteTopicModal_<%= topic.id %>" class="dropdown-option-destructive">
-          <%= inline_svg_tag 'icons/trash.svg', class: 'size-5' %>
-          Delete topic
-        </button>
+        <% if current_user.owns?(team) %>
+          <% if topic.open? %>
+            <!-- Open Close Topic Modal Button -->
+            <button data-action="mousedown->modal#open" data-modal-id="closeTopicModal_<%= topic.id %>" class="dropdown-option">
+              <%= inline_svg_tag 'icons/lock.svg', class: 'size-5' %>
+              Close topic
+            </button>
+          <% else %>
+            <!-- Open Reopen Topic Modal Button -->
+            <button data-action="mousedown->modal#open" data-modal-id="reopenTopicModal_<%= topic.id %>" class="dropdown-option">
+              <%= inline_svg_tag 'icons/unlock.svg', class: 'size-5' %>
+              Reopen topic
+            </button>
+          <% end %>
+
+          <!-- Open Delete Topic Modal Button -->
+          <button data-action="mousedown->modal#open" data-modal-id="deleteTopicModal_<%= topic.id %>" class="dropdown-option-destructive">
+            <%= inline_svg_tag 'icons/trash.svg', class: 'size-5' %>
+            Delete topic
+          </button>
+        <% end %>
       </div>
     </div>
-  <% else %>
-    <% if topic.open? %>
-      <div class="my-2 group-first/container:mt-0 group-last/container:mb-0">
-        <% if topic.favorited_by?(current_user) %>
-          <%= button_to unfavorite_team_topic_path(team, topic), method: :patch, class: 'z-0 p-[5px] rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 text-yellow-400' do %>
-            <%= inline_svg_tag 'icons/star-filled.svg', class: 'size-5' %>
-            <span class="sr-only">Unfavorite topic</span>
-          <% end %>
-        <% else %>
-          <%= button_to favorite_team_topic_path(team, topic), method: :patch, class: 'z-0 p-[5px] rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 text-light hover:text-yellow-400' do %>
-            <%= inline_svg_tag 'icons/star.svg', class: 'size-5' %>
-            <span class="sr-only">Favorite topic</span>
-          <% end %>
-        <% end %>
-      </div>
+    <% else %>
+    <%= link_to team_topic_path(team, topic), data: { turbo: false }, class: 'p-2 rounded-lg opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-slate-200/50 dark:hover:bg-slate-700/50' do %>
+      <%= inline_svg_tag 'icons/info.svg', class: 'size-4 shrink-0 text-slate-700 dark:text-slate-300' %>
+      <span class="sr-only">View topic details</span>
     <% end %>
   <% end %>
 </div>

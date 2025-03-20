@@ -1,0 +1,131 @@
+<% content_for :title, "#{@topic.title} • Topic Details" %>
+
+<div class="max-w-3xl mx-auto my-16">
+  <%= link_to team_topic_messages_path(@team, @topic), class: 'group flex items-center gap-3 py-4 pr-2 btn-link-soft w-max', aria: { label: 'Back to messages' } do %>
+    <%= inline_svg_tag 'icons/chevron-left-bold.svg', class: 'size-4 transition ease-in-out duration-200' %>
+    <span class="text-sm transition ease-in-out duration-200">Back to Messages</span>
+  <% end %>
+
+  <div class="mb-12">
+    <div class="flex items-center gap-2 mb-3">
+      <%= inline_svg_tag 'icons/hashtag-filled.svg', class: 'size-4 text-light' %>
+      <h2 class="font-semibold">Topic Details</h2>
+    </div>
+
+    <div class="card">
+        <span class="text-soft text-sm flex items-center gap-1.5">
+          <%= inline_svg_tag 'icons/chat-filled.svg', class: 'size-3.5 text-indigo-500' %>
+          <span class="font-semibold text-indigo-500">Title:</span>
+          <%= @topic.title %>
+        </span>
+
+      <span class="text-soft text-sm flex items-center gap-1.5">
+        <%= inline_svg_tag 'icons/hashtag-filled.svg', class: 'size-3.5 -mr-0.5 -my-px text-blue-500' %>
+        <span class="font-semibold text-blue-500">Created</span>
+        <%= pretty_datetime(@topic.created_at, date_style: :absolute, include_seconds: false, month_format: :short) %>
+      </span>
+
+      <% if @topic.edited? %>
+        <span class="text-soft text-sm flex items-center gap-1.5">
+          <%= inline_svg_tag 'icons/edit-filled.svg', class: 'size-3.5 text-orange-500' %>
+          <span class="font-semibold text-orange-500">Edited</span>
+          <%= pretty_datetime(@topic.updated_at, date_style: :absolute, include_seconds: false, month_format: :short) %>
+        </span>
+      <% end %>
+
+      <% if @topic.favorited_by?(current_user) %>
+        <span class="text-soft text-sm flex items-center gap-1.5">
+          <%= inline_svg_tag 'icons/star-filled.svg', class: 'size-3.5 text-yellow-400' %>
+          <span class="font-semibold text-yellow-400">Favorited by you</span>
+        </span>
+      <% end %>
+
+      <% if @topic.closed? %>
+        <span class="text-soft text-sm flex items-center gap-1.5">
+          <%= inline_svg_tag 'icons/lock-filled.svg', class: 'size-3.5 text-red-500' %>
+          <span class="font-semibold text-red-500">Closed by <%= @team.owner.default_name %></span>
+        </span>
+      <% end %>
+
+      <span class="text-soft text-sm flex items-center gap-1.5">
+        <%= inline_svg_tag 'icons/message-bubble-filled.svg', class: 'size-3.5 text-emerald-500' %>
+        <span class="font-semibold text-emerald-500"><%= pluralize(@topic.messages.count, 'Message') %></span>
+      </span>
+    </div>
+  </div>
+
+  <div class="mb-12">
+    <div class="flex items-center gap-2 mb-3">
+      <%= inline_svg_tag 'icons/check-circle.svg', class: 'size-4 text-light' %>
+      <h2 class="font-semibold">User Activity</h2>
+    </div>
+
+    <div class="card">
+      <% @team.filtered_members.each do |user| %>
+        <div class="flex flex-wrap items-center justify-between gap-1.5 py-3 border-b border-slate-200 dark:border-slate-700 last:border-b-0 first:pt-0 last:pb-0">
+          <div class="flex items-center gap-2">
+            <%= render 'shared/user_photo', user: user, size: :thumb, icon_background: :darker %>
+            <span class="font-semibold text-sm"><%= user.default_name %></span>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-soft text-xs inline-flex items-center gap-1.5">
+              <%= inline_svg_tag 'icons/check-circle.svg', class: 'size-3 text-emerald-500' %>
+              <span class="font-semibold text-emerald-500">Last seen</span>
+              <%= pretty_datetime(user.last_read_at(@topic), date_style: :absolute, include_seconds: false, month_format: :short, include_year: user.last_read_at(@topic).year != Date.current.year) %>
+            </span>
+
+            <% message_count = @topic.unread_count_for(user) || 0 %>
+            <span class="font-bold text-blue-500 text-xs inline-flex items-center gap-1.5">
+              <span><%= message_count %></span>
+              <span>Unread</span>
+            </span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="mb-12">
+    <div class="flex items-center gap-2 mb-3">
+      <%= inline_svg_tag 'icons/message-bubble-filled.svg', class: 'size-4.5 text-light' %>
+      <h2 class="font-semibold">Message History</h2>
+    </div>
+
+    <div class="card">
+      <% @topic.messages.order(created_at: :desc).pluck(:created_at).map(&:to_date).uniq.each do |date| %>
+        <div class="flex flex-wrap items-center justify-between gap-1.5 py-3 border-b border-slate-200 dark:border-slate-700 last:border-b-0 first:pt-0 last:pb-0">
+          <div class="flex items-center gap-2">
+            <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 text-light' %>
+            <span class="font-semibold text-sm"><%= pretty_date(date, date_style: :absolute, month_format: :short, include_year: date.year == Date.current.year ) %></span>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <% message_count = @topic.messages.where(created_at: date.all_day).count %>
+            <% if message_count.positive? %>
+              <span class="font-bold text-blue-500 text-xs inline-flex items-center gap-1.5">
+                <span><%= message_count %></span>
+                <span>Sent</span>
+              </span>
+            <% end %>
+
+            <% message_count = @topic.messages.where(updated_at: date.all_day).count %>
+            <% if message_count.positive? %>
+              <span class="font-bold text-orange-500 text-xs inline-flex items-center gap-1.5">
+                <span><%= message_count %></span>
+                <span>Edited</span>
+              </span>
+            <% end %>
+
+            <% message_count = @topic.messages.where(deleted_at: date.all_day).count %>
+            <% if message_count.positive? %>
+              <span class="font-bold text-red-500 text-xs inline-flex items-center gap-1.5">
+                <span><%= message_count %></span>
+                <span>Deleted</span>
+              </span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

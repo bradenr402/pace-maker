@@ -1,6 +1,6 @@
 class TopicsController < ApplicationController
   before_action :set_team
-  before_action :set_topic, only: %i[edit update destroy close reopen favorite unfavorite update_last_read]
+  before_action :set_topic, only: %i[show edit update destroy close reopen favorite unfavorite update_last_read]
   before_action :authenticate_user!
   before_action :authorize_member!, only: %i[index favorite unfavorite]
   before_action :authorize_owner!, only: %i[edit update close reopen]
@@ -15,6 +15,14 @@ class TopicsController < ApplicationController
     @open_topics = sort_topics(all_topics.open.reject { _1.favorited_by? current_user })
     @closed_topics = sort_topics(all_topics.closed)
     @favorite_topics = sort_topics(current_user.favorite_topics(@team))
+  end
+
+  def show
+    add_breadcrumb 'Teams', teams_path
+    add_breadcrumb @team.name, team_path(@team)
+    add_breadcrumb 'Topics', team_topics_path(@team)
+    add_breadcrumb @topic.title, team_topic_messages_path(@team, @topic)
+    add_breadcrumb "#{@topic.title} Details", team_topic_path(@team, @topic)
   end
 
   def create
