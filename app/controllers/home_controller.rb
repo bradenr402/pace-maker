@@ -14,11 +14,11 @@ class HomeController < ApplicationController
 
     {
       strava_activity: current_user.strava_account_linked? ? recent_strava_activity : [],
+      join_requests: any_owned_teams ? pending_join_requests : [],
       team_updates: recent_team_updates,
       new_teams: any_connected_users ? new_teams_by_connected_users : [],
-      new_runs: any_connected_users ? new_runs_by_connected_users : [],
       streak_advancements: any_connected_users ? streak_advancements_by_connected_users : [],
-      join_requests: any_owned_teams ? pending_join_requests : []
+      new_runs: any_connected_users ? new_runs_by_connected_users : []
     }
   end
 
@@ -54,8 +54,8 @@ class HomeController < ApplicationController
 
   def streak_advancements_by_connected_users
     current_user.connected_users
-                .map { |user| user.current_streak.merge(user: user) }
-                .select { |streak| streak[:streak] >= 2 }
+                .map { |user| user.current_streak.merge(user:) }
+                .select { |streak| streak[:streak] >= 2 && streak[:end_date] >= 1.week.ago }
                 .map do |streak|
       {
         user: streak[:user],
