@@ -59,7 +59,7 @@
             <span class="text-soft text-xs inline-flex items-center gap-1.5">
               <%= inline_svg_tag 'icons/heart-filled.svg', class: 'size-3 text-pink-500' %>
               <span class="font-semibold text-pink-500">Liked</span>
-              <%= pretty_datetime(like.created_at, date_style: :absolute, include_seconds: false, month_format: :short) %>
+              <%= pretty_datetime(like.created_at, date_style: :absolute, include_seconds: false, month_format: :short, include_year: like.created_at.year != Date.current.year) %>
             </span>
           </div>
         <% end %>
