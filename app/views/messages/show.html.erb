@@ -45,6 +45,20 @@
             <%= pretty_datetime(@message.updated_at, date_style: :absolute, include_seconds: false, month_format: :short) %>
           </span>
         <% end %>
+
+        <% if @message.pinned? %>
+          <span class="text-soft text-sm flex items-center gap-1.5">
+            <%= inline_svg_tag 'icons/pin-filled.svg', class: 'size-3 text-yellow-500' %>
+            <span class="font-semibold text-yellow-500">Pinned by <%= @team.owner.default_name %></span>
+          </span>
+        <% end %>
+
+        <% if @message.replies.exists? %>
+          <span class="text-soft text-sm flex items-center gap-1.5">
+            <%= inline_svg_tag 'icons/reply-filled.svg', class: 'size-3.5 text-emerald-500' %>
+            <span class="font-semibold text-emerald-500"><%= @message.replies.count %> Total Replies</span>
+          </span>
+        <% end %>
       </div>
     </div>
   </div>
@@ -66,7 +80,7 @@
             <span class="text-soft text-xs inline-flex items-center gap-1.5">
               <%= inline_svg_tag 'icons/check-circle.svg', class: 'size-3 text-emerald-500' %>
               <span class="font-semibold text-emerald-500">Last seen</span>
-              <%= pretty_datetime(user.last_read_at(@topic), date_style: :absolute, include_seconds: false, month_format: :short) %>
+              <%= pretty_datetime(user.last_read_at(@topic), date_style: :absolute, include_seconds: false, month_format: :short, include_year: user.last_read_at(@topic).year != Date.current.year) %>
             </span>
           </div>
         <% end %>
@@ -91,7 +105,7 @@
               <%= render 'shared/user_photo', user:, size: :thumb, icon_background: :darker %>
               <div>
                 <% if user == current_user %>
-                  <span class="font-semibold text-sm">You</span>
+                  <span class="font-semibold text-sm leading-tight">You</span>
                   <% if is_self_like %>
                     <% messages = [
                       { text: "I see you’ve treated yourself to a like! Self-love is the best love, isn’t it?", icon: 'heart-filled', icon_color: 'text-pink-500' },
@@ -110,14 +124,14 @@
                     </p>
                   <% end %>
                 <% else %>
-                  <span class="font-semibold text-sm"><%= user.default_name %></span>
+                  <span class="font-semibold text-sm leading-tight"><%= user.default_name %></span>
                 <% end %>
               </div>
             </div>
             <span class="text-soft text-xs inline-flex items-center gap-1.5">
               <%= inline_svg_tag 'icons/like-filled.svg', class: 'size-3 text-blue-500' %>
               <span class="font-semibold text-blue-500">Liked</span>
-              <%= pretty_datetime(like.created_at, date_style: :absolute, include_seconds: false, month_format: :short) %>
+              <%= pretty_datetime(like.created_at, date_style: :absolute, include_seconds: false, month_format: :short, include_year: like.created_at.year != Date.current.year) %>
             </span>
           </div>
         <% end %>
