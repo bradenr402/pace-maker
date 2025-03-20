@@ -35,7 +35,7 @@ module.exports = {
         5.5: '1.375rem',
       },
       animation: {
-        'ping-slow': 'ping 3s cubic-bezier(0, 0, 0.2, 1) infinite',
+        'ping-slow': 'ping 2.5s cubic-bezier(0, 0, 0.2, 1) infinite',
       },
       fontSize: {
         xxs: '0.625rem'
