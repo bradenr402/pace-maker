@@ -127,14 +127,16 @@ module UserCalculations
 
       return { streak: 0, start_date: nil, end_date: nil } unless dates_with_runs.present?
 
+      run_today_or_yesterday = dates_with_runs.first == starting_date || dates_with_runs.first == starting_date - 1.day
+
       streak, start_date, end_date =
-        if dates_with_runs.first == starting_date || dates_with_runs.first == starting_date - 1.day
+        if run_today_or_yesterday
           [1, dates_with_runs.first, dates_with_runs.first]
         else
           [0, nil, nil]
         end
 
-      return { streak:, start_date:, end_date: } unless dates_with_runs.size > 1
+      return { streak:, start_date:, end_date: } unless run_today_or_yesterday && dates_with_runs.size > 1
 
       dates_with_runs.each_cons(2) do |curr_date, prev_date|
         if prev_date == curr_date - 1.day
@@ -151,8 +153,10 @@ module UserCalculations
   end
 
   def current_streak(team = nil)
-    Rails.cache.fetch("#{cache_key_with_version}/current_streak/#{Date.current}",
-                      expires_in: Time.now.end_of_day - Time.now) do
+    Rails.cache.fetch(
+      "#{cache_key_with_version}/current_streak/#{Date.current}",
+      expires_in: Time.now.end_of_day - Time.now
+    ) do
       streak_on_date(team, Date.current)
     end
   end
