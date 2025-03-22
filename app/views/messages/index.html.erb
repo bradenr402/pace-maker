@@ -22,7 +22,7 @@
       <% end %>
     </div>
 
-    <%= render 'pinned_message', message: @pinned_message if @pinned_message %>
+    <%= render 'pinned_message', message: @pinned_message %>
   </div>
 
   <div data-controller="pagination scroll" data-pagination-load-more-path-value="<%= load_more_team_topic_messages_path(@team, @topic) %>">
