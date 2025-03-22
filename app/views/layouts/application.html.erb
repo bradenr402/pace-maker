@@ -15,7 +15,7 @@
               <button onclick="window.location.reload()" class="hover:opacity-75">
                 <%= inline_svg_tag('logo.svg', class: 'w-48') %>
               </button>
-              <%= render 'shared/pinned_pages_menu' %>
+              <%= render 'shared/pinned_pages_menu' if current_user.show_pinned_pages_menu? %>
             </div>
           <% else %>
             <div class="flex justify-end mt-4 mr-4">
@@ -38,6 +38,6 @@
     </div>
     <%= render 'shared/tab_bar' if user_signed_in? %>
 
-    <%= turbo_stream_from 'pinned_pages_list' if user_signed_in? %>
+    <%= turbo_stream_from 'pinned_pages_list' if user_signed_in? && (current_user.show_pinned_pages_list? || current_user.show_pinned_pages_menu?) %>
   </body>
 </html>

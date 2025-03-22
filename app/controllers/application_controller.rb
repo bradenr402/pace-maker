@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_breadcrumbs
+  helper_method :valid_route?
 
   add_flash_types :success, :error
 
@@ -8,9 +9,16 @@ class ApplicationController < ActionController::Base
 
   def prepend_breadcrumb(name, url = '') = @breadcrumbs.prepend({ name:, url: })
 
-  private
+  # private
 
   def set_breadcrumbs = @breadcrumbs = []
+
+  def valid_route?(path)
+    Rails.application.routes.recognize_path(path)
+    true
+  rescue ActionController::RoutingError
+    false
+  end
 
   protected
 

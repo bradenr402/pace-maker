@@ -15,7 +15,7 @@
         <%= inline_svg_tag 'icons/info-circle.svg', class: 'size-5 mr-2 shrink-0' %>
         <span class="sr-only">Info</span>
         <p class="flex items-center gap-2">
-          <span><%= sanitize notice %></span>
+          <span><%= sanitize notice, tags: %w(strong b em i a), attributes: %w(href class data-turbo) %></span>
           <button
             type="button"
             data-action="mousedown->notifications#close"
@@ -36,7 +36,7 @@
         <%= inline_svg_tag 'icons/check-circle.svg', class: 'size-5 mr-2 shrink-0' %>
         <span class="sr-only">Info</span>
         <p class="flex items-center gap-2">
-          <span><%= sanitize success %></span>
+          <span><%= sanitize success, tags: %w(strong b em i a), attributes: %w(href class data-turbo) %></span>
           <button
             type="button"
             data-action="mousedown->notifications#close"
@@ -57,7 +57,7 @@
         <%= inline_svg_tag 'icons/x-circle.svg', class: 'size-5 mr-2 shrink-0' %>
         <span class="sr-only">Info</span>
         <p class="flex items-center gap-2">
-          <span><%= sanitize error %></span>
+          <span><%= sanitize error, tags: %w(strong b em i a), attributes: %w(href class data-turbo) %></span>
           <button
             type="button"
             data-action="mousedown->notifications#close"
@@ -78,7 +78,7 @@
         <%= inline_svg_tag 'icons/exclamation-circle.svg', class: 'size-5 mr-2 shrink-0' %>
         <span class="sr-only">Info</span>
         <p class="flex items-center gap-2">
-          <span><%= sanitize alert %></span>
+          <span><%= sanitize alert, tags: %w(strong b em i a), attributes: %w(href class data-turbo) %></span>
           <button
             type="button"
             data-action="mousedown->notifications#close"

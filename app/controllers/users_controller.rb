@@ -21,6 +21,10 @@ class UsersController < ApplicationController
     redirect_to user_path(current_user)
   end
 
+  def settings
+    redirect_to edit_user_registration_path(tab: params[:tab])
+  end
+
   def unlink_google_account
     if current_user.password_changed_at.nil?
       flash[:alert] = 'You must set a password to unlink your Google account.'

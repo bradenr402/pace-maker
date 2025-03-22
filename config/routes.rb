@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
   # Home
-  get 'home/index'
+  get 'home', to: 'home#index', as: :home
 
   authenticated :user do
-    root 'home#index', as: :authenticated_root
+    root 'pages#default', as: :authenticated_root
   end
 
   unauthenticated do
@@ -70,6 +70,7 @@ Rails.application.routes.draw do
     delete 'unlink_strava_account', on: :member
   end
   get '/profile', to: 'users#profile'
+  get '/settings', to: 'users#settings'
 
   # Teams & Memberships
   resources :teams do

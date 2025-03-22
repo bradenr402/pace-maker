@@ -1,9 +1,8 @@
 <% current_is_edit_user = current_page?(edit_user_registration_path) %>
 <% current_is_search = current_page?(search_path) %>
-<% current_is_new_run = current_page?(new_run_path) %>
 <% current_is_teams = current_page?(teams_path) %>
 <% current_is_profile = current_page?(profile_path) %>
-<% current_is_root = current_page?(root_path) %>
+<% current_is_home = current_page?(home_path) %>
 
 <div
   data-controller="modal"
@@ -23,8 +22,8 @@
 </div>
 
 <nav class="fixed z-50 bottom-0 inset-x-0 md:hidden grid grid-cols-5 w-full px-1 py-3 pb-3 bg-white/85 dark:bg-slate-800/85 backdrop-blur border-t border-slate-200 dark:border-slate-700 [@media(display-mode:standalone)]:pb-10">
-  <%= link_to root_path, aria: { current: current_is_root ? 'page' : nil }, class: "tab-link #{'tab-link-active' if current_is_root}" do %>
-    <% if current_is_root %>
+  <%= link_to home_path, aria: { current: current_is_home ? 'page' : nil }, class: "tab-link #{'tab-link-active' if current_is_home}" do %>
+    <% if current_is_home %>
       <%= inline_svg_tag 'icons/home-filled.svg', class: 'size-6 shrink-0' %>
     <% else %>
       <%= inline_svg_tag 'icons/home.svg', class: 'size-6 shrink-0' %>

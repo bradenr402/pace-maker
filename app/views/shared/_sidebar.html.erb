@@ -1,9 +1,8 @@
 <% current_is_edit_user = current_page?(edit_user_registration_path) %>
 <% current_is_search = current_page?(search_path) %>
-<% current_is_new_run = current_page?(new_run_path) %>
 <% current_is_teams = current_page?(teams_path) %>
 <% current_is_profile = current_page?(profile_path) %>
-<% current_is_root = current_page?(root_path) %>
+<% current_is_home = current_page?(home_path) %>
 
 <div class="hidden h-full flex-[0.3] min-w-72 max-w-[350px] md:block">
   <nav
@@ -20,8 +19,8 @@
 
     <!-- Main navigation links -->
     <div class="mb-6">
-      <%= link_to root_path, aria: { current: current_page?(root_path) ? 'page' : nil }, class: "group sidebar-link #{'sidebar-link-active' if current_page?(root_path)}" do %>
-        <% if current_is_root %>
+      <%= link_to home_path, aria: { current: current_page?(home_path) ? 'page' : nil }, class: "group sidebar-link #{'sidebar-link-active' if current_page?(home_path)}" do %>
+        <% if current_is_home %>
           <%= inline_svg_tag 'icons/home-filled.svg', class: 'size-5 dark:group-focus:text-white' %>
         <% else %>
           <%= inline_svg_tag 'icons/home.svg', class: 'size-5 dark:group-focus:text-white motion-safe:group-hover:bounce-animation motion-safe:group-focus:bounce-animation' %>
@@ -62,12 +61,14 @@
       <% end %>
     </div>
 
-    <div class="mb-6">
-      <!-- Pinned pages -->
-      <%= render 'pinned_pages/list' %>
-      <!-- Pin/Unpin page button -->
-      <%= render 'pinned_pages/pin_button', page_url: request.fullpath %>
-    </div>
+    <% if current_user.show_pinned_pages_list? %>
+      <div class="mb-6">
+        <!-- Pinned pages -->
+        <%= render 'pinned_pages/list' %>
+        <!-- Pin/Unpin page button -->
+        <%= render 'pinned_pages/pin_button', page_url: request.fullpath %>
+      </div>
+    <% end %>
 
     <!-- Open New Run Modal Button -->
     <button data-action="mousedown->modal#open" data-modal-id="newRunModal" class="btn btn-primary mt-auto gap-2.5">

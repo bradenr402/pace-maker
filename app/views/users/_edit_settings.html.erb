@@ -8,6 +8,8 @@
   <%= hidden_field_tag 'user[settings][email_visible]', 'false' %>
   <%= hidden_field_tag 'user[settings][phone_visible]', 'false' %>
   <%= hidden_field_tag 'user[settings][in_app]', 'false' %>
+  <%= hidden_field_tag 'user[settings][show_pinned_pages_menu]', 'false' %>
+  <%= hidden_field_tag 'user[settings][show_pinned_pages_list]', 'false' %>
 
   <%= form.fields_for :settings do |settings_form| %>
     <div class="my-6">
@@ -82,6 +84,63 @@
               <p class="w-full text-xs">Easy on the eyes in low-light environments</p>
             </div>
           <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
+      <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Navigation</h2>
+      <p class="text-sm text-slate-600 dark:text-slate-400">Customize your preferences for navigating the app.</p>
+    </div>
+
+    <% standalone_options = [
+      ['Home (default)', '/'],
+      ['Search', search_path],
+      ['Teams', teams_path],
+      ['Profile', profile_path],
+      ['Settings', edit_user_registration_path],
+    ] %>
+
+    <% grouped_options = {
+      'Teams' => @user.teams.map { |team| [team.name, team_path(team)] }
+    }.merge(
+      @user.teams.to_h do |team|
+        ["Topics for #{team.name}", team.topics.map { |topic| [topic.title, team_topic_messages_path(team, topic)] }]
+      end
+    ) %>
+
+    <% default_selection = @user.default_page.presence || UserSettings.defaults[:navigation][:default_page] %>
+    <% select_options = options_for_select(standalone_options, default_selection) + grouped_options_for_select(grouped_options, default_selection) %>
+
+    <div class="form-group">
+      <%= settings_form.label :default_page, 'Default start page', class: 'form-label' %>
+      <div class="relative">
+        <%= inline_svg_tag 'icons/rocket.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+        <%= settings_form.select :default_page, select_options, {}, { class: 'form-select pl-10' } %>
+      </div>
+      <p class="help-text my-1">This is the default page you will see when you first launch the app.</p>
+    </div>
+
+    <div class="space-y-3 form-group">
+      <div class="flex gap-x-2.5">
+        <div class="form-input-toggle shrink-0" data-controller="toggle-checkbox" data-action="mousedown->toggle-checkbox#toggle">
+          <span class="form-input-toggle-switch"></span>
+          <%= settings_form.check_box :show_pinned_pages_menu, { checked: @user.show_pinned_pages_menu?, class: 'sr-only', data: { toggle_checkbox_target: 'checkbox' } }, true, false %>
+        </div>
+        <div>
+          <%= settings_form.label :show_pinned_pages_menu, 'Show pinned shortcuts menu', class: 'select-none text-slate-700 dark:text-slate-300' %>
+          <p class="my-1 help-text">Show the pinned shortcuts menu in the top right corner of the app on mobile devices.</p>
+        </div>
+      </div>
+
+      <div class="flex gap-x-2.5">
+        <div class="form-input-toggle shrink-0" data-controller="toggle-checkbox" data-action="mousedown->toggle-checkbox#toggle">
+          <span class="form-input-toggle-switch"></span>
+          <%= settings_form.check_box :show_pinned_pages_list, { checked: @user.show_pinned_pages_list?, class: 'sr-only', data: { toggle_checkbox_target: 'checkbox' } }, true, false %>
+        </div>
+        <div>
+          <%= settings_form.label :show_pinned_pages_list, 'Show pinned shortcuts list', class: 'select-none text-slate-700 dark:text-slate-300' %>
+          <p class="my-1 help-text">Show the pinned shortcuts list in the sidebar on desktop devices.</p>
         </div>
       </div>
     </div>

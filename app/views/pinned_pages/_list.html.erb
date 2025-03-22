@@ -17,15 +17,38 @@
 
             <% if page_url.match?(/teams\/\d+\/member\/\d+/) %>
               <% member = User.find_by(id: last_id) %>
-              <%= render 'shared/user_photo', user: member, size: :thumb, icon_background: :none, icon_filled: current_page?(page_url), image_classes: 'dark:group-focus:text-white' if member %>
+              <% team_id = page_url.split('/').third %>
+              <% team = Team.find_by(id: team_id) %>
+
+              <% if member && team %>
+                <% if current_page?(team_member_path(team, member)) %>
+                  <%= inline_svg_tag 'icons/user-filled.svg', class: 'size-4.5 dark:group-focus:text-white' %>
+                <% else %>
+                  <%= inline_svg_tag 'icons/user.svg', class: 'size-4.5 dark:group-focus:text-white motion-safe:group-hover:pulse-hover-animation motion-safe:group-focus:pulse-hover-animation' %>
+                <% end %>
+              <% end %>
 
             <% elsif page_url.match?(/teams\/\d+/) %>
               <% team = Team.find_by(id: last_id) %>
-              <%= render 'shared/team_photo', team: team, size: :thumb, icon_background: :none, icon_filled: current_page?(page_url), image_classes: 'dark:group-focus:text-white' if team %>
+
+              <% if team %>
+                <% if current_page?(team_path(team)) %>
+                  <%= inline_svg_tag 'icons/team-filled.svg', class: 'size-5 dark:group-focus:text-white' %>
+                <% else %>
+                  <%= inline_svg_tag 'icons/team.svg', class: 'size-5 dark:group-focus:text-white motion-safe:group-hover:gelatine-animation motion-safe:group-focus:gelatine-animation' %>
+                <% end %>
+              <% end %>
 
             <% elsif page_url.match?(/users\/\d+/) %>
               <% user = User.find_by(id: last_id) %>
-              <%= render 'shared/user_photo', user: user, size: :thumb, icon_background: :none, icon_filled: current_page?(page_url), image_classes: 'dark:group-focus:text-white' if user %>
+
+              <% if user %>
+                <% if current_page?(user_path(user)) %>
+                  <%= inline_svg_tag 'icons/user-filled.svg', class: 'size-4.5 dark:group-focus:text-white' %>
+                <% else %>
+                  <%= inline_svg_tag 'icons/user.svg', class: 'size-4.5 dark:group-focus:text-white motion-safe:group-hover:pulse-hover-animation motion-safe:group-focus:pulse-hover-animation' %>
+                <% end %>
+              <% end %>
             <% end %>
             <span><%= page.title %></span>
           </div>
