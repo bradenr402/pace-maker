@@ -1,6 +1,6 @@
 <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
   <h1 class="heading">Trends</h1>
-  <p class="text-soft">Recent trends in <%= member == current_user ? 'your' : "#{member.first_name}'s" %> participation in <%= link_to team.name, team_path(team, tab: 'trendsTab'), class: 'btn-link' %>.</p>
+  <p class="text-soft">Recent trends in <%= member == current_user ? 'your' : "#{member.first_name}’s" %> participation in <%= link_to team.name, team_path(team, tab: 'trendsTab'), class: 'btn-link' %>.</p>
 </div>
 
 <div class="mb-24">
