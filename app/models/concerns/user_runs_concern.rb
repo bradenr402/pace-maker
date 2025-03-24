@@ -18,10 +18,10 @@ module UserRunsConcern
 
   def longest_run = runs.where.not(duration: nil).order(duration: :desc).limit(1).take
 
-  def fastest_run
-    runs.where.not(duration: nil).where.not(duration: 0)
-        .order(Arel.sql('distance / NULLIF(EXTRACT(EPOCH FROM duration), 0) DESC'))
-        .limit(1)
-        .take
-  end
+  def fastest_run = runs.where.not(duration: [nil, 0])
+                        .order(Arel.sql('distance / NULLIF(EXTRACT(EPOCH FROM duration), 0) DESC'))
+                        .limit(1)
+                        .take
+
+  def oldest_run_date = runs.minimum(:date)
 end

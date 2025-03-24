@@ -184,7 +184,8 @@
     </p>
 
     <p class="text-soft text-sm font-semibold mt-2">
-      <% avg_miles_per_week = (miles_count.to_f / ((Date.current - member.created_at.to_date).to_f / 7)).round(1) %>
+      <% miles_per_week_start_date = [member.created_at.to_date, member.oldest_run_date].compact.min %>
+      <% avg_miles_per_week = (miles_count.to_f / ((Date.current - miles_per_week_start_date).to_f / 7)).round(1) %>
       Avg. per week: <%= avg_miles_per_week %> mi
     </p>
   </div>
@@ -208,7 +209,8 @@
     </div>
 
     <p class="text-soft text-sm font-semibold mt-2">
-      <% avg_time_per_week = total_duration / ((Date.current - member.created_at.to_date).to_f / 7) %>
+      <% time_per_week_start_date = [member.created_at.to_date, member.oldest_run_date].compact.min %>
+      <% avg_time_per_week = total_duration / ((Date.current - time_per_week_start_date).to_f / 7) %>
       Avg. per week: <%= precise_time_ago(avg_time_per_week, format: :short) %>
     </p>
   </div>
@@ -222,7 +224,8 @@
     </p>
 
     <p class="text-soft text-sm font-semibold mt-2">
-      <% avg_runs_per_week = (runs_count.to_f / ((Date.current - member.created_at.to_date).to_f / 7)).round(1) %>
+      <% runs_per_week_start_date = [member.created_at.to_date, member.oldest_run_date].compact.min %>
+      <% avg_runs_per_week = (runs_count.to_f / ((Date.current - runs_per_week_start_date).to_f / 7)).round(1) %>
       Avg. per week: <%= pluralize(avg_runs_per_week, 'run') %>
     </p>
   </div>
