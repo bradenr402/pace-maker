@@ -6,7 +6,7 @@
     <p class="text-soft">Information and statistics about <%= user_is_current ? 'you' : "#{user.first_name}" %>.</p>
   </div>
 
-  <%= render 'select_team_dropdown', user: %>
+  <%= render 'select_team_dropdown', user: user if user.teams.any? %>
 
   <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
     <!-- Current Streak Card -->
