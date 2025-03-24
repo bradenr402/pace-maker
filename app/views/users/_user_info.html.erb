@@ -149,12 +149,12 @@
 
           <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
             <%= inline_svg_tag 'icons/ruler-filled.svg', class: 'size-3.5 shrink-0' %>
-            <span class="whitespace-nowrap"><%= longest_run.distance %> <span class="font-normal">mi</span></span>
+            <span class="whitespace-nowrap"><%= fastest_run.distance %> <span class="font-normal">mi</span></span>
           </div>
 
           <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
             <%= inline_svg_tag 'icons/clock-filled.svg', class: 'size-3.5 shrink-0' %>
-            <span class="whitespace-nowrap"><%= clock_time_display longest_run.duration %></span>
+            <span class="whitespace-nowrap"><%= clock_time_display fastest_run.duration %></span>
           </div>
         </div>
 
