@@ -139,11 +139,13 @@ module UserCalculations
       return { streak:, start_date:, end_date: } unless run_today_or_yesterday && dates_with_runs.size > 1
 
       dates_with_runs.each_cons(2) do |curr_date, prev_date|
+        reset_if_broken = curr_date != starting_date && ![curr_date, prev_date].all? { team&.exclude_date_from_streak?(_1) }
+
         if prev_date == curr_date - 1.day
           streak += 1
           start_date = prev_date
           end_date ||= curr_date
-        elsif curr_date != starting_date && !team&.exclude_date_from_streak?(curr_date)
+        elsif reset_if_broken
           break
         end
       end
