@@ -140,7 +140,7 @@ module UserCalculations
 
       dates_with_runs.each_cons(2) do |curr_date, prev_date|
         reset_if_broken =
-          curr_date != starting_date && [curr_date, prev_date].none? { team&.exclude_date_from_streak?(_1) }
+          curr_date != starting_date && [curr_date, prev_date].any? { team&.include_date_in_streak?(_1) }
 
         if prev_date == curr_date - 1.day
           streak += 1
