@@ -19,14 +19,14 @@
       <div class="mt-4 space-y-2 border-t pt-4 dark:border-slate-700">
         <% if coach_teams.any? %>
           <div class="flex items-start gap-1.5">
-            <%= inline_svg_tag 'icons/user.svg', class: 'size-4 text-soft shrink-0' %>
+            <%= inline_svg_tag 'icons/user-filled.svg', class: 'size-3.5 text-soft shrink-0' %>
             <p class="text-soft text-xs">Coach of: <%= list(items: coach_teams.map(&:name)) %></p>
           </div>
         <% end %>
 
         <% if member_teams.any? %>
           <div class="flex items-start gap-1.5">
-            <%= inline_svg_tag 'icons/user-group.svg', class: 'size-4 text-soft shrink-0' %>
+            <%= inline_svg_tag 'icons/user-group-filled.svg', class: 'size-3.5 text-soft shrink-0' %>
             <p class="text-soft text-xs">Member of: <%= list(items: member_teams.map(&:name)) %></p>
           </div>
         <% end %>
