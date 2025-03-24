@@ -139,7 +139,8 @@ module UserCalculations
       return { streak:, start_date:, end_date: } unless run_today_or_yesterday && dates_with_runs.size > 1
 
       dates_with_runs.each_cons(2) do |curr_date, prev_date|
-        reset_if_broken = curr_date != starting_date && ![curr_date, prev_date].all? { team&.exclude_date_from_streak?(_1) }
+        reset_if_broken =
+          curr_date != starting_date && [curr_date, prev_date].none? { team&.exclude_date_from_streak?(_1) }
 
         if prev_date == curr_date - 1.day
           streak += 1
@@ -171,7 +172,7 @@ module UserCalculations
       longest_start_date = nil
       longest_end_date = nil
 
-      dates_with_runs.each_cons(2) do |curr_date, prev_date|
+      dates_with_runs.each_cons(2) do |curr_date, _prev_date|
         streak_data = streak_on_date(team, curr_date)
         streak = streak_data[:streak]
         start_date = streak_data[:start_date]
