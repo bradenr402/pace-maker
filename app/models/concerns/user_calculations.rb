@@ -125,24 +125,49 @@ module UserCalculations
       dates_with_runs = runs.where('distance >= ? AND date <= ?', min_distance, starting_date)
                             .order(date: :desc).pluck(:date).uniq
 
-      run_today_or_yesterday = dates_with_runs.first == starting_date || dates_with_runs.first == starting_date - 1.day
+      return { streak: 0, start_date: nil, end_date: nil } unless dates_with_runs.present?
 
-      return { streak: 0, start_date: nil, end_date: nil } unless dates_with_runs.present? || run_today_or_yesterday
+      yesterday = starting_date - 1.day
+      two_days_ago = starting_date - 2.days
+      three_days_ago = starting_date - 3.days
 
-      streak, start_date, end_date =
-        if run_today_or_yesterday
-          [1, dates_with_runs.first, dates_with_runs.first]
+      exclude_yesterday = team&.exclude_date_from_streak?(yesterday)
+      exclude_two_days_ago = team&.exclude_date_from_streak?(two_days_ago)
+
+      valid_current_streak =
+        if exclude_yesterday && exclude_two_days_ago
+          [starting_date, three_days_ago].any? { dates_with_runs.include? _1 }
+        elsif exclude_yesterday
+          [starting_date, two_days_ago].any? { dates_with_runs.include? _1 }
         else
-          [0, nil, nil]
+          [starting_date, yesterday].any? { dates_with_runs.include? _1 }
         end
 
-      return { streak:, start_date:, end_date: } unless run_today_or_yesterday && dates_with_runs.size > 1
+      return { streak: 0, start_date: nil, end_date: nil } unless valid_current_streak
+
+      streak = 1
+      start_date = dates_with_runs.first
+      end_date = dates_with_runs.first
+
+      return { streak:, start_date:, end_date: } if dates_with_runs.size == 1
 
       dates_with_runs.each_cons(2) do |curr_date, prev_date|
-        reset_if_broken =
-          curr_date != starting_date && [curr_date, prev_date].any? { team&.include_date_in_streak?(_1) }
+        days_between = ((prev_date + 1.day)...curr_date).to_a
 
-        if prev_date == curr_date - 1.day
+        reset_if_broken =
+          team.nil? || days_between.any? { team.include_date_in_streak?(_1) && dates_with_runs.exclude?(_1) }
+
+        days_are_consecutive = prev_date == curr_date - 1.day
+        yesterday = curr_date - 1.day
+        two_days_ago = curr_date - 2.days
+        three_days_ago = curr_date - 3.days
+
+        not_broken =
+          days_are_consecutive ||
+          (team&.exclude_date_from_streak?(yesterday) && prev_date == two_days_ago) ||
+          (team&.exclude_date_from_streak?(yesterday) && team.exclude_date_from_streak?(two_days_ago) && prev_date == three_days_ago)
+
+        if not_broken
           streak += 1
           start_date = prev_date
           end_date ||= curr_date
