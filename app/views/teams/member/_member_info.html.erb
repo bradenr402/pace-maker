@@ -254,7 +254,7 @@
           </div>
           <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
             <%= inline_svg_tag 'icons/speedometer-filled.svg', class: 'size-3.5 shrink-0' %>
-            <span class="whitespace-nowrap"><%= clock_time_display farthest_run.pace %></span>
+            <span class="whitespace-nowrap"><%= clock_time_display farthest_run.pace %> <span class="font-normal">/mi</span></span>
           </div>
         </div>
       <% end %>
@@ -283,7 +283,7 @@
 
         <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
           <%= inline_svg_tag 'icons/speedometer-filled.svg', class: 'size-3.5 shrink-0' %>
-          <span class="whitespace-nowrap"><%= longest_run.pace %> <span class="font-normal">/mi</span></span>
+          <span class="whitespace-nowrap"><%= clock_time_display longest_run.pace %> <span class="font-normal">/mi</span></span>
         </div>
       </div>
 
@@ -314,7 +314,7 @@
 
         <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
           <%= inline_svg_tag 'icons/speedometer-filled.svg', class: 'size-3.5 shrink-0' %>
-          <span class="whitespace-nowrap"><%= longest_run.pace %> <span class="font-normal">/mi</span></span>
+          <span class="whitespace-nowrap"><%= clock_time_display longest_run.pace %> <span class="font-normal">/mi</span></span>
         </div>
       </div>
 
