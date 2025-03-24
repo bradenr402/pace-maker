@@ -97,7 +97,7 @@ module TeamSettings
             attribute_name = if attribute_name == 'require_gender'
                                'gender_required'
                              elsif %w[streak_distance_neutral long_run_distance_neutral].include?(attribute_name)
-                              attribute_name.gsub('_neutral', '')
+                               attribute_name.gsub('_neutral', '')
                              else
                                attribute_name
                              end
@@ -147,17 +147,25 @@ module TeamSettings
     when 'long_run_distance_male', 'long_run_distance_female', 'long_run_distance_neutral'
       "This setting means you must run at least #{pluralize(value, 'mile')} for a run to count as a long run."
     when 'streak_distance_male', 'streak_distance_female', 'streak_distance_neutral'
-      "This setting means that you must run at least #{pluralize(value, 'mile')} for a run to count towards your streak."
+      "This setting means that you must run at least #{pluralize(
+        value, 'mile'
+      )} for a run to count towards your streak."
     when 'include_saturday'
-      'This setting allows your streak to continue even if you skip running on a Saturday. You can still advance your streak by logging a run.'
+      'This setting allows your streak to continue even if you skip running on a Saturday. You can still extend your streak by logging a run.'
     when 'include_sunday'
-      'This setting allows your streak to continue even if you skip running on a Sunday. You can still advance your streak by logging a run.'
+      'This setting allows your streak to continue even if you skip running on a Sunday. You can still extend your streak by logging a run.'
     when 'streaks_increment'
-      "This setting awards you a new streak milestone badge on your team member profile for every #{pluralize_simple(value, 'day')} of your current streak."
+      "This setting awards you a new streak milestone badge on your team member profile for every #{pluralize_simple(
+        value, 'day'
+      )} of your current streak."
     when 'long_runs_increment'
-      "This setting awards you a new long run milestone badge on your team member profile for every #{pluralize_simple(value, 'long run')} you complete."
+      "This setting awards you a new long run milestone badge on your team member profile for every #{pluralize_simple(
+        value, 'long run'
+      )} you complete."
     when 'mileage_increment'
-      "This setting awards you a new mileage milestone badge on your team member profile for every #{pluralize_simple(value, 'mile')} you run."
+      "This setting awards you a new mileage milestone badge on your team member profile for every #{pluralize_simple(
+        value, 'mile'
+      )} you run."
     else
       ''
     end
@@ -185,6 +193,9 @@ module TeamSettings
   def include_sunday_in_streak? = settings(:streaks).include_sunday
   def exclude_saturday_from_streak? = !include_saturday_in_streak?
   def exclude_sunday_from_streak? = !include_sunday_in_streak?
+
+  def include_weekends_in_streak? = include_saturday_in_streak? && include_sunday_in_streak?
+  def exclude_weekends_from_streak? = exclude_saturday_from_streak? && exclude_sunday_from_streak?
 
   def include_date_in_streak?(date) =
     (date.saturday? && include_saturday_in_streak?) ||

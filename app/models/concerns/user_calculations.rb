@@ -125,9 +125,9 @@ module UserCalculations
       dates_with_runs = runs.where('distance >= ? AND date <= ?', min_distance, starting_date)
                             .order(date: :desc).pluck(:date).uniq
 
-      return { streak: 0, start_date: nil, end_date: nil } unless dates_with_runs.present?
-
       run_today_or_yesterday = dates_with_runs.first == starting_date || dates_with_runs.first == starting_date - 1.day
+
+      return { streak: 0, start_date: nil, end_date: nil } unless dates_with_runs.present? || run_today_or_yesterday
 
       streak, start_date, end_date =
         if run_today_or_yesterday
@@ -152,14 +152,7 @@ module UserCalculations
     end
   end
 
-  def current_streak(team = nil)
-    Rails.cache.fetch(
-      "#{cache_key_with_version}/current_streak/#{Date.current}",
-      expires_in: Time.now.end_of_day - Time.now
-    ) do
-      streak_on_date(team, Date.current)
-    end
-  end
+  def current_streak(team = nil) = streak_on_date(team, Date.current)
 
   def record_streak(team = nil)
     min_distance = min_distance team

@@ -16,18 +16,24 @@
     <% show_members_check = show_members && team.any_members_in_common?(current_user) && !current_user.member_of?(team) %>
 
     <% if season_dates_check || show_members_check %>
-      <div class="mt-4 space-y-2 pt-4 border-t dark:border-slate-700">
+      <div class="mt-4 space-y-1.5 pt-4 border-t dark:border-slate-700">
         <% if season_dates_check %>
-          <div class="flex items-start gap-1.5">
-            <%= inline_svg_tag 'icons/calendar.svg', class: 'size-4 text-soft shrink-0' %>
-            <p class="text-soft text-xs">Season: <%= pretty_date(team.season_start_date, month_format: :short, date_style: :absolute) %> &ndash; <%= pretty_date(team.season_end_date, month_format: :short, date_style: :absolute) %></p>
+          <div class="flex items-start gap-1.5 text-soft font-semibold">
+            <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 shrink-0' %>
+            <p class="text-xs">Season:
+              <span class="inline-flex items-center gap-1.5">
+                <span><%= pretty_date(team.season_start_date, month_format: :short, date_style: :absolute) %></span>
+                <span>&ndash;</span>
+                <span><%= pretty_date(team.season_end_date, month_format: :short, date_style: :absolute) %></span>
+              </span>
+            </p>
           </div>
         <% end %>
 
         <% if show_members_check %>
-          <div class="flex items-start gap-1.5">
-            <%= inline_svg_tag 'icons/user.svg', class: 'size-4 text-soft shrink-0' %>
-            <p class="text-soft text-xs">Members: <%= list items: team.members_in_common(current_user).map { _1.default_name } %></p>
+          <div class="flex items-start gap-1.5 text-soft font-semibold">
+            <%= inline_svg_tag 'icons/user-filled.svg', class: 'size-3 shrink-0' %>
+            <p class="text-xs">Members: <span class="font-normal"><%= list items: team.members_in_common(current_user).map { _1.default_name } %></span></p>
           </div>
         <% end %>
       </div>

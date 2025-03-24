@@ -1,8 +1,10 @@
 <% current_is_edit_user = current_page?(edit_user_registration_path) %>
 <% current_is_search = current_page?(search_path) %>
 <% current_is_teams = current_page?(teams_path) %>
-<% current_is_profile = current_page?(profile_path) %>
 <% current_is_home = current_page?(home_path) %>
+
+<% profile_paths = [profile_path].concat(current_user.teams.map { |team| team_member_path(team, current_user) }) %>
+<% current_is_profile = profile_paths.any? { |path| current_page?(path) } %>
 
 <div class="hidden h-full flex-[0.3] min-w-72 max-w-[350px] md:block">
   <nav

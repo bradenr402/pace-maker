@@ -10,6 +10,8 @@ module TeamRunsConcern
   def streak_distance_for_user(user)
     return streak_distance_neutral unless require_gender?
 
+    return streak_distance_neutral unless user.gender?
+
     user.male? ? streak_distance_male : streak_distance_female
   end
 

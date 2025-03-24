@@ -1,49 +1,31 @@
 <% content_for :title, "#{@member.default_name} • #{@team.name}" %>
 
 <div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="infoTab" class="max-w-3xl mx-auto my-16">
-  <div class="mb-12">
-    <div class="mb-6 text-center">
-      <h2 class="subheading my-1"><%= @member.default_name %> &amp; <%= @team.name %></h2>
-      <%= simple_format "This page displays details about #{@member == current_user ? 'your' : link_to("#{@member.first_name}'s", @member, class: 'btn-link')} membership in the team #{link_to @team.name, @team, class: 'btn-link'}.", class: 'text-soft text-sm md:max-w-[80%] md:mx-auto text-pretty' %>
+  <div class="mb-6 text-center">
+    <div class="mb-6 flex justify-center">
+      <div class="relative">
+        <%= render 'shared/user_photo', user: @member, size: :lg %>
+        <%= render 'shared/team_photo', team: @team, size: :sm, image_classes: 'absolute bottom-0 right-0 translate-y-1/4 translate-x-1/4 shadow-lg' %>
+      </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <!-- Team Card -->
-      <%= link_to @team, class: 'group' do %>
-        <div class="card">
-          <p class="mb-3 text-lg font-semibold text-slate-700 dark:text-slate-300 lg:text-center">Team</p>
-          <div class="flex items-center gap-4 shrink-0">
-            <%= render 'shared/team_photo', team: @team, size: :md %>
-
-            <div class="flex-1">
-              <p class="text-xl font-bold transition duration-200 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= @team.name %></p>
-              <p class="text-soft text-sm">Coach: <%= @team.owner.default_name %></p>
-            </div>
-          </div>
-        </div>
-      <% end %>
-
-      <!-- Member Card -->
-      <%= link_to @member, class: 'group' do %>
-        <div class="card">
-          <p class="mb-3 text-lg font-semibold text-slate-700 dark:text-slate-300 lg:text-center">Member</p>
-          <div class="flex items-center gap-4 shrink-0">
-            <%= render 'shared/user_photo', user: @member, size: :md %>
-
-            <div class="flex-1">
-              <p class="text-xl font-bold transition duration-200 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500">
-                <%= @member.default_name %>
-                <%= content_tag(:span, '(You)', class: 'text-soft text-xs') if @member == current_user %>
-              </p>
-              <p class="text-soft text-sm">
-                <%= "Coach of #{@team.name}" if @member.owns?(@team) %>
-                <%= "Member since #{pretty_date(@team_membership.created_at.to_date, date_style: :absolute)}" unless @member.owns?(@team) %>
-              </p>
-            </div>
-          </div>
-        </div>
-      <% end %>
+    <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 mx-auto">
+      <h1 class="heading"><%= @member.default_name %></h1>
+      <span class="size-1.5 rounded-full bg-slate-900 dark:bg-slate-100"></span>
+      <p class="heading"><%= @team.name %></p>
     </div>
+
+    <% if @member.display_name.present? %>
+      <p class="mt-1 text-soft text-sm"><%= @member.username %></p>
+    <% elsif @member == current_user %>
+      <p class="mt-1 text-sm">
+        <%= link_to 'Add a display name to your profile', edit_user_registration_path, class: 'text-sm text-soft hover:text-indigo-600 dark:hover:text-indigo-500 transition ease-in-out duration-200' %>
+      </p>
+    <% end %>
+
+    <p class="mt-4 text-center text-sm">
+      <%= link_to "View #{@team.name}", @team, class: 'btn-link' %>
+    </p>
   </div>
 
   <div class="relative flex items-center mb-6">
@@ -59,6 +41,16 @@
       <button type="button" id="infoTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'infoTab' ? 'btn-tab-active' : '' %>">
         <%= inline_svg_tag 'icons/info.svg', class: 'size-4 md:size-5' %>
         <span>Member Info</span>
+      </button>
+
+      <button type="button" id="teamsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'teamsTab' ? 'btn-tab-active' : '' %>">
+        <%= inline_svg_tag 'icons/team.svg', class: 'size-4 md:size-5' %>
+        <span>Teams</span>
+      </button>
+
+      <button type="button" id="runsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab gap-2 <%= params[:tab] == 'runsTab' ? 'btn-tab-active' : '' %>">
+        <%= inline_svg_tag 'icons/runner.svg', class: 'size-3.5 md:size-4.5' %>
+        <span>Runs</span>
       </button>
 
       <button type="button" id="badgesTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'badgesTab' ? 'btn-tab-active' : '' %>">
@@ -80,6 +72,15 @@
 
   <div id="infoTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'infoTab' ? '' : 'hidden' %>">
     <%= render 'teams/member/member_info', member: @member, team: @team, team_membership: @team_membership %>
+    <%= render 'users/contact', user: @member %>
+  </div>
+
+  <div id="teamsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'teamsTab' ? '' : 'hidden' %>">
+    <%= render 'users/teams', user: @member, owned_teams: @owned_teams, membered_teams: @membered_teams %>
+  </div>
+
+  <div id="runsTab" data-tabs-target="tab" class="<%= params[:tab] == 'runsTab' ? '' : 'hidden' %>">
+    <%= render 'users/runs_filter', user: @member, team: @team %>
   </div>
 
   <div id="badgesTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'badgesTab' ? '' : 'hidden' %>">

@@ -1,10 +1,10 @@
 <%= turbo_stream.replace 'runs' do %>
-  <div id="runs">
+  <div id="runs" data-controller="filter-runs">
     <% if @runs.present? %>
-      <% if 'this'.in?(@date_range) %>
-        <p class="mt-6 mb-2 text-sm text-light"><%= @user == current_user ? 'You have' : "#{@user.first_name} has" %> logged <%= pluralize(@runs.size, 'run') %> <%= @date_range %>.</p>
+      <% if 'this'.in?(@runs_date_range) %>
+        <p class="mt-6 mb-2 text-sm text-light"><%= @user == current_user ? 'You have' : "#{@user.first_name} has" %> logged <%= pluralize(@runs.size, 'run') %> <%= @runs_date_range %>.</p>
       <% else %>
-        <p class="mt-6 mb-2 text-sm text-light"><%= @user == current_user ? 'You' : @user.first_name %> logged <%= pluralize(@runs.size, 'run') %> <%= @date_range %>.</p>
+        <p class="mt-6 mb-2 text-sm text-light"><%= @user == current_user ? 'You' : @user.first_name %> logged <%= pluralize(@runs.size, 'run') %> <%= @runs_date_range %>.</p>
       <% end %>
     <% end %>
 

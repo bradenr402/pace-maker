@@ -1,18 +1,21 @@
-<% week_start ||= :sunday %>
+<% team ||= nil %>
+<% min_distance = team&.streak_distance_for_user(user) || 0 %>
+<% week_start = team&.week_start || :sunday %>
 <% week = week_range(week_start: week_start).to_a %>
 
 <% week_days = Date::DAYNAMES %>
 <% week_days = week_days.rotate(week_days.index(week_start.to_s.capitalize)) %>
 
-<% exclude_saturday = exclude_sunday ||= false %>
-<% run_dates = user.runs_in_date_range(week).map(&:date).uniq %>
+<% exclude_saturday = team&.exclude_saturday_from_streak? || false %>
+<% exclude_sunday = team&.exclude_sunday_from_streak? || false %>
+<% run_dates = user.runs_in_date_range(week).where('distance >= ?', min_distance).map(&:date).uniq %>
 
 <div class="flex items-center justify-between w-full px-4 py-3 bg-slate-200/75 dark:bg-slate-700/50 border border-slate-300/50 dark:border-slate-600/50 rounded-xl">
   <% 7.times do |i| %>
     <% day = week_days[i] %>
     <% date = week[i] %>
     <% exclude_date = (date.saturday? && exclude_saturday) || (date.sunday? && exclude_sunday) %>
-    <div class="flex flex-col items-center gap-1 <%= 'opacity-50' if exclude_date %>">
+    <div class="flex flex-col items-center gap-1 <%= 'opacity-30' if exclude_date %>">
       <span class="text-center text-xs text-soft font-bold"><%= day.first %></span>
       <% if run_dates.include?(date) %>
         <span class="bg-gradient-to-b from-violet-500 via-indigo-500 to-indigo-600 rounded size-3"></span>

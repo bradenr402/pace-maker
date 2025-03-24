@@ -3,7 +3,7 @@
 <% run_user = run.user %>
 <% team = params[:team] ? Team.find(params[:team]) : local_assigns[:team] %>
 
-<div class="flex flex-col gap-1.5">
+<div class="flex flex-col gap-1.5" data-filter-runs-target="run" data-distance="<%= run.distance %>">
   <div class="card">
     <div class="mb-4">
       <div class="flex flex-wrap items-start justify-between gap-2">
@@ -54,7 +54,7 @@
 
       <% streak = run.streak_value(team) %>
       <% long_run_badge_check = run.long_run_for_team?(team) %>
-      <% streak_badge_check = !streak.nil? && !streak.zero? && !streak.negative? && !(streak == 1) %>
+      <% streak_badge_check = streak.present? && streak > 1 %>
 
       <% if streak_badge_check || long_run_badge_check %>
         <div class="flex flex-wrap items-center gap-2 mt-2">

@@ -2,10 +2,12 @@
 
 <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
   <h1 class="heading">Member Info</h1>
-  <p class="text-soft">Information and statistics about <%= member_is_current ? 'your' : "#{member.first_name}'s" %> participation in <%= link_to team.name, team, class: 'btn-link' %>.</p>
+  <p class="text-soft">Information and statistics about <%= member_is_current ? 'your' : "#{member.first_name}’s" %> participation in <span class="font-semibold italic"><%= team.name %></span>.</p>
 </div>
 
-<%= content_tag(:p, class: 'mb-2 text-right') { link_to 'Edit your personal goals', edit_team_team_membership_path(@team, current_user), class: 'btn-link text-xs' } if member_is_current %>
+<%= render 'users/select_team_dropdown', user: member, team: %>
+
+<%= content_tag(:p, class: 'mb-2 text-right') { link_to "Edit your personal goals for #{team.name}", edit_team_team_membership_path(team, current_user), class: 'btn-link text-xs' } if member_is_current %>
 
 <div
   data-controller="calendar"
@@ -14,7 +16,7 @@
   class="card mb-6"
 >
   <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
-    <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300">Season Dates</h2>
+    <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300">Team Season Dates</h2>
     <% if team.season_dates? %>
       <button data-action="mousedown->calendar#toggleCalendar" class="btn btn-primary btn-muted btn-sm gap-1.5">
         <%= inline_svg_tag 'icons/calendar.svg', class: 'size-4' %>
@@ -125,91 +127,254 @@
 </div>
 
 <div class="grid grid-cols-1 gap-6 lg:grid-cols-2 mb-6">
+  <!-- Current Streak Card -->
+  <%= render 'shared/user_current_streak_card', user: member, team: team %>
+
+  <!-- Record Streak Card -->
+  <%= render 'shared/user_record_streak_card', user: member, team: team %>
+
   <!-- Miles This Season Card -->
   <div class="card">
     <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Miles This Season</h2>
     <p class="text-3xl font-bold">
-      <%= team_membership.miles_completed_in_goal %>
+      <%= miles_season_count = team_membership.miles_completed_in_goal %>
       <span class="text-base font-normal text-soft"><%= 'mile'.pluralize(team_membership.miles_completed_in_goal) %></span>
     </p>
     <% if team_membership.mileage_goal? %>
       <p class="text-soft">of <%= team_membership.mileage_goal %> mile goal</p>
     <% end %>
+
     <% if team.season_not_started_yet? %>
       <p class="my-1 text-soft">Season hasn't started yet.</p>
     <% end %>
+
+    <p class="text-soft text-sm font-semibold mt-2">
+      <% avg_miles_per_week = (miles_season_count.to_f / ((Date.current - team.season_start_date).to_f / 7)).round(1) %>
+      Avg. per week: <%= avg_miles_per_week %> mi
+    </p>
   </div>
 
   <!-- Long Runs This Season Card -->
   <div class="card">
     <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Long Runs This Season</h2>
     <p class="text-3xl font-bold">
-      <%= team_membership.long_runs_completed_in_goal %>
+      <%= long_runs_season_count = team_membership.long_runs_completed_in_goal %>
       <span class="text-base font-normal text-soft"><%= 'long run'.pluralize(team_membership.long_runs_completed_in_goal) %></span>
     </p>
     <% if team_membership.long_run_goal? %>
       <p class="text-soft">of <%= team_membership.long_run_goal %> long run goal</p>
     <% end %>
+
     <% if team.season_not_started_yet? %>
       <p class="my-1 text-soft">Season hasn't started yet.</p>
     <% end %>
+
+    <p class="text-soft text-sm font-semibold mt-2">
+      <% avg_miles_per_week = (long_runs_season_count.to_f / ((Date.current - team.season_start_date).to_f / 7)).round(1) %>
+      Avg. per week: <%= avg_miles_per_week %> long runs
+    </p>
   </div>
 
-  <!-- Current Streak Card -->
-  <%= render 'shared/user_current_streak_card', user: member, team: team %>
+  <!-- Total Miles Card -->
+  <div class="card">
+    <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Total Miles</h2>
+    <p class="text-3xl font-bold">
+      <%= miles_count = member.total_miles %>
+      <span class="text-base font-normal text-soft"><%= 'mile'.pluralize(miles_count) %></span>
+    </p>
 
-  <!-- Record Streak Card -->
-  <%= render 'shared/user_record_streak_card', user: member, team: team %>
+    <p class="text-soft text-sm font-semibold mt-2">
+      <% avg_miles_per_week = (miles_count.to_f / ((Date.current - member.created_at.to_date).to_f / 7)).round(1) %>
+      Avg. per week: <%= avg_miles_per_week %> mi
+    </p>
+  </div>
+
+  <!-- Total Running Time Card -->
+  <div class="card">
+    <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Total Running Time</h2>
+    <div class="font-bold flex items-end gap-4">
+      <% total_duration = member.total_duration %>
+      <% precise_time_ago(total_duration, format: :short).split(' ').each do |time_part| %>
+        <% if time_part.include?('mo') %>
+          <div>
+            <span class="text-3xl"><%= time_part.chop.chop %></span><sup class="text-muted dark:text-soft text-base font-semibold align-super"><%= time_part.last(2) %></sup>
+          </div>
+        <% else %>
+          <div>
+            <span class="text-3xl"><%= time_part.chop %></span><sup class="text-muted dark:text-soft text-base font-semibold align-super"><%= time_part.last %></sup>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <p class="text-soft text-sm font-semibold mt-2">
+      <% avg_time_per_week = total_duration / ((Date.current - member.created_at.to_date).to_f / 7) %>
+      Avg. per week: <%= precise_time_ago(avg_time_per_week, format: :short) %>
+    </p>
+  </div>
+
+  <!-- Total Runs Logged Card -->
+  <div class="card">
+    <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Total Runs Logged</h2>
+    <p class="text-3xl font-bold">
+      <%= runs_count = member.runs.count %>
+      <span class="text-base font-normal text-soft"><%= 'run'.pluralize(runs_count) %></span>
+    </p>
+
+    <p class="text-soft text-sm font-semibold mt-2">
+      <% avg_runs_per_week = (runs_count.to_f / ((Date.current - member.created_at.to_date).to_f / 7)).round(1) %>
+      Avg. per week: <%= pluralize(avg_runs_per_week, 'run') %>
+    </p>
+  </div>
+
+  <!-- Farthest Run Card -->
+  <div class="card">
+    <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Farthest Run</h2>
+    <p class="text-3xl font-bold">
+      <% farthest_run = member.farthest_run %>
+      <% if farthest_run.present? %>
+        <%= miles_count = farthest_run.distance %>
+        <span class="text-base font-normal text-soft"><%= 'mile'.pluralize(miles_count) %></span>
+      <% else %>
+        <span class="text-base font-normal text-soft">No runs logged</span>
+      <% end %>
+    </p>
+
+    <% if farthest_run.present? %>
+      <div class="flex items-center gap-4 mt-2">
+        <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
+          <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 shrink-0' %>
+          <span class="whitespace-nowrap"><%= pretty_date(farthest_run.date, date_style: :absolute, month_format: :short, include_year: farthest_run.date.year != Date.current.year) %></span>
+        </div>
+
+        <% if farthest_run.duration? %>
+          <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
+            <%= inline_svg_tag 'icons/clock-filled.svg', class: 'size-3.5 shrink-0' %>
+            <span class="whitespace-nowrap"><%= clock_time_display farthest_run.duration %></span>
+          </div>
+          <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
+            <%= inline_svg_tag 'icons/speedometer-filled.svg', class: 'size-3.5 shrink-0' %>
+            <span class="whitespace-nowrap"><%= clock_time_display farthest_run.pace %></span>
+          </div>
+        </div>
+      <% end %>
+
+      <%= link_to 'View run', farthest_run, class: 'block btn-link text-sm mt-3' %>
+    <% end %>
+  </div>
+
+  <!-- Longest Run Card -->
+  <% longest_run = member.longest_run %>
+  <% if longest_run %>
+    <div class="card">
+      <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Longest Run</h2>
+      <p class="text-3xl font-bold"><%= clock_time_display(longest_run.duration) %></p>
+
+      <div class="flex items-center gap-4 mt-2">
+        <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
+          <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 shrink-0' %>
+          <span class="whitespace-nowrap"><%= pretty_date(longest_run.date, date_style: :absolute, month_format: :short, include_year: longest_run.date.year != Date.current.year) %></span>
+        </div>
+
+        <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
+          <%= inline_svg_tag 'icons/ruler-filled.svg', class: 'size-3.5 shrink-0' %>
+          <span class="whitespace-nowrap"><%= longest_run.distance %> <span class="font-normal">mi</span></span>
+        </div>
+
+        <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
+          <%= inline_svg_tag 'icons/speedometer-filled.svg', class: 'size-3.5 shrink-0' %>
+          <span class="whitespace-nowrap"><%= longest_run.pace %> <span class="font-normal">/mi</span></span>
+        </div>
+      </div>
+
+      <%= link_to 'View run', longest_run, class: 'block btn-link text-sm mt-3' %>
+    </div>
+  <% end %>
+
+  <!-- Fastest Run Card -->
+  <% fastest_run = member.fastest_run %>
+  <% if fastest_run %>
+    <div class="card">
+      <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Fastest Run</h2>
+      <p class="text-3xl font-bold">
+        <%= clock_time_display(fastest_run.pace) %>
+        <span class="text-base font-normal text-soft"><span class="font-normal">/mi</span></span>
+      </p>
+
+      <div class="flex items-center gap-4 mt-2">
+        <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
+          <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 shrink-0' %>
+          <span class="whitespace-nowrap"><%= pretty_date(fastest_run.date, date_style: :absolute, month_format: :short, include_year: fastest_run.date.year != Date.current.year) %></span>
+        </div>
+
+        <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
+          <%= inline_svg_tag 'icons/ruler-filled.svg', class: 'size-3.5 shrink-0' %>
+          <span class="whitespace-nowrap"><%= longest_run.distance %> <span class="font-normal">mi</span></span>
+        </div>
+
+        <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
+          <%= inline_svg_tag 'icons/speedometer-filled.svg', class: 'size-3.5 shrink-0' %>
+          <span class="whitespace-nowrap"><%= longest_run.pace %> <span class="font-normal">/mi</span></span>
+        </div>
+      </div>
+
+      <%= link_to 'View run', fastest_run, class: 'block btn-link text-sm mt-3' %>
+    </div>
+  <% end %>
 </div>
 
 <!-- Personal Mileage Goal Card -->
-<div class="card mb-6">
-  <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Personal Mileage Goal</h2>
-  <% if team_membership.mileage_goal? && team.season_in_progress? %>
-    <p class="mb-4"><%= team_membership.mileage_goal_progress_message(current_user) %></p>
+<% if team_membership.mileage_goal? %>
+  <div class="card mb-6">
+    <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Personal Mileage Goal</h2>
+    <% if team_membership.mileage_goal? && team.season_in_progress? %>
+      <p class="mb-4"><%= team_membership.mileage_goal_progress_message(current_user) %></p>
 
-    <%= render 'shared/progress_bar', percentage: team_membership.mileage_goal_progress, label: 'Personal Mileage Goal Progress', marker: team_membership.season_progress, size: :lg %>
+      <%= render 'shared/progress_bar', percentage: team_membership.mileage_goal_progress, label: 'Personal Mileage Goal Progress', marker: team_membership.season_progress, size: :lg %>
 
-    <p class='my-1 text-xs text-soft'>
-      <% if team_membership.mileage_goal_complete? %>
-        <%= member_is_current ? 'You met your' : "#{member.first_name} met #{member.gender_possessive}" %> <%= team_membership.mileage_goal %> mile personal mileage goal with <%= pluralize(team.days_remaining_in_season, 'day') %> to spare!
-      <% else %>
-        <%= member_is_current ? 'You have' : "#{member.first_name} has" %> <%= pluralize(team.days_remaining_in_season, 'day') %> to finish the remaining <%= pluralize(team_membership.miles_remaining_in_goal, 'mile') %> of <%= member_is_current ? 'your' : member.gender_possessive %> personal mileage goal.
-      <% end %>
-    </p>
-  <% elsif team.season_not_started_yet? %>
-    <p class="text-soft">Season hasn't started yet.</p>
-  <% elsif team.season_dates? %>
-    <p class="text-soft"><%= member_is_current ? 'You have' : "#{member.first_name} has" %> not set a personal mileage goal.</p>
-  <% elsif team_membership.mileage_goal? %>
-    <p class="text-soft">No season dates have been set for this team.</p>
-  <% else %>
-    <p class="text-soft"><%= member_is_current ? 'You have' : "#{member.first_name} has" %> not set a personal mileage goal, and season dates have not been set for this team.</p>
-  <% end %>
-</div>
+      <p class='my-1 text-xs text-soft'>
+        <% if team_membership.mileage_goal_complete? %>
+          <%= member_is_current ? 'You met your' : "#{member.first_name} met #{member.gender_possessive}" %> <%= team_membership.mileage_goal %> mile personal mileage goal with <%= pluralize(team.days_remaining_in_season, 'day') %> to spare!
+        <% else %>
+          <%= member_is_current ? 'You have' : "#{member.first_name} has" %> <%= pluralize(team.days_remaining_in_season, 'day') %> to finish the remaining <%= pluralize(team_membership.miles_remaining_in_goal, 'mile') %> of <%= member_is_current ? 'your' : member.gender_possessive %> personal mileage goal.
+        <% end %>
+      </p>
+    <% elsif team.season_not_started_yet? %>
+      <p class="text-soft">Season hasn't started yet.</p>
+    <% elsif team.season_dates? %>
+      <p class="text-soft"><%= member_is_current ? 'You have' : "#{member.first_name} has" %> not set a personal mileage goal.</p>
+    <% elsif team_membership.mileage_goal? %>
+      <p class="text-soft">No season dates have been set for this team.</p>
+    <% else %>
+      <p class="text-soft"><%= member_is_current ? 'You have' : "#{member.first_name} has" %> not set a personal mileage goal, and season dates have not been set for this team.</p>
+    <% end %>
+  </div>
+<% end %>
 
 <!-- Personal Long Run Goal Card -->
-<div class="card">
-  <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Personal Long Run Goal</h2>
-  <% if team_membership.long_run_goal? && team.season_in_progress? %>
-    <p class="mb-4"><%= team_membership.long_run_goal_progress_message(current_user) %></p>
+<% if team_membership.long_run_goal? %>
+  <div class="card">
+    <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Personal Long Run Goal</h2>
+    <% if team_membership.long_run_goal? && team.season_in_progress? %>
+      <p class="mb-4"><%= team_membership.long_run_goal_progress_message(current_user) %></p>
 
-    <%= render 'shared/progress_bar', percentage: team_membership.long_run_goal_progress, label: 'Personal Long Run Goal Progress', marker: team_membership.season_progress, size: :lg %>
+      <%= render 'shared/progress_bar', percentage: team_membership.long_run_goal_progress, label: 'Personal Long Run Goal Progress', marker: team_membership.season_progress, size: :lg %>
 
-    <p class='my-1 text-xs text-soft'>
-      <% if team_membership.long_run_goal_complete? %>
-        <%= member_is_current ? 'You met your' : "#{member.first_name} met #{member.gender_possessive}" %> <%= team.long_run_goal %> personal long run goal with <%= pluralize(team.days_remaining_in_season, 'day') %> to spare!
-      <% else %>
-        <%= member_is_current ? 'You have' : "#{member.first_name} has" %> <%= pluralize(team.days_remaining_in_season, 'day') %> to finish the remaining <%= pluralize(team_membership.long_runs_remaining_in_goal, 'long run') %> of <%= member_is_current ? 'your' : member.gender_possessive %> personal long run goal.
-      <% end %>
-    </p>
-  <% elsif team.season_not_started_yet? %>
-    <p class="text-soft">Season hasn't started yet.</p>
-  <% elsif team.season_dates? %>
-    <p class="text-soft"><%= member_is_current ? 'You have' : "#{member.first_name} has" %> not set a personal long run goal.</p>
-  <% elsif team_membership.long_run_goal? %>
-    <p class="text-soft">No season dates have been set for this team.</p>
-  <% else %>
-    <p class="text-soft"><%= member_is_current ? 'You have' : "#{member.first_name} has" %> not set a personal long run goal, and season dates have not been set for this team.</p>
-  <% end %>
-</div>
+      <p class='my-1 text-xs text-soft'>
+        <% if team_membership.long_run_goal_complete? %>
+          <%= member_is_current ? 'You met your' : "#{member.first_name} met #{member.gender_possessive}" %> <%= team.long_run_goal %> personal long run goal with <%= pluralize(team.days_remaining_in_season, 'day') %> to spare!
+        <% else %>
+          <%= member_is_current ? 'You have' : "#{member.first_name} has" %> <%= pluralize(team.days_remaining_in_season, 'day') %> to finish the remaining <%= pluralize(team_membership.long_runs_remaining_in_goal, 'long run') %> of <%= member_is_current ? 'your' : member.gender_possessive %> personal long run goal.
+        <% end %>
+      </p>
+    <% elsif team.season_not_started_yet? %>
+      <p class="text-soft">Season hasn't started yet.</p>
+    <% elsif team.season_dates? %>
+      <p class="text-soft"><%= member_is_current ? 'You have' : "#{member.first_name} has" %> not set a personal long run goal.</p>
+    <% elsif team_membership.long_run_goal? %>
+      <p class="text-soft">No season dates have been set for this team.</p>
+    <% else %>
+      <p class="text-soft"><%= member_is_current ? 'You have' : "#{member.first_name} has" %> not set a personal long run goal, and season dates have not been set for this team.</p>
+    <% end %>
+  </div>
+<% end %>

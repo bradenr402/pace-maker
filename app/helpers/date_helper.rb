@@ -58,6 +58,7 @@ module DateHelper
 
   def week_range(current_date: Date.today, week_start: :monday)
     # Convert the symbol to a Rails-recognized week start
+    week_start = :monday if week_start.nil?
     start_day = week_start.to_sym
 
     start_of_week = current_date.beginning_of_week(start_day).to_date

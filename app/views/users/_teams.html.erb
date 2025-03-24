@@ -2,8 +2,8 @@
 
 <div class="mb-24">
   <div class="pb-6 mt-10 mb-6 border-b border-slate-200 dark:border-slate-700">
-    <h1 class="heading"><%= user_is_current ? 'Your' : "#{user.first_name}’s" %> Teams</h1>
-    <p class="text-soft">Teams <%= user_is_current ? 'you coach' : "#{user.first_name} coaches" %>.</p>
+    <h1 class="heading"><%= 'Your' if user_is_current %> Teams</h1>
+    <p class="text-soft">Teams that <%= user_is_current ? 'you coach' : "#{user.first_name} coaches" %>.</p>
   </div>
 
   <% if owned_teams.present? %>
@@ -13,28 +13,30 @@
       <%= link_to 'Create a team', new_team_path, class: 'btn btn-sm btn-primary btn-muted' if user_is_current %>
     </div>
   <% else %>
-    <div class="flex flex-col items-center justify-center gap-6 mt-12">
-      <p class="text-soft text-center"><%= user_is_current ? 'You don’t' : "#{user.first_name} doesn’t" %> have any teams.</p>
-      <%= link_to 'Create a team', new_team_path, class: 'btn btn-primary' if user_is_current %>
+    <div class="flex flex-col items-center justify-center gap-6 my-24 md:my-32">
+      <p class="font-semibold">No teams</p>
+      <p class="text-soft text-center text-sm text-pretty md:max-w-[70%]"><%= user_is_current ? 'You don’t' : "#{user.first_name} doesn’t" %> have any teams.</p>
+      <%= link_to 'Create a team', new_team_path, class: 'mt-2 btn btn-primary' if user_is_current %>
     </div>
   <% end %>
 </div>
 
 <div class="mb-24">
   <div class="pb-6 my-6 border-b border-slate-200 dark:border-slate-700">
-    <h2 class="subheading"><%= user_is_current ? 'Your' : "#{user.first_name}’s" %> Team Memberships</h2>
-    <p class="text-sm text-soft">Teams <%= user_is_current ? 'you are' : "#{user.first_name} is" %> a member of.</p>
+    <h2 class="subheading"><%= 'Your' if user_is_current %> Team Memberships</h2>
+    <p class="text-sm text-soft">Teams that <%= user_is_current ? 'you are' : "#{user.first_name} is" %> a member of.</p>
   </div>
 
   <% if membered_teams.present? %>
     <%= render 'teams/shared/team_list', teams: membered_teams %>
 
     <div class="flex justify-center mt-12">
-      <%= link_to 'Find a team to join', search_path, class: 'btn btn-sm btn-white btn-muted' if user_is_current %>
+      <%= link_to 'Find a team to join', search_path, class: 'mt-2 btn btn-sm btn-white btn-muted' if user_is_current %>
     </div>
   <% else %>
-    <div class="flex flex-col items-center justify-center gap-6 mt-12">
-      <p class="text-soft text-center"><%= user_is_current ? 'You’re' : "#{user.first_name} is" %> not a member of any teams.</p>
+    <div class="flex flex-col items-center justify-center gap-6 my-24 md:my-32">
+      <p class="font-semibold">No teams</p>
+      <p class="text-soft text-center text-sm text-pretty md:max-w-[70%]"><%= user_is_current ? 'You’re' : "#{user.first_name} is" %> not a member of any teams.</p>
       <%= link_to 'Find a team', search_path, class: 'btn btn-white' if user_is_current %>
     </div>
   <% end %>

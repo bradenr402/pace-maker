@@ -1,19 +1,45 @@
+<% team ||= nil %>
+
 <% user_is_current = user == current_user %>
 
-<div class="mb-24">
+<div class="mb-24" data-controller="filter-runs">
   <div class="pb-6 mt-10 mb-6 border-b border-slate-200 dark:border-slate-700">
-    <h1 class="heading"><%= user_is_current ? 'Your' : "#{user.first_name}’s" %> Runs</h1>
-    <p class="text-soft">Use the filters to find runs by date.</p>
+    <h1 class="heading"><%= 'Your' if user_is_current %> Runs</h1>
+    <p class="text-soft">Use the filters to find <%= user_is_current ? 'your' : "#{user.first_name}’s" %> runs by date<%= ' and distance' if team %>.</p>
   </div>
 
-  <%= render 'users/runs_date_form', user: %>
+  <%= render 'users/runs_date_form', user:, team: %>
+
+  <% if team %>
+    <div class="form-group ">
+      <%= label_tag :distance_filter, 'Filter by distance', class: 'form-label' %>
+
+      <div class="flex flex-wrap items-center gap-x-2 gap-y-5 my-4">
+        <% distance_options = [
+          { name: 'All runs', value: 'all' },
+          { name: 'Long runs', value: team.long_run_distance_for_user(user), filter_type: 'greater_than' },
+          { name: 'Short runs', value: team.long_run_distance_for_user(user), filter_type: 'less_than' },
+        ] %>
+
+        <% distance_options.each do |option| %>
+          <div>
+            <%= radio_button_tag :distance_filter, option[:value], id: "distance_filter_#{option[:value]}_#{option[:filter_type]}", checked: option[:value] == 'all', class: 'hidden peer', data: { action: 'change->filter-runs#filter', filter_runs_target: 'radio', filter_type: option[:filter_type] } %>
+            <%= label_tag "distance_filter_#{option[:value]}_#{option[:filter_type]}", option[:name], class: 'form-radio-chip-label' %>
+          </div>
+        <% end %>
+      </div>
+      <p class="mt-1 text-xs">
+        <span class="text-soft">Long run distance:</span> <span class="text-light font-semibold"><%= team.long_run_distance_for_user(user) %> mi</span>
+      </p>
+    </div>
+  <% end %>
 
   <div id="runs">
     <% if @runs.present? %>
-      <% if 'this'.in?(@date_range) %>
-        <p class="mt-6 mb-2 text-sm text-light"><%= user_is_current ? 'You have' : "#{user.first_name} has" %> logged <%= pluralize(@runs.count, 'run') %> <%= @date_range %>.</p>
+      <% if 'this'.in?(@runs_date_range) %>
+        <p class="mt-6 mb-2 text-sm text-light"><%= user_is_current ? 'You have' : "#{user.first_name} has" %> logged <%= pluralize(@runs.count, 'run') %> <%= @runs_date_range %>.</p>
       <% else %>
-        <p class="mt-6 mb-2 text-sm text-light"><%= user_is_current ? 'You' : user.first_name %> logged <%= pluralize(@runs.count, 'run') %> <%= @date_range %>.</p>
+        <p class="mt-6 mb-2 text-sm text-light"><%= user_is_current ? 'You' : user.first_name %> logged <%= pluralize(@runs.count, 'run') %> <%= @runs_date_range %>.</p>
       <% end %>
     <% end %>
 

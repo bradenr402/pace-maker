@@ -16,9 +16,15 @@
     <% if streak.zero? %>
       No record streak recorded.
     <% elsif start_date == end_date %>
-      <%= pretty_date(start_date, month_format: :short, include_year: Date.current.year != start_date.year) %>
+      <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
+        <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 shrink-0' %>
+        <span class="whitespace-nowrap"><%= pretty_date(start_date, month_format: :short, include_year: Date.current.year != start_date.year) %></span>
+      </div>
     <% else %>
-      <%= pretty_date(start_date, month_format: :short, include_year: Date.current.year != start_date.year) %> &ndash; <%= pretty_date(end_date, month_format: :short, include_year: Date.current.year != end_date.year) %>
+      <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
+        <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 shrink-0' %>
+        <span class="whitespace-nowrap"><%= pretty_date(start_date, month_format: :short, include_year: Date.current.year != start_date.year) %> &ndash; <%= pretty_date(end_date, month_format: :short, include_year: Date.current.year != end_date.year) %></span>
+      </div>
     <% end %>
   </p>
 
@@ -39,5 +45,17 @@
         Log a run to extend your record streak!
       <% end %>
     </p>
+  <% end %>
+
+  <% if team %>
+    <div class="mt-2">
+      <% if team.exclude_weekends_from_streak? %>
+        <p class="text-soft text-xs">Weekends won&#8217;t reset your streak for this team.</p>
+      <% elsif team.exclude_saturday_from_streak? %>
+        <p class="text-soft text-xs">Saturdays won&#8217;t reset your streak for this team.</p>
+      <% elsif team.exclude_sunday_from_streak? %>
+        <p class="text-soft text-xs">Sundays won&#8217;t reset your streak for this team.</p>
+      <% end %>
+    </div>
   <% end %>
 </div>

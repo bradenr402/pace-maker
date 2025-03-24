@@ -3,9 +3,7 @@
   <p class="text-soft">Recent trends in <%= team.name %>.</p>
 </div>
 
-<%= content_tag(:p, class: 'mb-2 text-right') { link_to 'View your personal trends', team_member_path(team, current_user, tab: 'trendsTab'), class: 'btn-link text-xs' } if @current_user_member_of_team %>
-
-<div class="mb-24">
+<div class="mb-8">
   <%= render 'teams/show/trends_date_form', team: %>
 </div>
 

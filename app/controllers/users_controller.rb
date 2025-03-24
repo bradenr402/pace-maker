@@ -5,11 +5,11 @@ class UsersController < ApplicationController
   def show
     add_breadcrumb @user.default_name, user_path(@user)
 
-    @runs, @date_range = get_runs_and_date_range
-    @date_range_param = params[:run_date_range] || 'this_week'
-
     @owned_teams = @user.owned_teams.with_attached_photo.includes(:owner)
     @membered_teams = @user.membered_teams.with_attached_photo.includes(:owner)
+
+    @runs, @runs_date_range = get_runs_and_date_range
+    @runs_date_range_param = params[:run_date_range] || 'this_week'
 
     respond_to do |format|
       format.html

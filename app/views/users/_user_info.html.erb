@@ -1,117 +1,165 @@
 <% user_is_current = user == current_user %>
 
-<div class="mb-24">
+<div class="mb-24" id="user_info">
   <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
     <h1 class="heading">User Info</h1>
     <p class="text-soft">Information and statistics about <%= user_is_current ? 'you' : "#{user.first_name}" %>.</p>
   </div>
 
+  <%= render 'select_team_dropdown', user: %>
+
   <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-    <!-- Total Miles Card -->
-    <div class="card">
-      <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Total Miles</h2>
-      <p class="text-3xl font-bold">
-        <%= user.total_miles %>
-        <span class="text-base font-normal text-soft"><%= 'mile'.pluralize(user.total_miles) %></span>
-      </p>
-    </div>
-
-    <!-- Time Spent Running Card -->
-    <div class="card">
-      <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Time Spent Running</h2>
-      <div class="font-bold flex items-end gap-4">
-        <% precise_time_ago(user.total_duration, format: :short).split(' ').each do |time_part| %>
-          <% if time_part.include?('mo') %>
-            <div>
-              <span class="text-3xl"><%= time_part.chop.chop %></span><sup class="text-muted dark:text-soft text-xl"><%= time_part.last(2) %></sup>
-            </div>
-          <% else %>
-            <div>
-              <span class="text-3xl"><%= time_part.chop %></span><sup class="text-muted dark:text-soft text-xl"><%= time_part.last %></sup>
-            </div>
-          <% end %>
-        <% end %>
-      </div>
-      <p class="text-soft">
-        <%= precise_time_ago(user.total_duration) %>
-      </p>
-    </div>
-
     <!-- Current Streak Card -->
     <%= render 'shared/user_current_streak_card', user: current_user %>
 
     <!-- Record Streak Card -->
     <%= render 'shared/user_record_streak_card', user: current_user %>
-  </div>
-</div>
 
-<% if user.show_email? || user.show_phone? || user_is_current %>
-  <div class="mb-24">
-    <div class="pb-6 my-6 border-b border-slate-200 dark:border-slate-700">
-      <h2 class="subheading">Contact</h2>
-      <p class="text-sm text-soft">
-        <% if user_is_current %>
-          Your contact information.
-          <% if user.show_email? || user.show_phone? %>
-            You can hide this in your <%= link_to 'settings', edit_user_registration_path(tab: 'settingsTab'), class: 'btn-link transition duration-200 ease-in-out' %>.
-          <% else %>
-            No one can see this except you. You can show this in your <%= link_to 'settings', edit_user_registration_path(tab: 'settingsTab'), class: 'btn-link transition duration-200 ease-in-out' %>.
-          <% end %>
-        <% else %>
-          Contact information for <%= user.first_name %>.
-        <% end %>
+    <!-- Total Miles Card -->
+    <div class="card">
+      <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Total Miles</h2>
+      <p class="text-3xl font-bold">
+        <%= miles_count = user.total_miles %>
+        <span class="text-base font-normal text-soft"><%= 'mile'.pluralize(miles_count) %></span>
+      </p>
+
+      <p class="text-soft text-sm font-semibold mt-2">
+        <% avg_miles_per_week = (miles_count.to_f / ((Date.current - user.created_at.to_date).to_f / 7)).round(1) %>
+        Avg. per week: <%= avg_miles_per_week %> mi
       </p>
     </div>
 
-    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-      <% if user.show_email? || user_is_current %>
-        <div class="card flex flex-col">
-          <div class="mb-6">
-            <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300">Email Address</h2>
-            <% unless user.show_email? %>
-              <div class="flex items-center gap-1">
-                <%= inline_svg_tag 'icons/eye-slash.svg', class: 'size-3.5 text-muted' %>
-                <p class="text-xs text-soft">Hidden from other users</p>
-              </div>
-            <% end %>
-          </div>
-          <p class="text-lg font-bold mb-4 mt-auto">
-            <%= user.email %>
-          </p>
-          <%= mail_to user.email, class: 'btn btn-white w-full gap-2' do %>
-            <%= inline_svg_tag 'icons/envelope-filled.svg', class: 'size-5' %>
-            <span>Email</span>
+    <!-- Total Running Time Card -->
+    <div class="card">
+      <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Total Running Time</h2>
+      <div class="font-bold flex items-end gap-4">
+        <% total_duration = user.total_duration %>
+        <% precise_time_ago(total_duration, format: :short).split(' ').each do |time_part| %>
+          <% if time_part.include?('mo') %>
+            <div>
+              <span class="text-3xl"><%= time_part.chop.chop %></span><sup class="text-muted dark:text-soft text-base font-semibold align-super"><%= time_part.last(2) %></sup>
+            </div>
+          <% else %>
+            <div>
+              <span class="text-3xl"><%= time_part.chop %></span><sup class="text-muted dark:text-soft text-base font-semibold align-super"><%= time_part.last %></sup>
+            </div>
           <% end %>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
 
-      <% if user.show_phone? || (user_is_current & user.phone_number?) %>
-        <div class="card flex flex-col">
-          <div class="mb-6">
-            <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300">Phone Number</h2>
-            <% unless user.show_phone? %>
-              <div class="flex items-center gap-1">
-                <%= inline_svg_tag 'icons/eye-slash.svg', class: 'size-3.5 text-muted' %>
-                <p class="text-xs text-soft">Hidden from other users</p>
-              </div>
-            <% end %>
-          </div>
-          <p class="text-lg font-bold mb-4 mt-auto">
-            <%= user.formatted_phone_number(:national_with_country_code) %>
-          </p>
-          <div class="flex items-center gap-2">
-            <%= sms_to user.phone_number, class: 'btn btn-white w-full gap-2' do %>
-              <%= inline_svg_tag 'icons/message-bubble-filled.svg', class: 'size-5' %>
-              <span>Text</span>
-            <% end %>
+      <p class="text-soft text-sm font-semibold mt-2">
+        <% avg_time_per_week = total_duration / ((Date.current - user.created_at.to_date).to_f / 7) %>
+        Avg. per week: <%= precise_time_ago(avg_time_per_week, format: :short) %>
+      </p>
+    </div>
 
-            <%= phone_to user.phone_number, class: 'btn btn-white w-full gap-2' do %>
-              <%= inline_svg_tag 'icons/phone-filled.svg', class: 'size-5' %>
-              <span>Call</span>
-            <% end %>
+    <!-- Total Runs Logged Card -->
+    <div class="card">
+      <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Total Runs Logged</h2>
+      <p class="text-3xl font-bold">
+        <%= runs_count = user.runs.count %>
+        <span class="text-base font-normal text-soft"><%= 'run'.pluralize(runs_count) %></span>
+      </p>
+
+      <p class="text-soft text-sm font-semibold mt-2">
+        <% avg_runs_per_week = (runs_count.to_f / ((Date.current - user.created_at.to_date).to_f / 7)).round(1) %>
+        Avg. per week: <%= pluralize(avg_runs_per_week, 'run') %>
+      </p>
+    </div>
+
+    <!-- Farthest Run Card -->
+    <div class="card">
+      <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Farthest Run</h2>
+      <p class="text-3xl font-bold">
+        <% farthest_run = user.farthest_run %>
+        <% if farthest_run.present? %>
+          <%= miles_count = farthest_run.distance %>
+          <span class="text-base font-normal text-soft"><%= 'mile'.pluralize(miles_count) %></span>
+        <% else %>
+          <span class="text-base font-normal text-soft">No runs logged</span>
+        <% end %>
+      </p>
+
+      <% if farthest_run.present? %>
+        <div class="flex items-center gap-4 mt-2">
+          <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
+            <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 shrink-0' %>
+            <span class="whitespace-nowrap"><%= pretty_date(farthest_run.date, date_style: :absolute, month_format: :short, include_year: farthest_run.date.year != Date.current.year) %></span>
           </div>
-        </div>
+
+          <% if farthest_run.duration? %>
+            <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
+              <%= inline_svg_tag 'icons/clock-filled.svg', class: 'size-3.5 shrink-0' %>
+              <span class="whitespace-nowrap"><%= clock_time_display farthest_run.duration %></span>
+            </div>
+            <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
+              <%= inline_svg_tag 'icons/speedometer-filled.svg', class: 'size-3.5 shrink-0' %>
+              <span class="whitespace-nowrap"><%= clock_time_display farthest_run.pace %></span>
+            </div>
+          </div>
+        <% end %>
+
+        <%= link_to 'View run', farthest_run, class: 'block btn-link text-sm mt-3' %>
       <% end %>
     </div>
+
+    <!-- Longest Run Card -->
+    <% longest_run = user.longest_run %>
+    <% if longest_run %>
+      <div class="card">
+        <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Longest Run</h2>
+        <p class="text-3xl font-bold"><%= clock_time_display(longest_run.duration) %></p>
+
+        <div class="flex items-center gap-4 mt-2">
+          <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
+            <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 shrink-0' %>
+            <span class="whitespace-nowrap"><%= pretty_date(longest_run.date, date_style: :absolute, month_format: :short, include_year: longest_run.date.year != Date.current.year) %></span>
+          </div>
+
+          <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
+            <%= inline_svg_tag 'icons/ruler-filled.svg', class: 'size-3.5 shrink-0' %>
+            <span class="whitespace-nowrap"><%= longest_run.distance %> <span class="font-normal">mi</span></span>
+          </div>
+
+          <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
+            <%= inline_svg_tag 'icons/speedometer-filled.svg', class: 'size-3.5 shrink-0' %>
+            <span class="whitespace-nowrap"><%= longest_run.pace %> <span class="font-normal">/mi</span></span>
+          </div>
+        </div>
+
+        <%= link_to 'View run', longest_run, class: 'block btn-link text-sm mt-3' %>
+      </div>
+    <% end %>
+
+    <!-- Fastest Run Card -->
+    <% fastest_run = user.fastest_run %>
+    <% if fastest_run %>
+      <div class="card">
+        <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Fastest Run</h2>
+        <p class="text-3xl font-bold">
+          <%= clock_time_display(fastest_run.pace) %>
+          <span class="text-base font-normal text-soft"><span class="font-normal">/mi</span></span>
+        </p>
+
+        <div class="flex items-center gap-4 mt-2">
+          <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
+            <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 shrink-0' %>
+            <span class="whitespace-nowrap"><%= pretty_date(fastest_run.date, date_style: :absolute, month_format: :short, include_year: fastest_run.date.year != Date.current.year) %></span>
+          </div>
+
+          <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
+            <%= inline_svg_tag 'icons/ruler-filled.svg', class: 'size-3.5 shrink-0' %>
+            <span class="whitespace-nowrap"><%= longest_run.distance %> <span class="font-normal">mi</span></span>
+          </div>
+
+          <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
+            <%= inline_svg_tag 'icons/speedometer-filled.svg', class: 'size-3.5 shrink-0' %>
+            <span class="whitespace-nowrap"><%= longest_run.pace %> <span class="font-normal">/mi</span></span>
+          </div>
+        </div>
+
+        <%= link_to 'View run', fastest_run, class: 'block btn-link text-sm mt-3' %>
+      </div>
+    <% end %>
   </div>
-<% end %>
+</div>

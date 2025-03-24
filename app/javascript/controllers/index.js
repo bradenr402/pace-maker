@@ -37,6 +37,9 @@ application.register("duration-picker", DurationPickerController)
 import FilterGenderController from "./filter_gender_controller"
 application.register("filter-gender", FilterGenderController)
 
+import FilterRunsController from "./filter_runs_controller"
+application.register("filter-runs", FilterRunsController)
+
 import FormHelpTextController from "./form_help_text_controller"
 application.register("form-help-text", FormHelpTextController)
 

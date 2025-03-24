@@ -7,3 +7,30 @@
     <%= render 'teams/member/trends_graphs', team: @team, member: @member, date_range: @trends_date_range, date_range_description: @trends_date_range_description %>
   </div>
 <% end %>
+
+<%= turbo_stream.replace 'runs' do %>
+  <div id="runs" data-controller="filter-runs">
+    <% if @runs.present? %>
+      <% if 'this'.in?(@runs_date_range) %>
+        <p class="mt-6 mb-2 text-sm text-light"><%= @member == current_user ? 'You have' : "#{@member.first_name} has" %> logged <%= pluralize(@runs.size, 'run') %> <%= @runs_date_range %>.</p>
+      <% else %>
+        <p class="mt-6 mb-2 text-sm text-light"><%= @member == current_user ? 'You' : @member.first_name %> logged <%= pluralize(@runs.size, 'run') %> <%= @runs_date_range %>.</p>
+      <% end %>
+    <% end %>
+
+    <div class="mb-10 space-y-4 sm:space-y-6">
+      <% if @runs.present? %>
+        <%= render @runs %>
+      <% else %>
+        <div class="flex flex-col items-center justify-center gap-4 my-24 md:my-32">
+          <p class="font-semibold">No runs found</p>
+          <p class="text-soft text-center text-sm text-pretty md:max-w-[70%]">Sorry, we couldn&#8217;t find any runs in the selected date range.</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<%= turbo_stream.replace 'runs_date_form' do %>
+  <%= render 'users/runs_date_form', user: @member, team: @team %>
+<% end %>

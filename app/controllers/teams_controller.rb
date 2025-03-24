@@ -258,6 +258,12 @@ class TeamsController < ApplicationController
     add_breadcrumb @team.name, team_path(@team)
     add_breadcrumb @member.default_name, team_member_path(@team, @member)
 
+    @owned_teams = @member.owned_teams.with_attached_photo.includes(:owner)
+    @membered_teams = @member.membered_teams.with_attached_photo.includes(:owner)
+
+    @runs, @runs_date_range = get_runs_and_date_range
+    @runs_date_range_param = params[:run_date_range] || 'this_week'
+
     @trends_date_range_param = params[:trends_date_range] || 'this_week'
     @group_by_param = params[:group_by] || 'day'
 
@@ -530,5 +536,49 @@ class TeamsController < ApplicationController
           ]
         end
       end
+  end
+
+  def get_runs_and_date_range
+    today = Date.today
+
+    if params[:run_date_range].present?
+      case params[:run_date_range]
+      when 'this_week'
+        [
+          @member.runs_in_date_range(today.beginning_of_week..today),
+          'this week'
+        ]
+      when 'last_week'
+        one_week_ago = today - 1.week
+        [
+          @member.runs_in_date_range(
+            one_week_ago.beginning_of_week..one_week_ago.end_of_week
+          ),
+          'last week'
+        ]
+      when 'this_month'
+        [
+          @member.runs_in_date_range(today.beginning_of_month..today),
+          'this month'
+        ]
+      when 'last_month'
+        one_month_ago = today - 1.month
+        [
+          @member.runs_in_date_range(
+            one_month_ago.beginning_of_month..one_month_ago.end_of_month
+          ),
+          'last month'
+        ]
+      when 'custom_range'
+        @run_start_date = params[:run_start_date].to_date
+        @run_end_date = params[:run_end_date].to_date
+        [
+          @member.runs_in_date_range(@run_start_date..@run_end_date),
+          "from #{@run_start_date.strftime('%m/%d/%Y')} to #{@run_end_date.strftime('%m/%d/%Y')}"
+        ]
+      end
+    else
+      [@member.runs_in_date_range(today.beginning_of_week..today), 'this week']
+    end
   end
 end
