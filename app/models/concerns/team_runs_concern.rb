@@ -4,6 +4,8 @@ module TeamRunsConcern
   def long_run_distance_for_user(user)
     return long_run_distance_neutral unless require_gender?
 
+    return long_run_distance_neutral unless user.gender?
+
     user.male? ? long_run_distance_male : long_run_distance_female
   end
 
