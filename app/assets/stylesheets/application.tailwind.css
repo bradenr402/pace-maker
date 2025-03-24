@@ -129,14 +129,30 @@
 
   .dropdown-option {
     @apply flex items-center gap-2.5 p-2 rounded text-sm transition duration-200 ease-in-out w-full hover:bg-slate-200/80 dark:hover:bg-slate-700/80;
+
+    &:not(:has(svg)) {
+      @apply px-3;
+    }
+
+    &.active {
+      @apply bg-slate-200/80 dark:bg-slate-700/80 my-px first:mt-0 last:mb-0;
+    }
   }
 
   .dropdown-option-primary {
     @apply flex items-center gap-2.5 p-2 rounded text-sm transition duration-200 ease-in-out w-full hover:bg-indigo-100 dark:hover:bg-indigo-900/80 hover:text-indigo-700 dark:hover:text-indigo-200;
+
+    &:not(:has(svg)) {
+      @apply px-3;
+    }
   }
 
   .dropdown-option-destructive {
     @apply flex items-center gap-2.5 p-2 rounded text-sm transition duration-200 ease-in-out w-full hover:bg-rose-100 dark:hover:bg-rose-900/80 text-rose-600 dark:text-rose-300 hover:text-rose-700 dark:hover:text-rose-200;
+
+    &:not(:has(svg)) {
+      @apply px-3;
+    }
   }
 
   .breadcrumbs {
