@@ -175,12 +175,6 @@ module UserCalculations
         start_date = streak_data[:start_date]
         end_date = streak_data[:end_date]
 
-        if prev_date != curr_date - 1.day
-          streak = 1
-          start_date = curr_date
-          end_date = curr_date
-        end
-
         next unless streak > longest_streak
 
         longest_streak = streak
