@@ -131,8 +131,8 @@ module UserCalculations
       two_days_ago = starting_date - 2.days
       three_days_ago = starting_date - 3.days
 
-      exclude_yesterday = team&.exclude_date_from_streak?(yesterday)
-      exclude_two_days_ago = team&.exclude_date_from_streak?(two_days_ago)
+      exclude_yesterday = team&.exclude_date_from_streak?(yesterday) || false
+      exclude_two_days_ago = team&.exclude_date_from_streak?(two_days_ago) || false
 
       valid_current_streak =
         if exclude_yesterday && exclude_two_days_ago
