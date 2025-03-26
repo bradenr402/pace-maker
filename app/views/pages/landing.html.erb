@@ -101,35 +101,37 @@
       to Elevate Your Running Experience.
     </h2>
     <p class="mx-auto mt-6 max-w-2xl text-lg tracking-tight text-soft text-pretty">
-      Behind PaceMaker&#8217;s simple design is a powerhouse of features designed to help you&mdash;and your team&mdash;reach your full potential.
+      Behind PaceMaker&#8217;s simple design is a powerhouse of features designed to help <span class="whitespace-nowrap">you&mdash;and</span> your <span class="whitespace-nowrap">team&mdash;reach</span> your full potential.
     </p>
   </div>
 
-  <% colors = [
-    'from-rose-400 via-rose-500 to-red-600',
-    'from-yellow-400 to-amber-500',
-    'from-emerald-400 via-emerald-500 to-green-600',
-    'from-violet-400 via-violet-500 to-indigo-600',
-    'from-sky-400 via-blue-500 to-blue-600',
-    'from-amber-400 to-orange-600',
-  ] %>
-
   <% features = [
-    { name: 'Performance Tracking', desc: 'Track your runs with detailed stats, insights, and historical comparisons to measure your progress over time.', icon: 'analytics', span_md: false, span_lg: false },
-    { name: 'Team Management', desc: 'Lead your team to success by setting season dates, creating team goals, and tracking progress over time. Analyze performance trends with intuitive graphs, helping you make data-driven decisions to optimize training and maximize results.', icon: 'team-filled', span_md: false, span_lg: true },
-    { name: 'Goal Setting', desc: 'Set personal and team goals to push your limits and stay on track. Stay motivated with personalized messages that let you know if you’re falling behind, on track, or ahead of your goal.', icon: 'medal-filled', span_md: true, span_lg: true },
-    { name: 'Team Communication', desc: 'Stay connected with your team through built-in real-time messaging and topic-based discussions.', icon: 'chat-filled', span_md: false, span_lg: false },
-    { name: 'PWA Support', desc: 'Install PaceMaker as a progressive web app on your device for quick and easy access.', icon: 'smart-phone-filled', span_md: false, span_lg: false },
-    { name: 'Strava Integration', desc: 'Seamlessly connect your Strava account to sync both historical and real-time run data automatically. Keep your training logs up to date without manual entry, ensuring your stats always reflect your latest activities and achievements.', icon: 'strava-filled', span_md: true, span_lg: true },
+    { name: 'Team Management', desc: 'Lead your team to success by setting season dates, creating team goals, and tracking progress over time. Analyze performance trends with intuitive graphs, helping you make data-driven decisions to optimize training and maximize results.', icon: 'team-filled', color: 'from-yellow-400 to-amber-500' },
+    { name: 'Performance Tracking', desc: 'Track your runs with detailed stats, insights, and historical comparisons to measure your progress over time.', icon: 'analytics', color: 'from-red-400 via-rose-500 to-red-600' },
+    { name: 'Goal Setting', desc: 'Set personal and team goals to push your limits. Personalized messages let you know if you’re falling behind, on track, or ahead of your goal.', icon: 'medal-filled', color: 'from-emerald-400 via-emerald-500 to-green-600' },
+    { name: 'Team Communication', desc: 'Stay connected with your team through built-in real-time messaging and topic-based discussions.', icon: 'chat-filled', color: 'from-violet-400 via-violet-500 to-indigo-600' },
+    { name: 'PWA Support', desc: 'Install PaceMaker as a progressive web app on your device for quick and easy access.', icon: 'smart-phone-filled', color: 'from-sky-400 via-blue-500 to-blue-600' },
+    { name: 'Social Motivation', desc: 'Like and comment on teammates’ runs to encourage one another and celebrate milestones.', icon: 'heart-filled', color: 'from-rose-400 via-pink-500 to-pink-600' },
+    { name: 'Strava Integration', desc: 'Seamlessly connect your Strava account to sync both historical and real-time run data automatically. Keep your training logs up to date without manual entry, ensuring your stats always reflect your latest activities and achievements.', icon: 'strava-filled', color: 'from-amber-400 to-orange-600' },
   ] %>
 
-  <div class="mx-auto grid max-w-5xl grid-cols-1 gap-4 my-12 sm:grid-cols-2 lg:grid-cols-3">
+  <% span_values = [
+    'sm:col-span-2 lg:row-span-3',
+    'lg:row-span-2',
+    'lg:row-span-2',
+    'lg:row-span-2',
+    'lg:row-span-2',
+    'lg:row-span-3',
+    'sm:col-span-2 lg:row-span-2',
+  ] %>
+
+  <div class="mx-auto grid max-w-5xl grid-cols-1 gap-3 md:gap-4 my-12 sm:grid-cols-3">
     <% features.each_with_index do |feature, index| %>
-      <div class="card flex items-center gap-4 md:flex-col col-span-1 <%= feature[:span_lg] ? 'lg:col-span-2' : '' %> <%= feature[:span_md] ? 'md:col-span-2 lg:col-span-1' : '' %>">
-        <div class="rounded-full p-3 bg-gradient-to-br <%= colors[index] %> shrink-0">
+      <div class="p-6 max-md:px-4 rounded-xl bg-white dark:bg-slate-800/60 shadow-md dark:shadow-none border border-slate-200 dark:border-slate-700 flex sm:flex-col items-center justify-center gap-3 sm:gap-4.5 <%= span_values[index] %>">
+        <div class="rounded-full p-3 bg-gradient-to-br <%= feature[:color] %> shrink-0">
           <%= inline_svg_tag "icons/#{feature[:icon]}.svg", class: 'size-6 text-white' %>
         </div>
-        <div class="md:text-center">
+        <div class="sm:text-center sm:space-y-1.5">
           <p class="text-xl font-bold text-normal"><%= feature[:name] %></p>
           <p class="text-sm text-soft text-pretty"><%= feature[:desc] %></p>
         </div>
