@@ -28,12 +28,10 @@
     <% end %>
   </div>
 
-  <div class="h-full flex flex-col justify-center">
-    <div class="flex flex-wrap gap-1 items-center">
-      <span class="text-soft text-sm">Highest milestone reached:</span>
-      <div class="w-max ml-auto">
-        <%= render 'teams/member/streak_badge', percentage: 100, days: streak - (streak % (team&.streaks_increment || 10)) %>
-      </div>
+  <div class="flex flex-wrap gap-1.5 items-center w-full pl-4 pr-3 py-3 bg-slate-200/75 dark:bg-slate-700/50 border border-slate-300/50 dark:border-slate-600/50 rounded-xl">
+    <span class="text-light font-semibold text-sm">Highest milestone achieved:</span>
+    <div class="w-max ml-auto">
+      <%= render 'teams/member/streak_badge', percentage: 100, days: streak - (streak % (team&.streaks_increment || 10)) %>
     </div>
   </div>
 
