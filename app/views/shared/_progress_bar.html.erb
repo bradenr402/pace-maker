@@ -26,7 +26,7 @@
        aria-label="<%= label %>"
     >
     <div class="<%= size_classes[size] %> bg-gradient-to-b from-violet-500 via-indigo-500 to-indigo-600 absolute left-0 top-0 z-20 max-w-full" style="width: <%= percentage %>%"></div>
-    <% if local_assigns[:marker] %>
+    <% if local_assigns[:marker] && marker < 100 %>
       <div class="<%= size_classes[size] + ' ' + comparison_classes %> absolute top-0 left-0 max-w-full" style="width: <%= marker %>%"></div>
     <% end %>
   </div>
