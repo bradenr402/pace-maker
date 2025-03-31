@@ -18,7 +18,7 @@
     <h2 class="text-lg font-semibold leading-none tracking-tight">New Topic</h2>
   </div>
 
-<%= render 'form', topic: Topic.new(team: @team) %>
+  <%= render 'form', topic: Topic.new(team: @team) %>
 
   <!-- Close button -->
   <button data-action="mousedown->modal#close" type="button" data-modal-id="newTopicModal" class="modal-x-btn">
