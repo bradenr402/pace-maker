@@ -1,6 +1,6 @@
 <% content_for :title, "Run • #{@run.user.default_name}" %>
 
-<div class="max-w-3xl mx-auto my-16">
+<div class="max-w-4xl mx-auto my-16">
   <%= render 'turbo_run', run: @run, team: local_assigns[:team] %>
 
   <div class="pb-4 mt-10 mb-6 border-b dark:border-slate-700 flex items-center gap-6">

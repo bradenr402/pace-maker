@@ -2,7 +2,7 @@
 
 <% parent = @comment.commentable %>
 
-<div class="max-w-3xl mx-auto my-16">
+<div class="max-w-4xl mx-auto my-16">
   <% if parent.is_a? Run %>
     <%= link_to run_path(parent), class: 'group flex items-center gap-3 py-4 pr-2 btn-link-soft w-max', aria: { label: 'Back to Run' } do %>
       <%= inline_svg_tag 'icons/chevron-left-bold.svg', class: 'size-4 transition ease-in-out duration-200' %>
