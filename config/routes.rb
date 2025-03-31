@@ -93,7 +93,7 @@ Rails.application.routes.draw do
 
     # Topics & Messages
     get 'main_chat', to: 'teams#main_chat', as: :main_chat
-    resources :topics, except: %i[new] do
+    resources :topics, except: %i[new edit] do
       member do
         patch :close
         patch :reopen

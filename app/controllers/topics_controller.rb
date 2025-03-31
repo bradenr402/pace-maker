@@ -1,9 +1,9 @@
 class TopicsController < ApplicationController
   before_action :set_team
-  before_action :set_topic, only: %i[show edit update destroy close reopen favorite unfavorite update_last_read]
+  before_action :set_topic, only: %i[show update destroy close reopen favorite unfavorite update_last_read]
   before_action :authenticate_user!
   before_action :authorize_member!, only: %i[index show favorite unfavorite]
-  before_action :authorize_owner!, only: %i[edit update close reopen]
+  before_action :authorize_owner!, only: %i[update close reopen]
 
   def index
     add_breadcrumb 'Teams', teams_path
@@ -36,8 +36,6 @@ class TopicsController < ApplicationController
     end
     redirect_to team_topics_path(@team)
   end
-
-  def edit; end
 
   def update
     if @topic.update(topic_params)
