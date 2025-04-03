@@ -14,12 +14,7 @@
 
 <%= link_to edit_team_team_membership_path(team, current_user), class: @current_user_owns_team ? 'dropdown-option' : 'dropdown-option-primary' do %>
   <%= inline_svg_tag 'icons/user-pencil.svg', class: 'size-5' %>
-  Edit my personal goals
-<% end %>
-
-<%= link_to team_member_path(team, current_user), class: 'dropdown-option' do %>
-  <%= inline_svg_tag 'icons/user.svg', class: 'size-5' %>
-  View my member page
+  Edit personal goals
 <% end %>
 
 <% if @current_user_owns_team %>
