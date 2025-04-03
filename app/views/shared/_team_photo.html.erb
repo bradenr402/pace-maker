@@ -18,13 +18,13 @@
 <%
   px_size = case size
   when :thumb
-    25
-  when :xs, :sm
-    50
-  when :md
     100
-  when :lg
+  when :xs, :sm
     150
+  when :sm, :md
+    200
+  when :lg
+    300
   end
 %>
 
