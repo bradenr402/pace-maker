@@ -8,7 +8,7 @@ module RunCalculations
   def distance_km = (distance * 1.609344).round(1)
 
   def pace
-    return nil if distance.zero?
+    return nil if distance.zero? || duration.blank?
 
     (duration / distance).round
   end
