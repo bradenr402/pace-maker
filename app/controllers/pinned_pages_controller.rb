@@ -51,9 +51,9 @@ class PinnedPagesController < ApplicationController
       end
     end
 
-    redirect_to pinned_pages_path, success: 'Pinned pages updated successfully.'
+    redirect_back fallback_location: root_path, success: 'Pinned pages updated successfully.'
   rescue ActiveRecord::RecordInvalid
-    redirect_to pinned_pages_path, alert: 'There was an issue updating the pinned pages.'
+    redirect_back fallback_location: root_path, alert: 'There was an issue updating the pinned pages.'
   end
 
   private
