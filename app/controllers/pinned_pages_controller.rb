@@ -32,6 +32,8 @@ class PinnedPagesController < ApplicationController
   end
 
   def manage
+    add_breadcrumb 'Pinned shortcuts', manage_pinned_pages_path
+
     @pinned_pages = current_user.pinned_pages.order(:position)
   end
 
