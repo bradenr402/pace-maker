@@ -44,7 +44,7 @@
 
     <% if team.photo.attached? %>
       <div class="flex items-center gap-2 mt-2">
-        <%= form.check_box :remove_photo, class: 'form-input-checkbox', data: { image_preview_target: 'removephotoCheckbox', action: 'image-preview#selectCheckbox' } %>
+        <%= form.check_box :remove_photo, class: 'form-input-checkbox', data: { action: 'image-preview#selectCheckbox' } %>
         <%= form.label :remove_photo, 'Remove profile photo', class: 'select-none text-sm' %>
       </div>
     <% end %>
