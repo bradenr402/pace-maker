@@ -16,7 +16,7 @@
     <% date = week[i] %>
     <% exclude_date = (date.saturday? && exclude_saturday) || (date.sunday? && exclude_sunday) %>
     <div class="flex flex-col items-center gap-1 <%= 'opacity-30' if exclude_date %>">
-      <span class="text-center text-xs text-soft font-bold"><%= day.first %></span>
+      <span class="text-center text-xs text-light font-bold"><%= day.first %></span>
       <% if run_dates.include?(date) %>
         <span class="bg-gradient-to-b from-violet-500 via-indigo-500 to-indigo-600 rounded size-3"></span>
       <% elsif date.today? && user == current_user %>
