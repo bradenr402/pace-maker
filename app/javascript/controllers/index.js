@@ -10,9 +10,6 @@ application.register("autogrow", AutogrowController)
 import CalculatePaceController from "./calculate_pace_controller"
 application.register("calculate-pace", CalculatePaceController)
 
-import CalendarController from "./calendar_controller"
-application.register("calendar", CalendarController)
-
 import CarouselController from "./carousel_controller"
 application.register("carousel", CarouselController)
 
@@ -33,6 +30,12 @@ application.register("dropdown", DropdownController)
 
 import DurationPickerController from "./duration_picker_controller"
 application.register("duration-picker", DurationPickerController)
+
+import EventBannerController from "./event_banner_controller"
+application.register("event-banner", EventBannerController)
+
+import FilterEventsController from "./filter_events_controller"
+application.register("filter-events", FilterEventsController)
 
 import FilterGenderController from "./filter_gender_controller"
 application.register("filter-gender", FilterGenderController)
@@ -111,6 +114,9 @@ application.register("toggle-checkbox", ToggleCheckboxController)
 
 import ToggleRepliesController from "./toggle_replies_controller"
 application.register("toggle-replies", ToggleRepliesController)
+
+import TooltipController from "./tooltip_controller"
+application.register("tooltip", TooltipController)
 
 import TopicReaderController from "./topic_reader_controller"
 application.register("topic-reader", TopicReaderController)

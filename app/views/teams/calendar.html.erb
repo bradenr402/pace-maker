@@ -1,0 +1,71 @@
+<% content_for :title, "#{@team.name} Calendar" %>
+
+<div
+  data-controller="modal tabs"
+  data-modal-hide-modal-class="opacity-0 scale-75 pointer-events-none"
+  data-modal-show-modal-class="opacity-100 scale-100 pointer-events-auto"
+  data-modal-hide-backdrop-class="opacity-0 pointer-events-none"
+  data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
+  data-tabs-active-class="btn-tab-active"
+  data-tabs-default-tab-value="calendarTab"
+  class="max-w-4xl mx-auto my-16"
+>
+  <%= link_to team_path(@team), class: 'group flex items-center gap-3 py-4 pr-2 btn-link-soft w-max', aria: { label: "Back to #{@team.name}" } do %>
+    <%= inline_svg_tag 'icons/chevron-left-bold.svg', class: 'size-4 transition ease-in-out duration-200' %>
+
+    <span class="text-sm transition ease-in-out duration-200">Back to <%= @team.name %></span>
+  <% end %>
+
+  <div class="mb-6 flex items-start gap-4">
+    <div class="shrink-0">
+      <%= render 'shared/team_photo', team: @team, size: :md %>
+    </div>
+
+    <div class="self-center">
+      <h1 class="heading"><%= @team.name %> Calendar</h1>
+      <p class="text-soft text-sm text-pretty">View team events and daily statistics.</p>
+
+      <% if current_user.member_of?(@team) %>
+        <%= link_to team_member_calendar_path(@team, current_user), class: 'btn btn-sm btn-white btn-muted gap-1.5 mt-1.5' do %>
+          <%= inline_svg_tag 'icons/calendar.svg', class: 'size-3.5' %>
+          <span>View your calendar</span>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="relative flex items-center mb-6">
+    <!-- Left Arrow -->
+    <button type="button" data-action="mousedown->tabs#scrollLeft" data-tabs-target="leftArrow" aria-label="Scroll tabs left" class="opacity-0 pointer-events-none tab-container-scroll-left transition duration-300">
+      <%= inline_svg_tag 'icons/chevron-left.svg', class: 'size-4 md:size-5 text-soft' %>
+    </button>
+
+    <div class="tab-container mx-auto" data-tabs-target="container">
+      <!-- Tab Indicator -->
+      <span data-tabs-target="indicator" class="sliding-tab-indicator"></span>
+
+      <button type="button" id="calendarTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'calendarTab' ? 'btn-tab-active' : '' %>">
+        <%= inline_svg_tag 'icons/calendar.svg', class: 'size-3.5 md:size-4.5' %>
+        <span>Calendar</span>
+      </button>
+
+      <button type="button" id="eventsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'eventsTab' ? 'btn-tab-active' : '' %>">
+        <%= inline_svg_tag 'icons/asterisk.svg', class: 'size-4.5 md:size-5.5 -m-px' %>
+        <span>Events</span>
+      </button>
+    </div>
+
+    <!-- Right Arrow -->
+    <button type="button" data-action="mousedown->tabs#scrollRight" data-tabs-target="rightArrow" aria-label="Scroll tabs right" class="opacity-0 pointer-events-none tab-container-scroll-right transition duration-300">
+      <%= inline_svg_tag 'icons/chevron-right.svg', class: 'size-4 md:size-5 text-soft' %>
+    </button>
+  </div>
+
+  <div id="calendarTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'calendarTab' ? '' : 'hidden' %>">
+    <%= render 'teams/calendar/calendar', team: @team %>
+  </div>
+
+  <div id="eventsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'eventsTab' ? '' : 'hidden' %>">
+    <%= render 'teams/calendar/events', team: @team %>
+  </div>
+</div>

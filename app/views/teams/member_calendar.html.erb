@@ -1,0 +1,41 @@
+<% content_for :title, "#{@member.default_name} Calendar" %>
+
+<div
+  data-controller="modal tabs"
+  data-modal-hide-modal-class="opacity-0 scale-75 pointer-events-none"
+  data-modal-show-modal-class="opacity-100 scale-100 pointer-events-auto"
+  data-modal-hide-backdrop-class="opacity-0 pointer-events-none"
+  data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
+  data-tabs-active-class="btn-tab-active"
+  data-tabs-default-tab-value="calendarTab"
+  class="max-w-4xl mx-auto my-16"
+>
+  <%= link_to team_member_path(@team, @member), class: 'group flex items-center gap-3 py-4 pr-2 btn-link-soft w-max', aria: { label: "Back to #{@member.default_name}’s profile" } do %>
+    <%= inline_svg_tag 'icons/chevron-left-bold.svg', class: 'size-4 transition ease-in-out duration-200' %>
+
+    <span class="text-sm transition ease-in-out duration-200">Back to <%= @member.default_name %>&#8217;s profile</span>
+  <% end %>
+
+  <div class="mb-6">
+    <div class="flex items-start gap-5.5">
+      <div class="relative shrink-0">
+        <%= render 'shared/user_photo', user: @member, size: :md %>
+        <%= render 'shared/team_photo', team: @team, size: :xs, image_classes: 'absolute bottom-0 right-0 translate-y-1/4 translate-x-1/4 shadow-md' %>
+      </div>
+
+      <div class="self-center">
+        <h1 class="heading"><%= @member.default_name %>&#8217;s Calendar</h1>
+        <p class="text-soft text-sm text-pretty">View <%= @member == current_user ? 'your' : "#{@member.first_name}’s" %> daily statistics in the team <span class="font-semibold italic"><%= @team.name %></span>.</p>
+
+        <% if current_user.member_of?(@team) %>
+          <%= link_to team_calendar_path(@team), class: 'btn btn-sm btn-white btn-muted gap-1.5 mt-1.5' do %>
+            <%= inline_svg_tag 'icons/calendar.svg', class: 'size-3.5' %>
+            <span>View team calendar</span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <%= render 'teams/member/calendar', team: @team, member: @member %>
+</div>

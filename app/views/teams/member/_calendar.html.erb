@@ -1,0 +1,196 @@
+<div id="calendar" class="mb-24">
+  <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
+    <p class="text-soft">Hover over or tap on a date to see detailed statistics and insights for that day.</p>
+  </div>
+
+  <%= render 'users/select_team_calendar_dropdown', team:, user: member %>
+
+  <% date_colors = {
+    today: 'bg-blue-100/80 dark:bg-blue-700/25 text-blue-500',
+    start: 'bg-emerald-100/80 dark:bg-emerald-700/25 text-emerald-500',
+    end: 'bg-rose-100/60 dark:bg-rose-900/30 text-rose-500',
+    long_run: 'bg-yellow-100 dark:bg-yellow-700/25 text-yellow-500',
+    run: 'bg-orange-100 dark:bg-orange-700/25 text-orange-500',
+    default: 'bg-slate-200/40 dark:bg-slate-800 text-light',
+  } %>
+
+  <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 my-6">
+    <% if team.season_dates? %>
+      <div class="flex items-center gap-x-2 gap-y-1">
+        <span class="text-light text-xs">Team Season:</span>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <div class="text-normal text-sm font-semibold flex items-center gap-1.5">
+            <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 shrink-0' %>
+            <span class="whitespace-nowrap"><%= pretty_date(team.season_start_date, date_style: :absolute, month_format: :short) %></span>
+          </div>
+
+          <span>&ndash;</span>
+
+          <span class="text-normal text-sm font-semibold whitespace-nowrap"><%= pretty_date(team.season_end_date, date_style: :absolute, month_format: :short) %></span>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="flex flex-wrap items-center gap-x-1.5 gap-y-1">
+      <span class="text-light text-xs">Legend:</span>
+
+      <span class="px-3.5 py-1 text-sm rounded-md font-semibold whitespace-nowrap <%= date_colors[:today] %>">
+        Today
+      </span>
+      <span class="px-3.5 py-1 text-sm rounded-md font-semibold whitespace-nowrap <%= date_colors[:run] %>">
+        Run
+      </span>
+      <span class="px-3.5 py-1 text-sm rounded-md font-semibold whitespace-nowrap <%= date_colors[:long_run] %>">
+        Long Run
+      </span>
+      <span class="px-3.5 py-1 text-sm rounded-md font-semibold whitespace-nowrap <%= date_colors[:start] %>">
+        Season Start
+      </span>
+      <span class="px-3.5 py-1 text-sm rounded-md font-semibold whitespace-nowrap <%= date_colors[:end] %>">
+        Season End
+      </span>
+    </div>
+  </div>
+
+  <div class="flex items-center justify-between gap-2 mb-2">
+    <%= link_to team_member_calendar_path(team, member, year: @year - 1), data: { turbo_stream: true }, class: 'btn btn-sm btn-white gap-1.5 font-semibold' do %>
+      <%= inline_svg_tag 'icons/arrow-long-left.svg', class: 'size-5 -my-0.5 shrink-0' %>
+      <span class="sr-only">Previous year</span>
+    <% end %>
+
+    <%= link_to team_member_calendar_path(team, member), data: { turbo_stream: true }, class: 'btn btn-transparent py-1' do %>
+      <span class="text-xl font-bold"><%= @year %></span>
+    <% end %>
+
+    <%= link_to team_member_calendar_path(team, member, year: @year + 1), data: { turbo_stream: true }, class: 'btn btn-sm btn-white gap-1.5 font-semibold' do %>
+      <%= inline_svg_tag 'icons/arrow-long-right.svg', class: 'size-5 -my-0.5 shrink-0' %>
+      <span class="sr-only">Next year</span>
+    <% end %>
+  </div>
+
+  <% date_colors_hover = {
+    today: 'hover:bg-blue-500 dark:hover:bg-blue-500 hover:text-white hover:shadow-md hover:shadow-blue-500/30 dark:hover:shadow-blue-500/30 transition duration-150 ease-in-out z-10',
+    start: 'hover:bg-emerald-500 dark:hover:bg-emerald-500 hover:text-white hover:shadow-md hover:shadow-emerald-500/30 dark:hover:shadow-emerald-500/30 transition duration-150 ease-in-out z-10',
+    end: 'hover:bg-rose-500 dark:hover:bg-rose-500 hover:text-white hover:shadow-md hover:shadow-rose-500/30 dark:hover:shadow-rose-500/30 transition duration-150 ease-in-out z-10',
+    long_run: 'hover:bg-yellow-500 dark:hover:bg-yellow-500 hover:text-white hover:shadow-md hover:shadow-yellow-500/30 dark:hover:shadow-yellow-500/30 transition duration-150 ease-in-out z-10',
+    run: 'hover:bg-orange-500 dark:hover:bg-orange-500 hover:text-white hover:shadow-md hover:shadow-orange-500/30 dark:hover:shadow-orange-500/30 transition duration-150 ease-in-out z-10',
+    default: 'hover:bg-black dark:hover:bg-white hover:text-normal-reverse hover:shadow-md transition duration-150 ease-in-out',
+  } %>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 [@media(min-width:1180px)]:grid-cols-3 gap-2 md:gap-3 [@media(min-width:1180px)]:gap-4">
+    <% @date_range.group_by(&:beginning_of_month).each do |(month, dates)| %>
+      <div class="p-2 sm:p-3 rounded-xl bg-white dark:bg-slate-800/60 shadow-md dark:shadow-none border border-slate-200 dark:border-slate-700">
+        <h3 class="text-sm font-semibold text-light mb-2.5 max-sm:mt-1 max-sm:ml-1"><%= month.strftime('%B') %></h3>
+        <div class="grid grid-cols-7 gap-[3px] text-sm">
+          <!-- Week days -->
+          <% week_days = Date::DAYNAMES %>
+          <% week_days = week_days.rotate(week_days.index(team.week_start.to_s.capitalize)) %>
+          <% week_days.each do |day| %>
+            <span class="font-semibold text-light text-center w-full mb-1"><%= day.first(3) %></span>
+          <% end %>
+
+          <% start_of_month = dates.first %>
+          <% week_start_index = Date::DAYNAMES.index(team.week_start.to_s.capitalize) %>
+          <% start_offset = (start_of_month.wday - week_start_index + 7) % 7 %>
+          <% start_offset.times do %>
+            <div></div>
+          <% end %>
+
+          <% dates.each do |date| %>
+            <% data = @data[date] || { miles: 0, runs: 0, long_runs: 0 } %>
+
+            <% date_status =
+              case
+              when date == Date.current
+                :today
+              when date == team.season_start_date
+                :start
+              when date == team.season_end_date
+                :end
+              when data[:long_runs].positive?
+                :long_run
+              when data[:runs].positive?
+                :run
+              else
+                :default
+              end %>
+
+              <% tooltip_content_label = {
+                today: 'Today',
+                start: 'Start of Season',
+                end: 'End of Season',
+                default: '',
+              } %>
+
+            <div class="relative" data-controller="tooltip">
+              <div class="group select-none w-full aspect-square px-1 py-2 rounded-md flex flex-col items-center justify-center font-semibold <%= "#{date_colors[date_status]} #{date_colors_hover[date_status]}" %>" data-tooltip-target="tooltip" data-action="mouseenter->tooltip#showTooltip mouseleave->tooltip#hideTooltip">
+                <p><%= date.strftime('%e').strip %></p>
+                <div class="flex flex-wrap items-center gap-0.5 max-w-[85%] -mb-0.5">
+                  <% (data[:runs] - data[:long_runs]).times do %>
+                    <span class="size-[2.5px] rounded-full shrink-0 bg-orange-500 group-hover:bg-white"></span>
+                  <% end %>
+                  <% data[:long_runs].times do %>
+                    <span class="size-[2.5px] rounded-full shrink-0 bg-yellow-500 group-hover:bg-white"></span>
+                  <% end %>
+                </div>
+              </div>
+
+              <div data-tooltip-target="content" data-hidden="true" class="fixed z-10 pointer-events-none opacity-0 transition-opacity duration-200 bg-black dark:bg-white text-normal-reverse text-sm py-1.5 px-2.5 rounded-lg sm:rounded-bl-sm shadow-xl whitespace-nowrap">
+                <div class="pb-1 mb-2.5 border-b border-gray-700 dark:border-gray-300">
+                  <% if (content = tooltip_content_label[date_status]).present? %>
+                    <div class="text-sm flex items-center gap-2">
+                      <div class="font-semibold flex items-center gap-1.5">
+                        <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 shrink-0' %>
+                        <span class="whitespace-nowrap"><%= pretty_date(date, date_style: :absolute) %></span>
+                      </div>
+
+                      <span class="bg-slate-100 dark:bg-slate-800 rounded-full size-0.5 shrink-0"></span>
+                      <%= content %>
+                    </div>
+                  <% else %>
+                    <div class="text-sm font-semibold flex items-center gap-1.5">
+                      <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 shrink-0' %>
+                      <span class="whitespace-nowrap"><%= pretty_date(date, date_style: :absolute) %></span>
+                    </div>
+                  <% end %>
+                </div>
+
+                <% if date.after? Date.current %>
+                  <p class="text-soft-reverse text-xs italic">No data</p>
+                <% else %>
+                  <div class="grid grid-cols-3 gap-2 px-2">
+                    <div class="flex flex-col items-center">
+                      <div class="p-1.5 bg-gray-700 dark:bg-gray-200 rounded-full grid place-items-center mb-2">
+                        <%= inline_svg_tag 'icons/ruler-filled.svg', class: 'size-3 shrink-0 text-normal-reverse' %>
+                      </div>
+
+                      <p class="text-sm text-light-reverse leading-tight whitespace-nowrap"><span class="font-bold text-normal-reverse"><%= number_with_delimiter data[:miles] %></span></p>
+                      <p class="text-xs text-soft-reverse leading-tight whitespace-nowrap">miles</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <div class="p-1.5 bg-gray-700 dark:bg-gray-200 rounded-full grid place-items-center mb-2">
+                        <%= inline_svg_tag 'icons/runner.svg', class: 'size-3 shrink-0 text-normal-reverse' %>
+                      </div>
+
+                      <p class="text-sm text-light-reverse leading-tight whitespace-nowrap"><span class="font-bold text-normal-reverse"><%= number_with_delimiter data[:runs] %></span></p>
+                      <p class="text-xs text-soft-reverse leading-tight whitespace-nowrap">runs</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <div class="p-1.5 bg-gray-700 dark:bg-gray-200 rounded-full grid place-items-center mb-2">
+                        <%= inline_svg_tag 'icons/medal-filled.svg', class: 'size-3 shrink-0 text-normal-reverse' %>
+                      </div>
+
+                      <p class="text-sm text-light-reverse leading-tight whitespace-nowrap"><span class="font-bold text-normal-reverse"><%= number_with_delimiter data[:long_runs] %></span></p>
+                      <p class="text-xs text-soft-reverse leading-tight whitespace-nowrap">long runs</p>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

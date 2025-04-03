@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_12_182620) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_28_222354) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -55,6 +55,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_12_182620) do
     t.datetime "updated_at", null: false
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description"
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.string "location"
+    t.string "link"
+    t.bigint "team_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["team_id"], name: "index_events_on_team_id"
   end
 
   create_table "likes", force: :cascade do |t|
@@ -230,6 +243,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_12_182620) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "comments", "users"
+  add_foreign_key "events", "teams"
   add_foreign_key "likes", "users"
   add_foreign_key "messages", "topics"
   add_foreign_key "messages", "users"

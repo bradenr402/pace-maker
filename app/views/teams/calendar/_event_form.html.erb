@@ -1,0 +1,87 @@
+<% editing = local_assigns.fetch(:editing, false) %>
+
+<%= form_with model: [@team, event], data: { turbo_stream: editing } do |form| %>
+  <div class="form-group">
+    <%= form.label :title, 'Event Title', class: 'form-label' %>
+    <%= form.text_field :title, autofocus: true, placeholder: 'Enter event title', class: 'form-input', value: event.title %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :description, class: 'form-label' do %>
+      <p> Description
+        <span class="help-text">(optional)</span>
+      </p>
+    <% end %>
+
+    <%= form.text_area :description, placeholder: 'Add a description...', class: 'form-input', value: event.description %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :start_date, 'Start Date', class: 'form-label' %>
+    <div class="relative">
+      <%= inline_svg_tag 'icons/calendar.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+      <%= form.date_field :start_date, class: 'form-input pl-10', value: event.start_date %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :end_date, 'End Date', class: 'form-label' %>
+    <div class="relative">
+      <%= inline_svg_tag 'icons/calendar.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+      <%= form.date_field :end_date, class: 'form-input pl-10', value: event.end_date %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :location, class: 'form-label' do %>
+      <p> Location
+        <span class="help-text">(optional)</span>
+      </p>
+    <% end %>
+    <div class="relative">
+      <%= inline_svg_tag 'icons/location.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+      <%= form.text_field :location, placeholder: 'Add a location...', class: 'form-input pl-10', value: event.location %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :link, class: 'form-label' do %>
+      <p> Link
+        <span class="help-text">(optional)</span>
+      </p>
+    <% end %>
+    <div class="relative">
+      <%= inline_svg_tag 'icons/link.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
+      <%= form.url_field :link, placeholder: 'Add a link...', class: 'form-input pl-10', value: event.link %>
+    </div>
+    <p class="my-1 help-text">Add a URL with additional event details, such as an external website or a registration page.</p>
+  </div>
+
+  <div data-controller="image-preview" class="form-group">
+    <%= form.label :photo, class: 'form-label' do %>
+      <p> Photo
+        <span class="help-text">(optional)</span>
+      </p>
+    <% end %>
+
+    <div class="flex items-center gap-x-4">
+      <%= image_tag event.photo.attached? ? event.photo : '', class: "size-16 rounded-lg shadow-lg dark:shadow-none object-cover #{'hidden' unless event.photo.attached?}", data: { image_preview_target: 'output' } %>
+      <div class="space-y-2">
+        <%= form.file_field :photo, accept: 'image/png, image/jpeg', class: 'form-file', data: { image_preview_target: 'input', action: 'image-preview#readURL' } %>
+        <button type="button" class="btn btn-transparent" data-image-preview-target="clearBtn" data-action="image-preview#clearUpload">Clear upload</button>
+      </div>
+    </div>
+
+    <% if event.photo.attached? %>
+      <div class="flex items-center gap-2 mt-3">
+        <%= form.check_box :remove_photo, class: 'form-input-checkbox', data: { action: 'image-preview#selectCheckbox' } %>
+        <%= form.label :remove_photo, 'Remove photo', class: 'form-check-label text-sm' %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-6">
+    <button data-action="mousedown->modal#close" data-modal-id="<%= editing ? "editEventModal_#{event.id}" : 'newEventModal' %>" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+    <%= form.submit form.object.new_record? ? 'Create event' : 'Save changes', data: { turbo: false }, class: 'btn btn-primary w-full sm:w-auto' %>
+  </div>
+<% end %>

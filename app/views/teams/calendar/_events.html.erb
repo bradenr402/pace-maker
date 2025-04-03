@@ -1,0 +1,56 @@
+<% filter = params[:filter] || 'all' %>
+
+<div data-controller="filter-events" class="mb-24">
+  <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
+    <h1 class="heading">Events</h1>
+    <p class="text-soft">View your team&#8217;s scheduled events.</p>
+  </div>
+
+  <div class="mb-4 flex flex-wrap-reverse items-start gap-x-2 gap-y-2">
+    <% date_options = [
+      { name: 'All events', value: 'all', checked: filter == 'all' },
+      { name: 'Current', value: 'current', checked: filter == 'current' },
+      { name: 'Upcoming', value: 'upcoming', checked: filter == 'upcoming' },
+      { name: 'Past', value: 'past', checked: filter == 'past' },
+    ] %>
+
+    <div>
+      <%= label_tag :events_filter, 'Filter events by date', class: 'form-label' %>
+
+      <div class="flex flex-wrap items-center gap-x-2 gap-y-5 mt-4 mb-1.5">
+        <% date_options.each do |option| %>
+          <div>
+            <%= radio_button_tag :events_filter, option[:value], id: "events_filter_#{option[:value]}_#{option[:filter_type]}", checked: option[:checked], class: 'hidden peer', data: { action: 'change->filter-events#filter', filter_events_target: 'radio' } %>
+            <%= label_tag "events_filter_#{option[:value]}_#{option[:filter_type]}", option[:name], class: 'form-radio-chip-label' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <% if current_user.owns?(@team) %>
+      <button data-action="mousedown->modal#open" data-modal-id="newEventModal" class="btn max-sm:btn-sm btn-white gap-1.5 ml-auto">
+        <%= inline_svg_tag 'icons/plus.svg', class: 'size-3.5 sm:size-4.5 shrink-0 -ml-1' %>
+        <span>New event</span>
+      </button>
+    <% end %>
+  </div>
+
+  <% if @events.present? %>
+    <div id="events" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <% @events.each do |event| %>
+        <%= render 'teams/calendar/event', event:, filter: %>
+      <% end %>
+    </div>
+
+  <% else %>
+    <div class="flex flex-col items-center justify-center my-24 md:my-32">
+      <p class="font-semibold">No events</p>
+      <p class="text-soft text-center text-sm text-pretty md:max-w-[70%]">There are no upcoming events scheduled.</p>
+      <% if current_user.owns?(@team) %>
+        <button data-action="mousedown->modal#open" data-modal-id="newEventModal" class="btn btn-primary mt-6">New Event</button>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<%= render 'teams/calendar/new_event_modal' if current_user.owns?(@team) %>

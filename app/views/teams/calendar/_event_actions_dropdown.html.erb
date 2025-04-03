@@ -1,0 +1,105 @@
+<% team = event.team %>
+
+<div
+  data-controller="dropdown"
+  data-dropdown-hide-dropdown-class="pointer-events-none scale-75 opacity-0"
+  data-dropdown-show-dropdown-class="pointer-events-auto scale-100 opacity-100"
+  data-dropdown-dropdown-open-class="bg-slate-200/50 dark:bg-slate-700/50 ring-2 ring-indigo-500/50"
+  class="relative rounded-lg grid place-items-center"
+>
+  <button
+    type="button"
+    data-action="mousedown->dropdown#toggle"
+    class="z-0 p-1 rounded-lg opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-slate-200/50 dark:hover:bg-slate-700/50"
+  >
+    <%= inline_svg_tag 'icons/ellipsis-vertical.svg', class: 'size-5.5 shrink-0 text-slate-700 dark:text-slate-300' %>
+    <span class="sr-only">Actions</span>
+  </button>
+
+  <div
+    data-dropdown-target="dropdown"
+    class="dropdown-menu origin-top-right right-0 top-9"
+  >
+    <% if current_user.owns?(team) %>
+      <!-- Open Edit Event Modal Button -->
+      <button data-action="mousedown->modal#open" data-modal-id="editEventModal_<%= event.id %>" class="dropdown-option">
+        <%= inline_svg_tag 'icons/pencil.svg', class: 'size-5' %>
+        Edit event
+      </button>
+    <% end %>
+
+    <% if current_user.owns?(team) %>
+      <!-- Open Delete Event Modal Button -->
+      <button data-action="mousedown->modal#open" data-modal-id="deleteEventModal_<%= event.id %>" class="dropdown-option-destructive">
+        <%= inline_svg_tag 'icons/trash.svg', class: 'size-5' %>
+        Delete event
+      </button>
+    <% end %>
+  </div>
+</div>
+
+<!-- Edit Event Modal Backdrop -->
+<div
+  data-modal-target="backdrop"
+  data-modal-id="editEventModal_<%= event.id %>"
+  data-action="mousedown->modal#backdropClose"
+  class="modal-backdrop opacity-0 pointer-events-none"></div>
+
+<!-- Edit Event Modal -->
+<div
+  id="editEventModal_<%= event.id %>"
+  role="dialog"
+  aria-label="Edit Event Form"
+  tabindex="-1"
+  data-modal-target="modal"
+  class="modal opacity-0 scale-75 pointer-events-none"
+>
+  <div class="flex flex-col space-y-1.5 text-center sm:text-left mb-6">
+    <h2 class="text-lg font-semibold leading-none tracking-tight">Edit Event</h2>
+  </div>
+
+  <%= render 'teams/calendar/event_form', event:, editing: true %>
+
+  <!-- Close button -->
+  <button data-action="mousedown->modal#close" type="button" data-modal-id="editEventModal_<%= event.id %>" class="modal-x-btn">
+    <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
+    <span class="sr-only">Close</span>
+  </button>
+</div>
+
+<!-- Delete Event Modal Backdrop -->
+<div
+  data-modal-target="backdrop"
+  data-modal-id="deleteEventModal_<%= event.id %>"
+  data-action="mousedown->modal#backdropClose"
+  class="modal-backdrop opacity-0 pointer-events-none"></div>
+
+<!-- Delete Event Modal -->
+<div
+  id="deleteEventModal_<%= event.id %>"
+  role="dialog"
+  aria-label="Delete Event Confirmation"
+  tabindex="-1"
+  data-modal-target="modal"
+  class="modal opacity-0 scale-75 pointer-events-none"
+>
+  <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+    <h2 class="text-lg font-semibold leading-none tracking-tight">Delete Event?</h2>
+    <p class="text-soft text-sm">Are you sure you want to delete the event <%= event.title %>? This action cannot be undone.</p>
+  </div>
+
+  <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
+    <button data-action="mousedown->modal#close" data-modal-id="deleteEventModal_<%= event.id %>" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+    <%= button_to 'Delete event',
+                  team_event_path(team, event),
+                  method: :delete,
+                  data: { turbo: false },
+                  class: 'btn btn-destructive font-bold w-full whitespace-nowrap'
+    %>
+  </div>
+
+  <button data-action="mousedown->modal#close" type="button" data-modal-id="deleteEventModal_<%= event.id %>" class="modal-x-btn">
+    <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
+    <span class="sr-only">Close</span>
+  </button>
+</div>

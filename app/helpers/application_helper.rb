@@ -50,6 +50,10 @@ module ApplicationHelper
     !cookies[:pwa_banner_dismissed]
   end
 
+  def show_event_banner?(event)
+    !cookies["event_banner_#{event.id}_dismissed"]
+  end
+
   def format_message(message)
     safe_content = sanitize(message.content, tags: %w[strong em b i p br])
 

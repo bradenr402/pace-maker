@@ -8,7 +8,14 @@
 
   <%= render 'select_team_dropdown', user: user if user.teams.any? %>
 
-  <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+  <p class="text-right mb-2">
+    <%= link_to user_calendar_path(user), class: 'btn btn-sm btn-primary btn-muted gap-1.5' do %>
+      <%= inline_svg_tag 'icons/calendar.svg', class: 'size-3.5' %>
+      <span>View calendar</span>
+    <% end %>
+  </p>
+
+  <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 mb-4">
     <!-- Current Streak Card -->
     <%= render 'shared/user_current_streak_card', user: user %>
 

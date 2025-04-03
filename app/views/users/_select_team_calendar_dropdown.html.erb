@@ -1,0 +1,60 @@
+<% team ||= nil %>
+
+<div class="mb-6 ml-[3px]">
+  <p class="form-label">View <%= user == current_user ? 'your' : "#{user.first_name}’s" %> stats for a specific team</p>
+  <div
+    data-controller="dropdown"
+    data-dropdown-hide-dropdown-class="pointer-events-none scale-75 opacity-0"
+    data-dropdown-show-dropdown-class="pointer-events-auto scale-100 opacity-100"
+    data-dropdown-icon-open-class="rotate-180"
+    data-dropdown-dropdown-open-class="shadow-md"
+    class="relative text-sm rounded-md transition duration-200 ease-in-out"
+  >
+    <!-- Team Actions Dropdown Trigger -->
+    <button
+      type="button"
+      data-action="mousedown->dropdown#toggle"
+      class="dropdown-toggle"
+      >
+      <span><%= team&.name || 'Select team' %></span>
+      <%= inline_svg_tag 'icons/chevron-down.svg', class: 'size-4 text-soft transition duration-200 ease-in-out', data: { dropdown_target: 'arrowIcon' } %>
+    </button>
+
+    <!-- Team Actions Dropdown Menu -->
+    <div
+      data-dropdown-target="dropdown"
+      class="dropdown-menu origin-top-left top-11"
+    >
+      <%= link_to 'No team', user_calendar_path(user), class: 'dropdown-option-destructive italic' if team %>
+      <% user.teams.each do |curr_team| %>
+        <%= link_to curr_team.name, team_member_calendar_path(curr_team, user), class: "dropdown-option #{'active' if team == curr_team }" %>
+      <% end %>
+    </div>
+  </div>
+
+  <% if team %>
+    <div class="-mb-2">
+      <div class="mt-4 flex flex-wrap items-center gap-x-4">
+        <div class="text-sm inline-flex items-center gap-1.5">
+          <%= inline_svg_tag 'icons/fire-filled.svg', class: 'size-3.5 text-soft shrink-0' %>
+          <span class="whitespace-nowrap"><span class="text-soft">Streak run distance:</span> <span class="text-light font-semibold"><%= team.streak_distance_for_user(user) %> mi</span></span>
+        </div>
+
+        <div class="text-sm inline-flex items-center gap-1.5">
+          <%= inline_svg_tag 'icons/runner.svg', class: 'size-[13px] text-soft shrink-0' %>
+          <span class="whitespace-nowrap"><span class="text-soft">Long run distance:</span> <span class="text-light font-semibold"><%= team.long_run_distance_for_user(user) %> mi</span></span>
+        </div>
+      </div>
+
+      <% if team.exclude_weekends_from_streak? %>
+        <p class="mt-0.5 text-soft text-xs">Weekends won&#8217;t reset your streak for this team.</p>
+      <% elsif team.exclude_saturday_from_streak? %>
+        <p class="mt-0.5 text-soft text-xs">Saturdays won&#8217;t reset your streak for this team.</p>
+      <% elsif team.exclude_sunday_from_streak? %>
+        <p class="mt-0.5 text-soft text-xs">Sundays won&#8217;t reset your streak for this team.</p>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="my-1 help-text">Select a team to apply its streak and long-run distance settings.</p>
+  <% end %>
+</div>

@@ -16,6 +16,7 @@ class Team < ApplicationRecord
   has_one_attached :photo
   has_many :team_audits, dependent: :destroy
   has_many :topics, dependent: :destroy
+  has_many :events, dependent: :destroy
 
   # Callbacks
   before_validation :convert_empty_string_season_dates_to_nil
@@ -54,6 +55,10 @@ class Team < ApplicationRecord
   def season_not_started_yet? = season_dates? && season_start_date.future?
 
   def season_range = season_start_date..season_end_date
+
+  def events_on_date(date) = events.where(start_date: ..date, end_date: date..)
+
+  def event_on_date?(date) = events_on_date(date).exists?
 
   def filtered_members
     team_members = members

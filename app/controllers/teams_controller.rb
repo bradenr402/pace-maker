@@ -4,6 +4,7 @@ class TeamsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_team, only: %i[show edit update destroy join leave]
   before_action :authorize_owner!, only: %i[remove_member]
+  before_action :authorize_member!, only: %i[calendar member_calendar]
 
   def index
     add_breadcrumb 'Teams', teams_path
@@ -103,6 +104,46 @@ class TeamsController < ApplicationController
           'Content-Disposition'
         ] = "attachment; filename=\"#{filename}\""
       end
+    end
+  end
+
+  def calendar
+    @team = Team.find(params[:team_id])
+    events = @team.events
+
+    @events = events.current.order(start_date: :asc) + events.upcoming.order(start_date: :asc) + events.past.order(end_date: :desc)
+
+    add_breadcrumb 'Teams', teams_path
+    add_breadcrumb @team.name, team_path(@team)
+    add_breadcrumb 'Calendar', team_calendar_path(@team)
+
+    year_param = params[:year] ? Date.new(params[:year].to_i) : Date.current
+
+    start_date = year_param.beginning_of_year
+    end_date = year_param.end_of_year
+    @date_range = start_date..end_date
+
+    @year = year_param.year
+
+    runs_in_year = @team.filtered_members.flat_map do |member|
+      member.runs
+            .where(date: start_date..end_date)
+            .map { |run| [run, @team.long_run_distance_for_user(member)] }
+    end
+
+    @data = runs_in_year
+            .group_by { |run, _| run.date }
+            .transform_values do |runs|
+      {
+        miles: runs.sum { |run, _| run.distance },
+        runs: runs.size,
+        long_runs: runs.count { |run, min_distance| run.distance >= min_distance }
+      }
+    end
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html
     end
   end
 
@@ -232,16 +273,7 @@ class TeamsController < ApplicationController
     @team =
       Team
       .with_attached_photo
-      .includes(
-        :owner,
-        :join_requests,
-        :team_memberships,
-        members: {
-          avatar_attachment: {
-            blob: :variant_records
-          }
-        }
-      )
+      .includes(:team_memberships)
       .find(params[:team_id])
 
     @team_membership =
@@ -274,6 +306,55 @@ class TeamsController < ApplicationController
 
     @runs_by_date = @member.runs_in_date_range(@team.season_range).group_by(&:date)
     @long_runs_by_date = @member.long_runs_in_date_range(@team, @team.season_range).group_by(&:date)
+  end
+
+  def member_calendar
+    @team =
+      Team
+      .with_attached_photo
+      .includes(:team_memberships)
+      .find(params[:team_id])
+
+    @team_membership =
+      @team
+      .team_memberships
+      .includes(:user)
+      .find_by(user_id: params[:user_id])
+
+    return redirect_back fallback_location: @team, error: 'Member not found.' unless @team_membership
+
+    @member = @team_membership.user
+
+    add_breadcrumb 'Teams', teams_path
+    add_breadcrumb @team.name, team_path(@team)
+    add_breadcrumb @member.default_name, team_member_path(@team, @member)
+    add_breadcrumb 'Calendar', team_member_calendar_path(@team, @member)
+
+    year_param = params[:year] ? Date.new(params[:year].to_i) : Date.current
+
+    start_date = year_param.beginning_of_year
+    end_date = year_param.end_of_year
+    @date_range = start_date..end_date
+
+    @year = year_param.year
+
+    min_distance = @team.long_run_distance_for_user @member
+
+    @data = @member.runs
+                   .where(date: start_date..end_date)
+                   .group_by(&:date)
+                   .transform_values do |runs|
+      {
+        miles: runs.sum(&:distance),
+        runs: runs.size,
+        long_runs: runs.count { _1.distance >= min_distance }
+      }
+    end
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html
+    end
   end
 
   def main_chat
@@ -320,6 +401,13 @@ class TeamsController < ApplicationController
   def authorize_owner!
     team = Team.find(params[:team_id])
     return if current_user.owns?(team)
+
+    redirect_to team, alert: 'You are not authorized to perform this action.'
+  end
+
+  def authorize_member!
+    team = Team.find(params[:team_id])
+    return if current_user.member_of?(team)
 
     redirect_to team, alert: 'You are not authorized to perform this action.'
   end

@@ -1,0 +1,31 @@
+<% content_for :title, "#{@member.default_name} Calendar" %>
+
+<div
+  data-controller="modal tabs"
+  data-modal-hide-modal-class="opacity-0 scale-75 pointer-events-none"
+  data-modal-show-modal-class="opacity-100 scale-100 pointer-events-auto"
+  data-modal-hide-backdrop-class="opacity-0 pointer-events-none"
+  data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
+  data-tabs-active-class="btn-tab-active"
+  data-tabs-default-tab-value="calendarTab"
+  class="max-w-4xl mx-auto my-16"
+>
+  <%= link_to user_path(@user), class: 'group flex items-center gap-3 py-4 pr-2 btn-link-soft w-max', aria: { label: "Back to #{@user.default_name}’s profile" } do %>
+    <%= inline_svg_tag 'icons/chevron-left-bold.svg', class: 'size-4 transition ease-in-out duration-200' %>
+
+    <span class="text-sm transition ease-in-out duration-200">Back to <%= @user.default_name %>&#8217;s profile</span>
+  <% end %>
+
+  <div class="mb-6 flex items-start gap-4">
+    <div class="shrink-0">
+      <%= render 'shared/user_photo', user: @user, size: :md %>
+    </div>
+
+    <div class="self-center">
+      <h1 class="heading"><%= @user.default_name %>&#8217;s Calendar</h1>
+      <p class="text-soft text-sm text-pretty">View <%= @user == current_user ? 'your' : "#{@user.first_name}’s" %> daily statistics.</p>
+    </div>
+  </div>
+
+  <%= render 'calendar', user: @user %>
+</div>

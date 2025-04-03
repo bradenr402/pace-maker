@@ -1,0 +1,28 @@
+<!-- New Event Modal Backdrop -->
+<div
+  data-modal-target="backdrop"
+  data-modal-id="newEventModal"
+  data-action="mousedown->modal#backdropClose"
+  class="modal-backdrop opacity-0 pointer-events-none"></div>
+
+<!-- New Event Modal -->
+<div
+  id="newEventModal"
+  role="dialog"
+  aria-label="New Event Form"
+  tabindex="-1"
+  data-modal-target="modal"
+  class="modal opacity-0 scale-75 pointer-events-none"
+>
+  <div class="flex flex-col space-y-1.5 text-center sm:text-left mb-6">
+    <h2 class="text-lg font-semibold leading-none tracking-tight">New Event</h2>
+  </div>
+
+  <%= render 'teams/calendar/event_form', event: Event.new(team: @team) %>
+
+  <!-- Close button -->
+  <button data-action="mousedown->modal#close" type="button" data-modal-id="newEventModal" class="modal-x-btn">
+    <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
+    <span class="sr-only">Close</span>
+  </button>
+</div>

@@ -1,0 +1,72 @@
+<% filter = params[:filter] || 'all' %>
+
+<% team = event.team %>
+
+<div id="<%= dom_id event %>" data-filter-events-target="event" data-event-status="<%= event.status %>" class="card flex flex-col <%= 'hidden' unless filter.in?([filter, 'all']) %>">
+  <div class="flex flex-wrap items-center gap-3 mb-4">
+    <%= image_tag event.photo.variant(resize_to_limit: [100, 100]).processed, class: 'size-12 rounded-lg shadow-lg dark:shadow-none object-cover' if event.photo.attached? %>
+
+    <div class="grow flex items-start justify-between">
+      <div class="leading-tight">
+        <p class="font-bold text-xl"><%= event.title %></p>
+
+        <% if event.upcoming? %>
+          <div class="flex items-center gap-[5px] text-xs text-blue-500">
+            <%= inline_svg_tag 'icons/exclamation-circle.svg', class: 'size-3.5 shrink-0 mb-px' %>
+            <p class="font-semibold whitespace-nowrap">
+              <% if event.days_until_start == 1 %>
+                Event starts tomorrow
+              <% else %>
+                Event starts in <%= pluralize(event.days_until_start, 'day') %>
+              <% end %>
+            </p>
+          </div>
+        <% elsif event.current? %>
+          <div class="flex items-center gap-[5px] text-xs text-yellow-500">
+            <%= inline_svg_tag 'icons/clock-filled.svg', class: 'size-3.5 shrink-0 mb-px' %>
+            <p class="font-semibold whitespace-nowrap">Event is happening now</p>
+          </div>
+        <% elsif event.past? %>
+          <div class="flex items-center gap-[5px] text-xs text-emerald-500">
+            <%= inline_svg_tag 'icons/check-circle.svg', class: 'size-3.5 shrink-0 mb-px' %>
+            <p class="font-semibold whitespace-nowrap">Event ended <%= pluralize(event.days_since_end, 'day') %> ago</p>
+          </div>
+        <% end %>
+      </div>
+      <%= render 'teams/calendar/event_actions_dropdown', event: event if current_user.owns?(team) %>
+    </div>
+  </div>
+
+  <% if event.description? %>
+    <p class="text-soft text-sm text-pretty mb-3"><%= event.description %></p>
+  <% else %>
+    <p class="text-soft text-sm text-pretty mb-3 italic">No description</p>
+  <% end %>
+
+  <div class="flex flex-wrap items-center gap-2.5 font-semibold">
+    <div class="text-xs flex items-center gap-1.5">
+      <%= inline_svg_tag 'icons/calendar.svg', class: 'size-3.5 shrink-0 text-soft' %>
+      <span class="whitespace-nowrap"><%= pretty_date(event.start_date, date_style: :absolute, month_format: :short) %></span>
+    </div>
+
+    <span class="font-normal">&ndash;</span>
+
+    <span class="text-xs whitespace-nowrap"><%= pretty_date(event.end_date, date_style: :absolute, month_format: :short) %></span>
+  </div>
+
+  <div class="flex items-center text-xs gap-1.5 font-semibold mt-0.5 mb-[5px]">
+    <%= inline_svg_tag 'icons/location.svg', class: 'size-3.5 shrink-0 text-soft' %>
+    <% if event.location? %>
+      <span><%= event.location %></span>
+    <% else %>
+      <span class="text-soft italic font-normal">No location</span>
+    <% end %>
+  </div>
+
+  <% if event.link? %>
+    <div class="flex items-center text-xs gap-1.5">
+      <%= inline_svg_tag 'icons/link.svg', class: 'size-3.5 shrink-0 text-soft' %>
+      <%= link_to event.link, event.link, target: '_blank', rel: 'noopener', class: 'font-semibold hover:underline' %>
+    </div>
+  <% end %>
+</div>

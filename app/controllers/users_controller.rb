@@ -17,6 +17,36 @@ class UsersController < ApplicationController
     end
   end
 
+  def calendar
+    @user = User.find(params[:user_id])
+
+    add_breadcrumb @user.default_name, user_path(@user)
+    add_breadcrumb 'Calendar', user_calendar_path(@user)
+
+    year_param = params[:year] ? Date.new(params[:year].to_i) : Date.current
+
+    start_date = year_param.beginning_of_year
+    end_date = year_param.end_of_year
+    @date_range = start_date..end_date
+
+    @year = year_param.year
+
+    @data = @user.runs
+                 .where(date: start_date..end_date)
+                 .group_by(&:date)
+                 .transform_values do |runs|
+                   {
+                     miles: runs.sum(&:distance),
+                     runs: runs.size
+                   }
+                 end
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html
+    end
+  end
+
   def profile
     redirect_to user_path(current_user)
   end

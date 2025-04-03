@@ -66,8 +66,12 @@ Rails.application.routes.draw do
              controller: 'user_settings' do
       post :reset
     end
-    delete 'unlink_google_account', on: :member
-    delete 'unlink_strava_account', on: :member
+
+    member do
+      delete 'unlink_google_account'
+      delete 'unlink_strava_account'
+    end
+    get :calendar, to: 'users#calendar', as: :calendar
   end
   get '/profile', to: 'users#profile'
   get '/settings', to: 'users#settings'
@@ -87,8 +91,11 @@ Rails.application.routes.draw do
       post :join
       post :leave
     end
+    get :calendar, to: 'teams#calendar', as: :calendar
+    resources :events, only: %i[create update destroy]
 
-    get 'member/:user_id', to: 'teams#member', as: 'member'
+    get 'member/:user_id', to: 'teams#member', as: :member
+    get 'member/:user_id/calendar', to: 'teams#member_calendar', as: :member_calendar
     resources :team_memberships, param: :user_id, only: %i[edit update]
 
     # Topics & Messages
