@@ -62,7 +62,7 @@
                   <%= render 'shared/user_photo', user: data[:member], size: :thumb %>
 
                   <div>
-                    <%= content_tag(:p, data[:member] == current_user ? 'You' : 'Coach', class: 'help-text leading-none group-hover:text-indigo-600 dark:group-hover:text-indigo-500') if data[:member].owns?(team) || data[:member] == current_user %>
+                    <%= content_tag(:p, data[:member] == current_user ? 'You' : 'Coach', class: 'help-text transition duration-200 ease-in-out leading-none group-hover:text-indigo-600 dark:group-hover:text-indigo-500') if data[:member].owns?(team) || data[:member] == current_user %>
                     <p class="transition duration-200 ease-in-out leading-none group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= data[:member].default_name %></p>
                   </div>
                 <% end %>
