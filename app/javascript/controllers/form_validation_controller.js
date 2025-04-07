@@ -55,6 +55,15 @@ export default class extends Controller {
     'startDate',
     'endDate',
     'endDateError',
+    'eventTitle',
+    'eventTitleError',
+    'eventDescription',
+    'eventDescriptionError',
+    'eventStartDate',
+    'eventEndDate',
+    'eventEndDateError',
+    'link',
+    'linkError',
   ];
 
   connect() {
@@ -422,6 +431,92 @@ export default class extends Controller {
     } else {
       this.endDateTarget.classList.remove('form-input-error');
       this.endDateErrorTarget.classList.add('hidden');
+    }
+  }
+
+  validateEventTitle(event) {
+    const title = this.eventTitleTarget.value;
+    if (!title) {
+      this.eventTitleTarget.classList.add('form-input-error');
+      this.eventTitleErrorTarget.classList.remove('hidden');
+    } else {
+      this.eventTitleTarget.classList.remove('form-input-error');
+      this.eventTitleErrorTarget.classList.add('hidden');
+    }
+  }
+
+  validateEventDescription(event) {
+    const description = this.eventDescriptionTarget.value;
+    if (description.length > 2000) {
+      this.eventDescriptionTarget.classList.add('form-input-error');
+      this.eventDescriptionErrorTarget.classList.remove('hidden');
+
+      this.eventDescriptionTarget.value = description.slice(0, 2000);
+      this.eventDescriptionTarget.dispatchEvent(new Event('change', { bubbles: true }));
+    } else {
+      this.eventDescriptionTarget.classList.remove('form-input-error');
+      this.eventDescriptionErrorTarget.classList.add('hidden');
+    }
+  }
+
+  validateEventStartDate(event) {
+    const startDate = Date.parse(this.eventStartDateTarget.value);
+
+    if (isNaN(startDate)) {
+      this.eventStartDateTarget.classList.add('form-input-error');
+      this.eventStartDateErrorTarget.classList.remove('hidden');
+    } else {
+      this.eventStartDateTarget.classList.remove('form-input-error');
+      this.eventStartDateErrorTarget.classList.add('hidden');
+    }
+  }
+
+  validateEventEndDate(event) {
+    const startDate = Date.parse(this.eventStartDateTarget.value);
+    const endDate = Date.parse(this.eventEndDateTarget.value);
+
+    if (isNaN(startDate) || isNaN(endDate)) {
+      this.eventEndDateTarget.classList.add('form-input-error');
+      this.endDateErrorTarget.classList.remove('hidden');
+    } else if (startDate >= endDate) {
+      this.eventEndDateTarget.classList.add('form-input-error');
+      this.endDateErrorTarget.classList.remove('hidden');
+    } else {
+      this.eventEndDateTarget.classList.remove('form-input-error');
+      this.endDateErrorTarget.classList.add('hidden');
+    }
+  }
+
+  validateLink(event) {
+    const link = this.linkTarget.value.trim();
+    const linkRegex = /^(http|https):\/\/[^ "]+$/;
+    const validPrefixes = [
+      'h',
+      'ht',
+      'htt',
+      'http',
+      'http:',
+      'http:/',
+      'http://',
+      'https',
+      'https:',
+      'https:/',
+      'https://',
+    ];
+
+    if (event.type === 'input' && validPrefixes.includes(link)) {
+      // Don't show the error message while the user is typing and hasn't finished typing a valid URL prefix
+      this.linkTarget.classList.remove('form-input-error');
+      this.linkErrorTarget.classList.add('hidden');
+      return;
+    }
+
+    if (link && !linkRegex.test(link)) {
+      this.linkTarget.classList.add('form-input-error');
+      this.linkErrorTarget.classList.remove('hidden');
+    } else {
+      this.linkTarget.classList.remove('form-input-error');
+      this.linkErrorTarget.classList.add('hidden');
     }
   }
 }

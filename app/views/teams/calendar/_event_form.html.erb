@@ -1,9 +1,10 @@
 <% editing = local_assigns.fetch(:editing, false) %>
 
-<%= form_with model: [@team, event], data: { turbo_stream: editing } do |form| %>
+<%= form_with model: [@team, event], data: { turbo_stream: editing, controller: 'form-validation' }, html: { novalidate: true } do |form| %>
   <div class="form-group">
     <%= form.label :title, 'Event Title', class: 'form-label' %>
-    <%= form.text_field :title, autofocus: true, placeholder: 'Enter event title', class: 'form-input', value: event.title %>
+    <%= form.text_field :title, autofocus: true, placeholder: 'Enter event title', value: event.title, class: 'form-input', data: { form_validation_target: 'eventTitle', action: 'input->form-validation#validateEventTitle' } %>
+    <p class="hidden my-1 error-message" data-form-validation-target="eventTitleError">Event title cannot be blank</p>
   </div>
 
   <div class="form-group">
@@ -13,23 +14,27 @@
       </p>
     <% end %>
 
-    <%= form.text_area :description, placeholder: 'Add a description...', class: 'form-input', value: event.description %>
+    <%= form.text_area :description, placeholder: 'Add a description...', value: event.description, class: 'form-input', data: { controller: 'autogrow', form_validation_target: 'eventDescription', action: 'input->autogrow#grow change->autogrow#grow input->form-validation#validateEventDescription blur->form-validation#validateEventDescription' } %>
+    <p class="hidden my-1 error-message" data-form-validation-target="eventDescriptionError">Description must be 2,000 characters or less</p>
+    <p class="my-1 help-text">Maximum 2,000 characters</p>
   </div>
 
   <div class="form-group">
     <%= form.label :start_date, 'Start Date', class: 'form-label' %>
     <div class="relative">
       <%= inline_svg_tag 'icons/calendar.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= form.date_field :start_date, class: 'form-input pl-10', value: event.start_date %>
+      <%= form.date_field :start_date, value: event.start_date, class: 'form-input pl-10', data: { form_validation_target: 'eventStartDate', action: 'input->form-validation#validateEventStartDate input->form-validation#validateEventEndDate' } %>
     </div>
+    <p class="hidden my-1 error-message" data-form-validation-target="startDateError">Start date cannot be blank</p>
   </div>
 
   <div class="form-group">
     <%= form.label :end_date, 'End Date', class: 'form-label' %>
     <div class="relative">
       <%= inline_svg_tag 'icons/calendar.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= form.date_field :end_date, class: 'form-input pl-10', value: event.end_date %>
+      <%= form.date_field :end_date, value: event.end_date, class: 'form-input pl-10', data: { form_validation_target: 'eventEndDate', action: 'input->form-validation#validateEventEndDate' } %>
     </div>
+    <p class="hidden my-1 error-message" data-form-validation-target="endDateError">End date cannot be blank and must be after start date</p>
   </div>
 
   <div class="form-group">
@@ -40,7 +45,7 @@
     <% end %>
     <div class="relative">
       <%= inline_svg_tag 'icons/location.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= form.text_field :location, placeholder: 'Add a location...', class: 'form-input pl-10', value: event.location %>
+      <%= form.text_field :location, placeholder: 'Add a location...', value: event.location, class: 'form-input pl-10' %>
     </div>
   </div>
 
@@ -52,8 +57,9 @@
     <% end %>
     <div class="relative">
       <%= inline_svg_tag 'icons/link.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= form.url_field :link, placeholder: 'Add a link...', class: 'form-input pl-10', value: event.link %>
+      <%= form.url_field :link, placeholder: 'Add a link...', value: event.link, class: 'form-input pl-10', data: { form_validation_target: 'link', action: 'input->form-validation#validateLink blur->form-validation#validateLink' } %>
     </div>
+    <p class="hidden my-1 error-message" data-form-validation-target="linkError">Link must be a valid URL</p>
     <p class="my-1 help-text">Add a URL with additional event details, such as an external website or a registration page.</p>
   </div>
 
