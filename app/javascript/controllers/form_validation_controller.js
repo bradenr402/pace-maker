@@ -83,17 +83,11 @@ export default class extends Controller {
       if (this.newPasswordTarget.value) {
         this.newPasswordConfirmationTarget.disabled = false;
         this.newPasswordConfirmationLabelTarget.classList.remove('opacity-60');
-        this.newPasswordConfirmationHintTarget.classList.remove(
-          'opacity-0',
-          'pointer-events-none'
-        );
+        this.newPasswordConfirmationHintTarget.classList.remove('opacity-0', 'pointer-events-none');
       } else {
         this.newPasswordConfirmationTarget.disabled = true;
         this.newPasswordConfirmationLabelTarget.classList.add('opacity-60');
-        this.newPasswordConfirmationHintTarget.classList.add(
-          'opacity-0',
-          'pointer-events-none'
-        );
+        this.newPasswordConfirmationHintTarget.classList.add('opacity-0', 'pointer-events-none');
       }
     }
   }
@@ -175,13 +169,7 @@ export default class extends Controller {
     const lowercaseValid = this.validatePasswordLowercase(password);
     const digitValid = this.validatePasswordDigit(password);
     const specialValid = this.validatePasswordSpecial(password);
-    if (
-      lengthValid &&
-      uppercaseValid &&
-      lowercaseValid &&
-      digitValid &&
-      specialValid
-    ) {
+    if (lengthValid && uppercaseValid && lowercaseValid && digitValid && specialValid) {
       this.passwordTarget.classList.remove('form-input-error');
     } else {
       this.passwordTarget.classList.add('form-input-error');
@@ -293,13 +281,7 @@ export default class extends Controller {
       const digitValid = this.validatePasswordDigit(newPassword);
       const specialValid = this.validatePasswordSpecial(newPassword);
 
-      if (
-        lengthValid &&
-        uppercaseValid &&
-        lowercaseValid &&
-        digitValid &&
-        specialValid
-      ) {
+      if (lengthValid && uppercaseValid && lowercaseValid && digitValid && specialValid) {
         this.newPasswordTarget.classList.remove('form-input-error');
       } else {
         this.newPasswordTarget.classList.add('form-input-error');
@@ -317,15 +299,9 @@ export default class extends Controller {
     if (newPassword) {
       this.newPasswordConfirmationTarget.disabled = false;
       this.newPasswordConfirmationLabelTarget.classList.remove('opacity-60');
-      this.newPasswordConfirmationHintTarget.classList.remove(
-        'opacity-0',
-        'pointer-events-none'
-      );
+      this.newPasswordConfirmationHintTarget.classList.remove('opacity-0', 'pointer-events-none');
 
-      if (
-        newPassword !== newPasswordConfirmation &&
-        event.target !== this.newPasswordTarget
-      ) {
+      if (newPassword !== newPasswordConfirmation && event.target !== this.newPasswordTarget) {
         this.newPasswordConfirmationErrorTarget.classList.remove('hidden');
       } else {
         this.newPasswordConfirmationErrorTarget.classList.add('hidden');
@@ -333,10 +309,7 @@ export default class extends Controller {
     } else {
       this.newPasswordConfirmationTarget.disabled = true;
       this.newPasswordConfirmationLabelTarget.classList.add('opacity-60');
-      this.newPasswordConfirmationHintTarget.classList.add(
-        'opacity-0',
-        'pointer-events-none'
-      );
+      this.newPasswordConfirmationHintTarget.classList.add('opacity-0', 'pointer-events-none');
       this.newPasswordConfirmationErrorTarget.classList.add('hidden');
     }
   }
