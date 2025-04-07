@@ -59,7 +59,7 @@
 
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
       <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Streaks</h2>
-      <p class="text-sm text-slate-600 dark:text-slate-400">Set the number of miles for a run to count towards a member's run streak.</p>
+      <p class="text-sm text-slate-600 dark:text-slate-400">Set the number of miles for a run to count towards a member&#8217;s run streak.</p>
     </div>
 
     <div class="form-group <%= team.require_gender? ? '' : 'hidden' %>" data-team-gender-fields-target="streakMale">
@@ -103,8 +103,8 @@
 
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
       <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Streak Resets</h2>
-      <p class="text-sm text-slate-600 dark:text-slate-400">Choose if weekends can reset your team member's run streaks.</p>
-      <p class="my-1 help-text">Leave these boxes unchecked if you want to give your team members the weekends off.</p>
+      <p class="text-sm text-slate-600 dark:text-slate-400">Choose if weekends can reset your team member&#8217;s run streaks.</p>
+      <p class="my-1 help-text">Disable both options below to give your team the weekends off without breaking their streaks.</p>
     </div>
 
     <div class="space-y-4 form-group">
@@ -115,7 +115,7 @@
         </div>
         <div>
           <%= settings_form.label :include_saturday, 'Include Saturdays', class: 'select-none text-slate-700 dark:text-slate-300' %>
-          <p class="my-1 help-text">Allow Saturdays to reset your team member's run streaks.</p>
+          <p class="my-1 help-text">Missing a Saturday will reset a team member&#8217;s run streak.</p>
         </div>
       </div>
 
@@ -126,7 +126,7 @@
         </div>
         <div>
           <%= settings_form.label :include_sunday, 'Include Sundays', class: 'select-none text-slate-700 dark:text-slate-300' %>
-          <p class="my-1 help-text">Allow Sundays to reset your team member's run streaks.</p>
+          <p class="my-1 help-text">Missing a Sunday will reset a team member&#8217;s run streak.</p>
         </div>
       </div>
     </div>
@@ -143,14 +143,14 @@
       </div>
       <div>
         <%= settings_form.label :include_self, 'Include self', class: 'select-none text-slate-700 dark:text-slate-300' %>
-        <p class="my-1 help-text">Include your own runs in the team&#8217;s stats.</p>
+        <p class="my-1 help-text">Include your own runs when calculating the team&#8217;s progress toward mileage and long run goals, and display your runs in the team&#8217;s &#8220;Recent Activity&#8221; and &#8220;Featured&#8221; tabs.</p>
       </div>
     </div>
 
     <div class="form-group">
       <%= settings_form.label :week_start, 'Start week on', class: 'form-label' %>
       <%= settings_form.select :week_start, options_for_select([['Sunday', :sunday], ['Monday', :monday], ['Tuesday', :tuesday], ['Wednesday', :wednesday], ['Thursday', :thursday], ['Friday', :friday], ['Saturday', :saturday]], team.settings(:general).week_start), {}, class: 'form-select' %>
-      <p class="my-1 help-text">Choose what day is considered the start of the week. This setting affects the calendar view on the team page.</p>
+      <p class="my-1 help-text">Choose what day is considered the start of the week. This affects the display of the team calendar and any weekly calculations.</p>
     </div>
   <% end %>
 
@@ -163,7 +163,7 @@
         <%= button_tag 'Copy settings', type: 'submit', class: 'btn btn-primary btn-muted shrink-0 whitespace-nowrap h-full', name: 'commit_action', value: 'copy_settings', data: { turbo: false } %>
       </div>
 
-      <p class="my-1 help-text">Choose another team from the dropdown and click 'Copy settings' to apply its configuration here.</p>
+      <p class="my-1 help-text">Choose another team from the dropdown and click &#8220;Copy settings&#8221; to apply its configuration here.</p>
     </div>
   <% end %>
 
