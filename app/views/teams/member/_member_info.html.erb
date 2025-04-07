@@ -308,7 +308,7 @@
           <div class="p-2.5 rounded-lg bg-slate-200/50 dark:bg-slate-700/50 min-w-max max-sm:grow">
             <p class="text-sm text-light whitespace-nowrap">Projected difference</p>
             <p class="text-xl font-bold">
-              <% miles_difference = projected_miles - team_membership.mileage_goal %>
+              <% miles_difference = (projected_miles - team_membership.mileage_goal).round(2) %>
               <span class="<%= miles_difference.negative? ? 'text-rose-500' : 'text-emerald-500' %>">
                 <%= miles_difference.positive? ? "+#{miles_difference}" : miles_difference %>
                 <span class="text-xs font-normal"><%= 'mile'.pluralize(miles_difference) %></span>
@@ -410,7 +410,7 @@
           <div class="p-2.5 rounded-lg bg-slate-200/50 dark:bg-slate-700/50 min-w-max max-sm:grow">
             <p class="text-sm text-light whitespace-nowrap">Projected difference</p>
             <p class="text-xl font-bold">
-              <% long_runs_difference = projected_long_runs - team_membership.long_run_goal %>
+              <% long_runs_difference = (projected_long_runs - team_membership.long_run_goal).round(2) %>
               <span class="<%= long_runs_difference.negative? ? 'text-rose-500' : 'text-emerald-500' %>">
                 <%= long_runs_difference.positive? ? "+#{long_runs_difference}" : long_runs_difference %>
                 <span class="text-xs font-normal"><%= 'long run'.pluralize(long_runs_difference) %></span>
