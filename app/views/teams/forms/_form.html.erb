@@ -21,7 +21,7 @@
         <span class="help-text">(optional)</span>
       </p>
     <% end %>
-    <%= form.text_area :description, placeholder: 'Add a description...', class: 'form-input', data: { controller: 'autogrow', form_validation_target: 'teamDescription', action: 'input->autogrow#grow input->form-validation#validateTeamDescription' } %>
+    <%= form.text_area :description, placeholder: 'Add a description...', class: 'form-input', data: { controller: 'autogrow', form_validation_target: 'teamDescription', action: 'input->autogrow#grow change->autogrow#grow input->form-validation#validateTeamDescription blur->form-validation#validateTeamDescription' } %>
     <p class="hidden my-1 error-message" data-form-validation-target="teamDescriptionError">Description must be 500 characters or less</p>
     <p class="my-1 help-text">Maximum 500 characters</p>
   </div>

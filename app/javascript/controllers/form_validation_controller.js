@@ -381,6 +381,9 @@ export default class extends Controller {
     if (description.length > 500) {
       this.teamDescriptionTarget.classList.add('form-input-error');
       this.teamDescriptionErrorTarget.classList.remove('hidden');
+
+      this.teamDescriptionTarget.value = description.slice(0, 500);
+      this.teamDescriptionTarget.dispatchEvent(new Event('change', { bubbles: true }));
     } else {
       this.teamDescriptionTarget.classList.remove('form-input-error');
       this.teamDescriptionErrorTarget.classList.add('hidden');
