@@ -39,12 +39,14 @@
       <span class="px-3.5 py-1 text-sm rounded-md font-semibold whitespace-nowrap <%= date_colors[:event] %>">
         Event
       </span>
-      <span class="px-3.5 py-1 text-sm rounded-md font-semibold whitespace-nowrap <%= date_colors[:start] %>">
-        Season Start
-      </span>
-      <span class="px-3.5 py-1 text-sm rounded-md font-semibold whitespace-nowrap <%= date_colors[:end] %>">
-        Season End
-      </span>
+      <% if team.season_dates? %>
+        <span class="px-3.5 py-1 text-sm rounded-md font-semibold whitespace-nowrap <%= date_colors[:start] %>">
+          Season Start
+        </span>
+        <span class="px-3.5 py-1 text-sm rounded-md font-semibold whitespace-nowrap <%= date_colors[:end] %>">
+          Season End
+        </span>
+      <% end %>
     </div>
   </div>
 
