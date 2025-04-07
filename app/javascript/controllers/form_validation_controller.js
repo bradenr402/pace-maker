@@ -34,8 +34,10 @@ export default class extends Controller {
     'seasonEndDate',
     'seasonEndDateLabel',
     'seasonEndDateError',
-    'milageGoal',
-    'milageGoalError',
+    'mileageGoal',
+    'mileageGoalError',
+    'longRunGoal',
+    'longRunGoalError',
     'passwordLength',
     'passwordUppercase',
     'passwordLowercase',
@@ -416,6 +418,19 @@ export default class extends Controller {
       } else {
         this.mileageGoalTarget.classList.remove('form-input-error');
         this.mileageGoalErrorTarget.classList.add('hidden');
+      }
+    }
+  }
+
+  validateLongRunGoal(event) {
+    const longRunGoal = this.longRunGoalTarget.value;
+    if (longRunGoal) {
+      if (isNaN(longRunGoal) || longRunGoal < 0) {
+        this.longRunGoalTarget.classList.add('form-input-error');
+        this.longRunGoalErrorTarget.classList.remove('hidden');
+      } else {
+        this.longRunGoalTarget.classList.remove('form-input-error');
+        this.longRunGoalErrorTarget.classList.add('hidden');
       }
     }
   }

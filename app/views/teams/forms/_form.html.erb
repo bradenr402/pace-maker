@@ -97,10 +97,10 @@
 
     <div class="relative">
       <%= inline_svg_tag 'icons/ruler.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= form.number_field :mileage_goal, step: 1, min: 0, placeholder: 'e.g., 500', class: 'form-input pl-10', data: { form_validation_target: "mileageGoal", action: "input->form-validation#validateMileageGoal" } %>
+      <%= form.number_field :mileage_goal, step: 1, min: 0, placeholder: 'e.g., 500', class: 'form-input pl-10', data: { form_validation_target: 'mileageGoal', action: 'input->form-validation#validateMileageGoal' } %>
     </div>
 
-    <p class="hidden my-1 error-message" data-form-validation-target="milageGoalError">Mileage goal must be a positive number</p>
+    <p class="hidden my-1 error-message" data-form-validation-target="mileageGoalError">Mileage goal must be a positive number</p>
     <p class="my-1 help-text">Set a goal for how many miles you want your team to run collectively during the season.</p>
   </div>
 
@@ -113,10 +113,10 @@
 
     <div class="relative">
       <%= inline_svg_tag 'icons/runner.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-      <%= form.number_field :long_run_goal, step: 1, min: 0, placeholder: 'e.g., 75', class: 'form-input pl-10', data: { form_validation_target: 'mileageGoal', action: 'input->form-validation#validateMileageGoal' } %>
+      <%= form.number_field :long_run_goal, step: 1, min: 0, placeholder: 'e.g., 75', class: 'form-input pl-10', data: { form_validation_target: 'longRunGoal', action: 'input->form-validation#validateLongRunGoal' } %>
     </div>
 
-    <p class="hidden my-1 error-message" data-form-validation-target="milageGoalError">Long run goal must be a positive number</p>
+    <p class="hidden my-1 error-message" data-form-validation-target="longRunGoalError">Long run goal must be a positive number</p>
     <p class="my-1 help-text">Set a goal for how many long runs you want your team to run collectively during the season.</p>
   </div>
 
