@@ -119,7 +119,7 @@
                 default: '',
               } %>
 
-            <div data-controller="tooltip" class="relative">
+            <div class="relative select-none cursor-default" data-controller="tooltip">
               <div class="group select-none w-full aspect-square px-1 py-2 rounded-md flex flex-col items-center justify-center font-semibold <%= "#{date_colors[date_status]} #{date_colors_hover[date_status]}" %>" data-tooltip-target="tooltip" data-action="mouseenter->tooltip#showTooltip mouseleave->tooltip#hideTooltip">
                 <p><%= date.strftime('%e').strip %></p>
                 <% if events.present? %>
