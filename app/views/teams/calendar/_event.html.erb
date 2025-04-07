@@ -2,7 +2,7 @@
 
 <% team = event.team %>
 
-<div id="<%= dom_id event %>" data-filter-events-target="event" data-event-status="<%= event.status %>" class="card flex flex-col <%= 'hidden' unless filter.in?([filter, 'all']) %>">
+<div id="<%= dom_id event %>" data-filter-events-target="event" data-event-status="<%= event.status %>" class="card flex flex-col <%= 'hidden' unless filter.in?([event.status, 'all']) %>">
   <div class="flex flex-wrap items-center gap-3 mb-4">
     <%= image_tag event.photo.variant(resize_to_limit: [100, 100]).processed, class: 'size-12 rounded-lg shadow-lg dark:shadow-none object-cover' if event.photo.attached? %>
 

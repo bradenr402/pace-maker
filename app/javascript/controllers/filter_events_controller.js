@@ -16,10 +16,21 @@ export default class extends Controller {
   filter() {
     const selectedValue = this.getValue();
 
+    this.updateURL(selectedValue);
+
     if (selectedValue === 'upcoming') this.showUpcomingEvents();
     else if (selectedValue === 'past') this.showPastEvents();
     else if (selectedValue === 'current') this.showCurrentEvents();
     else this.showAllEvents();
+  }
+
+  updateURL(filterValue) {
+    const url = new URL(window.location);
+
+    if (filterValue) url.searchParams.set('filter', filterValue);
+    else url.searchParams.delete('filter');
+
+    history.replaceState(null, '', url.toString());
   }
 
   showAllEvents() {
