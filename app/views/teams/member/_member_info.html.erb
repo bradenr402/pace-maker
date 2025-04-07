@@ -54,51 +54,6 @@
   <%= render 'shared/user_record_streak_card', user: member, team: team %>
 </div>
 
-<div class="grid grid-cols-1 gap-4 lg:grid-cols-2 mb-4">
-  <!-- Miles This Season Card -->
-  <div class="card">
-    <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Miles This Season</h2>
-
-    <p class="text-3xl font-bold">
-      <%= miles_season_count = team_membership.miles_completed_in_goal %>
-      <span class="text-base font-normal text-soft"><%= 'mile'.pluralize(team_membership.miles_completed_in_goal) %></span>
-    </p>
-    <% if team_membership.mileage_goal? %>
-      <p class="text-soft text-sm">of <%= team_membership.mileage_goal %> mile goal</p>
-    <% end %>
-
-    <% if team.season_not_started_yet? %>
-      <p class="my-1 text-soft">Season hasn&#8217;t started yet.</p>
-    <% end %>
-
-    <p class="text-soft text-sm font-semibold mt-2">
-      <% avg_miles_per_week = (miles_season_count.to_f / ((Date.current - team.season_start_date).to_f / 7)).round(1) %>
-      Avg. per week: <%= avg_miles_per_week %> mi
-    </p>
-  </div>
-
-  <!-- Long Runs This Season Card -->
-  <div class="card">
-    <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Long Runs This Season</h2>
-    <p class="text-3xl font-bold">
-      <%= long_runs_season_count = team_membership.long_runs_completed_in_goal %>
-      <span class="text-base font-normal text-soft"><%= 'long run'.pluralize(team_membership.long_runs_completed_in_goal) %></span>
-    </p>
-    <% if team_membership.long_run_goal? %>
-      <p class="text-soft text-sm">of <%= team_membership.long_run_goal %> long run goal</p>
-    <% end %>
-
-    <% if team.season_not_started_yet? %>
-      <p class="my-1 text-soft">Season hasn&#8217;t started yet.</p>
-    <% end %>
-
-    <p class="text-soft text-sm font-semibold mt-2">
-      <% avg_miles_per_week = (long_runs_season_count.to_f / ((Date.current - team.season_start_date).to_f / 7)).round(1) %>
-      Avg. per week: <%= avg_miles_per_week %> long runs
-    </p>
-  </div>
-</div>
-
 <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 mb-4">
   <!-- Total Miles Card -->
   <div class="card">
