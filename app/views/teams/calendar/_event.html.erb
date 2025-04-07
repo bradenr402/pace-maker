@@ -38,7 +38,28 @@
   </div>
 
   <% if event.description? %>
-    <p class="text-soft text-sm text-pretty mb-3"><%= event.description %></p>
+    <% sanitized_description = sanitize(event.description, tags: %w(strong em b i p br)) %>
+
+    <% if event.description.length > 250 %>
+      <% truncated_description = truncate(sanitized_description, length: 250, separator: ' ') %>
+
+      <div id="short-description-<%= event.id %>" class="text-soft text-sm space-y-1.5">
+        <%= simple_format(truncated_description) %>
+      </div>
+      <div id="full-description-<%= event.id %>" class="hidden text-soft text-sm space-y-1.5">
+        <%= simple_format(sanitized_description) %>
+      </div>
+
+      <button type="button" class="text-sm mb-3 mr-auto btn-link font-semibold hover:underline"
+              onclick="document.getElementById('short-description-<%= event.id %>').classList.toggle('hidden'); document.getElementById('full-description-<%= event.id %>').classList.toggle('hidden'); this.textContent = this.textContent.trim() === 'Show more' ? 'Show less' : 'Show more';"
+      >
+        Show more
+      </button>
+    <% else %>
+      <div class="text-soft text-sm space-y-1.5 mb-3">
+        <%= simple_format(sanitized_description) %>
+      </div>
+    <% end %>
   <% else %>
     <p class="text-soft text-sm text-pretty mb-3 italic">No description</p>
   <% end %>
