@@ -47,11 +47,11 @@
       </div>
 
       <% if team.exclude_weekends_from_streak? %>
-        <p class="mt-0.5 text-soft text-xs">Weekends won&#8217;t reset your streak for this team.</p>
+        <p class="mt-0.5 text-soft text-xs">Missing a Saturday or Sunday won&#8217;t reset your streak for this team.</p>
       <% elsif team.exclude_saturday_from_streak? %>
-        <p class="mt-0.5 text-soft text-xs">Saturdays won&#8217;t reset your streak for this team.</p>
+        <p class="mt-0.5 text-soft text-xs">Missing a Saturday won&#8217;t reset your streak for this team.</p>
       <% elsif team.exclude_sunday_from_streak? %>
-        <p class="mt-0.5 text-soft text-xs">Sundays won&#8217;t reset your streak for this team.</p>
+        <p class="mt-0.5 text-soft text-xs">Missing a Sunday won&#8217;t reset your streak for this team.</p>
       <% end %>
     </div>
   <% else %>

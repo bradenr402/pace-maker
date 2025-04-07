@@ -13,10 +13,12 @@ module TeamCalculations
     end
   end
 
+  def days_completed_in_season
+    (Date.today - season_start_date).to_f
+  end
+
   def days_remaining_in_season
-    Rails.cache.fetch("#{cache_key_with_version}/days_remaining_in_season/#{Date.current}") do
-      (season_end_date - Date.today).to_i
-    end
+    (season_end_date - Date.today).to_f
   end
 
   # Mileage calculations
@@ -28,6 +30,26 @@ module TeamCalculations
 
   def total_miles
     filtered_members.sum(&:total_miles)
+  end
+
+  def mileage_goal_pace
+    (total_miles_in_season / (days_completed_in_season.nonzero? ? days_completed_in_season : 1)).round(2)
+  end
+
+  def daily_miles_required
+    season_duration = (season_end_date - season_start_date).to_f
+
+    (mileage_goal / season_duration).round(2)
+  end
+
+  def projected_season_miles
+    return 0 unless season_dates?
+
+    Rails.cache.fetch("#{cache_key_with_version}/projected_season_miles/#{total_miles_in_season}/#{season_start_date}/#{season_end_date}") do
+      season_duration = (season_end_date - season_start_date).to_f
+
+      (mileage_goal_pace * season_duration).round(2)
+    end
   end
 
   def total_miles_on_day(date)
@@ -67,6 +89,40 @@ module TeamCalculations
   def total_long_runs
     Rails.cache.fetch("#{cache_key_with_version}/total_long_runs/#{total_miles}/#{include_coach?}") do
       filtered_members.sum { |member| member.total_long_runs(self) }
+    end
+  end
+
+  def long_run_goal_pace
+    (total_long_runs_in_season / (days_completed_in_season.nonzero? ? days_completed_in_season : 1)).round(2)
+  end
+
+  def daily_long_runs_required
+    season_duration = (season_end_date - season_start_date).to_f
+
+    (long_run_goal / season_duration).round(2)
+  end
+
+  def weeks_completed_in_season
+    ((Date.today - season_start_date).to_f / 7.0).floor
+  end
+
+  def weekly_long_run_goal_pace
+    (total_long_runs_in_season / (weeks_completed_in_season.nonzero? ? weeks_completed_in_season : 1)).round(2)
+  end
+
+  def weekly_long_runs_required
+    season_duration_in_weeks = ((season_end_date - season_start_date).to_f / 7.0)
+
+    (long_run_goal / season_duration_in_weeks).round(2)
+  end
+
+  def projected_season_long_runs
+    return 0 unless season_dates?
+
+    Rails.cache.fetch("#{cache_key_with_version}/projected_season_long_runs/#{total_long_runs_in_season}/#{season_start_date}/#{season_end_date}") do
+      season_duration = (season_end_date - season_start_date).to_f
+
+      (long_run_goal_pace * season_duration).round(2)
     end
   end
 
@@ -139,32 +195,28 @@ module TeamCalculations
 
   # Progress messages
   def mileage_goal_progress_message
-    team_status, meeting_goal_status =
-      if mileage_goal_complete?
-        ['met its mileage goal', 'and you\'ve completed']
-      elsif meeting_mileage_goal?
-        ['is on track', 'and you\'ve completed']
-      elsif ahead_of_mileage_goal?
-        ['is advancing', 'and you\'ve already completed']
-      else
-        ['is falling behind', 'but you\'ve only completed']
-      end
+    team_status = case
+                  when mileage_goal_complete? then 'met its mileage goal'
+                  when meeting_mileage_goal? then 'is on track'
+                  when ahead_of_mileage_goal? then 'is advancing'
+                  else 'is falling behind'
+                  end
 
-    "Your team #{team_status}! You're #{season_progress}% through the season, #{meeting_goal_status} #{mileage_goal_progress}% of your mileage goal."
+    meeting_goal_status = mileage_goal_complete? || ahead_of_mileage_goal? ? 'and you’ve completed' : 'but you’ve only completed'
+
+    "Your team #{team_status}! You’re #{season_progress}% through the season, #{meeting_goal_status} #{mileage_goal_progress}% of your mileage goal."
   end
 
   def long_run_goal_progress_message
-    team_status, meeting_goal_status =
-      if long_run_goal_complete?
-        ['met its long run goal', 'and you\'ve completed']
-      elsif meeting_long_run_goal?
-        ['is on track', 'and you\'ve completed']
-      elsif ahead_of_long_run_goal?
-        ['is advancing', 'and you\'ve already completed']
-      else
-        ['is falling behind', 'but you\'ve only completed']
-      end
+    team_status = case
+                  when long_run_goal_complete? then 'met its long run goal'
+                  when meeting_long_run_goal? then 'is on track'
+                  when ahead_of_long_run_goal? then 'is advancing'
+                  else 'is falling behind'
+                  end
 
-    "Your team #{team_status}! You're #{season_progress}% through the season, #{meeting_goal_status} #{long_run_goal_progress}% of your long run goal."
+    meeting_goal_status = long_run_goal_complete? || ahead_of_long_run_goal? ? 'and you’ve completed' : 'but you’ve only completed'
+
+    "Your team #{team_status}! You’re #{season_progress}% through the season, #{meeting_goal_status} #{long_run_goal_progress}% of your long run goal."
   end
 end

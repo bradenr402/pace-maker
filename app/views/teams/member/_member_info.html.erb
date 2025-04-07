@@ -7,7 +7,7 @@
 
 <%= render 'users/select_team_dropdown', user: member, team: %>
 
-<%= content_tag(:p, class: 'mb-2 text-right') { link_to "Edit your personal goals for #{team.name}", edit_team_team_membership_path(team, current_user), class: 'btn-link text-xs' } if member_is_current %>
+<%= content_tag(:p, class: 'mb-2 text-right') { link_to "Edit personal goals for #{team.name}", edit_team_team_membership_path(team, current_user), class: 'btn-link text-xs' } if member_is_current %>
 
 <div class="card mb-4">
   <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
@@ -35,7 +35,7 @@
     </div>
 
     <% if team.season_not_started_yet? %>
-      <p class='my-1 text-soft'>Season hasn't started yet.</p>
+      <p class='my-1 text-soft'>Season hasn&#8217;t started yet.</p>
     <% else %>
       <%= render 'shared/progress_bar', percentage: team.season_progress, label: 'Season Progress', size: :lg %>
 
@@ -46,26 +46,29 @@
   <% end %>
 </div>
 
-<div class="grid grid-cols-1 gap-6 lg:grid-cols-2 mb-6">
+<div class="grid grid-cols-1 gap-4 lg:grid-cols-2 mb-4">
   <!-- Current Streak Card -->
   <%= render 'shared/user_current_streak_card', user: member, team: team %>
 
   <!-- Record Streak Card -->
   <%= render 'shared/user_record_streak_card', user: member, team: team %>
+</div>
 
+<div class="grid grid-cols-1 gap-4 lg:grid-cols-2 mb-4">
   <!-- Miles This Season Card -->
   <div class="card">
     <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Miles This Season</h2>
+
     <p class="text-3xl font-bold">
       <%= miles_season_count = team_membership.miles_completed_in_goal %>
       <span class="text-base font-normal text-soft"><%= 'mile'.pluralize(team_membership.miles_completed_in_goal) %></span>
     </p>
     <% if team_membership.mileage_goal? %>
-      <p class="text-soft">of <%= team_membership.mileage_goal %> mile goal</p>
+      <p class="text-soft text-sm">of <%= team_membership.mileage_goal %> mile goal</p>
     <% end %>
 
     <% if team.season_not_started_yet? %>
-      <p class="my-1 text-soft">Season hasn't started yet.</p>
+      <p class="my-1 text-soft">Season hasn&#8217;t started yet.</p>
     <% end %>
 
     <p class="text-soft text-sm font-semibold mt-2">
@@ -82,11 +85,11 @@
       <span class="text-base font-normal text-soft"><%= 'long run'.pluralize(team_membership.long_runs_completed_in_goal) %></span>
     </p>
     <% if team_membership.long_run_goal? %>
-      <p class="text-soft">of <%= team_membership.long_run_goal %> long run goal</p>
+      <p class="text-soft text-sm">of <%= team_membership.long_run_goal %> long run goal</p>
     <% end %>
 
     <% if team.season_not_started_yet? %>
-      <p class="my-1 text-soft">Season hasn't started yet.</p>
+      <p class="my-1 text-soft">Season hasn&#8217;t started yet.</p>
     <% end %>
 
     <p class="text-soft text-sm font-semibold mt-2">
@@ -94,7 +97,9 @@
       Avg. per week: <%= avg_miles_per_week %> long runs
     </p>
   </div>
+</div>
 
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 mb-4">
   <!-- Total Miles Card -->
   <div class="card">
     <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Total Miles</h2>
@@ -164,7 +169,7 @@
     </p>
 
     <% if farthest_run.present? %>
-      <div class="flex items-center gap-4 mt-2">
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2">
         <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
           <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 shrink-0' %>
           <span class="whitespace-nowrap"><%= pretty_date(farthest_run.date, date_style: :absolute, month_format: :short, include_year: farthest_run.date.year != Date.current.year) %></span>
@@ -193,7 +198,7 @@
       <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Longest Run</h2>
       <p class="text-3xl font-bold"><%= clock_time_display(longest_run.duration) %></p>
 
-      <div class="flex items-center gap-4 mt-2">
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2">
         <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
           <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 shrink-0' %>
           <span class="whitespace-nowrap"><%= pretty_date(longest_run.date, date_style: :absolute, month_format: :short, include_year: longest_run.date.year != Date.current.year) %></span>
@@ -224,7 +229,7 @@
         <span class="text-base font-normal text-soft"><span class="font-normal">/mi</span></span>
       </p>
 
-      <div class="flex items-center gap-4 mt-2">
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2">
         <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
           <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 shrink-0' %>
           <span class="whitespace-nowrap"><%= pretty_date(fastest_run.date, date_style: :absolute, month_format: :short, include_year: fastest_run.date.year != Date.current.year) %></span>
@@ -247,38 +252,120 @@
 </div>
 
 <!-- Personal Mileage Goal Card -->
-<% if team_membership.mileage_goal? %>
-  <div class="card mb-6">
+<% if mileage_goal = team_membership.mileage_goal %>
+  <div class="card mb-4">
     <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Personal Mileage Goal</h2>
-    <% if team_membership.mileage_goal? && team.season_in_progress? %>
+    <% if team.season_in_progress? %>
+      <div class="mb-4">
+        <p class="text-3xl font-bold">
+          <%= miles_count = team_membership.miles_completed_in_goal %>
+          <span class="text-base font-normal text-soft"><%= 'mile'.pluralize(miles_count) %></span>
+        </p>
+        <p class="text-soft text-sm">of <%= mileage_goal %> mile goal</p>
+      </div>
+
       <p class="mb-4"><%= team_membership.mileage_goal_progress_message(current_user) %></p>
 
       <%= render 'shared/progress_bar', percentage: team_membership.mileage_goal_progress, label: 'Personal Mileage Goal Progress', marker: team_membership.season_progress, size: :lg %>
 
       <p class='my-1 text-xs text-soft'>
         <% if team_membership.mileage_goal_complete? %>
-          <%= member_is_current ? 'You met your' : "#{member.first_name} met #{member.gender_possessive}" %> <%= team_membership.mileage_goal %> mile personal mileage goal with <%= pluralize(team.days_remaining_in_season, 'day') %> to spare!
+          <%= member_is_current ? 'You met your' : "#{member.first_name} met #{member.gender_possessive}" %> <%= mileage_goal %> mile personal mileage goal with <%= pluralize(team.days_remaining_in_season, 'day') %> to spare!
         <% else %>
           <%= member_is_current ? 'You have' : "#{member.first_name} has" %> <%= pluralize(team.days_remaining_in_season, 'day') %> to finish the remaining <%= pluralize(team_membership.miles_remaining_in_goal, 'mile') %> of <%= member_is_current ? 'your' : member.gender_possessive %> personal mileage goal.
         <% end %>
       </p>
+
+      <div class="mt-6">
+        <p class="text-lg font-bold">Projections</p>
+        <p class="text-xs text-soft">Based on the team&#8217;s current pace</p>
+
+        <div class="flex flex-wrap items-center gap-1.5 mt-2">
+          <div class="p-2.5 rounded-lg bg-slate-200/50 dark:bg-slate-700/50 min-w-max max-sm:grow">
+            <p class="text-sm text-light whitespace-nowrap">Daily required</p>
+            <p class="text-xl font-bold">
+              <%= team_membership.daily_miles_required %>
+              <span class="text-xs font-normal text-light">mi/day</span>
+            </p>
+          </div>
+
+          <div class="p-2.5 rounded-lg bg-slate-200/50 dark:bg-slate-700/50 min-w-max max-sm:grow">
+            <p class="text-sm text-light whitespace-nowrap">Current pace</p>
+            <p class="text-xl font-bold">
+              <%= team_membership.mileage_goal_pace %>
+              <span class="text-xs font-normal text-light">mi/day</span>
+            </p>
+          </div>
+
+          <div class="p-2.5 rounded-lg bg-slate-200/50 dark:bg-slate-700/50 min-w-max max-sm:grow">
+            <p class="text-sm text-light whitespace-nowrap">Projected total</p>
+            <p class="text-xl font-bold">
+              <%= projected_miles = team_membership.projected_season_miles %>
+              <span class="text-xs font-normal text-light"><%= 'mile'.pluralize(projected_miles) %></span>
+            </p>
+          </div>
+
+          <div class="p-2.5 rounded-lg bg-slate-200/50 dark:bg-slate-700/50 min-w-max max-sm:grow">
+            <p class="text-sm text-light whitespace-nowrap">Projected difference</p>
+            <p class="text-xl font-bold">
+              <% miles_difference = projected_miles - team_membership.mileage_goal %>
+              <span class="<%= miles_difference.negative? ? 'text-rose-500' : 'text-emerald-500' %>">
+                <%= miles_difference.positive? ? "+#{miles_difference}" : miles_difference %>
+                <span class="text-xs font-normal"><%= 'mile'.pluralize(miles_difference) %></span>
+              </span>
+            </p>
+          </div>
+
+          <% days_to_completion = team_membership.mileage_goal_pace.zero? ? Float::INFINITY : team_membership.miles_remaining_in_goal / team_membership.mileage_goal_pace %>
+          <% projected_completion_date = days_to_completion.finite? ? Date.current + days_to_completion : nil %>
+          <% if projected_completion_date&.after? Date.current %>
+            <div class="p-2.5 rounded-lg bg-slate-200/50 dark:bg-slate-700/50 min-w-max max-sm:grow">
+              <p class="text-sm text-light whitespace-nowrap">Projected completion</p>
+              <p class="text-xl font-bold <%= projected_completion_date.after?(team.season_end_date) ? 'text-rose-500' : 'text-emerald-500' %>">
+                <%= pretty_date(projected_completion_date, date_style: :absolute, month_format: :short) %>
+              </p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% elsif team.season_over? %>
+      <div class="mb-4">
+        <p class="text-3xl font-bold">
+          <%= miles_count = team_membership.miles_completed_in_goal %>
+          <span class="text-base font-normal text-soft"><%= 'mile'.pluralize(miles_count) %></span>
+        </p>
+        <p class="text-soft text-sm">of <%= mileage_goal %> mile goal</p>
+      </div>
+
+      <p class="mb-4">
+        The season is over. <%= member_is_current ? 'You' : member.first_name %> completed <%= pluralize(team_membership.miles_completed_in_goal, 'mile') %>
+        <%= team_membership.mileage_goal_complete? ? "and met #{member_is_current ? 'your' : member.gender_possessive} goal!" : "but didn’t reach #{member_is_current ? 'your' : member.gender_possessive} goal of #{mileage_goal} miles." %>
+      </p>
+
+      <%= render 'shared/progress_bar', percentage: team_membership.mileage_goal_progress, label: 'Personal Mileage Goal Progress', size: :lg %>
     <% elsif team.season_not_started_yet? %>
-      <p class="text-soft">Season hasn't started yet.</p>
+      <p class="text-soft">Season hasn&#8217;t started yet.</p>
     <% elsif team.season_dates? %>
       <p class="text-soft"><%= member_is_current ? 'You have' : "#{member.first_name} has" %> not set a personal mileage goal.</p>
-    <% elsif team_membership.mileage_goal? %>
-      <p class="text-soft">No season dates have been set for this team.</p>
     <% else %>
-      <p class="text-soft"><%= member_is_current ? 'You have' : "#{member.first_name} has" %> not set a personal mileage goal, and season dates have not been set for this team.</p>
+      <p class="text-soft">No season dates have been set for this team.</p>
     <% end %>
   </div>
 <% end %>
 
 <!-- Personal Long Run Goal Card -->
-<% if team_membership.long_run_goal? %>
+<% if long_run_goal = team_membership.long_run_goal %>
   <div class="card">
     <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Personal Long Run Goal</h2>
-    <% if team_membership.long_run_goal? && team.season_in_progress? %>
+    <% if team.season_in_progress? %>
+      <div class="mb-4">
+        <p class="text-3xl font-bold">
+          <%= long_runs_count = team_membership.long_runs_completed_in_goal %>
+          <span class="text-base font-normal text-soft"><%= 'long run'.pluralize(long_runs_count) %></span>
+        </p>
+        <p class="text-soft text-sm">of <%= long_run_goal %> long run goal</p>
+      </div>
+
       <p class="mb-4"><%= team_membership.long_run_goal_progress_message(current_user) %></p>
 
       <%= render 'shared/progress_bar', percentage: team_membership.long_run_goal_progress, label: 'Personal Long Run Goal Progress', marker: team_membership.season_progress, size: :lg %>
@@ -290,14 +377,80 @@
           <%= member_is_current ? 'You have' : "#{member.first_name} has" %> <%= pluralize(team.days_remaining_in_season, 'day') %> to finish the remaining <%= pluralize(team_membership.long_runs_remaining_in_goal, 'long run') %> of <%= member_is_current ? 'your' : member.gender_possessive %> personal long run goal.
         <% end %>
       </p>
+
+      <div class="mt-6">
+        <p class="text-lg font-bold">Projections</p>
+        <p class="text-xs text-soft">Based on the team&#8217;s current pace</p>
+
+        <div class="flex flex-wrap items-center gap-1.5 mt-2">
+          <div class="p-2.5 rounded-lg bg-slate-200/50 dark:bg-slate-700/50 min-w-max max-sm:grow">
+            <p class="text-sm text-light whitespace-nowrap">Weekly required</p>
+            <p class="text-xl font-bold">
+              <%= team_membership.weekly_long_runs_required %>
+              <span class="text-xs font-normal text-light">/week</span>
+            </p>
+          </div>
+
+          <div class="p-2.5 rounded-lg bg-slate-200/50 dark:bg-slate-700/50 min-w-max max-sm:grow">
+            <p class="text-sm text-light whitespace-nowrap">Current pace</p>
+            <p class="text-xl font-bold">
+              <%= team_membership.weekly_long_run_goal_pace %>
+              <span class="text-xs font-normal text-light">/week</span>
+            </p>
+          </div>
+
+          <div class="p-2.5 rounded-lg bg-slate-200/50 dark:bg-slate-700/50 min-w-max max-sm:grow">
+            <p class="text-sm text-light whitespace-nowrap">Projected total</p>
+            <p class="text-xl font-bold">
+              <%= projected_long_runs = team_membership.projected_season_long_runs %>
+              <span class="text-xs font-normal text-light"><%= 'long run'.pluralize(projected_long_runs) %></span>
+            </p>
+          </div>
+
+          <div class="p-2.5 rounded-lg bg-slate-200/50 dark:bg-slate-700/50 min-w-max max-sm:grow">
+            <p class="text-sm text-light whitespace-nowrap">Projected difference</p>
+            <p class="text-xl font-bold">
+              <% long_runs_difference = projected_long_runs - team_membership.long_run_goal %>
+              <span class="<%= long_runs_difference.negative? ? 'text-rose-500' : 'text-emerald-500' %>">
+                <%= long_runs_difference.positive? ? "+#{long_runs_difference}" : long_runs_difference %>
+                <span class="text-xs font-normal"><%= 'long run'.pluralize(long_runs_difference) %></span>
+              </span>
+            </p>
+          </div>
+
+          <% days_to_completion = team_membership.long_run_goal_pace.zero? ? Float::INFINITY : team_membership.long_runs_remaining_in_goal / team_membership.long_run_goal_pace %>
+          <% projected_completion_date = days_to_completion.finite? ? Date.current + days_to_completion : nil %>
+          <% if projected_completion_date&.after? Date.current %>
+            <div class="p-2.5 rounded-lg bg-slate-200/50 dark:bg-slate-700/50 min-w-max max-sm:grow">
+              <p class="text-sm text-light whitespace-nowrap">Projected completion</p>
+              <p class="text-xl font-bold <%= projected_completion_date.after?(team.season_end_date) ? 'text-rose-500' : 'text-emerald-500' %>">
+                <%= pretty_date(projected_completion_date, date_style: :absolute, month_format: :short) %>
+              </p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% elsif team.season_over? %>
+      <div class="mb-4">
+        <p class="text-3xl font-bold">
+          <%= long_runs_count = team_membership.long_runs_completed_in_goal %>
+          <span class="text-base font-normal text-soft"><%= 'long run'.pluralize(long_runs_count) %></span>
+        </p>
+        <p class="text-soft text-sm">of <%= long_run_goal %> long run goal</p>
+      </div>
+
+      <p class="mb-4">
+        The season is over. <%= member_is_current ? 'You' : member.first_name %> completed <%= pluralize(team_membership.long_runs_completed_in_goal, 'long run') %>
+        <%= team_membership.long_run_goal_complete? ? "and met #{member_is_current ? 'your' : member.gender_possessive} goal!" : "but didn’t reach #{member_is_current ? 'your' : member.gender_possessive} goal of #{long_run_goal} miles." %>
+      </p>
+
+      <%= render 'shared/progress_bar', percentage: team_membership.mileage_goal_progress, label: 'Personal Mileage Goal Progress', size: :lg %>
     <% elsif team.season_not_started_yet? %>
-      <p class="text-soft">Season hasn't started yet.</p>
+      <p class="text-soft">Season hasn&#8217;t started yet.</p>
     <% elsif team.season_dates? %>
       <p class="text-soft"><%= member_is_current ? 'You have' : "#{member.first_name} has" %> not set a personal long run goal.</p>
-    <% elsif team_membership.long_run_goal? %>
-      <p class="text-soft">No season dates have been set for this team.</p>
     <% else %>
-      <p class="text-soft"><%= member_is_current ? 'You have' : "#{member.first_name} has" %> not set a personal long run goal, and season dates have not been set for this team.</p>
+      <p class="text-soft">No season dates have been set for this team.</p>
     <% end %>
   </div>
 <% end %>

@@ -23,9 +23,9 @@ class Event < ApplicationRecord
 
   # Scopes
   scope :upcoming, -> { where('start_date > ?', Date.current) }
-  scope :current, -> { where('? BETWEEN start_date AND end_date', Date.current) }
+  scope :current, -> { where('start_date <= ? AND end_date >= ?', Date.current, Date.current) }
   scope :past, -> { where('end_date < ?', Date.current) }
-  scope :starting_soon, -> { where(start_date: Date.current..7.days.from_now) }
+  scope :starting_soon, -> { where(start_date: Date.tomorrow..7.days.from_now) }
 
   # Methods
   def upcoming? = start_date.after? Date.current

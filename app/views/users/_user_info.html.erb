@@ -21,7 +21,9 @@
 
     <!-- Record Streak Card -->
     <%= render 'shared/user_record_streak_card', user: user %>
+  </div>
 
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <!-- Total Miles Card -->
     <div class="card">
       <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Total Miles</h2>
@@ -91,7 +93,7 @@
       </p>
 
       <% if farthest_run.present? %>
-        <div class="flex items-center gap-4 mt-2">
+        <div class="flex flex-wrap items-center gap-4 mt-2">
           <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
             <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 shrink-0' %>
             <span class="whitespace-nowrap"><%= pretty_date(farthest_run.date, date_style: :absolute, month_format: :short, include_year: farthest_run.date.year != Date.current.year) %></span>
@@ -120,7 +122,7 @@
         <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Longest Run</h2>
         <p class="text-3xl font-bold"><%= clock_time_display(longest_run.duration) %></p>
 
-        <div class="flex items-center gap-4 mt-2">
+        <div class="flex flex-wrap items-center gap-4 mt-2">
           <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
             <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 shrink-0' %>
             <span class="whitespace-nowrap"><%= pretty_date(longest_run.date, date_style: :absolute, month_format: :short, include_year: longest_run.date.year != Date.current.year) %></span>
@@ -151,7 +153,7 @@
           <span class="text-base font-normal text-soft"><span class="font-normal">/mi</span></span>
         </p>
 
-        <div class="flex items-center gap-4 mt-2">
+        <div class="flex flex-wrap items-center gap-4 mt-2">
           <div class="text-soft text-sm font-semibold inline-flex items-center gap-1">
             <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 shrink-0' %>
             <span class="whitespace-nowrap"><%= pretty_date(fastest_run.date, date_style: :absolute, month_format: :short, include_year: fastest_run.date.year != Date.current.year) %></span>
