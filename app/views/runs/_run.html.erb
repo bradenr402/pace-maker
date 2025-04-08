@@ -78,37 +78,34 @@
       <% end %>
     <% end %>
 
-    <div class="max-lg:space-y-2 lg:flex items-center justify-between pt-4 mt-4 border-t dark:border-slate-700">
-      <% if details_view %>
-        <div class="sm:flex items-center gap-3 text-soft text-xs">
-          <span class="flex items-center gap-1.5">
-            <span class="font-semibold text-blue-500">Posted</span>
-            <%= pretty_datetime(run.created_at, date_style: :absolute, include_seconds: false, month_format: :short) %>
-          </span>
-
-          <% if run.edited? %>
-            <span class="max-sm:hidden bg-slate-500 rounded-full size-0.5 shrink-0"></span>
-
+    <% if details_view || run.strava_url? %>
+      <div class="max-lg:space-y-2 lg:flex items-center justify-between pt-4 mt-4 border-t dark:border-slate-700">
+        <% if details_view %>
+          <div class="sm:flex items-center gap-3 text-soft text-xs">
             <span class="flex items-center gap-1.5">
-              <span class="font-semibold text-orange-500">Edited</span>
-              <%= pretty_datetime(run.updated_at, date_style: :absolute, include_seconds: false, month_format: :short) %>
+              <span class="font-semibold text-blue-500">Posted</span>
+              <%= pretty_datetime(run.created_at, date_style: :absolute, include_seconds: false, month_format: :short) %>
             </span>
-          <% end %>
-        </div>
-      <% end %>
 
-      <% if run.strava_url? %>
-        <div class="text-[#fc5200] flex items-center gap-1.5">
-          <%= link_to 'View on Strava', run.strava_url, target: :_blank, class: 'cursor-pointer font-semibold hover:underline focus:ring-transparent text-xs' %>
-          <%= inline_svg_tag 'icons/external-link-filled.svg', class: 'size-3 shrink-0' %>
-        </div>
-      <% else %>
-        <div class="text-[#fc5200] flex items-center gap-1.5">
-          <%= link_to 'View on Strava', run&.strava_url, target: :_blank, class: 'cursor-pointer font-semibold hover:underline focus:ring-transparent text-xs' %>
-          <%= inline_svg_tag 'icons/external-link-filled.svg', class: 'size-3 shrink-0' %>
-        </div>
-      <% end %>
-    </div>
+            <% if run.edited? %>
+              <span class="max-sm:hidden bg-slate-500 rounded-full size-0.5 shrink-0"></span>
+
+              <span class="flex items-center gap-1.5">
+                <span class="font-semibold text-orange-500">Edited</span>
+                <%= pretty_datetime(run.updated_at, date_style: :absolute, include_seconds: false, month_format: :short) %>
+              </span>
+            <% end %>
+          </div>
+        <% end %>
+
+        <% if run.strava_url? %>
+          <div class="text-[#fc5200] flex items-center gap-1.5">
+            <%= link_to 'View on Strava', run.strava_url, target: :_blank, rel: 'noopener', class: 'cursor-pointer font-semibold hover:underline focus:ring-transparent text-xs' %>
+            <%= inline_svg_tag 'icons/external-link-filled.svg', class: 'size-3 shrink-0' %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 
   <%= render 'runs/actions', run: run %>
