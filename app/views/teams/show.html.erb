@@ -119,8 +119,6 @@
           <span>Calendar</span>
         <% end %>
 
-        <!-- TODO: ask Dad if he wants this here or would prefer not having it -->
-        <!-- If not, delete the `icons/asterisk-filled.svg` file -->
         <%= link_to team_calendar_path(@team, tab: 'eventsTab'), class: 'btn btn-white btn-muted gap-2 max-sm:grow' do %>
           <%= inline_svg_tag 'icons/asterisk-filled.svg', class: 'size-5 shrink-0 -m-0.5 -ml-1' %>
           <span>Events</span>

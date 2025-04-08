@@ -11,7 +11,6 @@ class Event < ApplicationRecord
 
   # Normalizations
   normalizes :link, with: ->(link) { link&.strip }
-  # TODO: normalizes :link, &:strip
 
   # Validations
   validates :title, presence: true
