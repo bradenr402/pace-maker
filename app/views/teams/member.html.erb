@@ -1,6 +1,6 @@
 <% content_for :title, "#{@member.default_name} • #{@team.name}" %>
 
-<div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="infoTab" class="max-w-4xl mx-auto my-16">
+<div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="member_info" data-tabs-tab-url-value="<%= team_member_tab_path(@team, @member, tab: ':tab_id') %>" class="max-w-4xl mx-auto my-16">
   <div class="mb-6 text-center">
     <div class="mb-6 flex justify-center">
       <div class="relative">
@@ -62,27 +62,27 @@
       <!-- Tab Indicator -->
       <span data-tabs-target="indicator" class="sliding-tab-indicator"></span>
 
-      <button type="button" id="infoTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'infoTab' ? 'btn-tab-active' : '' %>">
+      <button type="button" id="member_info" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'member_info' ? 'btn-tab-active' : '' %>">
         <%= inline_svg_tag 'icons/info.svg', class: 'size-4 md:size-5' %>
         <span>Member Info</span>
       </button>
 
-      <button type="button" id="teamsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'teamsTab' ? 'btn-tab-active' : '' %>">
+      <button type="button" id="teams" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'teams' ? 'btn-tab-active' : '' %>">
         <%= inline_svg_tag 'icons/team.svg', class: 'size-4 md:size-5' %>
         <span>Teams</span>
       </button>
 
-      <button type="button" id="runsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab gap-2 <%= params[:tab] == 'runsTab' ? 'btn-tab-active' : '' %>">
+      <button type="button" id="runs" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab gap-2 <%= params[:tab] == 'runs' ? 'btn-tab-active' : '' %>">
         <%= inline_svg_tag 'icons/runner.svg', class: 'size-3.5 md:size-4.5' %>
         <span>Runs</span>
       </button>
 
-      <button type="button" id="badgesTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'badgesTab' ? 'btn-tab-active' : '' %>">
+      <button type="button" id="badges" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'badges' ? 'btn-tab-active' : '' %>">
         <%= inline_svg_tag 'icons/medal.svg', class: 'size-4 md:size-5' %>
         <span>Badges</span>
       </button>
 
-      <button type="button" id="trendsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'trendsTab' ? 'btn-tab-active' : '' %>">
+      <button type="button" id="trends" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'trends' ? 'btn-tab-active' : '' %>">
         <%= inline_svg_tag 'icons/arrow-trending-up.svg', class: 'size-4 md:size-5' %>
         <span>Trends</span>
       </button>
@@ -94,24 +94,28 @@
     </button>
   </div>
 
-  <div id="infoTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'infoTab' ? '' : 'hidden' %>">
-    <%= render 'teams/member/member_info', member: @member, team: @team, team_membership: @team_membership %>
-    <%= render 'users/contact', user: @member %>
+  <div id="member_info" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'member_info' ? '' : 'hidden' %>">
+    <!-- Placeholder for member_info Tab -->
+    <%= render 'shared/tab_loader' %>
   </div>
 
-  <div id="teamsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'teamsTab' ? '' : 'hidden' %>">
-    <%= render 'users/teams', user: @member, owned_teams: @owned_teams, membered_teams: @membered_teams %>
+  <div id="teams" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'teams' ? '' : 'hidden' %>">
+    <!-- Placeholder for teams Tab -->
+    <%= render 'shared/tab_loader' %>
   </div>
 
-  <div id="runsTab" data-tabs-target="tab" class="<%= params[:tab] == 'runsTab' ? '' : 'hidden' %>">
-    <%= render 'users/runs_filter', user: @member, team: @team %>
+  <div id="runs" data-tabs-target="tab" class="<%= params[:tab] == 'runs' ? '' : 'hidden' %>">
+    <!-- Placeholder for runs Tab -->
+    <%= render 'shared/tab_loader' %>
   </div>
 
-  <div id="badgesTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'badgesTab' ? '' : 'hidden' %>">
-    <%= render 'teams/member/badges', member: @member, team: @team, team_membership: @team_membership %>
+  <div id="badges" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'badges' ? '' : 'hidden' %>">
+    <!-- Placeholder for badges Tab -->
+    <%= render 'shared/tab_loader' %>
   </div>
 
-  <div id="trendsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'trendsTab' ? '' : 'hidden' %>">
-    <%= render 'teams/member/trends', member: @member, team: @team %>
+  <div id="trends" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'trends' ? '' : 'hidden' %>">
+    <!-- Placeholder for trends Tab -->
+    <%= render 'shared/tab_loader' %>
   </div>
 </div>

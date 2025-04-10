@@ -1,23 +1,29 @@
-<%= turbo_stream.replace 'teamMembers' do %>
-  <div class="mb-10">
-    <%= render 'teams/show/member_list', team: @team, members: @members %>
-  </div>
+<% if @tab == 'members' %>
+  <%= turbo_stream.replace 'teamMembers' do %>
+    <div class="mb-10">
+      <%= render 'teams/show/member_list', team: @team, members: @members %>
+    </div>
+  <% end %>
 <% end %>
 
-<%= turbo_stream.replace 'rankings_date_form' do %>
-  <%= render 'teams/show/rankings_date_form', team: @team %>
+<% if @tab == 'rankings' %>
+  <%= turbo_stream.replace 'rankings_date_form' do %>
+    <%= render 'teams/show/rankings_date_form', team: @team %>
+  <% end %>
+
+  <%= turbo_stream.replace 'teamRankings' do %>
+    <%= render 'teams/show/rankings_table', team: @team, date_range: @rankings_date_range, date_range_description: @rankings_date_range_description %>
+  <% end %>
 <% end %>
 
-<%= turbo_stream.replace 'teamRankings' do %>
-  <%= render 'teams/show/rankings_table', team: @team, date_range: @rankings_date_range, date_range_description: @rankings_date_range_description %>
-<% end %>
+<% if @tab == 'trends' %>
+  <%= turbo_stream.replace 'trends_date_form' do %>
+    <%= render 'teams/show/trends_date_form', team: @team %>
+  <% end %>
 
-<%= turbo_stream.replace 'trends_date_form' do %>
-  <%= render 'teams/show/trends_date_form', team: @team %>
-<% end %>
-
-<%= turbo_stream.replace 'teamTrends' do %>
-  <div id="teamTrends">
-    <%= render 'teams/show/trends_graphs', team: @team, date_range: @trends_date_range, date_range_description: @trends_date_range_description %>
-  </div>
+  <%= turbo_stream.replace 'teamTrends' do %>
+    <div id="teamTrends">
+      <%= render 'teams/show/trends_graphs', team: @team, date_range: @trends_date_range, date_range_description: @trends_date_range_description %>
+    </div>
+  <% end %>
 <% end %>

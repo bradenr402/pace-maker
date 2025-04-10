@@ -17,10 +17,10 @@
 
   <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 mb-4">
     <!-- Current Streak Card -->
-    <%= render 'shared/user_current_streak_card', user: user %>
+    <%= render 'shared/user_current_streak_card', user:, streak_data: @current_streak_data %>
 
     <!-- Record Streak Card -->
-    <%= render 'shared/user_record_streak_card', user: user %>
+    <%= render 'shared/user_record_streak_card', user:, streak_data: @record_streak_data %>
   </div>
 
   <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 mb-4">
@@ -175,3 +175,5 @@
     <% end %>
   </div>
 </div>
+
+<%= render 'contact', user: %>

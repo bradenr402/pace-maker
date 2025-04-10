@@ -1,7 +1,11 @@
+<% runs_date_range_param = params[:runs_date_range] || @runs_date_range_param || 'this_week' %>
+
 <% team ||= nil %>
 
 <div id="runs_date_form" class="mb-10">
   <%= form_with url: (team ? team_member_path(team, user) : user_path(user)), method: :get, html: { novalidate: true }, data: { turbo_stream: true, controller: 'custom-date-range form-validation' } do |form| %>
+    <%= form.hidden_field :tab, value: 'runs' %>
+
     <div class="form-group">
       <%= form.label :run_date_range, 'Select date range', class: 'form-label' %>
 
@@ -16,7 +20,7 @@
 
         <% date_options.each do |option| %>
           <div>
-            <%= form.radio_button :run_date_range, option[:value], id: "run_date_range_#{option[:value]}", checked: (option[:value] == @runs_date_range_param), class: 'hidden peer', data: { custom_date_range_target: 'radio', action: "custom-date-range##{option[:value] == 'custom_range' ? 'update' : 'search'}" } %>
+            <%= form.radio_button :run_date_range, option[:value], id: "run_date_range_#{option[:value]}", checked: (option[:value] == runs_date_range_param), class: 'hidden peer', data: { custom_date_range_target: 'radio', action: "custom-date-range##{option[:value] == 'custom_range' ? 'update' : 'search'}" } %>
             <%= form.label "run_date_range_#{option[:value]}", option[:name], class: 'form-radio-chip-label' %>
           </div>
         <% end %>

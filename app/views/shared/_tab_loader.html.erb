@@ -1,0 +1,8 @@
+<div class="grid place-items-center my-24">
+  <div class="flex items-center gap-2">
+    <%= inline_svg_tag 'icons/spinner.svg', class: 'size-5 animate-spin' %>
+    <span class="text-sm whitespace-nowrap font-semibold">
+      <% "Loading...".chars.each_with_index do |char, index| %><span class="animate-pulse-fast" style="animation-delay:<%= index * 0.15 %>s"><%= char %></span><% end %>
+    </span>
+  </div>
+</div>

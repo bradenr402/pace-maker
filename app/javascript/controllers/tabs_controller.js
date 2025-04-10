@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
+import 'chartkick';
 
 // Connects to data-controller="tabs"
 export default class extends Controller {
@@ -6,31 +7,32 @@ export default class extends Controller {
   static targets = ['btn', 'tab', 'container', 'leftArrow', 'rightArrow', 'indicator'];
   static values = {
     defaultTab: String,
+    tabUrl: String,
     scrollFraction: { type: Number, default: 0.8 },
   };
 
   connect() {
-    if (this.hasLeftArrowTarget && this.hasRightArrowTarget)
-      this._updateArrows();
+    super.connect();
+    if (this.hasLeftArrowTarget && this.hasRightArrowTarget) this._updateArrows();
 
     if (this.hasContainerTarget)
       this.containerTarget.addEventListener(
         'scroll',
-        this._debounce(this._updateArrows.bind(this))
+        this._debounce(this._updateArrows.bind(this)),
       );
 
     this._selectInitialTab();
+
+    this.preloadTabs();
   }
 
   scrollLeft() {
-    const scrollAmount =
-      this.containerTarget.offsetWidth * this.scrollFractionValue;
+    const scrollAmount = this.containerTarget.offsetWidth * this.scrollFractionValue;
     this.containerTarget.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
   }
 
   scrollRight() {
-    const scrollAmount =
-      this.containerTarget.offsetWidth * this.scrollFractionValue;
+    const scrollAmount = this.containerTarget.offsetWidth * this.scrollFractionValue;
     this.containerTarget.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   }
 
@@ -42,9 +44,50 @@ export default class extends Controller {
       this._updateTabVisibility(selectedTabId);
       this._updateUrlWithTab(selectedTabId);
       this._scrollToTab(event.currentTarget);
+      this.loadTabContent(selectedTabId);
     }
 
     this._updateTabIndicator(event.currentTarget);
+  }
+
+  loadTabContent(tabId) {
+    if (!this.tabUrlValue) return;
+    if (!this.tabTargets) return;
+
+    const tabElement = this.tabTargets.find((tab) => tab.id === tabId);
+    if (!tabElement || tabElement.dataset.loaded === 'true') return;
+
+    const url = this.tabUrlValue.replace('%3Atab_id', tabId);
+
+    fetch(url)
+      .then((response) => response.text())
+      .then((html) => {
+        tabElement.innerHTML = html;
+        tabElement.dataset.loaded = 'true';
+
+        this.rerunScripts(tabElement); // Reinitialize Chartkick charts
+      })
+      .catch((error) => console.error('Error loading tab content:', error));
+  }
+
+  preloadTabs() {
+    this.tabTargets.forEach((tab) => {
+      if (!tab.dataset.loaded) setTimeout(() => this.loadTabContent(tab.id), 2000);
+    });
+  }
+
+  rerunScripts(element) {
+    element.querySelectorAll('script').forEach((script) => {
+      const newScript = document.createElement('script');
+
+      if (script.src) {
+        newScript.src = script.src;
+        newScript.async = false;
+      } else {
+        newScript.textContent = script.textContent;
+      }
+      script.replaceWith(newScript);
+    });
   }
 
   _selectInitialTab() {
@@ -52,6 +95,8 @@ export default class extends Controller {
     const urlParams = new URLSearchParams(window.location.search);
     const tabParam = urlParams.get('tab');
     const initialTab = tabParam || this.defaultTabValue;
+
+    this.loadTabContent(initialTab);
 
     this._updateTabVisibility(initialTab);
 

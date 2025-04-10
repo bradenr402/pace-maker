@@ -1,13 +1,12 @@
 <% team ||= nil %>
-<% unless local_assigns[:streak] && local_assigns[:start_date] && local_assigns[:end_date] %>
-  <% streak_data = user.record_streak(team) %>
-  <% streak = streak_data[:streak] %>
-  <% start_date = streak_data[:start_date] %>
-  <% end_date = streak_data[:end_date] %>
-<% end %>
+<% streak_data ||= user.record_streak(team) %>
+
+<% streak = streak_data[:streak] %>
+<% start_date = streak_data[:start_date] %>
+<% end_date = streak_data[:end_date] %>
 
 <div class="card flex flex-col">
-  <h2 class="mb-6 text-lg font-semibold text-light"><%= 'Your' if current_page?(root_path) %> Record Streak</h2>
+  <h2 class="mb-6 text-lg font-semibold text-light"><%= 'Your' if current_page?(root_path) %> Record Streak <%= "for #{team.name}" if team %></h2>
   <p class="text-3xl font-bold">
     <%= streak %>
     <span class="text-base font-normal text-soft"><%= 'day'.pluralize(streak) %></span>

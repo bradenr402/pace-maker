@@ -5,16 +5,44 @@ class UsersController < ApplicationController
   def show
     add_breadcrumb @user.default_name, user_path(@user)
 
-    @owned_teams = @user.owned_teams.with_attached_photo.includes(:owner)
-    @membered_teams = @user.membered_teams.with_attached_photo.includes(:owner)
-
-    @runs, @runs_date_range = get_runs_and_date_range
-    @runs_date_range_param = params[:run_date_range] || 'this_week'
+    @tab = params[:tab]
+    if @tab == 'runs'
+      @runs, @runs_date_range = get_runs_and_date_range
+      @runs_date_range_param = params[:run_date_range] || 'this_week'
+    end
 
     respond_to do |format|
       format.html
       format.turbo_stream
     end
+  end
+
+  def tab
+    @user = User.find(params[:user_id])
+    @tab = params[:tab]
+
+    allowed_tabs = %w[user_info teams runs]
+    raise ActionController::RoutingError, 'Not Found' unless allowed_tabs.include?(@tab)
+
+    case @tab
+    when 'user_info'
+      @current_streak_data = @user.current_streak
+      @record_streak_data = @user.record_streak
+    when 'teams'
+      @owned_teams = @user.owned_teams.with_attached_photo.includes(:owner)
+      @membered_teams = @user.membered_teams.with_attached_photo.includes(:owner)
+    when 'runs'
+      @runs, @runs_date_range = get_runs_and_date_range
+      @runs_date_range_param = params[:run_date_range] || 'this_week'
+    end
+
+    render partial: "users/#{@tab}", locals: {
+      user: @user,
+      owned_teams: @owned_teams,
+      membered_teams: @membered_teams,
+      runs: @runs,
+      runs_date_range: @runs_date_range
+    }
   end
 
   def calendar

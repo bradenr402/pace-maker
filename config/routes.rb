@@ -71,6 +71,7 @@ Rails.application.routes.draw do
       delete 'unlink_google_account'
       delete 'unlink_strava_account'
     end
+    get :tab, to: 'users#tab', as: :tab
     get :calendar, to: 'users#calendar', as: :calendar
   end
   get '/profile', to: 'users#profile'
@@ -87,14 +88,17 @@ Rails.application.routes.draw do
     end
 
     member do
-      post :remove_member
       post :join
       post :leave
     end
+    post 'remove_member/:user_id', to: 'teams#remove_member', as: :remove_member
+
+    get :tab, to: 'teams#tab', as: :tab
     get :calendar, to: 'teams#calendar', as: :calendar
     resources :events, only: %i[create update destroy]
 
     get 'member/:user_id', to: 'teams#member', as: :member
+    get 'member/:user_id/tab', to: 'teams#member_tab', as: :member_tab
     get 'member/:user_id/calendar', to: 'teams#member_calendar', as: :member_calendar
     resources :team_memberships, param: :user_id, only: %i[edit update]
 

@@ -34,7 +34,7 @@
     </div>
   <% end %>
 
-  <div id="runs">
+  <div id="runs-list">
     <% if @runs.present? %>
       <% if 'this'.in?(@runs_date_range) %>
         <p class="mt-6 mb-2 text-sm text-light"><%= user_is_current ? 'You have' : "#{user.first_name} has" %> logged <%= pluralize(@runs.count, 'run') %> <%= @runs_date_range %>.</p>

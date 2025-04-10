@@ -1,6 +1,6 @@
 <% content_for :title, @user.default_name %>
 
-<div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="infoTab" class="max-w-4xl mx-auto my-16">
+<div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="user_info" data-tabs-tab-url-value="<%= user_tab_path(@user, tab: ':tab_id') %>" class="max-w-4xl mx-auto my-16">
   <div class="mb-6 text-center">
     <div class="mb-4 flex justify-center">
       <%= render 'shared/user_photo', user: @user, size: :lg %>
@@ -41,17 +41,17 @@
       <!-- Tab Indicator -->
       <span data-tabs-target="indicator" class="sliding-tab-indicator"></span>
 
-      <button type="button" id="infoTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'infoTab' ? 'btn-tab-active' : '' %>">
+      <button type="button" id="user_info" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'user_info' ? 'btn-tab-active' : '' %>">
         <%= inline_svg_tag 'icons/info.svg', class: 'size-4 md:size-5' %>
         <span>User Info</span>
       </button>
 
-      <button type="button" id="teamsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'teamsTab' ? 'btn-tab-active' : '' %>">
+      <button type="button" id="teams" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'teams' ? 'btn-tab-active' : '' %>">
         <%= inline_svg_tag 'icons/team.svg', class: 'size-4 md:size-5' %>
         <span>Teams</span>
       </button>
 
-      <button type="button" id="runsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab gap-2 <%= params[:tab] == 'runsTab' ? 'btn-tab-active' : '' %>">
+      <button type="button" id="runs" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab gap-2 <%= params[:tab] == 'runs' ? 'btn-tab-active' : '' %>">
         <%= inline_svg_tag 'icons/runner.svg', class: 'size-3.5 md:size-4.5' %>
         <span>Runs</span>
       </button>
@@ -63,16 +63,18 @@
     </button>
   </div>
 
-  <div id="infoTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'infoTab' ? '' : 'hidden' %>">
-    <%= render 'user_info', user: @user %>
-    <%= render 'contact', user: @user %>
+  <div id="user_info" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'user_info' ? '' : 'hidden' %>">
+    <!-- Placeholder for user_info Tab -->
+    <%= render 'shared/tab_loader' %>
   </div>
 
-  <div id="teamsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'teamsTab' ? '' : 'hidden' %>">
-    <%= render 'teams', user: @user, owned_teams: @owned_teams, membered_teams: @membered_teams %>
+  <div id="teams" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'teams' ? '' : 'hidden' %>">
+    <!-- Placeholder for teams Tab -->
+    <%= render 'shared/tab_loader' %>
   </div>
 
-  <div id="runsTab" data-tabs-target="tab" class="<%= params[:tab] == 'runsTab' ? '' : 'hidden' %>">
-    <%= render 'runs_filter', user: @user %>
+  <div id="runs" data-tabs-target="tab" class="<%= params[:tab] == 'runs' ? '' : 'hidden' %>">
+    <!-- Placeholder for runs Tab -->
+    <%= render 'shared/tab_loader' %>
   </div>
 </div>

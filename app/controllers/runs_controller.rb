@@ -5,7 +5,7 @@ class RunsController < ApplicationController
 
   def show
     add_breadcrumb @run.user.default_name, user_path(@run.user)
-    add_breadcrumb 'Runs', user_path(@run.user, tab: 'runsTab')
+    add_breadcrumb 'Runs', user_path(@run.user, tab: 'runs')
     add_breadcrumb "#{@run.distance} mi run by #{@run.user.default_name}", run_path(@run)
 
     @comments = @run.comments.active
@@ -19,7 +19,7 @@ class RunsController < ApplicationController
 
   def details
     add_breadcrumb @run.user.default_name, user_path(@run.user)
-    add_breadcrumb 'Runs', user_path(@run.user, tab: 'runsTab')
+    add_breadcrumb 'Runs', user_path(@run.user, tab: 'runs')
     add_breadcrumb "#{@run.distance} mi run by #{@run.user.default_name}", run_path(@run)
     add_breadcrumb 'Run Details', run_details_path(@run)
 
@@ -69,7 +69,7 @@ class RunsController < ApplicationController
 
   def edit
     add_breadcrumb @run.user.default_name, user_path(@run.user)
-    add_breadcrumb 'Runs', user_path(@run.user, tab: 'runsTab')
+    add_breadcrumb 'Runs', user_path(@run.user, tab: 'runs')
     add_breadcrumb "#{@run.distance} mi run by #{@run.user.default_name}", run_path(@run)
     add_breadcrumb 'Edit Run', edit_run_path(@run)
   end

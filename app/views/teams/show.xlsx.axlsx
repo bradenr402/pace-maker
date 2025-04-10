@@ -6,7 +6,7 @@ wb.styles do |style|
 
   wb.add_worksheet(name: "All") do |sheet|
     # Add a title row
-    sheet.add_row ["#{@team.name}#{@team.require_gender? ? ' All Athletes ' : ' '}Team Rankings #{@date_range_description.titlecase}", "Downloaded on #{@pretty_timestamp}"], style: project_heading
+    sheet.add_row ["#{@team.name}#{@team.require_gender? ? ' All Athletes ' : ' '}Team Rankings #{@rankings_date_range_description.titlecase}", "Downloaded on #{@pretty_timestamp}"], style: project_heading
 
     # Create the header row
     if @team.require_gender?
@@ -33,16 +33,16 @@ wb.styles do |style|
         sheet.add_row [
           member.display_name? ? "#{member.default_name} (#{member.username})" : member.username,
           member.gender.present? ? member.gender.capitalize : '—',
-          member.miles_in_date_range(@date_range),
-          member.long_runs_in_date_range(@team, @date_range),
+          member.miles_in_date_range(@rankings_date_range),
+          member.total_long_runs_in_date_range(@team, @rankings_date_range),
           member.current_streak(@team)[:streak],
           member.record_streak(@team)[:streak]
         ]
       else
         sheet.add_row [
           member.display_name? ? "#{member.default_name} (#{member.username})" : member.username,
-          member.miles_in_date_range(@date_range),
-          member.long_runs_in_date_range(@team, @date_range),
+          member.miles_in_date_range(@rankings_date_range),
+          member.total_long_runs_in_date_range(@team, @rankings_date_range),
           member.current_streak(@team)[:streak],
           member.record_streak(@team)[:streak]
         ]
@@ -53,7 +53,7 @@ wb.styles do |style|
   if @team.require_gender?
     wb.add_worksheet(name: "Male") do |sheet|
       # Add a title row
-      sheet.add_row ["#{@team.name} Male Athletes Team Rankings #{@date_range_description.titlecase}", "Downloaded on #{@pretty_timestamp}"], style: project_heading
+      sheet.add_row ["#{@team.name} Male Athletes Team Rankings #{@rankings_date_range_description.titlecase}", "Downloaded on #{@pretty_timestamp}"], style: project_heading
 
     # Create the header row
     if @team.require_gender?
@@ -80,16 +80,16 @@ wb.styles do |style|
           sheet.add_row [
             member.display_name? ? "#{member.default_name} (#{member.username})" : member.username,
             member.gender.present? ? member.gender.capitalize : '—',
-            member.miles_in_date_range(@date_range),
-            member.long_runs_in_date_range(@team, @date_range),
+            member.miles_in_date_range(@rankings_date_range),
+            member.total_long_runs_in_date_range(@team, @rankings_date_range),
             member.current_streak(@team)[:streak],
             member.record_streak(@team)[:streak]
           ]
         else
           sheet.add_row [
             member.display_name? ? "#{member.default_name} (#{member.username})" : member.username,
-            member.miles_in_date_range(@date_range),
-            member.long_runs_in_date_range(@team, @date_range),
+            member.miles_in_date_range(@rankings_date_range),
+            member.total_long_runs_in_date_range(@team, @rankings_date_range),
             member.current_streak(@team)[:streak],
             member.record_streak(@team)[:streak]
           ]
@@ -99,7 +99,7 @@ wb.styles do |style|
 
     wb.add_worksheet(name: "Female") do |sheet|
       # Add a title row
-      sheet.add_row ["#{@team.name} Female Athletes Team Rankings #{@date_range_description.titlecase}", "Downloaded on #{@pretty_timestamp}"], style: project_heading
+      sheet.add_row ["#{@team.name} Female Athletes Team Rankings #{@rankings_date_range_description.titlecase}", "Downloaded on #{@pretty_timestamp}"], style: project_heading
 
     # Create the header row
     if @team.require_gender?
@@ -126,16 +126,16 @@ wb.styles do |style|
           sheet.add_row [
             member.display_name? ? "#{member.default_name} (#{member.username})" : member.username,
             member.gender.present? ? member.gender.capitalize : '—',
-            member.miles_in_date_range(@date_range),
-            member.long_runs_in_date_range(@team, @date_range),
+            member.miles_in_date_range(@rankings_date_range),
+            member.total_long_runs_in_date_range(@team, @rankings_date_range),
             member.current_streak(@team)[:streak],
             member.record_streak(@team)[:streak]
           ]
         else
           sheet.add_row [
             member.display_name? ? "#{member.default_name} (#{member.username})" : member.username,
-            member.miles_in_date_range(@date_range),
-            member.long_runs_in_date_range(@team, @date_range),
+            member.miles_in_date_range(@rankings_date_range),
+            member.total_long_runs_in_date_range(@team, @rankings_date_range),
             member.current_streak(@team)[:streak],
             member.record_streak(@team)[:streak]
           ]

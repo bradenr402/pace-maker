@@ -184,9 +184,8 @@ module UserCalculations
 
   def record_streak(team = nil)
     min_distance = min_distance team
-
-    # Cache expiration based on the most recent `updated_at` of user's runs
     last_updated_at = runs.maximum(:updated_at)
+
     Rails.cache.fetch("#{cache_key_with_version}/record_streak/#{last_updated_at}") do
       dates_with_runs = runs.where('distance >= ?', min_distance)
                             .order(date: :desc).pluck(:date).uniq
@@ -194,23 +193,29 @@ module UserCalculations
       return { streak: 0, start_date: nil, end_date: nil } unless dates_with_runs.present?
 
       longest_streak = 0
-      longest_start_date = nil
-      longest_end_date = nil
+      longest_start = nil
+      longest_end = nil
+      checked_dates = Set.new
 
-      dates_with_runs.each_cons(2) do |curr_date, _prev_date|
-        streak_data = streak_on_date(team, curr_date)
-        streak = streak_data[:streak]
-        start_date = streak_data[:start_date]
-        end_date = streak_data[:end_date]
+      dates_with_runs.each do |date|
+        next if checked_dates.include?(date)
+
+        result = streak_on_date(team, date)
+        streak = result[:streak]
+        start_date = result[:start_date]
+        end_date = result[:end_date]
+
+        # Mark all dates in this streak as checked
+        (start_date..end_date).each { checked_dates.add(_1) } if start_date && end_date
 
         next unless streak > longest_streak
 
         longest_streak = streak
-        longest_start_date = start_date
-        longest_end_date = end_date
+        longest_start = start_date
+        longest_end = end_date
       end
 
-      { streak: longest_streak, start_date: longest_start_date, end_date: longest_end_date }
+      { streak: longest_streak, start_date: longest_start, end_date: longest_end }
     end
   end
 

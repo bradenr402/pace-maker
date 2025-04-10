@@ -3,6 +3,8 @@
 
 <div id="trends_date_form">
   <%= form_with url: team_path(team), method: :get, html: { novalidate: true }, data: { turbo_stream: true, controller: 'custom-date-range form-validation' } do |form| %>
+    <%= form.hidden_field :tab, value: 'trends' %>
+
     <div class="form-group">
       <%= form.label :trends_date_range, 'Select date range', class: 'form-label' %>
 

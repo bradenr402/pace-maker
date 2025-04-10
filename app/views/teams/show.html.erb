@@ -46,7 +46,7 @@
   </div>
 <% end %>
 
-<div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="infoTab" class="max-w-4xl mx-auto">
+<div data-controller="tabs" data-tabs-active-class="btn-tab-active" data-tabs-default-tab-value="team_info" data-tabs-tab-url-value="<%= team_tab_path(@team, tab: ':tab_id') %>" class="max-w-4xl mx-auto">
   <div class="mb-6 pb-6 border-b border-slate-200 dark:border-slate-700">
     <div class="flex max-sm:flex-col max-sm:text-center items-start max-sm:items-center gap-2.5 sm:gap-4 mb-6">
       <div class="shrink-0 max-sm:mx-auto">
@@ -102,7 +102,7 @@
       <% if @current_user_member_of_team %>
         <div class="relative max-sm:grow">
           <%= link_to team_topics_path(@team), class: 'btn btn-white btn-muted gap-2 max-sm:w-full' do %>
-            <%= inline_svg_tag 'icons/message-bubble-filled.svg', class: 'size-4 shrink-0' %>
+            <%= inline_svg_tag 'icons/message-bubble-filled.svg', class: 'size-4 shrink-0 -ml-[3px]' %>
             <span>Messages</span>
           <% end %>
 
@@ -115,12 +115,12 @@
         </div>
 
         <%= link_to team_calendar_path(@team), class: 'btn btn-white btn-muted gap-2 max-sm:grow' do %>
-          <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-4 shrink-0' %>
+          <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-4 shrink-0 -ml-[3px]' %>
           <span>Calendar</span>
         <% end %>
 
         <%= link_to team_calendar_path(@team, tab: 'eventsTab'), class: 'btn btn-white btn-muted gap-2 max-sm:grow' do %>
-          <%= inline_svg_tag 'icons/asterisk-filled.svg', class: 'size-5 shrink-0 -m-0.5 -ml-1' %>
+          <%= inline_svg_tag 'icons/asterisk-filled.svg', class: 'size-5 shrink-0 -m-0.5 -ml-[5px]' %>
           <span>Events</span>
         <% end %>
       <% end %>
@@ -145,25 +145,25 @@
             <% show_either = show_phone || show_email %>
 
             <%= link_to team_member_path(@team, @team.owner), class: "btn btn-sm btn-dark dark:btn-light gap-1.5 #{'grow' if show_either}" do %>
-              <%= inline_svg_tag 'icons/profile-filled.svg', class: 'size-3.5' %>
+              <%= inline_svg_tag 'icons/profile-filled.svg', class: 'size-3.5 shrink-0 -ml-px' %>
               <span class="whitespace-nowrap">Profile</span>
             <% end %>
 
             <% if show_phone %>
               <%= sms_to @team.owner.phone_number, class: 'btn btn-sm btn-white gap-1.5 grow' do %>
-                <%= inline_svg_tag 'icons/message-bubble-filled.svg', class: 'size-3.5' %>
+                <%= inline_svg_tag 'icons/message-bubble-filled.svg', class: 'size-3.5 shrink-0 -ml-px' %>
                 <span>Text</span>
               <% end %>
 
               <%= phone_to @team.owner.phone_number, class: 'btn btn-sm btn-white gap-1.5 grow' do %>
-                <%= inline_svg_tag 'icons/phone-filled.svg', class: 'size-3.5' %>
+                <%= inline_svg_tag 'icons/phone-filled.svg', class: 'size-3.5 shrink-0 -ml-px' %>
                 <span>Call</span>
               <% end %>
             <% end %>
 
             <% if show_email %>
               <%= mail_to @team.owner.email, class: 'btn btn-sm btn-white gap-1.5 grow' do %>
-                <%= inline_svg_tag 'icons/envelope-filled.svg', class: 'size-3.5' %>
+                <%= inline_svg_tag 'icons/envelope-filled.svg', class: 'size-3.5 shrink-0 -ml-px' %>
                 <span>Email</span>
               <% end %>
             <% end %>
@@ -183,18 +183,18 @@
       <!-- Tab Indicator -->
       <span data-tabs-target="indicator" class="sliding-tab-indicator"></span>
 
-      <button type="button" id="infoTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'infoTab' ? 'btn-tab-active' : '' %>">
+      <button type="button" id="team_info" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab].blank? || params[:tab] == 'team_info' ? 'btn-tab-active' : '' %>">
         <%= inline_svg_tag 'icons/info.svg', class: 'size-4 md:size-5' %>
         <span>Team Info</span>
       </button>
 
-      <button type="button" id="membersTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'membersTab' ? 'btn-tab-active' : '' %>">
+      <button type="button" id="members" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'members' ? 'btn-tab-active' : '' %>">
         <%= inline_svg_tag 'icons/team.svg', class: 'size-4 md:size-5' %>
         <span>Team Members</span>
       </button>
 
       <% if @current_user_owns_team %>
-        <button type="button" id="joinRequestsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="group btn-tab <%= params[:tab] == 'joinRequestsTab' ? 'btn-tab-active' : '' %>">
+        <button type="button" id="join_requests" data-tabs-target="btn" data-action="mousedown->tabs#select" class="group btn-tab <%= params[:tab] == 'join_requests' ? 'btn-tab-active' : '' %>">
           <%= inline_svg_tag 'icons/user-plus.svg', class: 'size-4 md:size-5' %>
           <span>Join Requests</span>
           <% if @join_requests.present? %>
@@ -204,22 +204,22 @@
       <% end %>
 
       <% if @current_user_member_of_team %>
-        <button type="button" id="rankingsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'rankingsTab' ? 'btn-tab-active' : '' %>">
+        <button type="button" id="rankings" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'rankings' ? 'btn-tab-active' : '' %>">
           <%= inline_svg_tag 'icons/arrow-transfer-vertical.svg', class: 'size-4 md:size-5' %>
           <span>Rankings</span>
         </button>
 
-        <button type="button" id="trendsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'trendsTab' ? 'btn-tab-active' : '' %>">
+        <button type="button" id="trends" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'trends' ? 'btn-tab-active' : '' %>">
           <%= inline_svg_tag 'icons/arrow-trending-up.svg', class: 'size-4 md:size-5' %>
           <span>Trends</span>
         </button>
 
-        <button type="button" id="featuredTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'featuredTab' ? 'btn-tab-active' : '' %>">
+        <button type="button" id="featured" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'featured' ? 'btn-tab-active' : '' %>">
           <%= inline_svg_tag 'icons/star.svg', class: 'size-4 md:size-5' %>
           <span>Featured</span>
         </button>
 
-        <button type="button" id="recentActivityTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'recentActivityTab' ? 'btn-tab-active' : '' %>">
+        <button type="button" id="recent_activity" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'recent_activity' ? 'btn-tab-active' : '' %>">
           <%= inline_svg_tag 'icons/clock.svg', class: 'size-4 md:size-5' %>
           <span>Recent Activity</span>
         </button>
@@ -232,49 +232,42 @@
     </button>
   </div>
 
-  <% cache [@team, "info_tab_#{current_user.id}", @team.season_progress, @team.mileage_goal_progress, @team.long_run_goal_progress], expires_in: 4.hours do %>
-    <div id="infoTab" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'infoTab' ? '' : 'hidden' %>">
-      <%= render 'teams/show/team_info', team: @team %>
-    </div>
-  <% end %>
+  <div id="team_info" data-tabs-target="tab" class="mb-24 <%= params[:tab].blank? || params[:tab] == 'team_info' ? '' : 'hidden' %>" data-action="tabs#loadTab">
+    <!-- Placeholder for team_info Tab -->
+    <%= render 'shared/tab_loader' %>
+  </div>
 
-  <% cache [@team, "members_tab_#{current_user.id}", @members.count], expires_in: 4.hours do %>
-    <div id="membersTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'membersTab' ? '' : 'hidden' %>">
-      <%= render 'teams/show/members', team: @team, members: @members %>
-    </div>
-  <% end %>
+  <div id="members" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'members' ? '' : 'hidden' %>" data-action="tabs#loadTab">
+    <!-- Placeholder for members Tab -->
+    <%= render 'shared/tab_loader' %>
+  </div>
 
   <% if @current_user_owns_team %>
-    <% cache [@team, "join_requests_tab_#{current_user.id}", @join_requests.count], expires_in: 4.hours do %>
-      <div id="joinRequestsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'joinRequestsTab' ? '' : 'hidden' %>">
-        <%= render 'teams/show/join_requests', join_requests: @join_requests %>
-      </div>
-    <% end %>
+    <div id="join_requests" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'join_requests' ? '' : 'hidden' %>" data-action="tabs#loadTab">
+      <!-- Placeholder for join_requests Tab -->
+    <%= render 'shared/tab_loader' %>
+    </div>
   <% end %>
 
   <% if @current_user_member_of_team %>
-    <% cache([@team, "rankings_tab_#{current_user.id}", @members.count], expires_in: 4.hours) do %>
-      <div id="rankingsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'rankingsTab' ? '' : 'hidden' %>">
-        <%= render 'teams/show/rankings', team: @team %>
-      </div>
-    <% end %>
+    <div id="rankings" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'rankings' ? '' : 'hidden' %>" data-action="tabs#loadTab">
+      <!-- Placeholder for rankings Tab -->
+      <%= render 'shared/tab_loader' %>
+    </div>
 
-    <% cache [@team, "trends_tab_#{current_user.id}", @team.season_progress, @team.mileage_goal_progress, @team.long_run_goal_progress], expires_in: 4.hours do %>
-      <div id="trendsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'trendsTab' ? '' : 'hidden' %>">
-        <%= render 'teams/show/trends', team: @team %>
-      </div>
-    <% end %>
+    <div id="trends" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'trends' ? '' : 'hidden' %>" data-action="tabs#loadTab">
+      <!-- Placeholder for trends Tab -->
+      <%= render 'shared/tab_loader' %>
+    </div>
 
-    <% cache [@team, "featured_tab_#{current_user.id}", @featured_runs.count], expires_in: 4.hours do %>
-      <div id="featuredTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'featuredTab' ? '' : 'hidden' %>">
-        <%= render 'teams/show/featured', team: @team %>
-      </div>
-    <% end %>
+    <div id="featured" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'featured' ? '' : 'hidden' %>" data-action="tabs#loadTab">
+      <!-- Placeholder for featured Tab -->
+      <%= render 'shared/tab_loader' %>
+    </div>
 
-    <% cache [@team, "recent_activity_tab_#{current_user.id}", @recent_runs.count], expires_in: 4.hours do %>
-      <div id="recentActivityTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'recentActivityTab' ? '' : 'hidden' %>">
-        <%= render 'teams/show/recent_activity', team: @team %>
-      </div>
-    <% end %>
+    <div id="recent_activity" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'recent_activity' ? '' : 'hidden' %>" data-action="tabs#loadTab">
+      <!-- Placeholder for recent_activity Tab -->
+      <%= render 'shared/tab_loader' %>
+    </div>
   <% end %>
 </div>

@@ -12,7 +12,7 @@ class CommentsController < ApplicationController
     end
 
     prepend_breadcrumb "#{parent.distance} mi run by #{parent.user.default_name}", run_path(parent)
-    prepend_breadcrumb 'Runs', user_path(parent.user, tab: 'runsTab')
+    prepend_breadcrumb 'Runs', user_path(parent.user, tab: 'runs')
     prepend_breadcrumb parent.user.default_name, user_path(parent.user)
 
     @likes = @comment.likes.includes(:user).where.not(user: nil)
