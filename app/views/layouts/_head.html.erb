@@ -1,5 +1,11 @@
-<title><%= content_for?(:title) ? "#{yield(:title)} / PaceMaker" : 'PaceMaker' %></title>
+<title><%= content_for?(:title) ? yield(:title) : 'PaceMaker' %></title>
+
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="PaceMaker: The all-in-one platform for cross country runners, teams, and coaches to set goals, track progress, and stay connected.">
+
+<!-- Canonical URL -->
+<link rel="canonical" href="https://pace-maker.onrender.com<%= request.fullpath %>">
 
 <!-- PWA tags -->
 <meta name="mobile-web-app-capable" content="yes">

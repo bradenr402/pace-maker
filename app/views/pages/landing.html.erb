@@ -6,8 +6,9 @@
     </div>
 
     <h1 class="mx-auto max-w-7xl font-extrabold tracking-tight text-balance text-5xl sm:text-6xl md:text-7xl">
-      <p>Measure Your Progress.</p>
-      <p class="mt-2 bg-gradient-to-r from-violet-500 via-indigo-500 to-indigo-600 bg-clip-text text-transparent">Maximize Your Performance.</p>
+      <span>Measure Your Progress.</span>
+      <br>
+      <span class="mt-2 bg-gradient-to-r from-violet-500 via-indigo-500 to-indigo-600 bg-clip-text text-transparent">Maximize Your Performance.</span>
     </h1>
     <p class="mx-auto mt-4 max-w-2xl text-lg tracking-tight text-soft">
       The all&hyphen;in&hyphen;one platform for cross&hyphen;country runners and teams to set goals, track progress, and stay connected.
@@ -71,7 +72,7 @@
         class="modal-large opacity-0 scale-75 pointer-events-none"
       >
         <div class="flex flex-col space-y-1.5 text-center sm:text-left mb-6">
-          <h2 class="text-lg font-semibold leading-none tracking-tight text-normal"><%= image[:desc] %></h2>
+          <p class="text-lg font-semibold leading-none tracking-tight text-normal"><%= image[:desc] %></p>
         </div>
 
         <%= image_tag asset_path("screenshots/#{image[:image_name]}_light.png"), class: 'block dark:hidden rounded sm:rounded-md md:rounded-lg lg:rounded-xl border border-slate-200 dark:border-slate-700' %>
@@ -232,7 +233,7 @@
             class="modal opacity-0 scale-75 pointer-events-none"
           >
             <div class="flex flex-col space-y-1.5 text-center sm:text-left mb-6">
-              <h2 class="text-lg font-semibold leading-none tracking-tight text-normal">Testimonial by <%= testimonial[:author_name] %></h2>
+              <h3 class="text-lg font-semibold leading-none tracking-tight text-normal">Testimonial by <%= testimonial[:author_name] %></h3>
             </div>
 
             <div class="-mr-6 pr-6 space-y-4">
