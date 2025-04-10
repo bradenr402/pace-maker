@@ -50,8 +50,8 @@
   <div data-controller="show-more" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto my-12 px-2">
     <% images.each_with_index do |image, index| %>
       <div data-show-more-target="item" data-action="mousedown->modal#open" data-modal-id="<%= image[:image_name] %>PictureModal" data-hideable="<%= index >= 6 ? 'true' : 'false' %>" class="<%= 'hidden' if index >= 6 %> card-opaque cursor-pointer hover:shadow-2xl hover:scale-[101.5%] active:scale-100 transition duration-200 ease-in-out flex flex-col items-center gap-4 ring-8 ring-slate-100/30 dark:ring-slate-300/30 outline outline-1 outline-slate-200/40 dark:outline-slate-500/40 outline-offset-8 no-outline-safari">
-        <%= image_tag asset_path("screenshots/#{image[:image_name]}_light.png"), class: 'block dark:hidden rounded sm:rounded-md border-[0.5px] border-slate-200 dark:border-slate-700' %>
-        <%= image_tag asset_path("screenshots/#{image[:image_name]}_dark.png"), class: 'hidden dark:block rounded sm:rounded-md border-[0.5px] border-slate-200 dark:border-slate-700' %>
+        <%= image_tag asset_path("screenshots/#{image[:image_name]}_light.png"), alt: "#{image[:desc]} (Light Mode)", class: 'block dark:hidden rounded sm:rounded-md border-[0.5px] border-slate-200 dark:border-slate-700' %>
+        <%= image_tag asset_path("screenshots/#{image[:image_name]}_dark.png"), alt: "#{image[:desc]} (Dark Mode)", class: 'hidden dark:block rounded sm:rounded-md border-[0.5px] border-slate-200 dark:border-slate-700' %>
         <p class="font-bold text-normal -mb-2"><%= image[:desc] %></p>
       </div>
 
@@ -75,8 +75,8 @@
           <p class="text-lg font-semibold leading-none tracking-tight text-normal"><%= image[:desc] %></p>
         </div>
 
-        <%= image_tag asset_path("screenshots/#{image[:image_name]}_light.png"), class: 'block dark:hidden rounded sm:rounded-md md:rounded-lg lg:rounded-xl border border-slate-200 dark:border-slate-700' %>
-        <%= image_tag asset_path("screenshots/#{image[:image_name]}_dark.png"), class: 'hidden dark:block rounded sm:rounded-md md:rounded-lg lg:rounded-xl border border-slate-200 dark:border-slate-700' %>
+        <%= image_tag asset_path("screenshots/#{image[:image_name]}_light.png"), alt: "#{image[:desc]} (Light Mode)", class: 'block dark:hidden rounded sm:rounded-md md:rounded-lg lg:rounded-xl border border-slate-200 dark:border-slate-700' %>
+        <%= image_tag asset_path("screenshots/#{image[:image_name]}_dark.png"), alt: "#{image[:desc]} (Dark Mode)", class: 'hidden dark:block rounded sm:rounded-md md:rounded-lg lg:rounded-xl border border-slate-200 dark:border-slate-700' %>
 
         <!-- Close button -->
         <button data-action="mousedown->modal#close" type="button" data-modal-id="<%= image[:image_name] %>PictureModal" class="modal-x-btn">
