@@ -1,4 +1,4 @@
-<% if @trends_date_range && @trends_date_range_description %>
+<% if @tab == 'trends' %>
   <%= turbo_stream.replace 'trends_date_form' do %>
     <%= render 'teams/member/trends_date_form', team: @team, member: @member %>
   <% end %>
@@ -10,7 +10,7 @@
   <% end %>
 <% end %>
 
-<% if @runs %>
+<% if @tab == 'runs' %>
   <%= turbo_stream.replace 'runs-list' do %>
     <div id="runs-list" data-controller="filter-runs">
       <% if @runs.present? %>
