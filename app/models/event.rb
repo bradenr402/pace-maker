@@ -27,11 +27,11 @@ class Event < ApplicationRecord
   scope :starting_soon, -> { where(start_date: Date.tomorrow..7.days.from_now) }
 
   # Methods
-  def upcoming? = start_date.after? Date.current
+  def upcoming? = start_date.future?
 
   def current? = Date.current.in?(start_date..end_date)
 
-  def past? = end_date.before? Date.current
+  def past? = end_date.past?
 
   def days_until_start
     return nil if start_date.before?(Date.current)
