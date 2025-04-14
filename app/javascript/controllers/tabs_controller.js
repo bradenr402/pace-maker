@@ -12,7 +12,8 @@ export default class extends Controller {
   };
 
   connect() {
-    super.connect();
+    this.preloadTimeouts = {};
+
     if (this.hasLeftArrowTarget && this.hasRightArrowTarget) this._updateArrows();
 
     if (this.hasContainerTarget)
@@ -22,8 +23,7 @@ export default class extends Controller {
       );
 
     this._selectInitialTab();
-
-    this.preloadTabs();
+    this._preloadTabs();
   }
 
   scrollLeft() {
@@ -40,17 +40,23 @@ export default class extends Controller {
     const selectedTabId = event.currentTarget.id;
     const selectedTab = this.tabTargets.find((tab) => tab.id === selectedTabId);
 
+    // Cancel any pending preload for this tab
+    if (this.preloadTimeouts[selectedTabId]) {
+      clearTimeout(this.preloadTimeouts[selectedTabId]);
+      delete this.preloadTimeouts[selectedTabId];
+    }
+
     if (selectedTab?.hidden) {
       this._updateTabVisibility(selectedTabId);
       this._updateUrlWithTab(selectedTabId);
       this._scrollToTab(event.currentTarget);
-      this.loadTabContent(selectedTabId);
+      this._loadTabContent(selectedTabId);
     }
 
     this._updateTabIndicator(event.currentTarget);
   }
 
-  loadTabContent(tabId) {
+  _loadTabContent(tabId) {
     if (!this.tabUrlValue) return;
     if (!this.tabTargets) return;
 
@@ -60,23 +66,60 @@ export default class extends Controller {
     const url = this.tabUrlValue.replace('%3Atab_id', tabId);
 
     fetch(url)
-      .then((response) => response.text())
+      .then((response) => {
+        if (!response.ok) throw new Error('Network error');
+        return response.text();
+      })
       .then((html) => {
+        if (!html) throw new Error('Empty response body');
+
         tabElement.innerHTML = html;
         tabElement.dataset.loaded = 'true';
 
-        this.rerunScripts(tabElement); // Reinitialize Chartkick charts
+        this._rerunScripts(tabElement); // Reinitialize Chartkick charts
       })
-      .catch((error) => console.error('Error loading tab content:', error));
+      .catch((error) => {
+        console.error('Error loading tab content:', error);
+        tabElement.innerHTML = `
+          <div class="flex flex-col items-center justify-center gap-4 mt-16 text-rose-600 dark:text-rose-400">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-14"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+              />
+            </svg>
+
+
+            <p class="text-center font-semibold">Failed to load tab content. Please try reloading the page.</p>
+          </div>
+        `;
+      });
   }
 
-  preloadTabs() {
-    this.tabTargets.forEach((tab) => {
-      if (!tab.dataset.loaded) setTimeout(() => this.loadTabContent(tab.id), 2000);
+  _preloadTabs() {
+    const initialTab = this._initialTabValue();
+
+    this.tabTargets.forEach((tab, index) => {
+      if (tab.id !== initialTab && !tab.dataset.loaded) {
+        const timeoutId = setTimeout(() => {
+          this._loadTabContent(tab.id);
+          delete this.preloadTimeouts[tab.id];
+        }, 2000 + index * 1000);
+
+        this.preloadTimeouts[tab.id] = timeoutId;
+      }
     });
   }
 
-  rerunScripts(element) {
+  _rerunScripts(element) {
     element.querySelectorAll('script').forEach((script) => {
       const newScript = document.createElement('script');
 
@@ -90,13 +133,18 @@ export default class extends Controller {
     });
   }
 
-  _selectInitialTab() {
+  _initialTabValue() {
     // Get the initial tab from the URL tab parameter
     const urlParams = new URLSearchParams(window.location.search);
     const tabParam = urlParams.get('tab');
-    const initialTab = tabParam || this.defaultTabValue;
 
-    this.loadTabContent(initialTab);
+    return tabParam || this.defaultTabValue;
+  }
+
+  _selectInitialTab() {
+    const initialTab = this._initialTabValue();
+
+    this._loadTabContent(initialTab);
 
     this._updateTabVisibility(initialTab);
 
@@ -171,21 +219,14 @@ export default class extends Controller {
     }
   }
 
-  _hideLeftArrow() {
-    this.leftArrowTarget.classList.add('opacity-0', 'pointer-events-none');
-  }
+  _hideLeftArrow = () => this.leftArrowTarget.classList.add('opacity-0', 'pointer-events-none');
 
-  _showLeftArrow() {
-    this.leftArrowTarget.classList.remove('opacity-0', 'pointer-events-none');
-  }
+  _showLeftArrow = () => this.leftArrowTarget.classList.remove('opacity-0', 'pointer-events-none');
 
-  _hideRightArrow() {
-    this.rightArrowTarget.classList.add('opacity-0', 'pointer-events-none');
-  }
+  _hideRightArrow = () => this.rightArrowTarget.classList.add('opacity-0', 'pointer-events-none');
 
-  _showRightArrow() {
+  _showRightArrow = () =>
     this.rightArrowTarget.classList.remove('opacity-0', 'pointer-events-none');
-  }
 
   _updateUrlWithTab(tabId) {
     const url = new URL(window.location);
