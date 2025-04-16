@@ -15,14 +15,18 @@ You can find the deployed application at the following link: [pace-maker.onrende
 - **Authentication & Authorization**: Secure user authentication with Devise, including Google OAuth for easy sign-in.
 - **Team Management**: Create, manage, and join teams, with support for join requests, memberships, and team ownership.
 - **Run Tracking**: Users can track their runs, view progress, and celebrate streak advancements, fostering motivation and consistency.
-- **User Settings**: Comprehensive personalization options for privacy and display settings, with easy one-click reset to defaults.
-- **Team Settings**: Team owners can customize team-specific settings, including team goals, season dates, the starting day of the week, and membership requirements - all with easy one-click reset to default settings.
-- **Interactive Dashboards**: Use Turbo Frames and Stimulus for a responsive, dynamic experience, featuring visual data representations and progress charts, with caching to optimize performance.
+- **User Settings**: Personalization options for privacy controls, display settings, and navigation preferences, with easy one-click reset to default settings.
+- **Team Settings**: Team owners can customize team-specific settings - including season dates, team goals, the starting day of the week, join requirements, and more - all with easy one-click reset to default settings.
 - **Home Page**: A welcoming and encouraging interface featuring:
-  - Recent updates, such as team updates, new runs by users you know, team creations, and join requests.
+  - Recent updates, such as recent Strava activity, team updates, runs and streak advancements by your team members, team creations, and pending join requests.
   - Personal statistics like current and record streaks, with motivational messages based on user activity.
-- **Advanced Styling**: A modern and aesthetic interface crafted with Tailwind CSS, ensuring a visually appealing and intuitive user experience. The design is fully responsive, adapting seamlessly to any device for optimal usability.
-- **Strava Integration**: Users can seamlessly connect their Strava accounts to PaceMaker for effortless run tracking. Choose to manually import past runs with a single click or enable automatic syncing for all future activities using Strava&#8217;s Webhook Events API. Stay focused on your goals while PaceMaker handles the rest.
+- **Team Messaging**: Built-in real-time messaging and topic-based discussions to enhance team communication and collaboration. ActionCable and Turbo Streams handle live updates, ensuring a seamless experience for users.
+- **User and Team Calendars**: Interactive calendars for users and teams to visualize runs, events, and season progress. Users can track their personal running habits, while teams can view collective activities and upcoming events in a shared calendar.
+- **Team Events**: Team owners can create and manage events such as training sessions, team meetings, or travel plans, helping teams stay organized and aligned.
+- **Social Motivation**: Like and comment on teammates’ runs to encourage one another and celebrate milestones.
+- **In-App Feedback**: Users can submit feedback directly in the app for bug reports and feature suggestions.
+- **Advanced Styling**: A modern and aesthetic interface crafted with Tailwind CSS, optimized to be visually appealing and ensure an intuitive user experience. The design is fully responsive, adapting seamlessly to any device for optimal usability.
+- **Strava Integration**: Users can seamlessly connect their Strava accounts to PaceMaker for effortless run tracking. Manually import past runs with a single click or enable automatic syncing for all future activities using Strava&#8217;s Webhook Events API. Stay focused on your goals while PaceMaker handles the rest.
 
 ## 🛠️ Tech Stack
 
@@ -128,13 +132,9 @@ rails server
 ## 🔮 Future Improvements
 
 - **Notifications**: Implement real-time web push notifications for team updates, join requests, run reminders, and run achievements.
-- **Social Features**: Add social networking capabilities, such as the ability to like and comment on runs.
 - **Advanced Team Roles**: Introduce different team roles, such as team captains, with tailored permissions.
-- **Team Events**: Schedule team events like breaks, rest periods, and training sessions.
-- **External Integrations**: Integrate with third-party APIs, such as Strava and Garmin, for automatic data import.
 - **Mobile App**: Develop a native mobile app for iOS with offline support.
 - **Internationalization (i18n) Support**: Add multi-language support to accomodate a global user base.
-- **Gamification and Achievements**: Enhance gamification elements, such as badges, achievements, and leaderboards, to encourage user engagement.
 
 ## 🤝 Contributing
 
