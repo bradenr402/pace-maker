@@ -169,6 +169,7 @@ export default class extends Controller {
     const lowercaseValid = this.validatePasswordLowercase(password);
     const digitValid = this.validatePasswordDigit(password);
     const specialValid = this.validatePasswordSpecial(password);
+
     if (lengthValid && uppercaseValid && lowercaseValid && digitValid && specialValid) {
       this.passwordTarget.classList.remove('form-input-error');
     } else {

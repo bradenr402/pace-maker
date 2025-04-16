@@ -18,7 +18,7 @@ export default class extends Controller {
       reader.readAsDataURL(this.inputTarget.files[0]);
     } else {
       this.clearBtnTarget.classList.add('hidden');
-      this.outputTarget.classList.add('hidden')
+      this.outputTarget.classList.add('hidden');
     }
   }
 
@@ -26,7 +26,7 @@ export default class extends Controller {
     this.inputTarget.value = null;
     this.outputTarget.src = null;
     this.clearBtnTarget.classList.add('hidden');
-    this.outputTarget.classList.add('hidden')
+    this.outputTarget.classList.add('hidden');
   }
 
   selectCheckbox(event) {
