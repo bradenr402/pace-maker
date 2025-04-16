@@ -1,8 +1,8 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_team
-  before_action :set_event, only: :update
-  before_action :authorize_owner!, only: :update
+  before_action :set_event, only: %i[update destroy]
+  before_action :authorize_owner!, only: %i[create update destroy]
   before_action :authorize_member!
 
   def create
@@ -28,6 +28,18 @@ class EventsController < ApplicationController
     else
       redirect_back fallback_location: team_calendar_path(@team, tab: 'eventsTab'), error: 'Event could not be updated.'
     end
+  end
+
+  def destroy
+    @event = @team.events.find(params[:id])
+
+    if @event.destroy
+      flash[:success] = 'Event was successfully deleted.'
+    else
+      flash[:error] = 'Event could not be deleted.'
+    end
+
+    redirect_back fallback_location: team_calendar_path(@team, tab: 'eventsTab')
   end
 
   private
