@@ -105,8 +105,9 @@ rails server
 
 - **Teams**: Create and join teams, manage memberships, and customize settings.
 - **Join Requests**: Team owners must approve join requests before new members can join.
-- **Team Statistics**: Compare your team's progress towards its goals with its progress through the season to see if they're on track to meet their goals.
-- **Team Goals**: Team owners can set goals for their team, and members can set their own personal goals.
+- **Team Statistics**: Compare your team's progress towards its goals with its progress through the season to see if they&#8217;re on track. View projections that estimate how close—or how far—you&#8217;ll be from your goals at the end of the season.
+
+- **Goals**: Team owners can set goals for their team, and members can set their own personal goals.
 - **Rankings**: Compare team member rankings across different time periods, including season, month, and week.
 
 ### 📊 Run Tracking & Streaks
