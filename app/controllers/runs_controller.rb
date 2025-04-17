@@ -1,4 +1,6 @@
 class RunsController < ApplicationController
+  include ActionView::Helpers::UrlHelper
+
   before_action :set_run, only: %i[show details edit update destroy enable_comments disable_comments]
   before_action :authenticate_user!
   before_action :authorize_owner!, only: %i[edit update destroy enable_comments disable_comments]
@@ -40,6 +42,11 @@ class RunsController < ApplicationController
       respond_to do |format|
         format.turbo_stream do
           flash.now[:success] = 'Run was successfully created.'
+          flash.now[:success] = 'Run was successfully created. ' \
+                                "#{link_to 'View run',
+                                            run_path(@run),
+                                            class: 'italic font-bold',
+                                            data: { turbo: false }}"
           render turbo_stream: [
             turbo_stream.update('flash', partial: 'shared/flash'),
             turbo_stream.replace('run_modal', partial: 'runs/form_modal',
