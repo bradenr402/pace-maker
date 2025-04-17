@@ -1,5 +1,6 @@
 <% user = comment.user %>
 <% parent = comment.commentable %>
+<% run = comment.parent_run %>
 
 <div
   data-controller="modal"
@@ -15,7 +16,7 @@
   <% end %>
 
   <%= render 'comments/like_button', comment: %>
-  <%= render('comments/reply_button', comment:) if comment.parent_run.allow_comments? %>
+  <%= render('comments/reply_button', comment:) if run.allow_comments? || run.user == current_user %>
 
   <% if user == current_user && comment.editable? %>
     <%= link_to edit_comment_path(comment),
@@ -26,7 +27,7 @@
     <% end %>
   <% end %>
 
-  <% if (user == current_user && comment.deletable?) || comment.parent_run.user == current_user %>
+  <% if (user == current_user && comment.deletable?) || run.user == current_user %>
     <button type="button" data-action="mousedown->modal#open" data-modal-id="deleteComment_<%= comment.id %>" class="p-2 rounded-full hover:bg-rose-100/60 dark:hover:bg-rose-900/30 hover:text-rose-500 transition duration-200 ease-in-out">
       <%= inline_svg_tag 'icons/trash.svg', class: 'size-4 shrink-0' %>
       <span class="sr-only">Delete comment</span>
