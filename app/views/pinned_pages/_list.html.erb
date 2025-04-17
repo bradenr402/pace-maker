@@ -49,6 +49,11 @@
                   <%= inline_svg_tag 'icons/user.svg', class: 'size-4.5 dark:group-focus:text-white motion-safe:group-hover:pulse-hover-animation motion-safe:group-focus:pulse-hover-animation' %>
                 <% end %>
               <% end %>
+
+            <% elsif page_url.match?(/runs\/\d+/) %>
+              <% run = Run.find_by(id: last_id) %>
+
+              <%= inline_svg_tag 'icons/runner.svg', class: 'size-4.5 dark:group-focus:text-white' if run %>
             <% end %>
             <span><%= page.title %></span>
           </div>
