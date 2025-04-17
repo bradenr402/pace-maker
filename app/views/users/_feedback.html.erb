@@ -17,7 +17,7 @@
         <div class="flex items-center py-2 px-4 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 [&:has(input:checked)]:bg-slate-200 dark:[&:has(input:checked)]:bg-slate-800 w-full">
           <%= form.radio_button :feedback_type, 'bug', class: 'form-input-radio' %>
           <div class="ml-4">
-            <div class="flex items-center gap-x-2">
+            <div class="flex items-center gap-x-1.5">
               <%= inline_svg_tag 'icons/bug.svg', class: 'size-5 text-rose-500 shrink-0' %>
               <span class="form-radio-label">Bug Report</span>
             </div>
@@ -32,7 +32,7 @@
         <div class="flex items-center py-2 px-4 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 [&:has(input:checked)]:bg-slate-200 dark:[&:has(input:checked)]:bg-slate-800 w-full">
           <%= form.radio_button :feedback_type, 'suggestion', class: 'form-input-radio' %>
           <div class="ml-4">
-            <div class="flex items-center gap-x-2">
+            <div class="flex items-center gap-x-1.5">
               <%= inline_svg_tag 'icons/lightbulb.svg', class: 'size-5 text-yellow-500 shrink-0' %>
               <span class="form-radio-label">Feature Suggestion</span>
             </div>
@@ -47,7 +47,7 @@
         <div class="flex items-center py-2 px-4 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 [&:has(input:checked)]:bg-slate-200 dark:[&:has(input:checked)]:bg-slate-800 w-full">
           <%= form.radio_button :feedback_type, 'other', class: 'form-input-radio' %>
           <div class="ml-4">
-            <div class="flex items-center gap-x-2">
+            <div class="flex items-center gap-x-1.5">
               <%= inline_svg_tag 'icons/question-circle.svg', class: 'size-5 text-blue-500 shrink-0' %>
               <span class="form-radio-label">Other</span>
             </div>
