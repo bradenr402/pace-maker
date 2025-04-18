@@ -55,6 +55,21 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     Rails.logger.info "Strava OAuth uid received for user #{current_user.id}: #{auth.uid}"
 
+    required_scopes = %w[read activity:read profile:read_all]
+    granted_scopes = params[:scope]&.split(',') || []
+
+    unless (required_scopes - granted_scopes).empty?
+      Rails.logger.warn(
+        "Strava OAuth failed: Missing required scopes for user #{current_user.id}. " \
+        "Required scopes: #{required_scopes}. " \
+        "Granted scopes: #{granted_scopes}."
+      )
+      return redirect_to(
+        edit_user_registration_path,
+        alert: 'You did not accept all required Strava permissions. Please check <i>&#8220;View data about your activities&#8221;</i> to connect your Strava account.'
+      )
+    end
+
     if current_user.update(
       strava_uid: auth.uid,
       strava_access_token: auth.credentials.token,
