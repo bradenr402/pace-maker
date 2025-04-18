@@ -86,7 +86,7 @@
 
                     <% selected_message = messages.sample %>
                     <p class="text-xs text-soft leading-tight">
-                      <span><%= raw selected_message[:text] %></span>
+                      <span><%== selected_message[:text] %></span>
                       <%= inline_svg_tag "icons/#{selected_message[:icon]}.svg", class: "inline mb-px ml-1.5 size-3 #{selected_message[:icon_color]}" if selected_message[:icon] %>
                     </p>
                   <% end %>
