@@ -4,13 +4,13 @@
     data-notifications-hidden-class="notification--hidden"
     data-notifications-visible-class="notification--visible"
     data-notifications-exit-class="notification--exit"
-    class="fixed sm:top-8 sm:right-8 w-full max-w-[80vw] mx-[10vw] sm:max-w-sm sm:mx-0 space-y-1 z-50 flex flex-col items-center sm:items-end"
+    class="fixed sm:top-8 sm:right-8 w-full max-w-[80vw] mx-[10vw] sm:max-w-sm md:max-w-md lg:max-w-lg sm:mx-0 space-y-1 z-50 flex flex-col items-center sm:items-end"
     style="@media (min-width: 640px) { top: env(safe-area-inset-top, 2rem); }"
   >
     <% if notice %>
       <div
         data-notifications-target="notification"
-        class="flex items-center p-4 text-sm text-blue-600 border border-blue-300 rounded-lg bg-blue-50 dark:bg-slate-800 dark:text-blue-400 dark:border-blue-800 z-50 transition duration-200 ease-in-out notification--hidden"
+        class="flex items-center p-4 text-sm text-blue-500 border border-blue-300 rounded-lg bg-blue-50 dark:bg-slate-800 dark:text-blue-400 dark:border-blue-800 z-50 transition duration-200 ease-in-out notification--hidden"
       >
         <%= inline_svg_tag 'icons/info-circle.svg', class: 'size-5 mr-2 shrink-0' %>
         <span class="sr-only">Info</span>
@@ -31,7 +31,7 @@
     <% if success %>
       <div
         data-notifications-target="notification"
-        class="flex items-center p-4 text-sm text-green-600 border border-green-300 rounded-lg bg-green-50 dark:bg-slate-800 dark:text-green-400 dark:border-green-800 z-50 transition duration-200 ease-in-out notification--hidden"
+        class="flex items-center p-4 text-sm text-green-500 border border-green-300 rounded-lg bg-green-50 dark:bg-slate-800 dark:text-green-400 dark:border-green-800 z-50 transition duration-200 ease-in-out notification--hidden"
       >
         <%= inline_svg_tag 'icons/check-circle.svg', class: 'size-5 mr-2 shrink-0' %>
         <span class="sr-only">Info</span>
@@ -52,7 +52,7 @@
     <% if error %>
       <div
         data-notifications-target="notification"
-        class="flex items-center p-4 text-sm text-red-600 border border-red-300 rounded-lg bg-red-50 dark:bg-slate-800 dark:text-red-400 dark:border-red-800 z-50 transition duration-200 ease-in-out notification--hidden"
+        class="flex items-center p-4 text-sm text-rose-500 border border-rose-300 rounded-lg bg-rose-50 dark:bg-slate-800 dark:text-rose-400 dark:border-rose-800 z-50 transition duration-200 ease-in-out notification--hidden"
       >
         <%= inline_svg_tag 'icons/x-circle.svg', class: 'size-5 mr-2 shrink-0' %>
         <span class="sr-only">Info</span>
@@ -61,10 +61,10 @@
           <button
             type="button"
             data-action="mousedown->notifications#close"
-            class="-my-1.5 -mr-1.5 bg-red-50 text-red-600 rounded-full focus:ring-2 focus:ring-red-400 p-2 hover:bg-red-200 inline-flex items-center justify-center size-8 dark:bg-slate-800 dark:text-red-400 dark:hover:bg-slate-700 transition duration-200 ease-in-out"
+            class="-my-1.5 -mr-1.5 bg-rose-50 text-rose-600 rounded-full focus:ring-2 focus:ring-rose-400 p-2 hover:bg-rose-200 inline-flex items-center justify-center size-8 dark:bg-slate-800 dark:text-rose-400 dark:hover:bg-slate-700 transition duration-200 ease-in-out"
             aria-label="Close">
             <span class="sr-only">Close</span>
-            <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4 text-red-600 dark:text-red-400' %>
+            <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4 text-rose-600 dark:text-rose-400' %>
           </button>
         </p>
       </div>
@@ -73,7 +73,7 @@
     <% if alert %>
       <div
         data-notifications-target="notification"
-        class="flex items-center p-4 text-sm text-yellow-600 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-slate-800 dark:text-yellow-300 dark:border-yellow-800 z-50 transition duration-200 ease-in-out notification--hidden"
+        class="flex items-center p-4 text-sm text-yellow-500 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-slate-800 dark:text-yellow-300 dark:border-yellow-800 z-50 transition duration-200 ease-in-out notification--hidden"
       >
         <%= inline_svg_tag 'icons/exclamation-circle.svg', class: 'size-5 mr-2 shrink-0' %>
         <span class="sr-only">Info</span>
