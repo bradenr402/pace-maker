@@ -470,7 +470,7 @@ export default class extends Controller {
     if (isNaN(startDate) || isNaN(endDate)) {
       this.eventEndDateTarget.classList.add('form-input-error');
       this.endDateErrorTarget.classList.remove('hidden');
-    } else if (startDate >= endDate) {
+    } else if (startDate > endDate) {
       this.eventEndDateTarget.classList.add('form-input-error');
       this.endDateErrorTarget.classList.remove('hidden');
     } else {

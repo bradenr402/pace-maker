@@ -34,7 +34,7 @@
       <%= inline_svg_tag 'icons/calendar.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
       <%= form.date_field :end_date, value: event.end_date, class: 'form-input pl-10', data: { form_validation_target: 'eventEndDate', action: 'input->form-validation#validateEventEndDate' } %>
     </div>
-    <p class="hidden my-1 error-message" data-form-validation-target="endDateError">End date cannot be blank and must be after start date</p>
+    <p class="hidden my-1 error-message" data-form-validation-target="endDateError">End date cannot be blank and cannot be before start date</p>
   </div>
 
   <div class="form-group">
