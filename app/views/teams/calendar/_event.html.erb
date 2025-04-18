@@ -70,9 +70,11 @@
       <span class="whitespace-nowrap"><%= pretty_date(event.start_date, date_style: :absolute, month_format: :short) %></span>
     </div>
 
-    <span class="font-normal">&ndash;</span>
+    <% unless event.start_date == event.end_date %>
+      <span class="font-normal">&ndash;</span>
 
-    <span class="text-xs whitespace-nowrap"><%= pretty_date(event.end_date, date_style: :absolute, month_format: :short) %></span>
+      <span class="text-xs whitespace-nowrap"><%= pretty_date(event.end_date, date_style: :absolute, month_format: :short) %></span>
+    <% end %>
   </div>
 
   <div class="flex items-center text-xs gap-1.5 font-semibold mt-0.5 mb-[5px]">
