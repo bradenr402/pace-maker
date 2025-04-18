@@ -1,6 +1,6 @@
 <% team ||= nil %>
 
-<div class="mb-6 ml-[3px]">
+<div class="mb-6 ml-0.5">
   <p class="form-label">View <%= user == current_user ? 'your' : "#{user.first_name}’s" %> stats for a specific team</p>
   <div
     data-controller="dropdown"
@@ -8,7 +8,7 @@
     data-dropdown-show-dropdown-class="pointer-events-auto scale-100 opacity-100"
     data-dropdown-icon-open-class="rotate-180"
     data-dropdown-dropdown-open-class="shadow-md"
-    class="relative text-sm rounded-md transition duration-200 ease-in-out"
+    class="relative text-sm rounded-md transition duration-200 ease-in-out w-max"
   >
     <!-- Team Actions Dropdown Trigger -->
     <button
