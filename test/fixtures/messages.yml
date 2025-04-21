@@ -1,21 +1,19 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  content: MyText
+  content: Message 1
   user: one
-  team: one
+  topic: one
   parent_id: 1
   pinned: false
   deleted_at: 2025-02-18 18:01:36
-  edited_at: 2025-02-18 18:01:36
   like_count: 1
 
 two:
-  content: MyText
+  content: Message 2
   user: two
-  team: two
+  topic: two
   parent_id: 1
   pinned: false
   deleted_at: 2025-02-18 18:01:36
-  edited_at: 2025-02-18 18:01:36
   like_count: 1

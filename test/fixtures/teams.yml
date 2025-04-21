@@ -1,11 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
+  name: Team 1
   description: MyText
   owner: one
 
 two:
-  name: MyString
+  name: Team 2
   description: MyText
   owner: two

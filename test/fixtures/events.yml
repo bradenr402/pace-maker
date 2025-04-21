@@ -1,7 +1,7 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  title: MyString
+  title: Event 1
   description: MyText
   start_date: 2025-03-28
   end_date: 2025-03-28
@@ -10,7 +10,7 @@ one:
   team: one
 
 two:
-  title: MyString
+  title: Event 2
   description: MyText
   start_date: 2025-03-28
   end_date: 2025-03-28

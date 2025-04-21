@@ -2,12 +2,10 @@
 
 one:
   team: one
-  title: MyString
-  description: MyText
+  title: Topic 1
   closed_at: 2025-02-22 21:05:00
 
 two:
   team: two
-  title: MyString
-  description: MyText
+  title: Topic 2
   closed_at: 2025-02-22 21:05:00

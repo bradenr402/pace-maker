@@ -3,7 +3,3 @@
 one:
   subscription_id: 1
   callback_url: MyString
-
-two:
-  subscription_id: 1
-  callback_url: MyString

@@ -3,9 +3,9 @@
 one:
   user: one
   team: one
-  status: MyString
+  status: pending
 
 two:
   user: two
   team: two
-  status: MyString
+  status: approved

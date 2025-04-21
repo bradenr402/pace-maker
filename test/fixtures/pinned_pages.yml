@@ -2,12 +2,12 @@
 
 one:
   user: one
-  title: MyString
-  page_url: MyString
+  title: First Page
+  page_url: /teams/1
   position: 1
 
 two:
   user: two
-  title: MyString
-  page_url: MyString
-  position: 1
+  title: Second Page
+  page_url: /teams/2
+  position: 2
