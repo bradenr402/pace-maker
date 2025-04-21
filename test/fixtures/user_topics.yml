@@ -3,11 +3,7 @@
 one:
   user: one
   topic: one
-  favorited: false
-  last_read_at: 2025-02-24 09:41:54
 
 two:
   user: two
   topic: two
-  favorited: false
-  last_read_at: 2025-02-24 09:41:54
