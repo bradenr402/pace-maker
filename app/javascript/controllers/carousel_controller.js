@@ -6,16 +6,22 @@ export default class extends Controller {
 
   scrollLeft() {
     const itemWidth = this.itemTargets[0].offsetWidth;
-    this.carouselTarget.scrollBy({
-      left: -itemWidth,
+    const currentScroll = this.carouselTarget.scrollLeft;
+    const newScroll = Math.round((currentScroll - itemWidth) / itemWidth) * itemWidth;
+
+    this.carouselTarget.scrollTo({
+      left: newScroll,
       behavior: 'smooth',
     });
   }
 
   scrollRight() {
     const itemWidth = this.itemTargets[0].offsetWidth;
-    this.carouselTarget.scrollBy({
-      left: itemWidth,
+    const currentScroll = this.carouselTarget.scrollLeft;
+    const newScroll = Math.round((currentScroll + itemWidth) / itemWidth) * itemWidth;
+
+    this.carouselTarget.scrollTo({
+      left: newScroll,
       behavior: 'smooth',
     });
   }
