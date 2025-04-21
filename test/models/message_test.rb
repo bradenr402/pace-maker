@@ -5,6 +5,7 @@ class MessageTest < ActiveSupport::TestCase
     @team = teams(:one)
     @topic = topics(:one)
     @user = users(:one)
+    @other_user = users(:two)
     @team.team_memberships.build(user: @user)
     @team.owner = @user
     @message = messages(:one)
@@ -43,6 +44,7 @@ class MessageTest < ActiveSupport::TestCase
   test 'editable? returns false if pinned and user does not own team' do
     @message.created_at = 5.minutes.ago
     @message.pinned = true
+    @message.user = @other_user
     assert_not @message.editable?
   end
 
