@@ -70,6 +70,8 @@ group :development do
   gem 'bullet'
 
   gem 'brakeman', require: false
+
+  gem 'launchy'
 end
 
 group :test do

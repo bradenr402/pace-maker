@@ -411,6 +411,7 @@ DEPENDENCIES
   importmap-rails
   inline_svg
   jbuilder
+  launchy
   ledermann-rails-settings
   letter_opener
   mail
