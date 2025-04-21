@@ -63,8 +63,9 @@ class User < ApplicationRecord
 
   # Normalizations
   # rubocop:disable Style/SymbolProc
-  normalizes :display_name, with: -> { _1.strip }
   normalizes :email, with: -> { _1.downcase.strip }
+  normalizes :username, with: -> { _1.downcase.strip }
+  normalizes :display_name, with: -> { _1.strip }
   # rubocop :enable Style/SymbolProc
 
   # Validations
@@ -74,6 +75,8 @@ class User < ApplicationRecord
               with: URI::MailTo::EMAIL_REGEXP,
               message: 'must be a valid email address'
             },
+            length: { maximum: 255 },
+            uniqueness: { case_sensitive: false },
             nondisposable_email: true
   validates :username,
             presence: true,
@@ -83,9 +86,10 @@ class User < ApplicationRecord
             format: {
               with: USERNAME_FORMAT,
               message:
-                'can only contain lowercase letters, numbers, underscores, and periods' \
+                'can only contain lowercase letters, numbers, underscores, and periods ' \
                   'and must be at least 3 characters long'
-            }
+            },
+            length: { minimum: 3, maximum: 50 }
   validate :password_complexity
   validates :display_name, length: { maximum: 100 }, allow_blank: true
   validates :phone_number, phone: { possible: true, allow_blank: true }

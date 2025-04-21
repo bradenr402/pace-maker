@@ -95,7 +95,8 @@ export default class extends Controller {
   validateEmail(event) {
     const email = this.emailTarget.value;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+
+    if (!emailRegex.test(email) || email.length > 255) {
       this.emailTarget.classList.add('form-input-error');
       this.emailErrorTarget.classList.remove('hidden');
     } else {
@@ -130,7 +131,7 @@ export default class extends Controller {
 
   validateUsername(event) {
     const username = this.usernameTarget.value;
-    const usernameRegex = /^[a-z0-9_.]{3,}$/;
+    const usernameRegex = /^[a-z0-9_.]{3,55}$/;
     if (!usernameRegex.test(username)) {
       this.usernameTarget.classList.add('form-input-error');
       this.usernameErrorTarget.classList.remove('hidden');
@@ -141,11 +142,11 @@ export default class extends Controller {
   }
 
   validateLogin(event) {
-    const input = this.loginTarget.value;
-    const usernameRegex = /^[a-z0-9_.]{3,}$/;
+    const login = this.loginTarget.value;
+    const usernameRegex = /^[a-z0-9_.]{3,55}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!usernameRegex.test(input) && !emailRegex.test(input)) {
+    if (!usernameRegex.test(login) && (!emailRegex.test(login) || login.length > 255)) {
       this.loginTarget.classList.add('form-input-error');
       this.loginErrorTarget.classList.remove('hidden');
     } else {

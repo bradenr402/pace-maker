@@ -30,7 +30,7 @@
         <%= inline_svg_tag 'icons/envelope.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
         <%= f.email_field :email, autofocus: true, autocomplete: 'email', placeholder: 'Enter your email', class: 'form-input pl-10', data: { form_validation_target: 'email', action: 'input->form-validation#validateEmail' } %>
       </div>
-      <p class="error-message hidden my-1" data-form-validation-target="emailError">Invalid email address</p>
+      <p class="error-message hidden my-1" data-form-validation-target="emailError">Must be a valid email address and less than 255 characters</p>
     </div>
 
     <div class="form-group">
@@ -39,7 +39,7 @@
         <%= inline_svg_tag 'icons/user.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
         <%= f.text_field :username, autocomplete: 'username', placeholder: 'Create a username', class: 'form-input pl-10', data: { form_validation_target: 'username', action: 'input->form-validation#validateUsername' } %>
       </div>
-      <p class="error-message hidden my-1" data-form-validation-target="usernameError">Username can only contain lowercase letters, numbers, underscores, and periods and must be at least 3 characters long</p>
+      <p class="error-message hidden my-1" data-form-validation-target="usernameError">Username can only contain lowercase letters, numbers, underscores, and periods and must be between 3 and 55 characters long</p>
     </div>
 
     <div class="form-group">

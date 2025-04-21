@@ -254,7 +254,7 @@
       </div>
 
       <p class="my-1 help-text">Your username is unique to you and is used to identify your account.</p>
-      <p class="hidden my-1 error-message" data-form-validation-target="usernameError">Username can only contain lowercase letters, numbers, underscores, and periods and must be at least 3 characters long</p>
+      <p class="hidden my-1 error-message" data-form-validation-target="usernameError">Username can only contain lowercase letters, numbers, underscores, and periods and must be between 3 and 55 characters long</p>
     </div>
 
     <div class="form-group">
@@ -322,7 +322,7 @@
       <% if resource.google_account_linked? %>
         <p class="my-1 help-text">Your email is linked to your Google account. You must unlink your Google account to change it.</p>
       <% else %>
-        <p class="hidden my-1 error-message" data-form-validation-target="emailError">Invalid email address</p>
+        <p class="hidden my-1 error-message" data-form-validation-target="emailError">Must be a valid email address and less than 255 characters</p>
       <% end %>
 
       <div class="flex items-center gap-2 mt-2">
