@@ -16,7 +16,7 @@ module RunCalculations
   alias pace_per_mile pace
 
   def pace_per_km
-    return nil if distance.zero?
+    return nil if distance.zero? || duration.blank?
 
     (duration / distance_km).round
   end
