@@ -31,13 +31,18 @@ class Team < ApplicationRecord
             comparison: {
               greater_than: :season_start_date
             },
-            if: -> { season_start_date.present? && season_end_date.present? }
-  validate :season_dates_presence
+            if: -> { season_dates? }
+  validate :season_dates_presence_or_absence
   validates :mileage_goal,
             numericality: {
               greater_than_or_equal_to: 0
             },
-            if: -> { mileage_goal.present? }
+            if: -> { mileage_goal? }
+  validates :long_run_goal,
+            numericality: {
+              greater_than_or_equal_to: 0
+            },
+            if: -> { long_run_goal? }
 
   # Scopes
   scope :not_included_in, ->(team_ids) { where.not(id: team_ids) }
@@ -72,21 +77,15 @@ class Team < ApplicationRecord
 
   private
 
-  def season_dates_presence
-    if season_start_date.present? && season_end_date.blank? ||
-       season_start_date.blank? && season_end_date.present?
-      errors.add(
-        :base,
-        'Season start date and season end date must both be present or both be absent'
-      )
-    end
+  def season_dates_presence_or_absence
+    return if season_dates? || season_start_date.blank? && season_end_date.blank?
+
+    errors.add(:base, 'Season start and end dates must both be present or both be absent')
   end
 
   def convert_empty_string_season_dates_to_nil
-    return if season_dates?
-
-    self.season_start_date = nil
-    self.season_end_date = nil
+    self.season_start_date = nil if season_start_date == ''
+    self.season_end_date = nil if season_end_date == ''
   end
 
   def track_changes
