@@ -1,19 +1,15 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  team: one
   title: Event 1
   description: MyText
-  start_date: 2025-03-28
-  end_date: 2025-03-28
-  location: MyString
-  link: MyString
-  team: one
+  start_date: <%= Date.today %>
+  end_date: <%= Date.today + 3.days %>
 
 two:
+  team: two
   title: Event 2
   description: MyText
-  start_date: 2025-03-28
-  end_date: 2025-03-28
-  location: MyString
-  link: MyString
-  team: two
+  start_date: <%= 5.days.ago %>
+  end_date: <%= Date.yesterday %>
