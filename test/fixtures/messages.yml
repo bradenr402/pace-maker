@@ -6,7 +6,7 @@ one:
   topic: one
   parent_id: 1
   pinned: false
-  deleted_at: 2025-02-18 18:01:36
+  deleted_at: <%= Time.current %>
   like_count: 1
 
 two:
@@ -15,5 +15,5 @@ two:
   topic: two
   parent_id: 1
   pinned: false
-  deleted_at: 2025-02-18 18:01:36
+  deleted_at: <%= Time.current %>
   like_count: 1
