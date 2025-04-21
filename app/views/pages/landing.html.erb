@@ -50,12 +50,14 @@
     { image_name: 'feedback', desc: 'Feedback Page' },
   ] %>
 
-  <div data-controller="show-more" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto my-12 px-2">
+  <div data-controller="show-more" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto my-12 px-2">
     <% images.each_with_index do |image, index| %>
-      <div data-show-more-target="item" data-action="mousedown->modal#open" data-modal-id="<%= image[:image_name] %>PictureModal" data-hideable="<%= index >= 6 ? 'true' : 'false' %>" class="<%= 'hidden' if index >= 6 %> card-opaque cursor-pointer hover:shadow-2xl hover:scale-[101.5%] active:scale-100 transition duration-200 ease-in-out flex flex-col items-center gap-4 ring-8 ring-slate-100/30 dark:ring-slate-300/30 outline outline-1 outline-slate-200/40 dark:outline-slate-500/40 outline-offset-8 no-outline-safari">
-        <%= image_tag asset_path("screenshots/#{image[:image_name]}_light.png"), alt: "#{image[:desc]} (Light Mode)", class: 'block dark:hidden rounded sm:rounded-md border-[0.5px] border-slate-200 dark:border-slate-700' %>
-        <%= image_tag asset_path("screenshots/#{image[:image_name]}_dark.png"), alt: "#{image[:desc]} (Dark Mode)", class: 'hidden dark:block rounded sm:rounded-md border-[0.5px] border-slate-200 dark:border-slate-700' %>
-        <p class="font-bold text-normal -mb-2"><%= image[:desc] %></p>
+      <div data-show-more-target="item" data-action="mousedown->modal#open" data-modal-id="<%= image[:image_name] %>PictureModal" data-hideable="<%= index >= 6 ? 'true' : 'false' %>" class="<%= 'hidden' if index >= 6 %> frame-glass flex flex-col items-center gap-2 cursor-pointer hover:shadow-2xl hover:scale-[101.5%] active:scale-100 transition duration-200 ease-in-out">
+        <div class="card-opaque">
+          <%= image_tag asset_path("screenshots/#{image[:image_name]}_light.png"), alt: "#{image[:desc]} (Light Mode)", class: 'block dark:hidden rounded sm:rounded-md border-[0.5px] border-slate-200 dark:border-slate-700' %>
+          <%= image_tag asset_path("screenshots/#{image[:image_name]}_dark.png"), alt: "#{image[:desc]} (Dark Mode)", class: 'hidden dark:block rounded sm:rounded-md border-[0.5px] border-slate-200 dark:border-slate-700' %>
+        </div>
+        <p class="font-bold text-normal-reverse dark:text-normal"><%= image[:desc] %></p>
       </div>
 
       <!-- Image Modal Backdrop -->
@@ -150,7 +152,7 @@
       Trusted by Coaches &amp; Athletes.
     </h2>
     <p class="mx-auto mt-6 max-w-2xl text-lg tracking-tight text-white text-pretty">
-      Hear what our users have to say about PaceMaker.
+      Hear what people have to say about PaceMaker.
     </p>
   </div>
 
@@ -188,34 +190,35 @@
         </div>
       <% end %>
 
-      <div data-carousel-target="carousel" class="p-2.5 pt-4 flex items-stretch gap-6 sm:gap-8 overflow-x-scroll snap-x snap-mandatory hide-scrollbar">
+      <div data-carousel-target="carousel" class="p-2 flex items-stretch gap-2 sm:gap-6 overflow-x-scroll snap-x snap-mandatory hide-scrollbar">
         <% testimonials.each do |testimonial| %>
-          <div data-carousel-target="item" class="card-opaque w-full shrink-0 snap-center flex flex-col ring-8 ring-slate-100/30 dark:ring-slate-300/30 outline outline-1 outline-slate-200/40 dark:outline-slate-500/40 outline-offset-8 no-outline-safari">
-            <div class="mb-4">
-              <%= inline_svg_tag 'icons/quote-start.svg', class: 'size-8 text-muted' %>
-            </div>
+          <div data-carousel-target="item" class="frame-glass w-full shrink-0 snap-center">
+            <div class="card-opaque flex flex-col">
+              <div class="mb-4">
+                <%= inline_svg_tag 'icons/quote-start.svg', class: 'size-8 text-muted' %>
+              </div>
 
-            <p class="mb-3.5 border-b border-slate-300 dark:border-slate-700 pb-3.5 font-semibold text-base/6 text-normal">
-              <%= testimonial[:highlight] %>
-            </p>
+              <p class="mb-3.5 border-b border-slate-300 dark:border-slate-700 pb-3.5 font-semibold text-base/6 text-normal">
+                <%= testimonial[:highlight] %>
+              </p>
 
-            <p class="text-pretty text-light mb-4">
-              <%= testimonial[:paragraphs].first %>
+              <p class="text-pretty text-light mb-4">
+                <%= testimonial[:paragraphs].first %>
+                <% if testimonial[:paragraphs].size > 1 %>
+                  <span data-action="mousedown->modal#open" data-modal-id="<%= testimonial[:author_name].split(' ').join('') %>TestimonialModal" class="cursor-pointer btn-link">
+                    See more...
+                  </span>
+                <% end %>
+              </p>
 
-              <% if testimonial[:paragraphs].size > 1 %>
-                <span data-action="mousedown->modal#open" data-modal-id="<%= testimonial[:author_name].split(' ').join('') %>TestimonialModal" class="cursor-pointer btn-link">
-                  See more...
-                </span>
-              <% end %>
-            </p>
-
-            <div class="mt-auto text-right justify-self-end">
-              <cite class="block italic">
-                <span class="block font-semibold text-normal"><%= testimonial[:author_name] %></span>
-                <span class="block text-soft text-sm text-balance">
-                  <%= testimonial[:author_title] %>
-                </span>
-              </cite>
+              <div class="mt-auto text-right justify-self-end">
+                <cite class="block italic">
+                  <span class="block font-semibold text-normal"><%= testimonial[:author_name] %></span>
+                  <span class="block text-soft text-sm text-balance">
+                    <%= testimonial[:author_title] %>
+                  </span>
+                </cite>
+              </div>
             </div>
           </div>
 
