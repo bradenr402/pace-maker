@@ -4,8 +4,12 @@ one:
   name: Team 1
   description: MyText
   owner: one
+  season_start_date: <%= Date.today.beginning_of_year %>
+  season_end_date: <%= Date.today.beginning_of_year + 6.months - 1.day %>
 
 two:
   name: Team 2
   description: MyText
   owner: two
+  season_start_date: <%= Date.today.beginning_of_year + 6.months %>
+  season_end_date: <%= Date.today.end_of_year %>

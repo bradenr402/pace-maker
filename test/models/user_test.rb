@@ -25,7 +25,8 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'should reject invalid email formats' do
-  invalid_emails = ['missingdomain', '@missingusername.com', 'username@.com', 'username@.com.', 'username@domain..com']
+    invalid_emails = ['missingdomain', '@missingusername.com', 'username@.com', 'username@.com.',
+                      'username@domain..com']
     invalid_emails.each do |email|
       @user.email = email
       assert_not @user.valid?, "#{email.inspect} should be invalid"
@@ -153,5 +154,75 @@ class UserTest < ActiveSupport::TestCase
     @user.username = mixed_case_username
     @user.save!
     assert_equal mixed_case_username.downcase, @user.reload.username
+  end
+
+  test 'total_miles calculates the total distance of all runs' do
+    @user.save!
+    @user.runs.create!(distance: 5.0, date: Date.today)
+    @user.runs.create!(distance: 3.5, date: Date.today)
+    assert_equal 8.5, @user.total_miles
+  end
+
+  test 'total_km converts total miles to kilometers' do
+    @user.save!
+    @user.runs.create!(distance: 5.0, date: Date.today)
+    assert_in_delta 8.1, @user.total_km, 0.1
+  end
+
+  test 'miles_this_season calculates miles within a team season' do
+    @user.save!
+    team = teams(:one)
+    team.season_start_date = Date.today - 30.days
+    team.season_end_date = Date.today
+    @user.runs.create!(distance: 10.0, date: team.season_start_date + 1.day)
+    @user.runs.create!(distance: 5.0, date: team.season_end_date - 1.day)
+    @user.runs.create!(distance: 8.0, date: team.season_start_date - 1.day)
+    assert_equal 15.0, @user.miles_this_season(team)
+  end
+
+  test 'miles_in_date_range calculates miles within a specific date range' do
+    @user.save!
+    start_date = Date.today - 7.days
+    end_date = Date.today
+    @user.runs.create!(distance: 7.0, date: start_date)
+    @user.runs.create!(distance: 3.0, date: end_date)
+    @user.runs.create!(distance: 5.0, date: start_date - 1.day)
+    assert_equal 10.0, @user.miles_in_date_range(start_date..end_date)
+  end
+
+  test 'streak_on_date calculates the streak of consecutive days with runs' do
+    @user.save!
+    @user.runs.create!(distance: 5.0, date: Date.today)
+    @user.runs.create!(distance: 5.0, date: Date.today - 1.day)
+    result = @user.streak_on_date(nil, Date.today)
+    assert_equal 2, result[:streak]
+    assert_equal Date.today - 1.day, result[:start_date]
+    assert_equal Date.today, result[:end_date]
+  end
+
+  test 'current_streak calculates the current streak' do
+    @user.save!
+    @user.runs.create!(distance: 5.0, date: Date.today)
+    @user.runs.create!(distance: 5.0, date: Date.today - 1.day)
+    @user.runs.create!(distance: 5.0, date: Date.today - 2.days)
+    @user.runs.create!(distance: 5.0, date: Date.today - 4.days)
+    result = @user.current_streak
+    assert_equal 3, result[:streak]
+  end
+
+  test 'record_streak calculates the longest streak' do
+    @user.save!
+    @user.runs.create!(distance: 5.0, date: Date.today)
+    @user.runs.create!(distance: 5.0, date: Date.today - 1.day)
+    @user.runs.create!(distance: 5.0, date: Date.today - 2.days)
+    @user.runs.create!(distance: 5.0, date: Date.today - 4.days)
+    @user.runs.create!(distance: 5.0, date: Date.today - 5.days)
+    @user.runs.create!(distance: 5.0, date: Date.today - 6.days)
+    @user.runs.create!(distance: 5.0, date: Date.today - 7.days)
+    @user.runs.create!(distance: 5.0, date: Date.today - 8.days)
+    result = @user.record_streak
+    assert_equal 5, result[:streak]
+    assert_equal Date.today - 8.days, result[:start_date]
+    assert_equal Date.today - 4.days, result[:end_date]
   end
 end
