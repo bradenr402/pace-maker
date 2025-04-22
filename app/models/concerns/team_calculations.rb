@@ -14,11 +14,11 @@ module TeamCalculations
   end
 
   def days_completed_in_season
-    (Date.today - season_start_date).to_f
+    (Date.current - season_start_date).to_i
   end
 
   def days_remaining_in_season
-    (season_end_date - Date.today).to_f
+    (season_end_date - Date.current).to_i
   end
 
   # Mileage calculations
