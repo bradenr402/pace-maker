@@ -262,7 +262,7 @@
         <div class="space-y-2.5">
           <% if team.behind_mileage_goal? %>
             <div class="flex items-center gap-3 md:gap-4 p-3 md:p-4 mt-4 rounded-lg bg-slate-200/40 dark:bg-slate-700/25 border border-slate-200 dark:border-slate-700">
-              <div class="p-2.5 rounded-full bg-white dark:bg-slate-700 shadow dark:shadow-none">
+              <div class="p-2.5 rounded-full bg-white dark:bg-slate-700 not-dark:shadow-sm">
                 <%= inline_svg_tag 'icons/ruler-filled.svg', class: 'size-5 shrink-0 text-light' %>
               </div>
               <div>
@@ -278,7 +278,7 @@
 
           <% if team.behind_long_run_goal? %>
             <div class="flex items-center gap-3 md:gap-4 p-3 md:p-4 mt-4 rounded-lg bg-slate-200/40 dark:bg-slate-700/25 border border-slate-200 dark:border-slate-700">
-              <div class="p-2.5 rounded-full bg-white dark:bg-slate-700 shadow dark:shadow-none">
+              <div class="p-2.5 rounded-full bg-white dark:bg-slate-700 not-dark:shadow-sm">
                 <%= inline_svg_tag 'icons/runner.svg', class: 'size-5 shrink-0 text-light' %>
               </div>
               <div>
@@ -294,7 +294,7 @@
 
           <% if (team.behind_long_run_goal? || team.behind_mileage_goal?) && current_user.owns?(team) %>
             <div class="flex items-center gap-3 md:gap-4 p-3 md:p-4 mt-4 rounded-lg bg-slate-200/40 dark:bg-slate-700/25 border border-slate-200 dark:border-slate-700">
-              <div class="p-2.5 rounded-full bg-white dark:bg-slate-700 shadow dark:shadow-none">
+              <div class="p-2.5 rounded-full bg-white dark:bg-slate-700 not-dark:shadow-sm">
                 <%= inline_svg_tag 'icons/medal-filled.svg', class: 'size-5 shrink-0 text-light' %>
               </div>
               <div>

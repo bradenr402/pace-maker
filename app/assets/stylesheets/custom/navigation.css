@@ -1,57 +1,55 @@
-@layer components {
-  .sidebar-link {
-    @apply rounded-lg px-3 py-2 focus:text-indigo-600 text-soft hover:text-normal text-sm font-medium hover:bg-slate-200/40 dark:hover:bg-slate-700/40 transition duration-200 ease-in-out dark:focus:text-white flex items-center gap-2.5 border border-transparent;
+@utility sidebar-link {
+  @apply rounded-lg px-3 py-2 focus:text-indigo-600 text-soft hover:text-normal text-sm font-medium hover:bg-slate-200/40 dark:hover:bg-slate-700/40 transition duration-200 ease-in-out dark:focus:text-white flex items-center gap-2.5 border border-transparent;
 
-    &.sidebar-link-active {
-      @apply text-normal bg-slate-200/75 dark:bg-slate-700/75 hover:bg-slate-200 dark:hover:bg-slate-700/75 border-slate-300/50 dark:border-slate-600/50;
-    }
+  &.sidebar-link-active {
+    @apply text-normal bg-slate-200/75 dark:bg-slate-700/75 hover:bg-slate-200 dark:hover:bg-slate-700/75 border-slate-300/50 dark:border-slate-600/50;
+  }
+}
+
+@utility tab-link {
+  @apply flex flex-col items-center gap-1 p-1 font-bold text-xs text-soft hover:text-light transition duration-200 ease-in-out dark:focus:text-white;
+
+  span {
+    @apply sr-only;
   }
 
-  .tab-link {
-    @apply flex flex-col items-center gap-1 p-1 font-bold text-xs text-soft hover:text-light transition duration-200 ease-in-out dark:focus:text-white;
+  &::after {
+    @apply content-[''] block w-10 h-[2.5px] bg-transparent rounded-full mt-0.5 -mb-1;
+  }
 
-    span {
-      @apply sr-only;
-    }
+  &.tab-link-active {
+    @apply text-indigo-600 dark:text-indigo-500 hover:text-indigo-500 dark:hover:text-indigo-600;
 
     &::after {
-      @apply content-[''] block w-10 h-[2.5px] bg-transparent rounded-full mt-0.5 -mb-1;
-    }
-
-    &.tab-link-active {
-      @apply text-indigo-600 dark:text-indigo-500 hover:text-indigo-500 dark:hover:text-indigo-600;
-
-      &::after {
-        @apply bg-current;
-      }
+      @apply bg-current;
     }
   }
+}
 
-  .btn-tab {
-    @apply rounded-md py-1 md:py-1.5 px-3.5 md:pl-4.5 md:pr-5 flex items-center gap-1.5 text-xs md:text-sm text-normal hover:text-muted dark:hover:text-soft z-10;
+@utility btn-tab {
+  @apply rounded-md py-1 md:py-1.5 px-3.5 md:pl-4.5 md:pr-5 flex items-center gap-1.5 text-xs md:text-sm text-normal hover:text-muted dark:hover:text-soft z-10;
 
-    &.btn-tab-icon-only {
-      @apply p-2;
-    }
-
-    &.btn-tab-active {
-      @apply text-indigo-500 hover:text-indigo-500 dark:text-normal dark:hover:text-normal;
-    }
+  &.btn-tab-icon-only {
+    @apply p-2;
   }
 
-  .tab-container {
-    @apply flex items-center bg-slate-200 dark:bg-slate-800 p-0.5 rounded-lg overflow-x-auto whitespace-nowrap max-w-max backdrop-blur-sm hide-scrollbar;
+  &.btn-tab-active {
+    @apply text-indigo-500 hover:text-indigo-500 dark:text-normal dark:hover:text-normal;
   }
+}
 
-  .tab-container-scroll-left {
-    @apply bg-gradient-to-r from-slate-200 dark:from-slate-800 via-slate-200/90 dark:via-slate-800/90 to-transparent px-3 h-full rounded-l-lg absolute top-1/2 left-0 transform -translate-y-1/2 z-40;
-  }
+@utility tab-container {
+  @apply flex items-center bg-slate-200 dark:bg-slate-800 p-0.5 rounded-lg overflow-x-auto whitespace-nowrap max-w-max backdrop-blur-xs hide-scrollbar;
+}
 
-  .tab-container-scroll-right {
-    @apply bg-gradient-to-l from-slate-200 dark:from-slate-800 via-slate-200/90 dark:via-slate-800/90 to-transparent px-3 h-full rounded-r-lg absolute top-1/2 right-0 transform -translate-y-1/2 z-40;
-  }
+@utility tab-container-scroll-left {
+  @apply bg-linear-to-r from-slate-200 dark:from-slate-800 via-slate-200/90 dark:via-slate-800/90 to-transparent px-3 h-full rounded-l-lg absolute top-1/2 left-0 transform -translate-y-1/2 z-40;
+}
 
-  .sliding-tab-indicator {
-    @apply absolute top-1/2 -translate-y-1/2 bg-white dark:bg-slate-700 rounded-md transition-all duration-[350ms] w-0 h-[calc(100%-0.25rem)];
-  }
+@utility tab-container-scroll-right {
+  @apply bg-linear-to-l from-slate-200 dark:from-slate-800 via-slate-200/90 dark:via-slate-800/90 to-transparent px-3 h-full rounded-r-lg absolute top-1/2 right-0 transform -translate-y-1/2 z-40;
+}
+
+@utility sliding-tab-indicator {
+  @apply absolute top-1/2 -translate-y-1/2 bg-white dark:bg-slate-700 rounded-md transition-all duration-[350ms] w-0 h-[calc(100%-0.25rem)];
 }

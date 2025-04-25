@@ -2,7 +2,7 @@
 
 <% size_classes = {
   sm: 'h-2 rounded-full',
-  lg: 'h-4 rounded',
+  lg: 'h-4 rounded-sm',
 } %>
 
 <% comparison_classes = (percentage - marker).positive? ? 'z-30 border-r-4 border-yellow-500 rounded-none dark:border-yellow-600' : 'z-10 bg-red-600/30' if local_assigns[:marker] %>
@@ -18,14 +18,14 @@
       <% end %>
     </div>
   </div>
-  <div class="<%= size_classes[size] %> w-full bg-slate-200 dark:bg-slate-700 relative shadow-inner dark:shadow-none"
+  <div class="<%= size_classes[size] %> w-full bg-slate-200 dark:bg-slate-700 relative not-dark:shadow-inner"
        role="progressbar"
        aria-valuenow="<%= percentage %>"
        aria-valuemin="0"
        aria-valuemax="100"
        aria-label="<%= label %>"
     >
-    <div class="<%= size_classes[size] %> bg-gradient-to-b from-violet-500 via-indigo-500 to-indigo-600 absolute left-0 top-0 z-20 max-w-full" style="width: <%= percentage %>%"></div>
+    <div class="<%= size_classes[size] %> bg-linear-to-b from-violet-500 via-indigo-500 to-indigo-600 absolute left-0 top-0 z-20 max-w-full" style="width: <%= percentage %>%"></div>
     <% if local_assigns[:marker] && marker < 100 %>
       <div class="<%= size_classes[size] + ' ' + comparison_classes %> absolute top-0 left-0 max-w-full" style="width: <%= marker %>%"></div>
     <% end %>

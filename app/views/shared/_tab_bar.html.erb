@@ -23,7 +23,7 @@
   <%= render 'runs/new_run_modal' %>
 </div>
 
-<nav class="fixed z-50 bottom-0 inset-x-0 md:hidden grid grid-cols-5 w-full px-1 py-3 pb-3 bg-white/85 dark:bg-slate-800/85 backdrop-blur border-t border-slate-200 dark:border-slate-700 [@media(display-mode:standalone)]:pb-10">
+<nav class="fixed z-50 bottom-0 inset-x-0 md:hidden grid grid-cols-5 w-full px-1 py-3 pb-3 bg-white/85 dark:bg-slate-800/85 backdrop-blur-sm border-t border-slate-200 dark:border-slate-700 [@media(display-mode:standalone)]:pb-10">
   <%= link_to home_path, aria: { current: current_is_home ? 'page' : nil }, class: "tab-link #{'tab-link-active' if current_is_home}" do %>
     <% if current_is_home %>
       <%= inline_svg_tag 'icons/home-filled.svg', class: 'size-6 shrink-0' %>

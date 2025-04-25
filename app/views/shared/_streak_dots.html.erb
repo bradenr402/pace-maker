@@ -18,11 +18,11 @@
     <div class="flex flex-col items-center gap-1 <%= 'opacity-30' if exclude_date %>">
       <span class="text-center text-xs text-light font-bold"><%= day.first %></span>
       <% if run_dates.include?(date) %>
-        <span class="bg-gradient-to-b from-violet-500 via-indigo-500 to-indigo-600 rounded size-3"></span>
+        <span class="bg-linear-to-b from-violet-500 via-indigo-500 to-indigo-600 rounded-sm size-3"></span>
       <% elsif date.today? && user == current_user %>
         <span class="relative grid place-items-center size-3">
           <span class="motion-reduce:hidden animate-ping-slow absolute inline-flex size-full rounded-full bg-indigo-400 dark:bg-indigo-500 opacity-60"></span>
-          <span class="relative inline-flex rounded-full size-1.5 bg-gradient-to-b from-violet-500 via-indigo-500 to-indigo-600"></span>
+          <span class="relative inline-flex rounded-full size-1.5 bg-linear-to-b from-violet-500 via-indigo-500 to-indigo-600"></span>
         </span>
       <% else %>
         <span class="grid place-items-center size-3">

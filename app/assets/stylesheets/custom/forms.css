@@ -1,184 +1,203 @@
-@layer components {
-  /* Default form grouping with offset. Used to offset different elements within one form. */
-  .form-group {
-    @apply mb-6;
+/* Default form grouping with offset. Used to offset different elements within one form. */
+@utility form-group {
+  @apply mb-6;
+}
+
+/* Default label styles. */
+@utility form-label {
+  @apply block mb-2 select-none text-slate-700 dark:text-slate-300;
+}
+
+/* Default input styles. */
+@utility form-input {
+  @apply px-3 py-2 border border-slate-300 shadow-inner bg-white font-normal text-base placeholder:text-slate-500 rounded-md block w-full focus:outline-hidden focus:ring-4 focus:ring-indigo-50 focus:border-indigo-500 text-slate-900 dark:bg-slate-800 dark:border-slate-700 dark:focus:ring-slate-700/30 dark:focus:border-indigo-700 dark:text-white dark:placeholder:text-slate-400;
+}
+
+.form-input:disabled {
+  @apply bg-slate-100/90 pointer-events-none select-none shadow-none cursor-not-allowed dark:bg-slate-800/90 dark:opacity-70;
+}
+
+/* Default textarea styles. */
+@utility form-textarea {
+  @apply px-3 py-2 border border-slate-300 shadow-inner bg-white font-normal text-base placeholder:text-slate-500 rounded-md focus:outline-hidden focus:ring-4 focus:ring-indigo-50 focus:border-indigo-500 text-slate-900 dark:bg-slate-800 dark:border-slate-700 dark:focus:ring-slate-700/30 dark:focus:border-indigo-700 dark:text-white dark:placeholder:text-slate-400;
+}
+
+.form-textarea {
+  display: block;
+  width: 100%;
+
+  &:disabled {
+    @apply bg-slate-100/90 pointer-events-none select-none shadow-none cursor-not-allowed dark:bg-slate-800/90 dark:opacity-70;
   }
+}
 
-  /* Default label styles. */
-  .form-label {
-    @apply block mb-2 select-none text-slate-700 dark:text-slate-300;
-  }
-
-  /* Default input styles. */
-  .form-input {
-    @apply px-3 py-2 border border-slate-300 shadow-inner bg-white font-normal text-base placeholder:text-slate-500 rounded-md block w-full focus:outline-none focus:ring-4 focus:ring-indigo-50 focus:border-indigo-500 text-slate-900 dark:bg-slate-800 dark:border-slate-700 dark:focus:ring-slate-700/30 dark:focus:border-indigo-700 dark:text-white dark:placeholder:text-slate-400;
-
-    &[disabled] {
-      @apply bg-slate-100/90 pointer-events-none select-none shadow-none cursor-not-allowed dark:bg-slate-800/90 dark:opacity-70;
-    }
-  }
-
-  /* Default textarea styles. */
-  .form-textarea {
-    @apply px-3 py-2 border border-slate-300 shadow-inner bg-white font-normal text-base placeholder:text-slate-500 rounded-md block w-full focus:outline-none focus:ring-4 focus:ring-indigo-50 focus:border-indigo-500 text-slate-900 dark:bg-slate-800 dark:border-slate-700 dark:focus:ring-slate-700/30 dark:focus:border-indigo-700 dark:text-white dark:placeholder:text-slate-400;
-
-    &[disabled] {
-      @apply bg-slate-100/90 pointer-events-none select-none shadow-none cursor-not-allowed dark:bg-slate-800/90 dark:opacity-70;
-    }
-  }
-
-  /* A much nicer file field button design. */
-  .form-file {
-    @apply block w-full text-sm text-slate-500 dark:text-slate-400
+/* A much nicer file field button design. */
+@utility form-file {
+  @apply block w-full text-sm text-slate-500 dark:text-slate-400
     file:mr-4 file:py-2 file:px-6
     file:rounded-md file:border-0
     file:text-sm file:font-semibold
     file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200
     dark:file:bg-indigo-900 dark:file:text-indigo-100 dark:hover:file:bg-indigo-800;
+}
+
+/* Built in browser color picker with stylish controls. */
+@utility form-input-color {
+  @apply appearance-none rounded-full w-8 h-8 border border-slate-200 focus:border-slate-400 focus:shadow-sm transition focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-600;
+}
+
+.form-input-color::-webkit-color-swatch-wrapper,
+.form-input-color::-webkit-color-swatch {
+  @apply p-0 rounded-full border-2 border-white dark:border-slate-700;
+}
+
+/* Stylized range controls for range input datasets. */
+@utility form-input-range {
+  @apply appearance-none bg-transparent focus:outline-hidden;
+}
+
+.form-input-range {
+  &::-webkit-slider-thumb {
+    @apply appearance-none border-2 border-white h-6 w-6 rounded-full bg-white cursor-pointer relative -top-1 shadow-sm outline outline-slate-300 focus:ring-4 focus:outline-slate-400 hover:outline-slate-400 dark:bg-slate-900 dark:focus:outline-slate-600 dark:hover:outline-slate-600 dark:border-slate-500 dark:outline-slate-500;
   }
 
-  /* Built in browser color picker with stylish controls. */
-  .form-input-color {
-    @apply appearance-none rounded-full w-8 h-8 border border-slate-200 focus:border-slate-400 focus:shadow transition focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-600;
-
-    &::-webkit-color-swatch-wrapper,
-    &::-webkit-color-swatch {
-      @apply p-0 rounded-full border-2 border-white dark:border-slate-700;
-    }
+  &::-ms-track {
+    @apply cursor-pointer bg-transparent border-transparent text-transparent;
   }
 
-  /* Stylized range controls for range input datasets. */
-  .form-input-range {
-    @apply appearance-none bg-transparent focus:outline-none;
-
-    &::-webkit-slider-thumb {
-      @apply appearance-none border-2 border-white h-6 w-6 rounded-full bg-white cursor-pointer relative -top-1 shadow outline outline-slate-300 focus:ring-4 focus:outline-slate-400 hover:outline-slate-400 dark:bg-slate-900 dark:focus:outline-slate-600 dark:hover:outline-slate-600 dark:border-slate-500 dark:outline-slate-500;
-    }
-
-    &::-ms-track {
-      @apply cursor-pointer bg-transparent border-transparent text-transparent;
-    }
-
-    &::-webkit-slider-runnable-track {
-      @apply bg-slate-200 dark:bg-slate-600 rounded-lg h-4 w-full;
-    }
-
-    &::-moz-slider-runnable-track {
-      @apply bg-slate-200 dark:bg-slate-600 rounded-lg h-4 w-full;
-    }
-
-    &::-ms-slider-runnable-track {
-      @apply bg-slate-200 dark:bg-slate-600 rounded-lg h-4 w-full;
-    }
-
-    &:focus::-webkit-slider-runnable-track {
-      @apply bg-slate-200 dark:bg-slate-600;
-    }
-
-    &:focus::-moz-slider-runnable-track {
-      @apply bg-slate-200 dark:bg-slate-600;
-    }
-
-    &:focus::-ms-slider-runnable-track {
-      @apply bg-slate-200 dark:bg-slate-600;
-    }
+  &::-webkit-slider-runnable-track {
+    @apply bg-slate-200 dark:bg-slate-600 rounded-lg h-4 w-full;
   }
 
-  /* Form input error state. */
-  .form-input-error {
-    @apply border-red-500 text-red-800 focus:ring-red-50 focus:border-red-400 dark:border-red-400 dark:text-red-300 dark:focus:ring-red-300/20;
+  &::-moz-slider-runnable-track {
+    @apply bg-slate-200 dark:bg-slate-600 rounded-lg h-4 w-full;
+  }
 
-    + svg {
-      @apply block !important;
+  &::-ms-slider-runnable-track {
+    @apply bg-slate-200 dark:bg-slate-600 rounded-lg h-4 w-full;
+  }
 
-      + p {
-        @apply block !important;
-      }
+  &:focus::-webkit-slider-runnable-track {
+    @apply bg-slate-200 dark:bg-slate-600;
+  }
+
+  &:focus::-moz-slider-runnable-track {
+    @apply bg-slate-200 dark:bg-slate-600;
+  }
+
+  &:focus::-ms-slider-runnable-track {
+    @apply bg-slate-200 dark:bg-slate-600;
+  }
+}
+
+/* Form input error state. */
+@utility form-input-error {
+  @apply border-red-500 text-red-800 focus:ring-red-50 focus:border-red-400 dark:border-red-400 dark:text-red-300 dark:focus:ring-red-300/20;
+}
+
+.form-input-error {
+  & + svg {
+    @apply block!;
+
+    & + p {
+      @apply block!;
     }
   }
+}
 
-  .error-message {
-    @apply text-rose-600 dark:text-rose-400 text-xs;
+@utility error-message {
+  @apply text-rose-600 dark:text-rose-400 text-xs;
+}
+
+@utility valid-message {
+  @apply text-green-800 dark:text-green-300 text-xs;
+}
+
+@utility help-text {
+  @apply text-soft text-xs;
+}
+
+/* Use for select controls. */
+@utility form-select {
+  @apply px-3 py-2 border border-slate-300 bg-white font-normal text-base placeholder:text-slate-500 rounded-md focus:outline-hidden focus:ring-4 focus:ring-indigo-50 focus:border-indigo-500 text-slate-900 dark:bg-slate-800 dark:border-slate-700 dark:focus:ring-slate-700/30 dark:focus:border-indigo-700 dark:text-white dark:placeholder:text-slate-400 shadow-xs;
+}
+
+.form-select {
+  display: block;
+  width: 100%;
+
+  &:disabled {
+    @apply bg-slate-100/90 pointer-events-none select-none shadow-none cursor-not-allowed dark:bg-slate-800/90 dark:opacity-70;
+  }
+}
+
+/* Use for all checkbox controls. */
+@utility form-input-checkbox {
+  @apply rounded-sm border border-slate-400 checked:border-indigo-600 checked:accent-indigo-600 text-indigo-600 dark:bg-slate-700 dark:border-slate-600 focus:ring-indigo-500/30 dark:checked:border-indigo-500 dark:checked:accent-indigo-500 dark:checked:bg-indigo-500;
+}
+
+.form-input-checkbox:disabled {
+  @apply opacity-60;
+
+  & + label {
+    @apply opacity-60;
+  }
+}
+
+/* Use for all radio inputs. */
+@utility form-input-radio {
+  @apply rounded-full border border-slate-400 checked:border-indigo-600 checked:accent-indigo-600 text-indigo-600 dark:bg-slate-700 dark:border-slate-600 focus-visible:ring-indigo-500/30 focus-visible:outline-hidden dark:checked:border-indigo-500 dark:checked:accent-indigo-500 dark:checked:bg-indigo-500;
+}
+
+@utility form-check-label {
+  @apply select-none text-slate-700 dark:text-slate-300;
+}
+
+@utility form-radio-label {
+  @apply select-none text-slate-700 dark:text-slate-300;
+}
+
+@utility form-radio-card-label {
+  @apply px-4 py-3 rounded-lg not-dark:shadow-xs not-dark:hover:shadow-md not-dark:peer-checked:not-dark:shadow-md dark:hover:shadow-none bg-white dark:bg-slate-800/60 dark:hover:bg-slate-700/40 border border-slate-200 dark:border-slate-700 peer-checked:border-indigo-600 dark:peer-checked:border-indigo-500 text-light not-dark:peer-checked:text-indigo-600 dark:peer-checked:bg-slate-700/40 inline-flex items-center gap-4 w-full cursor-pointer transition duration-200 ease-in-out active:scale-95;
+}
+
+@utility form-radio-chip-label {
+  @apply py-2 px-3 rounded-md whitespace-nowrap text-sm text-normal peer-checked:font-semibold cursor-pointer border border-slate-200 dark:border-transparent bg-white dark:bg-slate-800 dark:hover:bg-slate-700/80 hover:shadow-sm dark:hover:shadow-none peer-checked:text-normal-reverse peer-checked:bg-black dark:peer-checked:bg-slate-100 peer-checked:hover:bg-black dark:peer-checked:hover:bg-slate-100 transition duration-200 ease-in-out;
+}
+
+/* Used to turn a checkbox input into a sliding switch control. */
+@utility form-input-toggle {
+  @apply relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-hidden focus:ring-2 focus:ring-offset-2 shrink-0;
+}
+
+.form-input-toggle {
+  &:has(input[type='checkbox']:disabled) {
+    @apply opacity-50 cursor-not-allowed;
   }
 
-  .valid-message {
-    @apply text-green-800 dark:text-green-300 text-xs;
+  &:not(:has(input[type='checkbox']:disabled)) {
+    @apply cursor-pointer;
   }
 
-  .help-text {
-    @apply text-soft text-xs;
+  &:has(input[type='checkbox']:checked) {
+    @apply bg-indigo-500 dark:bg-indigo-600;
   }
 
-  /* Use for select controls. */
-  .form-select {
-    @apply px-3 py-2 border border-slate-300 bg-white font-normal text-base placeholder:text-slate-500 rounded-md block w-full focus:outline-none focus:ring-4 focus:ring-indigo-50 focus:border-indigo-500 text-slate-900 dark:bg-slate-800 dark:border-slate-700 dark:focus:ring-slate-700/30 dark:focus:border-indigo-700 dark:text-white dark:placeholder:text-slate-400 shadow-sm;
+  &:not(:has(input[type='checkbox']:checked)) {
+    @apply bg-slate-200 dark:bg-slate-700;
+  }
+}
 
-    &[disabled] {
-      @apply bg-slate-100/90 pointer-events-none select-none shadow-none cursor-not-allowed dark:bg-slate-800/90 dark:opacity-70;
-    }
+@utility form-input-toggle-switch {
+  @apply inline-block size-5 transform rounded-full bg-white transition duration-200 ease-in-out;
+}
+
+.form-input-toggle-switch {
+  &:has(+ input:checked) {
+    @apply translate-x-5.5;
   }
 
-  /* Use for all checkbox controls. */
-  .form-input-checkbox {
-    @apply rounded border border-slate-400 checked:border-indigo-600 checked:accent-indigo-600 text-indigo-600 dark:bg-slate-700 dark:border-slate-600 focus:ring-indigo-500/30 dark:checked:border-indigo-500 dark:checked:accent-indigo-500 dark:checked:bg-indigo-500;
-
-    &[disabled] {
-      @apply opacity-60;
-    }
-
-    &[disabled] + label {
-      @apply opacity-60;
-    }
-  }
-
-  /* Use for all radio inputs. */
-  .form-input-radio {
-    @apply rounded-full border border-slate-400 checked:border-indigo-600 checked:accent-indigo-600 text-indigo-600 dark:bg-slate-700 dark:border-slate-600 focus-visible:ring-indigo-500/30 focus-visible:outline-none dark:checked:border-indigo-500 dark:checked:accent-indigo-500 dark:checked:bg-indigo-500;
-  }
-
-  .form-check-label,
-  .form-radio-label {
-    @apply select-none text-slate-700 dark:text-slate-300;
-  }
-
-  .form-radio-card-label {
-    @apply px-4 py-3 rounded-lg shadow-sm hover:shadow-md dark:shadow-none dark:hover:shadow-none bg-white dark:bg-slate-800/60 dark:hover:bg-slate-700/70 border dark:border-slate-700 peer-checked:border-indigo-600 dark:peer-checked:border-indigo-500 text-light peer-checked:text-indigo-600 dark:peer-checked:text-indigo-500 inline-flex items-center gap-4 w-full cursor-pointer transition duration-200 ease-in-out active:scale-95;
-  }
-
-  .form-radio-chip-label {
-    @apply py-2 px-3 rounded-md whitespace-nowrap text-sm text-normal peer-checked:font-semibold cursor-pointer border border-slate-200 dark:border-transparent bg-white dark:bg-slate-800 dark:hover:bg-slate-700/80 hover:shadow dark:hover:shadow-none peer-checked:text-normal-reverse peer-checked:bg-black dark:peer-checked:bg-slate-100 transition duration-200 ease-in-out;
-  }
-
-  /* Used to turn a checkbox input into a sliding switch control. */
-  .form-input-toggle {
-    @apply relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 shrink-0;
-
-    &:has(input[type='checkbox']:disabled) {
-      @apply opacity-50 cursor-not-allowed;
-    }
-
-    &:not(:has(input[type='checkbox']:disabled)) {
-      @apply cursor-pointer;
-    }
-
-    &:has(input[type='checkbox']:checked) {
-      @apply bg-indigo-500 dark:bg-indigo-600;
-    }
-
-    &:not(:has(input[type='checkbox']:checked)) {
-      @apply bg-slate-200 dark:bg-slate-700;
-    }
-  }
-
-  .form-input-toggle-switch {
-    @apply inline-block size-5 transform rounded-full bg-white transition duration-200 ease-in-out;
-
-    &:has(+ input:checked) {
-      @apply translate-x-5.5;
-    }
-
-    &:not(:has(+ input:checked)) {
-      @apply translate-x-0.5;
-    }
+  &:not(:has(+ input:checked)) {
+    @apply translate-x-0.5;
   }
 }

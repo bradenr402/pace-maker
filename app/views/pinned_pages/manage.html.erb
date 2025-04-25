@@ -30,7 +30,7 @@
             <span class="sr-only">Unpin shortcut</span>
           </button>
 
-          <div class="grow flex items-center gap-1.5 p-0.5 sm:p-1 border rounded-lg bg-white dark:bg-slate-700/80 shadow dark:shadow-none dark:border-slate-700">
+          <div class="grow flex items-center gap-1.5 p-0.5 sm:p-1 border rounded-lg bg-white dark:bg-slate-700/80 not-dark:shadow-sm dark:border-slate-700">
             <%= f.text_field "pinned_pages[#{page.id}][title]", value: page.title, placeholder: page.title, class: 'form-input' %>
 
             <div class="drag-handle cursor-grab shrink-0 p-1 pr-1.5 max-sm:-ml-1">

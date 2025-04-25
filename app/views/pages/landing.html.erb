@@ -8,7 +8,7 @@
     <h1 class="mx-auto max-w-7xl font-extrabold tracking-tight text-balance text-5xl sm:text-6xl md:text-7xl">
       <span>Measure Your Progress.</span>
       <br>
-      <span class="mt-2 bg-gradient-to-r from-violet-500 via-indigo-500 to-indigo-600 bg-clip-text text-transparent">Maximize Your Performance.</span>
+      <span class="mt-2 bg-linear-to-r from-violet-500 to-indigo-600 bg-clip-text text-transparent">Maximize Your Performance.</span>
     </h1>
     <p class="mx-auto mt-4 max-w-2xl text-lg tracking-tight text-soft">
       The all&hyphen;in&hyphen;one platform for cross&hyphen;country runners and teams to set goals, track progress, and stay connected.
@@ -19,7 +19,7 @@
   </div>
 </section>
 
-<section id="impact" class="py-32 md:py-40 px-4 md:px-6 bg-gradient-to-br from-violet-500 via-indigo-500 to-indigo-600 text-white">
+<section id="impact" class="py-32 md:py-40 px-4 md:px-6 bg-gradient-to-br from-violet-500 to-indigo-600 text-white">
   <div class="mx-auto flex max-w-4xl flex-col items-center justify-center gap-4 text-center">
     <h2 class="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl text-balance">
       Simple. Intuitive. Powerful.
@@ -54,8 +54,8 @@
     <% images.each_with_index do |image, index| %>
       <div data-show-more-target="item" data-action="mousedown->modal#open" data-modal-id="<%= image[:image_name] %>PictureModal" data-hideable="<%= index >= 6 ? 'true' : 'false' %>" class="<%= 'hidden' if index >= 6 %> frame-glass flex flex-col items-center gap-2 cursor-pointer hover:shadow-2xl hover:scale-[101.5%] active:scale-100 transition duration-200 ease-in-out">
         <div class="card-opaque">
-          <%= image_tag asset_path("screenshots/#{image[:image_name]}_light.png"), alt: "#{image[:desc]} (Light Mode)", class: 'block dark:hidden rounded sm:rounded-md border-[0.5px] border-slate-200 dark:border-slate-700' %>
-          <%= image_tag asset_path("screenshots/#{image[:image_name]}_dark.png"), alt: "#{image[:desc]} (Dark Mode)", class: 'hidden dark:block rounded sm:rounded-md border-[0.5px] border-slate-200 dark:border-slate-700' %>
+          <%= image_tag asset_path("screenshots/#{image[:image_name]}_light.png"), alt: "#{image[:desc]} (Light Mode)", class: 'block dark:hidden rounded-sm sm:rounded-md border-[0.5px] border-slate-200 dark:border-slate-700' %>
+          <%= image_tag asset_path("screenshots/#{image[:image_name]}_dark.png"), alt: "#{image[:desc]} (Dark Mode)", class: 'hidden dark:block rounded-sm sm:rounded-md border-[0.5px] border-slate-200 dark:border-slate-700' %>
         </div>
         <p class="font-bold text-normal-reverse dark:text-normal"><%= image[:desc] %></p>
       </div>
@@ -80,8 +80,8 @@
           <p class="text-lg font-semibold leading-none tracking-tight text-normal"><%= image[:desc] %></p>
         </div>
 
-        <%= image_tag asset_path("screenshots/#{image[:image_name]}_light.png"), alt: "#{image[:desc]} (Light Mode)", class: 'block dark:hidden rounded sm:rounded-md md:rounded-lg lg:rounded-xl border border-slate-200 dark:border-slate-700' %>
-        <%= image_tag asset_path("screenshots/#{image[:image_name]}_dark.png"), alt: "#{image[:desc]} (Dark Mode)", class: 'hidden dark:block rounded sm:rounded-md md:rounded-lg lg:rounded-xl border border-slate-200 dark:border-slate-700' %>
+        <%= image_tag asset_path("screenshots/#{image[:image_name]}_light.png"), alt: "#{image[:desc]} (Light Mode)", class: 'block dark:hidden rounded-sm sm:rounded-md md:rounded-lg lg:rounded-xl border border-slate-200 dark:border-slate-700' %>
+        <%= image_tag asset_path("screenshots/#{image[:image_name]}_dark.png"), alt: "#{image[:desc]} (Dark Mode)", class: 'hidden dark:block rounded-sm sm:rounded-md md:rounded-lg lg:rounded-xl border border-slate-200 dark:border-slate-700' %>
 
         <!-- Close button -->
         <button data-action="mousedown->modal#close" type="button" data-modal-id="<%= image[:image_name] %>PictureModal" class="modal-x-btn">
@@ -103,7 +103,7 @@
 <section id="features" class="py-32 md:py-40 px-4 md:px-6">
   <div class="mx-auto flex max-w-4xl flex-col items-center justify-center gap-4 text-center">
     <h2 class="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl text-balance">
-      <span class="bg-gradient-to-r from-violet-500 via-indigo-500 to-indigo-600 bg-clip-text text-transparent">Powerful Features</span>
+      <span class="bg-linear-to-l from-violet-500 to-indigo-600 bg-clip-text text-transparent">Powerful Features</span>
       to Elevate Your Running Experience.
     </h2>
     <p class="mx-auto mt-6 max-w-2xl text-lg tracking-tight text-soft text-pretty">
@@ -133,8 +133,8 @@
 
   <div class="mx-auto grid max-w-5xl grid-cols-1 gap-3 md:gap-4 my-12 sm:grid-cols-3">
     <% features.each_with_index do |feature, index| %>
-      <div class="p-6 max-md:px-4 rounded-xl bg-white dark:bg-slate-800/60 shadow-md dark:shadow-none border border-slate-200 dark:border-slate-700 flex sm:flex-col items-center justify-center gap-3 sm:gap-4.5 <%= span_values[index] %>">
-        <div class="rounded-full p-3 bg-gradient-to-br <%= feature[:color] %> shrink-0">
+      <div class="p-6 max-md:px-4 rounded-xl bg-white dark:bg-slate-800/60 not-dark:shadow-md border border-slate-200 dark:border-slate-700 flex sm:flex-col items-center justify-center gap-3 sm:gap-4.5 <%= span_values[index] %>">
+        <div class="rounded-full p-3 bg-linear-to-br <%= feature[:color] %> shrink-0">
           <%= inline_svg_tag "icons/#{feature[:icon]}.svg", class: 'size-6 text-white' %>
         </div>
         <div class="sm:text-center sm:space-y-1.5">
@@ -146,7 +146,7 @@
   </div>
 </section>
 
-<section id="testimonials" class="py-32 md:py-40 px-4 md:px-6 bg-gradient-to-br from-violet-500 via-indigo-500 to-indigo-600 text-white">
+<section id="testimonials" class="py-32 md:py-40 px-4 md:px-6 bg-radial from-violet-500 via-violet-500 to-indigo-600 text-white">
   <div class="mx-auto flex max-w-4xl flex-col items-center justify-center gap-4 text-center">
     <h2 class="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl text-balance">
       Trusted by Coaches &amp; Athletes.
@@ -157,12 +157,17 @@
   </div>
 
   <% testimonials = [
-    { author_name: 'Trenton Roth', author_title: 'Head Coach, Florida College Cross Country', highlight: 'FAR exceeded my original hopes and expectations.', paragraphs: [
-      'As a college cross country coach, I am always looking for ways to stay in touch with my athletes (especially in the offseason when they all go home over the summer) and have a convenient way of sharing our data and progress that everyone can quickly and easily enter and view. I asked Braden to create a program that would allow my team to do that. Of course, I had no idea how much work it would prove to be, nor how good of a product he would ultimately end up designing. It has FAR exceeded my original hopes and expectations for the project.',
-      'Braden poured his heart and soul into designing the web app &#8220;<span class="font-semibold italic">Pacemaker</span>.&#8221; Working with him was extremely satisfying and productive. While I would sometimes ask for new features or changes, and he was quick to incorporate them, I was much more impressed with how often he would recommend various revisions and new functionality. Even though he is not a runner at all, I could tell that he had really put a lot of thought into his suggestions beforehand. Not only was he often able to correctly predict things that coaches and athletes would like and use, he also anticipated how some of those changes would require redesigning some of the framework so that it would remain user-friendly and intuitive to navigate. He was always thinking about and aware of potential problems that adding new features might cause app users to encounter, and has a very good eye for choosing defaults that make the most sense.',
-      'Although there is much more that I could say, let me just highlight two illustrations of how Braden&#8217;s &#8220;customer service&#8221; (even though he did all of this work for free) and attention to detail benefits those he works with. First, he volunteered an hour of his time to come meet with my team and demonstrate the app&#8217;s features. This consisted of showing some of the features, as well as explaining the structure of how it was designed and the logic behind how to navigate in it, and included a question and answer session at the end which he handled very smoothly and clearly. His understanding and command of his work is obvious.',
-      'Finally, many of my athletes already use a free fitness app called Strava when they run. Several of them had asked if it was possible to adapt Pacemaker to integrate and automatically sync with and pull data from Strava, so they would not have to manually enter it. I hesitated to even ask Braden to do this, as I felt that it might be too much of a demand of his time (donated for free, I might add) and might not even be possible. However, he did not balk at a challenge. I expected this to be a significant amount of work that could take weeks. He did it in one day! To say that I was pleased with this outcome would be a gross understatement&mdash;I am ecstatic!! I am confident that whoever hires him will also be thrilled with their decision and return on investment.',
-    ] },
+    {
+      author_name: 'Trenton Roth',
+      author_title: 'Head Coach, Florida College Cross Country',
+      highlight: 'FAR exceeded my original hopes and expectations.',
+      paragraphs: [
+        'As a college cross country coach, I am always looking for ways to stay in touch with my athletes (especially in the offseason when they all go home over the summer) and have a convenient way of sharing our data and progress that everyone can quickly and easily enter and view. I asked Braden to create a program that would allow my team to do that. Of course, I had no idea how much work it would prove to be, nor how good of a product he would ultimately end up designing. It has FAR exceeded my original hopes and expectations for the project.',
+        'Braden poured his heart and soul into designing the web app &#8220;<span class="font-semibold italic">Pacemaker</span>.&#8221; Working with him was extremely satisfying and productive. While I would sometimes ask for new features or changes, and he was quick to incorporate them, I was much more impressed with how often he would recommend various revisions and new functionality. Even though he is not a runner at all, I could tell that he had really put a lot of thought into his suggestions beforehand. Not only was he often able to correctly predict things that coaches and athletes would like and use, he also anticipated how some of those changes would require redesigning some of the framework so that it would remain user-friendly and intuitive to navigate. He was always thinking about and aware of potential problems that adding new features might cause app users to encounter, and has a very good eye for choosing defaults that make the most sense.',
+        'Although there is much more that I could say, let me just highlight two illustrations of how Braden&#8217;s &#8220;customer service&#8221; (even though he did all of this work for free) and attention to detail benefits those he works with. First, he volunteered an hour of his time to come meet with my team and demonstrate the app&#8217;s features. This consisted of showing some of the features, as well as explaining the structure of how it was designed and the logic behind how to navigate in it, and included a question and answer session at the end which he handled very smoothly and clearly. His understanding and command of his work is obvious.',
+        'Finally, many of my athletes already use a free fitness app called Strava when they run. Several of them had asked if it was possible to adapt Pacemaker to integrate and automatically sync with and pull data from Strava, so they would not have to manually enter it. I hesitated to even ask Braden to do this, as I felt that it might be too much of a demand of his time (donated for free, I might add) and might not even be possible. However, he did not balk at a challenge. I expected this to be a significant amount of work that could take weeks. He did it in one day! To say that I was pleased with this outcome would be a gross understatement&mdash;I am ecstatic!! I am confident that whoever hires him will also be thrilled with their decision and return on investment.',
+      ]
+    },
   ] %>
 
   <div class="my-12">
@@ -170,12 +175,12 @@
       <% if testimonials.size > 1 %>
         <div class="flex items-center flex-row-reverse justify-between gap-5 px-1">
           <div class="flex items-center gap-2">
-            <button type="button" data-action="click->carousel#scrollLeft" class="rounded-full bg-slate-100/30 dark:bg-slate-800/30 border-[0.5px] border-slate-200/40 dark:border-slate-700/50 p-2 text-white dark:text-slate-300 transition duration-200 ease-in-out hover:bg-slate-200/70 hover:dark:bg-slate-700/70">
+            <button type="button" data-action="click->carousel#scrollLeft" class="rounded-full bg-slate-100/30 dark:bg-slate-800/30 border-[0.5px] border-slate-200/40 dark:border-slate-700/50 p-2 text-white dark:text-slate-300 transition duration-200 ease-in-out hover:bg-slate-200/70 dark:hover:bg-slate-700/70">
               <%= inline_svg_tag 'icons/chevron-left-mini.svg', class: 'size-4.5' %>
               <span class="sr-only">Scroll left</span>
             </button>
 
-            <button type="button" data-action="click->carousel#scrollRight" class="rounded-full bg-slate-100/30 dark:bg-slate-800/30 border-[0.5px] border-slate-200/40 dark:border-slate-700/50 p-2 text-white dark:text-slate-300 transition duration-200 ease-in-out hover:bg-slate-200/70 hover:dark:bg-slate-700/70">
+            <button type="button" data-action="click->carousel#scrollRight" class="rounded-full bg-slate-100/30 dark:bg-slate-800/30 border-[0.5px] border-slate-200/40 dark:border-slate-700/50 p-2 text-white dark:text-slate-300 transition duration-200 ease-in-out hover:bg-slate-200/70 dark:hover:bg-slate-700/70">
               <%= inline_svg_tag 'icons/chevron-right-mini.svg', class: 'size-4.5' %>
               <span class="sr-only">Scroll right</span>
             </button>
@@ -275,7 +280,7 @@
   <div class="mx-auto flex max-w-4xl flex-col items-center justify-center gap-4 text-center">
     <h2 class="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl text-balance">
       Peak Performance
-      <span class="bg-gradient-to-r from-violet-500 via-indigo-500 to-indigo-600 bg-clip-text text-transparent">Starts Here.</span>
+      <span class="bg-linear-to-r from-violet-500 to-indigo-600 bg-clip-text text-transparent">Starts Here.</span>
     </h2>
     <p class="mx-auto mt-4 max-w-2xl text-lg tracking-tight text-soft text-pretty">
       Join the runners and coaches who are transforming their running experience with PaceMaker.

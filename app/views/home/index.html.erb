@@ -234,7 +234,7 @@
               <% streak_end_date = streak[:end_date] %>
 
               <div class="card">
-                <%= link_to streak_user, data: { turbo: false }, class: 'group flex items-center gap-3 flex-grow mb-4' do %>
+                <%= link_to streak_user, data: { turbo: false }, class: 'group flex items-center gap-3 grow mb-4' do %>
                   <%= render 'shared/user_photo', user: streak_user, size: :xs, icon_background: :darker, image_classes: 'shrink-0' %>
 
                   <div class="grow">

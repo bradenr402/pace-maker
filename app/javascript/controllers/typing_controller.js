@@ -9,7 +9,7 @@ export default class extends Controller {
     this.typingTimeout = null;
 
     this.inputTarget.addEventListener('input', this.debounce(this.broadcastTyping.bind(this), 500));
-    this.inputTarget.addEventListener('blur', () => this.stopTyping());
+    this.inputTarget.addEventListener('blur-sm', () => this.stopTyping());
 
     window.addEventListener('beforeunload', () => this.stopTyping());
   }

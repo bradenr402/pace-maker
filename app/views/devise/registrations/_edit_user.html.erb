@@ -37,6 +37,7 @@
           data-modal-id="unlinkGoogleAccountModal"
           data-action="mousedown->modal#backdropClose"
           class="modal-backdrop opacity-0 pointer-events-none"></div>
+
         <!-- Unlink Google Account Modal -->
         <div
           id="unlinkGoogleAccountModal"
@@ -50,10 +51,12 @@
             <h2 class="text-lg font-semibold leading-none tracking-tight">Unlink Google Account?</h2>
             <p class="text-soft text-sm">Are you sure you want to unlink your Google account? You will no longer be able to sign in with your Google account.</p>
           </div>
+
           <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
             <button data-action="mousedown->modal#close" data-modal-id="unlinkGoogleAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
             <%= button_to 'Unlink Google Account', unlink_google_account_user_path(current_user), method: :delete, class: 'btn btn-destructive gap-2 w-full' %>
           </div>
+
           <button data-action="mousedown->modal#close" type="button" data-modal-id="unlinkGoogleAccountModal" class="modal-x-btn">
             <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
             <span class="sr-only">Close</span>
@@ -280,8 +283,8 @@
         </p>
       <% end %>
 
-      <div class="flex items-center gap-x-4">
-        <%= render 'shared/user_photo', user: resource, size: :md, image_only: true, image_classes: resource.avatar.blank? ? 'hidden' : '', image_options: { data: { image_preview_target: 'output' } } %>
+      <div class="flex items-center gap-x-3">
+        <%= render 'shared/user_photo', user: resource, size: :md, image_only: true, image_classes: "self-start #{resource.avatar.blank? ? 'hidden' : ''}", image_options: { data: { image_preview_target: 'output' } } %>
         <div class="space-y-2">
           <%= f.file_field :avatar, accept: 'image/png, image/jpeg', class: 'form-file', data: { image_preview_target: 'input', action: 'image-preview#readURL' } %>
           <button type="button" class="btn btn-transparent" data-image-preview-target="clearBtn" data-action="image-preview#clearUpload">Clear upload</button>
@@ -348,7 +351,7 @@
         </div>
       </div>
 
-      <div class="relative flex rounded-md shadow-sm">
+      <div class="relative flex rounded-md shadow-xs">
         <!-- Country code select -->
         <%= label_tag :group_by, 'Country code', class: 'sr-only' %>
         <%= inline_svg_tag 'icons/phone.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
@@ -357,7 +360,7 @@
                       grouped_options_for_select(country_code_options, @user.phone_country_code),
                       { include_blank: 'Country code', selected: @user.phone_country_code },
                       {
-                        class: 'form-select appearance-none px-10 py-2 border [&:not(:focus)]:border-r-transparent rounded-r-none w-max focus:z-10',
+                        class: 'form-select px-10 py-2 border not-focus:border-r-transparent rounded-r-none! w-max! focus:z-10',
                         data: { action: 'change->phone#updateCountryCode change->phone#phoneFormat', phone_target: 'countryCode' }
                       }
         %>
@@ -367,7 +370,7 @@
                           placeholder: '(555) 555-5555',
                           autocomplete: 'tel',
                           value: f.object.raw_phone_number,
-                          class: 'form-input shadow-sm pl-3 pr-10 py-2 border [&:not(:focus)]:border-l-transparent rounded-l-none w-full focus:z-10',
+                          class: 'form-input shadow-xs pl-3 pr-10 py-2 border not-focus:border-l-transparent rounded-l-none w-full focus:z-10',
                           data: { form_validation_target: 'phone', phone_target: 'phone', action: 'input->form-validation#validatePhone input->phone#phoneFormat' }
         %>
 

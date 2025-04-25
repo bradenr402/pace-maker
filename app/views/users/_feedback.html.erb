@@ -12,9 +12,9 @@
   <div class="form-group">
     <%= form.label :feedback_type, 'Feedback type', class: 'form-label mb-2' %>
 
-    <div class="flex flex-col gap-y-2">
-      <label class="flex cursor-pointer transition duration-200 ease-in-out active:scale-[0.98]">
-        <div class="flex items-center py-2 px-4 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 [&:has(input:checked)]:bg-slate-200 dark:[&:has(input:checked)]:bg-slate-800 w-full">
+    <div class="flex flex-col gap-y-px">
+      <label class="flex cursor-pointer transition duration-200 ease-in-out active:scale-[98.5%]">
+        <div class="flex items-center py-2 px-4 rounded-xl hover:bg-slate-200/50 dark:hover:bg-slate-800/70 [&:has(input:checked)]:bg-slate-200/50 dark:[&:has(input:checked)]:bg-slate-800/70 w-full">
           <%= form.radio_button :feedback_type, 'bug', class: 'form-input-radio' %>
           <div class="ml-4">
             <div class="flex items-center gap-x-1.5">
@@ -26,10 +26,8 @@
         </div>
       </label>
 
-      <div class="border-b border-slate-200 dark:border-slate-700"></div>
-
-      <label class="flex cursor-pointer transition duration-200 ease-in-out active:scale-[0.98]">
-        <div class="flex items-center py-2 px-4 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 [&:has(input:checked)]:bg-slate-200 dark:[&:has(input:checked)]:bg-slate-800 w-full">
+      <label class="flex cursor-pointer transition duration-200 ease-in-out active:scale-[98.5%]">
+        <div class="flex items-center py-2 px-4 rounded-xl hover:bg-slate-200/50 dark:hover:bg-slate-800/70 [&:has(input:checked)]:bg-slate-200/50 dark:[&:has(input:checked)]:bg-slate-800/70 w-full">
           <%= form.radio_button :feedback_type, 'suggestion', class: 'form-input-radio' %>
           <div class="ml-4">
             <div class="flex items-center gap-x-1.5">
@@ -41,10 +39,8 @@
         </div>
       </label>
 
-      <div class="border-b border-slate-200 dark:border-slate-700"></div>
-
-      <label class="flex cursor-pointer transition duration-200 ease-in-out active:scale-[0.98]">
-        <div class="flex items-center py-2 px-4 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 [&:has(input:checked)]:bg-slate-200 dark:[&:has(input:checked)]:bg-slate-800 w-full">
+      <label class="flex cursor-pointer transition duration-200 ease-in-out active:scale-[98.5%]">
+        <div class="flex items-center py-2 px-4 rounded-xl hover:bg-slate-200/50 dark:hover:bg-slate-800/70 [&:has(input:checked)]:bg-slate-200/50 dark:[&:has(input:checked)]:bg-slate-800/70 w-full">
           <%= form.radio_button :feedback_type, 'other', class: 'form-input-radio' %>
           <div class="ml-4">
             <div class="flex items-center gap-x-1.5">

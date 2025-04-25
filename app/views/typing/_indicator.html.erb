@@ -1,7 +1,7 @@
 <div id="typing_user_<%= user.id %>" class="flex items-end gap-1.5">
   <%= render 'shared/user_photo', user: user, size: :thumb, icon_background: :darker %>
 
-  <div class="w-max rounded-2xl rounded-bl-sm border bg-slate-100 p-2 shadow dark:border-slate-600 dark:bg-slate-700 dark:shadow-none">
+  <div class="w-max rounded-2xl rounded-bl-sm border bg-slate-100 p-2 not-dark:shadow-sm dark:border-slate-600 dark:bg-slate-700">
     <div class="flex flex-wrap items-center gap-x-2 gap-y-1.5">
     <% text_colors = ['text-rose-500', 'text-orange-500', 'text-amber-500', 'text-emerald-500', 'text-blue-500', 'text-indigo-500'] %>
     <% text_color = text_colors[user.id % text_colors.size] %>

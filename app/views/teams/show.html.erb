@@ -1,7 +1,7 @@
 <% content_for :title, @team.name %>
 
 <% if current_user.member_of? @team %>
-  <div data-controller="event-banner" class="mb-16 flex flex-col gap-[3px] items-center mx-auto max-w-screen-sm">
+  <div data-controller="event-banner" class="mb-16 flex flex-col gap-[3px] items-center mx-auto max-w-(--breakpoint-sm)">
     <% @team.events.starting_soon.order(start_date: :asc).select { show_event_banner? _1 }.each do |event| %>
       <%
         days_until_start = event.days_until_start
@@ -68,14 +68,17 @@
       </div>
     </div>
 
-    <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 max-sm:justify-center max-sm:text-center">
+    <div
+      data-controller="modal"
+      data-modal-hide-modal-class="opacity-0 scale-75 pointer-events-none"
+      data-modal-show-modal-class="opacity-100 scale-100 pointer-events-auto"
+      data-modal-hide-backdrop-class="opacity-0 pointer-events-none"
+      data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
+      class="flex flex-wrap items-center gap-1.5 sm:gap-2 max-sm:justify-center max-sm:text-center"
+    >
       <% if @current_user_member_of_team || @current_user_owns_team %>
         <div
-          data-controller="modal dropdown"
-          data-modal-hide-modal-class="opacity-0 scale-75 pointer-events-none"
-          data-modal-show-modal-class="opacity-100 scale-100 pointer-events-auto"
-          data-modal-hide-backdrop-class="opacity-0 pointer-events-none"
-          data-modal-show-backdrop-class="opacity-100 pointer-events-auto"
+          data-controller="dropdown"
           data-dropdown-hide-dropdown-class="pointer-events-none scale-75 opacity-0"
           data-dropdown-show-dropdown-class="pointer-events-auto scale-100 opacity-100"
           data-dropdown-icon-open-class="rotate-180"
@@ -83,7 +86,7 @@
           class="relative text-sm rounded-md transition duration-200 ease-in-out"
         >
           <!-- Team Actions Dropdown Trigger -->
-          <button type="button" data-action="mousedown->dropdown#toggle" class="flex items-center gap-3 py-2 pl-4 pr-3 shadow bg-gray-900 dark:bg-white text-normal-reverse font-normal rounded-md focus:outline-none focus:outline-indigo-500 dark:focus:outline-slate-600">
+          <button type="button" data-action="mousedown->dropdown#toggle" class="flex items-center gap-3 py-2 pl-4 pr-3 shadow-sm bg-gray-900 dark:bg-white text-normal-reverse font-normal rounded-md focus:outline-hidden focus:outline-indigo-500 dark:focus:outline-slate-600">
             <span>Actions</span>
             <%= inline_svg_tag 'icons/chevron-down-bold.svg', class: 'size-4 text-normal-reverse transition duration-200 ease-in-out', data: { dropdown_target: 'arrowIcon' } %>
           </button>

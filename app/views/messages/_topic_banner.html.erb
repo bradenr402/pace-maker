@@ -4,8 +4,8 @@
   <p class="text-soft text-sm text-center mb-1">New topic created!</p>
 
   <div class="flex justify-center">
-    <%= link_to team_topic_messages_path(team, topic), data: { turbo: false }, class: 'group flex items-center gap-3 sm:gap-4 p-3 rounded-2xl bg-white dark:bg-slate-800/60 shadow-md dark:shadow-none border border-slate-200 dark:border-slate-700 grow max-w-sm' do %>
-      <div class="grid place-items-center size-10 rounded-lg bg-gradient-to-b from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800 shrink-0">
+    <%= link_to team_topic_messages_path(team, topic), data: { turbo: false }, class: 'group flex items-center gap-3 sm:gap-4 p-3 rounded-2xl bg-white dark:bg-slate-800/60 not-dark:shadow-md border border-slate-200 dark:border-slate-700 grow max-w-sm' do %>
+      <div class="grid place-items-center size-10 rounded-lg bg-linear-to-b from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800 shrink-0">
         <%= inline_svg_tag "icons/hashtag.svg", class: 'size-5 text-light' %>
       </div>
 
