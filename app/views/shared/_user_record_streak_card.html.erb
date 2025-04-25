@@ -34,7 +34,7 @@
     </div>
   </div>
 
-  <% if end_date == Date.today || end_date == Date.yesterday %>
+  <% if user == current_user && (end_date == Date.today || end_date == Date.yesterday) %>
     <p class="mt-2 text-soft text-sm">
       <% if end_date == Date.today %>
         Run again tomorrow to extend your record streak!
