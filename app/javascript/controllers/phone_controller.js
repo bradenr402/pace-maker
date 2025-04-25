@@ -17,16 +17,21 @@ export default class extends Controller {
 
   toggleFormatting(event) {
     this.shouldFormat = event.target.checked;
+    this.phoneFormat();
   }
 
   phoneFormat(event) {
-    if (!this.shouldFormat) return;
-
     const input = this.phoneTarget.value;
     this.phoneTarget.value = this.formatPhone(input);
   }
 
+  stripPhone(input) {
+    return input.replace(/\D/g, ''); // Remove non-digit characters
+  }
+
   formatPhone(input) {
+    if (!this.shouldFormat) return this.stripPhone(input);
+
     const phoneDigits = input.replace(/\D/g, ''); // Remove non-digit characters
 
     switch (this.countryCode) {
@@ -59,8 +64,7 @@ export default class extends Controller {
     if (!match) return phoneDigits;
 
     const [, areaCode, firstPart, secondPart] = match;
-    if (firstPart && secondPart)
-      return `${areaCode} ${firstPart} ${secondPart}`;
+    if (firstPart && secondPart) return `${areaCode} ${firstPart} ${secondPart}`;
     if (firstPart) return `${areaCode} ${firstPart}`;
     return areaCode;
   }
@@ -71,8 +75,7 @@ export default class extends Controller {
     if (!match) return phoneDigits;
 
     const [, areaCode, firstPart, secondPart] = match;
-    if (firstPart && secondPart)
-      return `${areaCode} ${firstPart} ${secondPart}`;
+    if (firstPart && secondPart) return `${areaCode} ${firstPart} ${secondPart}`;
     if (firstPart) return `${areaCode} ${firstPart}`;
     return areaCode;
   }
@@ -83,8 +86,7 @@ export default class extends Controller {
     if (!match) return phoneDigits;
 
     const [, firstPart, secondPart, thirdPart] = match;
-    if (secondPart && thirdPart)
-      return `${firstPart} ${secondPart} ${thirdPart}`;
+    if (secondPart && thirdPart) return `${firstPart} ${secondPart} ${thirdPart}`;
     if (secondPart) return `${firstPart} ${secondPart}`;
     return firstPart;
   }
