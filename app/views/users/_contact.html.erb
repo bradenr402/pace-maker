@@ -40,7 +40,7 @@
         </div>
       <% end %>
 
-      <% if user.show_phone? || (user_is_current & user.phone_number?) %>
+      <% if (user.show_phone? || user_is_current) && user.phone_number? %>
         <div class="card flex flex-col">
           <div class="mb-6">
             <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300">Phone Number</h2>
