@@ -46,7 +46,7 @@
       <%= f.label :password, class: 'form-label' %>
       <div data-controller="password-visibility" class="relative">
         <%= inline_svg_tag 'icons/lock.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-        <%= f.password_field :password, autocomplete: 'new-password', placeholder: 'Create a password', class: 'form-input pl-10', data: { form_validation_target: 'password', action: 'input->form-validation#validatePassword input->form-validation#validatePasswordConfirmation input->form-validation#showPasswordRequirements', password_visibility_target: 'password' } %>
+        <%= f.password_field :password, autocomplete: 'new-password', placeholder: 'Create a password', class: 'form-input px-10', data: { form_validation_target: 'password', action: 'input->form-validation#validatePassword input->form-validation#validatePasswordConfirmation input->form-validation#showPasswordRequirements', password_visibility_target: 'password' } %>
 
         <button type="button" class="absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-500 size-8 grid place-items-center" data-action="password-visibility#toggle" aria-label="Toggle password visibility">
           <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
@@ -90,7 +90,7 @@
       <%= f.label :password_confirmation, class: 'form-label' %>
       <div data-controller="password-visibility" class="relative">
         <%= inline_svg_tag 'icons/lock-check.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
-        <%= f.password_field :password_confirmation, autocomplete: 'new-password', placeholder: 'Confirm your password', class: 'form-input pl-10', data: { form_validation_target: 'passwordConfirmation', action: 'input->form-validation#validatePasswordConfirmation', password_visibility_target: 'password' } %>
+        <%= f.password_field :password_confirmation, autocomplete: 'new-password', placeholder: 'Confirm your password', class: 'form-input px-10', data: { form_validation_target: 'passwordConfirmation', action: 'input->form-validation#validatePasswordConfirmation', password_visibility_target: 'password' } %>
 
         <button type="button" class="absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-500 size-8 grid place-items-center" data-action="password-visibility#toggle" aria-label="Toggle password visibility">
           <%= inline_svg_tag 'icons/eye.svg', data: { password_visibility_target: 'visibleIcon' }, class: 'size-5' %>
