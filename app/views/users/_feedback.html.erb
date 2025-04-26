@@ -5,11 +5,6 @@
 
 <%= form_with scope: :feedback_form, url: feedback_form_index_path, method: :post, local: true do |form| %>
   <div class="form-group">
-    <%= form.label :title, class: 'form-label' %>
-    <%= form.text_field :title, placeholder: 'Add a title for your feedback...', class: 'form-input' %>
-  </div>
-
-  <div class="form-group">
     <%= form.label :feedback_type, 'Feedback type', class: 'form-label mb-2' %>
 
     <div class="flex flex-col gap-y-px">
@@ -21,7 +16,7 @@
               <%= inline_svg_tag 'icons/bug.svg', class: 'size-5 text-rose-500 shrink-0' %>
               <span class="form-radio-label">Bug Report</span>
             </div>
-            <p class="text-sm text-soft select-none text-pretty">Report technical issues, errors, or unexpected behaviors</p>
+            <p class="mt-px text-sm/tight text-soft select-none text-pretty">Report technical issues, errors, or unexpected behaviors</p>
           </div>
         </div>
       </label>
@@ -34,7 +29,7 @@
               <%= inline_svg_tag 'icons/lightbulb.svg', class: 'size-5 text-yellow-500 shrink-0' %>
               <span class="form-radio-label">Feature Suggestion</span>
             </div>
-            <p class="text-sm text-soft select-none text-pretty">Suggest new features or improvements</p>
+            <p class="mt-px text-sm/tight text-soft select-none text-pretty">Suggest new features or improvements</p>
           </div>
         </div>
       </label>
@@ -47,11 +42,16 @@
               <%= inline_svg_tag 'icons/question-circle.svg', class: 'size-5 text-blue-500 shrink-0' %>
               <span class="form-radio-label">Other</span>
             </div>
-            <p class="text-sm text-soft select-none text-pretty">Share general feedback, questions, or comments</p>
+            <p class="mt-px text-sm/tight text-soft select-none text-pretty">Share general feedback, questions, or comments</p>
           </div>
         </div>
       </label>
     </div>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :title, class: 'form-label' %>
+    <%= form.text_field :title, placeholder: 'Add a title for your feedback...', class: 'form-input' %>
   </div>
 
   <div class="form-group">
