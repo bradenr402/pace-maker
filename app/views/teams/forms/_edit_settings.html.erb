@@ -26,15 +26,15 @@
         </div>
         <div>
           <%= settings_form.label :require_gender, 'Gender required', class: 'select-none text-slate-700 dark:text-slate-300' %>
-          <p class="my-1 help-text"><%= team.owner.gender.blank? ? 'You cannot require gender for your team if your own gender is not specified.' : 'Require users to specify their gender in order to join this team.' %></p>
+          <p class="help-text"><%= team.owner.gender.blank? ? 'You cannot require gender for your team if your own gender is not specified.' : 'Require users to specify their gender in order to join this team.' %></p>
         </div>
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" data-controller="form-help-text" data-form-help-text-show-single-value="true">
       <%= settings_form.label :max_allowed_requests, 'Maximum allowed requests', class: 'form-label' %>
-      <%= settings_form.number_field :max_allowed_requests, step: 1, min: 1, value: team.settings(:join_requirements).max_allowed_requests, placeholder: "e.g., #{default_settings.dig(:join_requirements, :max_allowed_requests)}", class: 'form-input' %>
-      <p class="my-1 help-text">Choose how many times a user can request to join your team before being blocked.</p>
+      <%= settings_form.number_field :max_allowed_requests, step: 1, min: 1, value: team.settings(:join_requirements).max_allowed_requests, placeholder: "e.g., #{default_settings.dig(:join_requirements, :max_allowed_requests)}", class: 'form-input', data: { form_help_text_target: 'input', action: 'input->form-help-text#update' } %>
+      <p class="my-1 help-text">A user can request to join this team <span data-form-help-text-target="output"><%= team.max_allowed_requests %></span> time<span data-form-help-text-target="plural">s</span> before being blocked.</p>
     </div>
 
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
@@ -80,7 +80,6 @@
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
       <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Milestones</h2>
       <p class="text-sm text-slate-600 dark:text-slate-400">Set the increments for team members to earn milestone badges.</p>
-      <p class="my-1 help-text">Team members will earn another badge on their team member page at each increment of the values you set.</p>
     </div>
 
     <div class="form-group" data-controller="form-help-text">
@@ -104,7 +103,7 @@
     <div class="pt-6 my-6 border-t border-slate-200 dark:border-slate-700">
       <h2 class="mb-2 text-lg font-normal text-slate-700 dark:text-slate-200">Streak Resets</h2>
       <p class="text-sm text-slate-600 dark:text-slate-400">Choose if weekends can reset your team member&#8217;s run streaks.</p>
-      <p class="my-1 help-text">Disable both options below to give your team the weekends off without breaking their streaks.</p>
+      <p class="my-1 help-text">Disable both options to give your team the weekends off without resetting their streaks.</p>
     </div>
 
     <div class="space-y-4 form-group">
@@ -115,7 +114,7 @@
         </div>
         <div>
           <%= settings_form.label :include_saturday, 'Include Saturdays', class: 'select-none text-slate-700 dark:text-slate-300' %>
-          <p class="my-1 help-text">Missing a Saturday will reset a team member&#8217;s run streak.</p>
+          <p class="help-text">Missing a Saturday will reset a team member&#8217;s run streak.</p>
         </div>
       </div>
 
@@ -126,7 +125,7 @@
         </div>
         <div>
           <%= settings_form.label :include_sunday, 'Include Sundays', class: 'select-none text-slate-700 dark:text-slate-300' %>
-          <p class="my-1 help-text">Missing a Sunday will reset a team member&#8217;s run streak.</p>
+          <p class="help-text">Missing a Sunday will reset a team member&#8217;s run streak.</p>
         </div>
       </div>
     </div>
@@ -143,7 +142,7 @@
       </div>
       <div>
         <%= settings_form.label :include_self, 'Include self', class: 'select-none text-slate-700 dark:text-slate-300' %>
-        <p class="my-1 help-text">Include your own runs when calculating the team&#8217;s progress toward mileage and long run goals, and display your runs in the team&#8217;s &#8220;Recent Activity&#8221; and &#8220;Featured&#8221; tabs.</p>
+        <p class="help-text leading-tight">Include your own runs when calculating the team&#8217;s progress toward mileage and long run goals, and display your runs in the team&#8217;s &#8220;Recent Activity&#8221; and &#8220;Featured&#8221; tabs.</p>
       </div>
     </div>
 
@@ -216,7 +215,7 @@
   >
     <div class="flex flex-col space-y-1.5 text-center sm:text-left">
       <h2 class="text-lg font-semibold leading-none tracking-tight">Reset Team Settings?</h2>
-      <p class="text-soft text-sm">Are you sure you want to reset your settings for the team <span class="font-bold"><%= team.name %></span>? <span class="underline underline-offset-2 font-semibold">This action cannot be undone</span>.</p>
+      <p class="text-soft text-sm">Are you sure you want to reset your settings to their defaults for the team <span class="font-bold"><%= team.name %></span>? <span class="underline underline-offset-2 font-semibold">This action cannot be undone</span>.</p>
     </div>
 
     <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
