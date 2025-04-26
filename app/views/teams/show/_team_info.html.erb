@@ -268,9 +268,9 @@
               <div>
                 <p class="text-normal font-semibold">Increase Daily Mileage</p>
                 <% member_count = team.filtered_members.count %>
-                <% mileage_recommendation = team.miles_remaining_in_goal / member_count / remaining_days %>
-                <% mileage_pace_per_member = team.total_miles_in_season / member_count / completed_days %>
-                <% mileage_percentage_difference = ((mileage_recommendation - mileage_pace_per_member) / mileage_pace_per_member * 100).round(2) %>
+                <% mileage_recommendation = remaining_days.nonzero? ? (team.miles_remaining_in_goal / member_count / remaining_days) : 0 %>
+                <% mileage_pace_per_member = completed_days.nonzero? ? (team.total_miles_in_season / member_count / completed_days) : 0 %>
+                <% mileage_percentage_difference = mileage_pace_per_member.nonzero? ? ((mileage_recommendation - mileage_pace_per_member) / mileage_pace_per_member * 100).round(2) : 0 %>
                 <p class="text-sm text-light text-pretty">To meet your goal, each team member should aim for <%= pluralize(mileage_recommendation.round(2), 'mile') %> per day<%= mileage_pace_per_member == 0 ? '. Your current average is 0 miles per member per day.' : ", which is #{mileage_percentage_difference}% more than your current average of #{pluralize(mileage_pace_per_member.round(2), 'mile')} per member per day." %></p>
               </div>
             </div>
@@ -284,9 +284,9 @@
               <div>
                 <p class="text-normal font-semibold">Increase Weekly Long Runs</p>
                 <% member_count = team.filtered_members.count %>
-                <% long_run_recommendation = (team.long_runs_remaining_in_goal / member_count / remaining_days) * 7 %>
-                <% long_run_pace_per_member = (team.total_long_runs_in_season / member_count / completed_days) * 7 %>
-                <% long_run_percentage_difference = ((long_run_recommendation - long_run_pace_per_member) / long_run_pace_per_member * 100).round(2) %>
+                <% long_run_recommendation = remaining_days.nonzero? ? ((team.long_runs_remaining_in_goal / member_count / remaining_days) * 7) : 0 %>
+                <% long_run_pace_per_member = completed_days.nonzero? ? ((team.total_long_runs_in_season / member_count / completed_days) * 7) : 0 %>
+                <% long_run_percentage_difference = long_run_pace_per_member.nonzero? ? ((long_run_recommendation - long_run_pace_per_member) / long_run_pace_per_member * 100).round(2) : 0 %>
                 <p class="text-sm text-light text-pretty">To meet your goal, each team member should aim for <%= pluralize(long_run_recommendation.round(2), 'long run') %> per week<%= long_run_pace_per_member == 0 ? '. Your current average is 0 long runs per member per week.' : ", which is #{long_run_percentage_difference}% more than your current average of #{pluralize(long_run_pace_per_member.round(2), 'long run')} per member per week." %></p>
               </div>
             </div>
