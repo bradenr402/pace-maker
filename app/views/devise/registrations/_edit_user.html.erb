@@ -87,7 +87,7 @@
       </div>
 
       <% if resource.google_account_linked? %>
-        <p class="my-1 help-text">Your email is linked to your Google account. You must unlink your Google account to change it.</p>
+        <p class="my-1 help-text">Your email is currently linked to your Google account. You must unlink your Google account to change it.</p>
       <% else %>
         <p class="hidden my-1 error-message" data-form-validation-target="emailError">Must be a valid email address and less than 255 characters</p>
       <% end %>
@@ -102,14 +102,14 @@
     </div>
 
     <div class="form-group" data-controller="phone">
-      <div class="sm:flex flex-wrap items-center justify-between">
+      <div class="flex flex-wrap items-center justify-between">
         <%= f.label :phone_number, class: 'form-label' do %>
           <p> Phone number
             <span class="help-text">(optional)</span>
           </p>
         <% end %>
 
-        <div class="flex items-center gap-2 max-sm:mb-2">
+        <div class="flex items-center gap-2 ml-auto max-sm:mb-2">
           <%= check_box_tag 'format_as_you_type', '1', true, class: 'form-input-checkbox', data: { action: 'change->phone#toggleFormatting' } %>
           <%= label_tag 'format_as_you_type', 'Format', class: 'form-check-label text-sm' %>
         </div>
@@ -117,14 +117,12 @@
 
       <div class="relative flex rounded-md shadow-xs">
         <!-- Country code select -->
-        <%= label_tag :group_by, 'Country code', class: 'sr-only' %>
-        <%= inline_svg_tag 'icons/phone.svg', class: 'size-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500' %>
         <%= f.label :phone_country_code, class: 'sr-only' %>
         <%= f.select :phone_country_code,
                       grouped_options_for_select(country_code_options, @user.phone_country_code),
                       { include_blank: 'Country code', selected: @user.phone_country_code },
                       {
-                        class: 'form-select px-10 py-2 border not-focus:border-r-transparent rounded-r-none! w-max! focus:z-10',
+                        class: 'form-select py-2 border not-focus:border-r-transparent rounded-r-none! w-max! focus:z-10',
                         data: { action: 'change->phone#updateCountryCode change->phone#phoneFormat', phone_target: 'countryCode' }
                       }
         %>
