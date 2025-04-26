@@ -30,27 +30,27 @@ class TopicsController < ApplicationController
     @topic.main = false
 
     if @topic.save
-      flash[:success] = "#{@topic.title} topic was successfully created."
+      flash[:success] = "The topic <b>#{@topic.title}</b> was successfully created."
     else
-      flash[:error] = "#{@topic.title} topic could not be created."
+      flash[:error] = 'Topic could not be created.'
     end
     redirect_to team_topics_path(@team)
   end
 
   def update
     if @topic.update(topic_params)
-      flash[:success] = "#{@topic.title} topic was successfully updated."
+      flash[:success] = "The topic <b>#{@topic.title}</b> was successfully updated."
     else
-      flash[:error] = "#{@topic.title} topic could not be updated."
+      flash[:error] = 'Topic could not be updated.'
     end
     redirect_to team_topics_path(@team)
   end
 
   def destroy
     if @topic.destroy
-      flash[:success] = "#{@topic.title} topic was successfully deleted."
+      flash[:success] = "The topic <b>#{@topic.title}</b> was successfully deleted."
     else
-      flash[:error] = "#{@topic.title} topic could not be deleted."
+      flash[:error] = 'Topic could not be deleted.'
     end
     redirect_to team_topics_path(@team)
   end
@@ -61,9 +61,9 @@ class TopicsController < ApplicationController
     return redirect_to team_topics_path(@team), alert: 'You cannot close the Main Chat.' if @topic.main
 
     if @topic.close
-      flash[:success] = "#{@topic.title} topic was successfully closed."
+      flash[:success] = "The topic <b>#{@topic.title}</b> was successfully closed."
     else
-      flash[:error] = "#{@topic.title} topic could not be closed."
+      flash[:error] = 'Topic could not be closed.'
     end
     redirect_to team_topics_path(@team)
   end
@@ -72,9 +72,9 @@ class TopicsController < ApplicationController
     return redirect_to team_topics_path(@team), notice: "#{@topic.title} topic is already open." if @topic.open?
 
     if @topic.reopen
-      flash[:success] = "#{@topic.title} topic was successfully reopened."
+      flash[:success] = "The topic <b>#{@topic.title}</b> was successfully reopened."
     else
-      flash[:error] = "#{@topic.title} topic could not be reopened."
+      flash[:error] = 'Topic could not be reopened.'
     end
     redirect_to team_topics_path(@team)
   end
@@ -87,7 +87,7 @@ class TopicsController < ApplicationController
     if user_topic.favorite!
       flash[:success] = "#{@topic.title} topic favorited."
     else
-      flash[:error] = "#{@topic.title} topic could not be favorited."
+      flash[:error] = 'Topic could not be favorited.'
     end
     redirect_to team_topics_path(@team)
   end
@@ -96,9 +96,9 @@ class TopicsController < ApplicationController
     user_topic = current_user.user_topics.find_by(topic: @topic)
 
     if user_topic&.unfavorite!
-      flash[:success] = "#{@topic.title} topic unfavorited."
+      flash[:success] = "<b>#{@topic.title}</b> topic unfavorited."
     else
-      flash[:error] = "#{@topic.title} topic could not be unfavorited."
+      flash[:error] = 'Topic could not be unfavorited.'
     end
     redirect_to team_topics_path(@team)
   end

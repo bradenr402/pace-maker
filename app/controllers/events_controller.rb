@@ -9,7 +9,7 @@ class EventsController < ApplicationController
     @event = @team.events.build(event_params)
 
     if @event.save
-      flash[:success] = 'Event was successfully created.'
+      flash[:success] = "The event <b>#{@event.title}</b> was successfully created."
     else
       flash[:error] = 'Event could not be created.'
     end
@@ -22,7 +22,8 @@ class EventsController < ApplicationController
       respond_to do |format|
         format.turbo_stream
         format.html do
-          redirect_to team_calendar_path(@team, tab: 'eventsTab'), success: 'Event was successfully updated.'
+          redirect_to team_calendar_path(@team, tab: 'eventsTab'),
+                      success: "The event <b>#{@event.title}</b> was successfully updated."
         end
       end
     else
@@ -34,7 +35,7 @@ class EventsController < ApplicationController
     @event = @team.events.find(params[:id])
 
     if @event.destroy
-      flash[:success] = 'Event was successfully deleted.'
+      flash[:success] = "The event <b>#{@event.title}</b> was successfully deleted."
     else
       flash[:error] = 'Event could not be deleted.'
     end

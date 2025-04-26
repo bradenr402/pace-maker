@@ -192,7 +192,7 @@ class TeamsController < ApplicationController
     @team.owner = current_user
     if @team.save
       @team.team_memberships.create(user: current_user) # Owner is also a member
-      redirect_to @team, success: 'Team was successfully created.'
+      redirect_to @team, success: "The team <b>#{@team.name}</b> was successfully created."
     else
       render :new,
              status: :unprocessable_entity,
@@ -219,7 +219,7 @@ class TeamsController < ApplicationController
 
   def destroy
     if @team.destroy
-      redirect_to teams_path, success: 'Team was successfully deleted.'
+      redirect_to teams_path, success: "The team <b>#{@team.name}</b> was successfully deleted."
     else
       redirect_to @team, error: 'Unable to delete team.'
     end
