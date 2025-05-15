@@ -7,12 +7,15 @@ class StravaService
       next unless activity['type'] == 'Run'
 
       run = user.runs.find_or_initialize_by(strava_id: activity['id'])
-      run.date = Date.parse(activity['start_date'])
+
+      run.date = Time.parse(activity['start_date_local']).to_date
       run.distance = meters_to_miles(activity['distance'])
       run.duration = ActiveSupport::Duration.build(activity['moving_time'])
       run.notes = activity['description']
+
       run.strava_id = activity['id']
       run.strava_url = "https://www.strava.com/activities/#{activity['id']}"
+
       run.save!
     end
   rescue StandardError => e
@@ -24,12 +27,15 @@ class StravaService
     return unless activity && activity['type'] == 'Run'
 
     run = user.runs.find_or_initialize_by(strava_id: activity['id'])
-    run.date = Date.parse(activity['start_date'])
+
+    run.date = Time.parse(activity['start_date_local']).to_date
     run.distance = meters_to_miles(activity['distance'])
     run.duration = ActiveSupport::Duration.build(activity['moving_time'])
     run.notes = activity['description']
+
     run.strava_id = activity['id']
     run.strava_url = "https://www.strava.com/activities/#{activity['id']}"
+
     run.save!
   rescue StandardError => e
     log_and_raise_error('importing single run from Strava', e, user)
