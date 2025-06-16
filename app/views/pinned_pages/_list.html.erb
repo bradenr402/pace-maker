@@ -22,9 +22,9 @@
 
               <% if member && team %>
                 <% if current_page?(team_member_path(team, member)) %>
-                  <%= inline_svg_tag 'icons/user-group-filled.svg', class: 'size-4.5 dark:group-focus:text-white' %>
+                  <%= inline_svg_tag 'icons/user-group-filled.svg', class: 'size-4.5 shrink-0 dark:group-focus:text-white' %>
                 <% else %>
-                  <%= inline_svg_tag 'icons/user-group.svg', class: 'size-4.5 dark:group-focus:text-white motion-safe:group-hover:gelatine-animation motion-safe:group-focus:gelatine-animation' %>
+                  <%= inline_svg_tag 'icons/user-group.svg', class: 'size-4.5 shrink-0 dark:group-focus:text-white motion-safe:group-hover:gelatine-animation motion-safe:group-focus:gelatine-animation' %>
                 <% end %>
               <% end %>
 
@@ -33,9 +33,9 @@
 
               <% if team %>
                 <% if current_page?(team_path(team)) %>
-                  <%= inline_svg_tag 'icons/team-filled.svg', class: 'size-5 dark:group-focus:text-white' %>
+                  <%= inline_svg_tag 'icons/team-filled.svg', class: 'size-5 shrink-0 dark:group-focus:text-white' %>
                 <% else %>
-                  <%= inline_svg_tag 'icons/team.svg', class: 'size-5 dark:group-focus:text-white motion-safe:group-hover:gelatine-animation motion-safe:group-focus:gelatine-animation' %>
+                  <%= inline_svg_tag 'icons/team.svg', class: 'size-5 shrink-0 dark:group-focus:text-white motion-safe:group-hover:gelatine-animation motion-safe:group-focus:gelatine-animation' %>
                 <% end %>
               <% end %>
 
@@ -44,16 +44,16 @@
 
               <% if user %>
                 <% if current_page?(user_path(user)) %>
-                  <%= inline_svg_tag 'icons/user-filled.svg', class: 'size-4.5 dark:group-focus:text-white' %>
+                  <%= inline_svg_tag 'icons/user-filled.svg', class: 'size-4.5 shrink-0 dark:group-focus:text-white' %>
                 <% else %>
-                  <%= inline_svg_tag 'icons/user.svg', class: 'size-4.5 dark:group-focus:text-white motion-safe:group-hover:pulse-hover-animation motion-safe:group-focus:pulse-hover-animation' %>
+                  <%= inline_svg_tag 'icons/user.svg', class: 'size-4.5 shrink-0 dark:group-focus:text-white motion-safe:group-hover:pulse-hover-animation motion-safe:group-focus:pulse-hover-animation' %>
                 <% end %>
               <% end %>
 
             <% elsif page_url.match?(/runs\/\d+/) %>
               <% run = Run.find_by(id: last_id) %>
 
-              <%= inline_svg_tag 'icons/runner.svg', class: 'size-4.5 dark:group-focus:text-white' if run %>
+              <%= inline_svg_tag 'icons/runner.svg', class: 'size-4.5 shrink-0 dark:group-focus:text-white' if run %>
             <% end %>
             <span><%= page.title %></span>
           </div>
