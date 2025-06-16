@@ -16,9 +16,9 @@
         <span>Account</span>
       </button>
 
-      <button type="button" id="linkedAccountsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'linkedAccountsTab' ? 'btn-tab-active' : '' %>">
+      <button type="button" id="connectedAccountsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'connectedAccountsTab' ? 'btn-tab-active' : '' %>">
         <%= inline_svg_tag 'icons/user-group.svg', class: 'size-3.5 md:size-4.5' %>
-        <span>Linked Accounts</span>
+        <span>Connected Accounts</span>
       </button>
 
       <button type="button" id="settingsTab" data-tabs-target="btn" data-action="mousedown->tabs#select" class="btn-tab <%= params[:tab] == 'settingsTab' ? 'btn-tab-active' : '' %>">
@@ -47,8 +47,8 @@
     <%= render 'edit_user' %>
   </div>
 
-  <div id="linkedAccountsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'linkedAccountsTab' ? '' : 'hidden' %>">
-    <%= render 'users/linked_accounts' %>
+  <div id="connectedAccountsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'connectedAccountsTab' ? '' : 'hidden' %>">
+    <%= render 'users/connected_accounts' %>
   </div>
 
   <div id="settingsTab" data-tabs-target="tab" class="mb-24 <%= params[:tab] == 'settingsTab' ? '' : 'hidden' %>">

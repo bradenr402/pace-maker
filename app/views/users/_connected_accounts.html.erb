@@ -1,5 +1,5 @@
 <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
-  <h1 class="heading">Linked Accounts</h1>
+  <h1 class="heading">Connected Accounts</h1>
   <p class="text-soft">Connect third-party accounts with PaceMaker for easier sign-in and data synchronization.</p>
 </div>
 
@@ -20,49 +20,49 @@
     <% if current_user.google_account_linked? %>
       <p class="text-soft text-sm mb-6">Connected.</p>
 
-      <button data-action="mousedown->modal#open" data-modal-id="unlinkGoogleAccountModal" class="btn btn-destructive" <%= 'disabled' if resource.password_changed_at.nil? %>>
-        Unlink Google Account
+      <button data-action="mousedown->modal#open" data-modal-id="disconnectGoogleAccountModal" class="btn btn-destructive" <%= 'disabled' if resource.password_changed_at.nil? %>>
+        Disconnect
       </button>
       <% if resource.password_changed_at.nil? %>
-        <p class="help-text my-1">You signed up with Google and have not created a password yet. You must create a password to unlink your Google account.</p>
+        <p class="help-text my-1">You signed up with Google and have not created a password yet. You must create a password to disconnect your Google account.</p>
       <% else %>
-        <!-- Unlink Google Account Modal Backdrop -->
+        <!-- Disconnect Google Account Modal Backdrop -->
         <div
           data-modal-target="backdrop"
-          data-modal-id="unlinkGoogleAccountModal"
+          data-modal-id="disconnectGoogleAccountModal"
           data-action="mousedown->modal#backdropClose"
           class="modal-backdrop opacity-0 pointer-events-none"></div>
 
-        <!-- Unlink Google Account Modal -->
+        <!-- Disconnect Google Account Modal -->
         <div
-          id="unlinkGoogleAccountModal"
+          id="disconnectGoogleAccountModal"
           role="dialog"
-          aria-label="Unlink Google Account Confirmation"
+          aria-label="Disconnect Google Account Confirmation"
           tabindex="-1"
           data-modal-target="modal"
           class="modal opacity-0 scale-75 pointer-events-none"
         >
           <div class="flex flex-col space-y-1.5 text-center sm:text-left">
-            <h2 class="text-lg font-semibold leading-none tracking-tight">Unlink Google Account?</h2>
-            <p class="text-soft text-sm">Are you sure you want to unlink your Google account? You will no longer be able to sign in with your Google account.</p>
+            <h2 class="text-lg font-semibold leading-none tracking-tight">Disconnect your Google Account?</h2>
+            <p class="text-soft text-sm">Are you sure you want to disconnect your Google account? You will no longer be able to sign in with Google.</p>
           </div>
 
           <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-            <button data-action="mousedown->modal#close" data-modal-id="unlinkGoogleAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
-            <%= button_to 'Unlink Google Account', unlink_google_account_user_path(current_user), method: :delete, class: 'btn btn-destructive gap-2 w-full' %>
+            <button data-action="mousedown->modal#close" data-modal-id="disconnectGoogleAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+            <%= button_to 'Disconnect', unlink_google_account_user_path(current_user), method: :delete, class: 'btn btn-destructive gap-2 w-full' %>
           </div>
 
-          <button data-action="mousedown->modal#close" type="button" data-modal-id="unlinkGoogleAccountModal" class="modal-x-btn">
+          <button data-action="mousedown->modal#close" type="button" data-modal-id="disconnectGoogleAccountModal" class="modal-x-btn">
             <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
             <span class="sr-only">Close</span>
           </button>
         </div>
       <% end %>
     <% else %>
-      <p class="text-soft text-sm text-pretty mt-1 mb-6">Link your Google account for easier sign-in. The email on your Google account must match the email on your PaceMaker account.</p>
+      <p class="text-soft text-sm text-pretty mt-1 mb-6">Connect your Google account for easier sign-in. The email on your Google account must match the email on your PaceMaker account.</p>
       <%= button_to user_google_oauth2_omniauth_authorize_path, data: { turbo: 'false' }, class: 'btn btn-white gap-2' do %>
         <%= inline_svg_tag 'icons/google-logo.svg', class: 'size-5' %>
-        Link Google Account
+        <span>Connect</span>
       <% end %>
     <% end %>
   </div>
@@ -79,8 +79,8 @@
         <%= link_to 'View your Strava account', current_user.strava_url, class: 'cursor-pointer font-semibold text-[#fc5200] hover:underline focus:ring-transparent text-sm' %>
       </div>
 
-      <button data-action="mousedown->modal#open" data-modal-id="unlinkStravaAccountModal" class="btn btn-destructive">
-        Disconnect from Strava
+      <button data-action="mousedown->modal#open" data-modal-id="disconnectStravaAccountModal" class="btn btn-destructive">
+        Disconnect
       </button>
 
       <div class="mt-5 pt-6 border-t border-slate-200 dark:border-slate-700 ">
@@ -105,13 +105,13 @@
       <!-- Disconnect Strava Account Modal Backdrop -->
       <div
         data-modal-target="backdrop"
-        data-modal-id="unlinkStravaAccountModal"
+        data-modal-id="disconnectStravaAccountModal"
         data-action="mousedown->modal#backdropClose"
         class="modal-backdrop opacity-0 pointer-events-none"></div>
 
       <!-- Disconnect Strava Account Modal -->
       <div
-        id="unlinkStravaAccountModal"
+        id="disconnectStravaAccountModal"
         role="dialog"
         aria-label="Disconnect Strava Account Confirmation"
         tabindex="-1"
@@ -119,22 +119,22 @@
         class="modal opacity-0 scale-75 pointer-events-none"
       >
         <div class="flex flex-col space-y-1.5 text-center sm:text-left">
-          <h2 class="text-lg font-semibold leading-none tracking-tight">Disconnect Strava Account?</h2>
+          <h2 class="text-lg font-semibold leading-none tracking-tight">Disconnect your Strava Account?</h2>
           <p class="text-soft text-sm text-pretty">Are you sure you want to disconnect your Strava account? You will no longer be able to sync your activities from Strava.</p>
         </div>
 
         <%= form_with url: unlink_strava_account_user_path(current_user), method: :delete, local: true do |f| %>
           <div class="flex items-center gap-2 mt-4 mb-2">
             <%= f.check_box :delete_strava_data, { class: 'form-input-checkbox' }, true, false %>
-            <%= f.label :delete_strava_data, 'Delete all imported Strava data', class: 'form-check-label text-sm' %>
+            <%= f.label :delete_strava_data, 'Erase all your Strava data from PaceMaker', class: 'form-check-label text-sm' %>
           </div>
           <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-            <button data-action="mousedown->modal#close" data-modal-id="unlinkStravaAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
-            <%= f.submit 'Disconnect from Strava', class: 'btn btn-destructive gap-2 max-sm:w-full' %>
+            <button data-action="mousedown->modal#close" data-modal-id="disconnectStravaAccountModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
+            <%= f.submit 'Disconnect', class: 'btn btn-destructive gap-2 max-sm:w-full' %>
           </div>
         <% end %>
 
-        <button data-action="mousedown->modal#close" type="button" data-modal-id="unlinkStravaAccountModal" class="modal-x-btn">
+        <button data-action="mousedown->modal#close" type="button" data-modal-id="disconnectStravaAccountModal" class="modal-x-btn">
           <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
           <span class="sr-only">Close</span>
         </button>
@@ -190,11 +190,11 @@
       <div class="flex items-center gap-x-4 gap-y-2 flex-wrap">
         <% if current_user.strava_account_linked? %>
           <button data-action="mousedown->modal#open" data-modal-id="importStravaRunsModal" class="btn btn-white">
-            Import runs from Strava
+            Import runs
           </button>
         <% end %>
         <button data-action="mousedown->modal#open" data-modal-id="deleteStravaRunsModal" class="btn btn-destructive">
-          Delete imported Strava runs
+          Delete imported runs
         </button>
       </div>
 
@@ -223,7 +223,7 @@
         </div>
         <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
           <button data-action="mousedown->modal#close" data-modal-id="deleteStravaRunsModal" type="button" class="btn btn-dark btn-muted mt-2 sm:mt-0">Cancel</button>
-          <%= button_to 'Delete imported Strava runs', strava_imports_path, method: :delete, class: 'btn btn-destructive gap-2 max-sm:w-full' %>
+          <%= button_to 'Delete imported runs', strava_imports_path, method: :delete, class: 'btn btn-destructive gap-2 max-sm:w-full' %>
         </div>
         <button data-action="mousedown->modal#close" type="button" data-modal-id="deleteStravaRunsModal" class="modal-x-btn">
           <%= inline_svg_tag 'icons/x-mark.svg', class: 'size-4' %>
