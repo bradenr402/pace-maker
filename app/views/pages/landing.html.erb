@@ -161,6 +161,7 @@
     {
       author_name: 'Trenton Roth',
       author_title: 'Head Coach, Florida College Cross Country',
+      date: Date.new(2025, 2, 18),
       highlight: 'FAR exceeded my original hopes and expectations.',
       paragraphs: [
         'As a college cross country coach, I am always looking for ways to stay in touch with my athletes (especially in the offseason when they all go home over the summer) and have a convenient way of sharing our data and progress that everyone can quickly and easily enter and view. I asked Braden to create a program that would allow my team to do that. Of course, I had no idea how much work it would prove to be, nor how good of a product he would ultimately end up designing. It has FAR exceeded my original hopes and expectations for the project.',
@@ -200,8 +201,12 @@
         <% testimonials.each do |testimonial| %>
           <div data-carousel-target="item" class="frame-glass w-full shrink-0 snap-center">
             <div class="card-opaque flex flex-col">
-              <div class="mb-4">
+              <div class="mb-4 flex items-center justify-between gap-2">
                 <%= inline_svg_tag 'icons/quote-start.svg', class: 'size-8 text-muted' %>
+                <div class="text-soft text-xs font-semibold inline-flex items-center gap-1">
+                  <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 shrink-0 max-sm:hidden' %>
+                  <span class="whitespace-nowrap"><%= pretty_date(testimonial[:date], date_style: :absolute, include_weekday: true, weekday_format: :short, month_format: :short, include_year: true) %></span>
+                </div>
               </div>
 
               <p class="mb-3.5 border-b border-slate-300 dark:border-slate-700 pb-3.5 font-semibold text-base/6 text-normal">
