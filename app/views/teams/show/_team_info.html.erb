@@ -11,7 +11,7 @@
     <div class="flex flex-wrap items-center justify-between gap-1.5 mb-6">
       <h2 class="text-lg font-semibold">Season Dates</h2>
       <% if @current_user_member_of_team %>
-        <%= link_to team_calendar_path(team), class: 'btn btn-sm btn-primary btn-muted gap-1.5' do %>
+        <%= link_to team_calendar_path(team), class: 'btn btn-sm btn-white btn-muted gap-1.5' do %>
           <%= inline_svg_tag 'icons/calendar.svg', class: 'size-3.5' %>
           <span>View calendar</span>
         <% end %>
