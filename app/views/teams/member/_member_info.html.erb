@@ -5,9 +5,9 @@
   <p class="text-soft">Information and statistics about <%= member_is_current ? 'your' : "#{member.first_name}’s" %> participation in <span class="font-semibold italic"><%= team.name %></span>.</p>
 </div>
 
-<%= render 'users/select_team_dropdown', user: member, team: %>
-
-<%= content_tag(:p, class: 'mb-2 text-right') { link_to "Edit personal goals for #{team.name}", edit_team_team_membership_path(team, current_user), class: 'btn-link text-xs' } if member_is_current %>
+<div class="mb-4">
+  <%= render 'users/select_team_dropdown', user: member, team: %>
+</div>
 
 <div class="card mb-4">
   <div class="flex flex-wrap items-center justify-between gap-2 mb-6">

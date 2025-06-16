@@ -1,7 +1,7 @@
 <% team ||= nil %>
 
 <div class="mb-6 ml-0.5">
-  <p class="form-label">View <%= user == current_user ? 'your' : "#{user.first_name}’s" %> stats for a specific team</p>
+  <p class="form-label">View <%= user == current_user ? 'your' : "#{user.first_name}’s" %> stats for a specific team:</p>
   <div
     data-controller="dropdown"
     data-dropdown-hide-dropdown-class="pointer-events-none scale-75 opacity-0"
@@ -33,28 +33,36 @@
   </div>
 
   <% if team %>
-    <div class="-mb-2">
-      <div class="mt-4 flex flex-wrap items-center gap-x-4">
-        <div class="text-sm inline-flex items-center gap-1.5">
+    <% exclude_saturday = team.exclude_saturday_from_streak? %>
+    <% exclude_sunday = team.exclude_sunday_from_streak? %>
+    <% exclude_weekends = exclude_saturday && exclude_sunday %>
+
+    <div class="max-w-max">
+      <% if exclude_saturday || exclude_sunday %>
+        <p class="mt-4 text-soft text-sm">
+          <% if exclude_weekends %>
+            Missing a Saturday or Sunday won&#8217;t reset your streak for this team.
+          <% elsif exclude_saturday %>
+            Missing a Saturday won&#8217;t reset your streak for this team.
+          <% elsif exclude_sunday %>
+            Missing a Sunday won&#8217;t reset your streak for this team.
+          <% end %>
+        </p>
+      <% end %>
+
+      <div class="mt-2 pb-2 border-b border-slate-200 dark:border-slate-700 flex flex-wrap items-center gap-x-6">
+        <div class="text-sm flex items-center gap-1.5">
           <%= inline_svg_tag 'icons/fire-filled.svg', class: 'size-3.5 text-soft shrink-0' %>
           <span class="whitespace-nowrap"><span class="text-soft">Streak run distance:</span> <span class="text-light font-semibold"><%= team.streak_distance_for_user(user) %> mi</span></span>
         </div>
 
-        <div class="text-sm inline-flex items-center gap-1.5">
+        <div class="text-sm flex items-center gap-1.5">
           <%= inline_svg_tag 'icons/runner.svg', class: 'size-[13px] text-soft shrink-0' %>
           <span class="whitespace-nowrap"><span class="text-soft">Long run distance:</span> <span class="text-light font-semibold"><%= team.long_run_distance_for_user(user) %> mi</span></span>
         </div>
       </div>
-
-      <% if team.exclude_weekends_from_streak? %>
-        <p class="mt-0.5 text-soft text-xs">Missing a Saturday or Sunday won&#8217;t reset your streak for this team.</p>
-      <% elsif team.exclude_saturday_from_streak? %>
-        <p class="mt-0.5 text-soft text-xs">Missing a Saturday won&#8217;t reset your streak for this team.</p>
-      <% elsif team.exclude_sunday_from_streak? %>
-        <p class="mt-0.5 text-soft text-xs">Missing a Sunday won&#8217;t reset your streak for this team.</p>
-      <% end %>
     </div>
   <% else %>
-    <p class="my-1 help-text">Select a team to apply its streak and long-run distance settings.</p>
+    <p class="mt-2 help-text">Select a team above to apply its streak and long-run distance settings.</p>
   <% end %>
 </div>
