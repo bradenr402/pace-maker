@@ -122,7 +122,7 @@
                       grouped_options_for_select(country_code_options, @user.phone_country_code),
                       { include_blank: 'Country code', selected: @user.phone_country_code },
                       {
-                        class: 'form-select py-2 border not-focus:border-r-transparent rounded-r-none! w-max! focus:z-10',
+                        class: 'form-select pl-3 pr-10 py-2 border not-focus:border-r-transparent rounded-r-none! w-max! focus:z-10',
                         data: { action: 'change->phone#updateCountryCode change->phone#phoneFormat', phone_target: 'countryCode' }
                       }
         %>
@@ -132,7 +132,7 @@
                           placeholder: '(555) 555-5555',
                           autocomplete: 'tel',
                           value: f.object.raw_phone_number,
-                          class: 'form-input shadow-xs pl-3 pr-10 py-2 border not-focus:border-l-transparent rounded-l-none w-full focus:z-10',
+                          class: 'form-input shadow-xs py-2 border not-focus:border-l-transparent rounded-l-none! focus:z-10',
                           data: { form_validation_target: 'phone', phone_target: 'phone', action: 'input->form-validation#validatePhone input->phone#phoneFormat' }
         %>
 
