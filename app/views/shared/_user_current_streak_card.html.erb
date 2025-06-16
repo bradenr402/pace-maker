@@ -8,7 +8,7 @@
 <div class="card">
   <h2 class="mb-6 text-lg font-semibold text-light"><%= 'Your' if current_page?(root_path) %> Current Streak <%= "for #{team.name}" if team %></h2>
   <p class="text-3xl font-bold">
-    <%= streak %>
+    <%= number_with_delimiter streak %>
     <span class="text-base font-normal text-soft"><%= 'day'.pluralize(streak) %></span>
   </p>
   <div class="mt-2 mb-4">

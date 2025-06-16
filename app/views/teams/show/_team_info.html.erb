@@ -54,10 +54,11 @@
       <% if team.season_in_progress? %>
         <div class="mb-4">
           <p class="text-3xl font-bold">
-            <%= miles_count = team.total_miles_in_season %>
+            <% miles_count = team.total_miles_in_season %>
+            <%= number_with_delimiter miles_count %>
             <span class="text-base font-normal text-soft"><%= 'mile'.pluralize(miles_count) %></span>
           </p>
-          <p class="text-soft text-sm">of <%= mileage_goal %> mile goal</p>
+          <p class="text-soft text-sm">of <%= number_with_delimiter mileage_goal %> mile goal</p>
         </div>
 
         <p class="mb-4 text-pretty"><%= team.mileage_goal_progress_message %></p>
@@ -66,9 +67,9 @@
 
         <p class="my-1 text-xs text-soft">
           <% if team.mileage_goal_complete? %>
-            The team met its <%= mileage_goal %> mile goal with <span class="font-semibold"><%= pluralize(team.days_remaining_in_season, 'day') %></span> to spare!
+            The team met its <%= number_with_delimiter mileage_goal %> mile goal with <span class="font-semibold"><%= pluralize(team.days_remaining_in_season, 'day') %></span> to spare!
           <% else %>
-            <span class="font-semibold"><%= pluralize(team.days_remaining_in_season, 'day') %></span> to finish the remaining <span class="font-semibold"><%= pluralize(team.miles_remaining_in_goal, 'mile') %></span> of the goal.
+            <span class="font-semibold"><%= pluralize(team.days_remaining_in_season, 'day') %></span> to finish the remaining <span class="font-semibold"><%= pluralize(number_with_delimiter(team.miles_remaining_in_goal), 'mile') %></span> of the goal.
           <% end %>
         </p>
 
@@ -96,7 +97,8 @@
             <div class="p-2.5 rounded-lg bg-slate-200/50 dark:bg-slate-700/40 min-w-max max-sm:grow">
               <p class="text-sm text-light whitespace-nowrap">Projected total</p>
               <p class="text-xl font-bold">
-                <%= projected_miles = team.projected_season_miles %>
+                <% projected_miles = team.projected_season_miles %>
+                <%= number_with_delimiter projected_miles %>
                 <span class="text-xs font-normal text-light"><%= 'mile'.pluralize(projected_miles) %></span>
               </p>
             </div>
@@ -106,7 +108,7 @@
               <p class="text-xl font-bold">
                 <% miles_difference = (projected_miles - mileage_goal).round(2) %>
                 <span class="<%= miles_difference.negative? ? 'text-rose-500' : 'text-emerald-500' %>">
-                  <%= miles_difference.positive? ? "+#{miles_difference}" : miles_difference %>
+                  <%= miles_difference.positive? ? '+' : '' %><%= number_with_delimiter miles_difference %>
                   <span class="text-xs font-normal"><%= 'mile'.pluralize(miles_difference) %></span>
                 </span>
               </p>
@@ -127,10 +129,11 @@
       <% elsif team.season_over? %>
         <div class="mb-4">
           <p class="text-3xl font-bold">
-            <%= miles_count = team.total_miles_in_season %>
+            <% miles_count = team.total_miles_in_season %>
+            <%= number_with_delimiter miles_count %>
             <span class="text-base font-normal text-soft"><%= 'mile'.pluralize(miles_count) %></span>
           </p>
-          <p class="text-soft text-sm">of <%= mileage_goal %> mile goal</p>
+          <p class="text-soft text-sm">of <%= number_with_delimiter mileage_goal %> mile goal</p>
         </div>
 
         <p class="mb-4">
@@ -157,10 +160,11 @@
       <% if team.season_in_progress? %>
         <div class="mb-4">
           <p class="text-3xl font-bold">
-            <%= long_runs_count = team.total_long_runs_in_season %>
+            <% long_runs_count = team.total_long_runs_in_season %>
+            <%= number_with_delimiter long_runs_count %>
             <span class="text-base font-normal text-soft"><%= 'long run'.pluralize(long_runs_count) %></span>
           </p>
-          <p class="text-soft text-sm">of <%= long_run_goal %> long run goal</p>
+          <p class="text-soft text-sm">of <%= number_with_delimiter long_run_goal %> long run goal</p>
         </div>
 
         <p class="mb-4 text-pretty"><%= team.long_run_goal_progress_message %></p>
@@ -171,7 +175,7 @@
           <% if team.long_run_goal_complete? %>
             The team met its <%= long_run_goal %> long run goal with <span class="font-semibold"><%= pluralize(team.days_remaining_in_season, 'day') %></span> to spare!
           <% else %>
-            <span class="font-semibold"><%= pluralize(team.days_remaining_in_season, 'day') %></span> to finish the remaining <span class="font-semibold"><%= pluralize(team.long_runs_remaining_in_goal, 'long run') %></span> of the goal.
+            <span class="font-semibold"><%= pluralize(team.days_remaining_in_season, 'day') %></span> to finish the remaining <span class="font-semibold"><%= pluralize(number_with_delimiter(team.long_runs_remaining_in_goal), 'long run') %></span> of the goal.
           <% end %>
         </p>
 
@@ -199,7 +203,8 @@
             <div class="p-2.5 rounded-lg bg-slate-200/50 dark:bg-slate-700/40 min-w-max max-sm:grow">
               <p class="text-sm text-light whitespace-nowrap">Projected total</p>
               <p class="text-xl font-bold">
-                <%= projected_long_runs = team.projected_season_long_runs %>
+                <% projected_long_runs = team.projected_season_long_runs %>
+                <%= number_with_delimiter projected_long_runs %>
                 <span class="text-xs font-normal text-light"><%= 'long run'.pluralize(projected_long_runs) %></span>
               </p>
             </div>
@@ -209,7 +214,7 @@
               <p class="text-xl font-bold">
                 <% long_runs_difference = (projected_long_runs - long_run_goal).round(2) %>
                 <span class="<%= long_runs_difference.negative? ? 'text-rose-500' : 'text-emerald-500' %>">
-                  <%= long_runs_difference.positive? ? "+#{long_runs_difference}" : long_runs_difference %>
+                  <%= long_runs_difference.positive? ? '+' : '' %><%= number_with_delimiter long_runs_difference %>
                   <span class="text-xs font-normal"><%= 'long run'.pluralize(long_runs_difference) %></span>
                 </span>
               </p>
@@ -271,7 +276,7 @@
                 <% mileage_recommendation = remaining_days.nonzero? ? (team.miles_remaining_in_goal / member_count / remaining_days) : 0 %>
                 <% mileage_pace_per_member = completed_days.nonzero? ? (team.total_miles_in_season / member_count / completed_days) : 0 %>
                 <% mileage_percentage_difference = mileage_pace_per_member.nonzero? ? ((mileage_recommendation - mileage_pace_per_member) / mileage_pace_per_member * 100).round(2) : 0 %>
-                <p class="text-sm text-light text-pretty">To meet your goal, each team member should aim for <%= pluralize(mileage_recommendation.round(2), 'mile') %> per day<%= mileage_pace_per_member == 0 ? '. Your current average is 0 miles per member per day.' : ", which is #{mileage_percentage_difference}% more than your current average of #{pluralize(mileage_pace_per_member.round(2), 'mile')} per member per day." %></p>
+                <p class="text-sm text-light text-pretty">To meet your goal, each team member should aim for <%= pluralize(mileage_recommendation.round(2), 'mile') %> per day<%= mileage_pace_per_member == 0 ? '. Your current average is 0 miles per member per day.' : ", which is #{number_with_delimiter(mileage_percentage_difference)}% more than your current average of #{pluralize(mileage_pace_per_member.round(2), 'mile')} per member per day." %></p>
               </div>
             </div>
           <% end %>
@@ -287,7 +292,7 @@
                 <% long_run_recommendation = remaining_days.nonzero? ? ((team.long_runs_remaining_in_goal / member_count / remaining_days) * 7) : 0 %>
                 <% long_run_pace_per_member = completed_days.nonzero? ? ((team.total_long_runs_in_season / member_count / completed_days) * 7) : 0 %>
                 <% long_run_percentage_difference = long_run_pace_per_member.nonzero? ? ((long_run_recommendation - long_run_pace_per_member) / long_run_pace_per_member * 100).round(2) : 0 %>
-                <p class="text-sm text-light text-pretty">To meet your goal, each team member should aim for <%= pluralize(long_run_recommendation.round(2), 'long run') %> per week<%= long_run_pace_per_member == 0 ? '. Your current average is 0 long runs per member per week.' : ", which is #{long_run_percentage_difference}% more than your current average of #{pluralize(long_run_pace_per_member.round(2), 'long run')} per member per week." %></p>
+                <p class="text-sm text-light text-pretty">To meet your goal, each team member should aim for <%= pluralize(long_run_recommendation.round(2), 'long run') %> per week<%= long_run_pace_per_member == 0 ? '. Your current average is 0 long runs per member per week.' : ", which is #{number_with_delimiter(long_run_percentage_difference)}% more than your current average of #{pluralize(long_run_pace_per_member.round(2), 'long run')} per member per week." %></p>
               </div>
             </div>
           <% end %>
