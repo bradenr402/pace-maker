@@ -44,13 +44,16 @@ class RunsController < ApplicationController
           flash.now[:success] = 'Run was successfully created.'
           flash.now[:success] = 'Run was successfully created. ' \
                                 "#{link_to 'View run',
-                                            run_path(@run),
-                                            class: 'italic font-bold',
-                                            data: { turbo: false }}"
+                                           run_path(@run),
+                                           class: 'italic font-bold',
+                                           data: { turbo: false }}"
           render turbo_stream: [
             turbo_stream.update('flash', partial: 'shared/flash'),
-            turbo_stream.replace('run_modal', partial: 'runs/form_modal',
-                                              locals: { run: Run.new, modal_style_buttons: true })
+            turbo_stream.replace(
+              'run_modal',
+              partial: 'runs/form_modal',
+              locals: { run: Run.new, modal_style_buttons: true }
+            )
           ]
         end
         format.html { redirect_to @run, success: 'Run was successfully created.' }
@@ -65,8 +68,11 @@ class RunsController < ApplicationController
           flash.now[:error] = 'Run could not be created.'
           render turbo_stream: [
             turbo_stream.update('flash', partial: 'shared/flash'),
-            turbo_stream.replace('run_modal', partial: 'runs/form_modal',
-                                              locals: { run: @run, modal_style_buttons: true })
+            turbo_stream.replace(
+              'run_modal',
+              partial: 'runs/form_modal',
+              locals: { run: @run, modal_style_buttons: true }
+            )
           ]
         end
         format.html { render :new, status: :unprocessable_entity }
