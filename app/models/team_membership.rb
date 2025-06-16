@@ -126,7 +126,7 @@ class TeamMembership < ApplicationRecord
   def mileage_goal_progress_message(current_user)
     user_is_current = user == current_user
     possessive = user_is_current ? 'your' : user.gender_possessive
-    team_state = user_is_current ? "You're" : 'Your team is'
+    team_state = user_is_current ? 'You’re' : 'Your team is'
 
     user_status, meeting_goal_status =
       if mileage_goal_complete?
@@ -162,7 +162,7 @@ class TeamMembership < ApplicationRecord
   def long_run_goal_progress_message(current_user)
     user_is_current = user == current_user
     possessive = user_is_current ? 'your' : user.gender_possessive
-    team_state = user_is_current ? "You're" : 'Your team is'
+    team_state = user_is_current ? 'You’re' : 'Your team is'
 
     user_status, meeting_goal_status =
       if long_run_goal_complete?
