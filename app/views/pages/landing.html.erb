@@ -50,14 +50,15 @@
     { image_name: 'feedback', desc: 'Feedback Page' },
   ] %>
 
-  <div data-controller="show-more" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto my-12 px-2">
+  <div data-controller="show-more" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 max-w-5xl mx-auto my-12 px-2">
+    <% initial_visible = 8 %>
     <% images.each_with_index do |image, index| %>
-      <div data-show-more-target="item" data-action="mousedown->modal#open" data-modal-id="<%= image[:image_name] %>PictureModal" data-hideable="<%= index >= 6 ? 'true' : 'false' %>" class="<%= 'hidden' if index >= 6 %> frame-glass flex flex-col items-center gap-2 cursor-pointer hover:shadow-2xl hover:scale-[101.5%] active:scale-100 transition duration-200 ease-in-out">
-        <div class="card-opaque">
-          <%= image_tag asset_path("screenshots/#{image[:image_name]}_light.png"), alt: "#{image[:desc]} (Light Mode)", class: 'block dark:hidden rounded-sm sm:rounded-md border-[0.5px] border-slate-200 dark:border-slate-700' %>
-          <%= image_tag asset_path("screenshots/#{image[:image_name]}_dark.png"), alt: "#{image[:desc]} (Dark Mode)", class: 'hidden dark:block rounded-sm sm:rounded-md border-[0.5px] border-slate-200 dark:border-slate-700' %>
+      <div data-show-more-target="item" data-action="mousedown->modal#open" data-modal-id="<%= image[:image_name] %>PictureModal" data-hideable="<%= index >= initial_visible ? 'true' : 'false' %>" class="<%= 'hidden' if index >= initial_visible %> frame-glass flex flex-col items-center gap-2 cursor-pointer hover:shadow-2xl hover:scale-[101.5%] active:scale-100 transition duration-200 ease-in-out">
+        <div class="">
+          <%= image_tag asset_path("screenshots/#{image[:image_name]}_light.png"), alt: "#{image[:desc]} (Light Mode)", class: 'block dark:hidden rounded-lg border-[0.5px] border-slate-200 dark:border-slate-700' %>
+          <%= image_tag asset_path("screenshots/#{image[:image_name]}_dark.png"), alt: "#{image[:desc]} (Dark Mode)", class: 'hidden dark:block rounded-lg border-[0.5px] border-slate-200 dark:border-slate-700' %>
         </div>
-        <p class="font-bold text-normal-reverse dark:text-normal"><%= image[:desc] %></p>
+        <p class="font-bold text-normal-reverse dark:text-normal text-xs sm:text-sm"><%= image[:desc] %></p>
       </div>
 
       <!-- Image Modal Backdrop -->
@@ -74,9 +75,9 @@
         aria-label="<%= image[:desc] %> Page"
         tabindex="-1"
         data-modal-target="modal"
-        class="modal-large opacity-0 scale-75 pointer-events-none"
+        class="modal-large p-1 opacity-0 scale-75 pointer-events-none"
       >
-        <div class="flex flex-col space-y-1.5 text-center sm:text-left mb-6">
+        <div class="flex flex-col space-y-1.5 text-center sm:text-left mb-6 mt-6 sm:ml-6">
           <p class="text-lg font-semibold leading-none tracking-tight text-normal"><%= image[:desc] %></p>
         </div>
 
