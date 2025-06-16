@@ -3,8 +3,6 @@
   <p class="text-soft">Information and statistics about this team.</p>
 </div>
 
-<%= content_tag(:p, class: 'mb-2 text-right') { link_to 'View personal progress', team_member_path(team, current_user), class: 'btn-link text-xs' } if (@current_user_member_of_team && !@current_user_owns_team) || (@current_user_owns_team && team.include_coach?) %>
-
 <div class="space-y-4">
   <!-- Season Dates Card -->
   <div class="card">
