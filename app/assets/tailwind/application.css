@@ -17,6 +17,8 @@
 
   --animate-ping-slow: ping 2.5s cubic-bezier(0, 0, 0.2, 1) infinite;
   --animate-pulse-fast: pulse 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+
+  --color-yellow-550: oklch(73.8% 0.173 80.9405);
 }
 
 /*

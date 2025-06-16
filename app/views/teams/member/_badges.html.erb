@@ -40,14 +40,14 @@
       <% end %>
     </div>
 
-    <%= render 'shared/progress_bar', percentage: percentage, label: "Progress towards #{next_streak_milestone} day streak" %>
+    <%= render 'shared/progress_bar', percentage: percentage, label: "Progress towards #{number_with_delimiter next_streak_milestone} day streak", accent: :orange %>
     <p class="my-1 text-soft text-xs"><%= current_streak %>/<%= next_streak_milestone %> days</p>
   </div>
 
   <!-- Mileage Badges Card -->
   <div class="card">
     <h2 class="mb-6 text-lg font-semibold text-slate-700 dark:text-slate-300">Mileage Milestones</h2>
-    <div class="flex flex-wrap items-center gap-2 mb-6">
+    <div class="flex flex-wrap items-center gap-x-0.75 gap-y-1 mb-6">
       <% next_mileage_milestone = mileage_increment %>
       <% percentage = 0 %>
 
@@ -64,7 +64,7 @@
       <% end %>
     </div>
 
-    <%= render 'shared/progress_bar', percentage: percentage, label: "Progress towards #{next_mileage_milestone} mile milestone" %>
+    <%= render 'shared/progress_bar', percentage: percentage, label: "Progress towards #{number_with_delimiter next_mileage_milestone} mile milestone", accent: :blue %>
     <p class="my-1 text-soft text-xs"><%= miles %>/<%= next_mileage_milestone %> miles</p>
   </div>
 
@@ -88,7 +88,7 @@
       <% end %>
     </div>
 
-    <%= render 'shared/progress_bar', percentage: percentage, label: "Progress towards #{next_long_run_milestone} long runs milestone" %>
+    <%= render 'shared/progress_bar', percentage: percentage, label: "Progress towards #{number_with_delimiter next_long_run_milestone} long runs milestone", accent: :yellow %>
     <p class="my-1 text-soft text-xs"><%= long_runs %>/<%= next_long_run_milestone %> miles</p>
   </div>
 </div>
