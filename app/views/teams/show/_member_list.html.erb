@@ -1,7 +1,7 @@
 <div id="teamMembers">
   <% if members.present? %>
     <div class="space-y-4">
-      <% members.each do |member| %>
+      <% members.sort_by { it.default_name.downcase }.each do |member| %>
         <%= render 'teams/show/member', team: team, member: member %>
       <% end %>
     </div>
