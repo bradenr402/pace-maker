@@ -18,10 +18,10 @@ module TeamRunsConcern
   end
 
   def recent_runs
-    Rails.cache.fetch(members.cache_key_with_version) do
+    Rails.cache.fetch(filtered_members.cache_key_with_version) do
       Run
         .includes(:user)
-        .where(users: { id: members.pluck(:id) })
+        .where(users: { id: filtered_members.pluck(:id) })
         .order(date: :desc)
         .first(15)
     end
