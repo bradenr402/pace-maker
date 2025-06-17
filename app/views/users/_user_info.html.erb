@@ -9,7 +9,7 @@
   <%= render 'select_team_dropdown', user: user if user.teams.any? %>
 
   <p class="text-right mb-2">
-    <%= link_to user_calendar_path(user), class: 'btn btn-sm btn-primary btn-muted gap-1.5' do %>
+    <%= link_to user_calendar_path(user), class: 'btn btn-sm btn-white btn-muted gap-1.5' do %>
       <%= inline_svg_tag 'icons/calendar.svg', class: 'size-3.5' %>
       <span>View calendar</span>
     <% end %>
