@@ -3,7 +3,7 @@
 <div class="max-w-4xl mx-auto my-16 mb-24">
   <div class="mb-24">
     <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
-      <h1 class="heading">Team Membership Goals</h1>
+      <h1 class="heading">Your Settings for <%= @team.name %></h1>
       <p class="text-soft">Set your personal preferences for this team.</p>
     </div>
 
@@ -21,7 +21,7 @@
         <% end %>
         <%= form.number_field :mileage_goal, step: 1, min: 0, placeholder: 'e.g., 100', class: 'form-input', data: { form_validation_target: 'mileageGoal', action: 'input->form-validation#validateMileageGoal' } %>
         <span class="hidden my-1 error-message" data-form-validation-target="milageGoalError">Personal mileage goal must be a positive number</span>
-        <p class="my-1 help-text">Set a personal goal for how many miles you want to run during this team's season.</p>
+        <p class="my-1 help-text">Set a personal goal for how many miles you want to run during the team&#8217;s season.</p>
       </div>
 
       <div class="form-group">
@@ -32,7 +32,7 @@
         <% end %>
         <%= form.number_field :long_run_goal, step: 1, min: 0, placeholder: 'e.g., 20', class: 'form-input', data: { form_validation_target: 'mileageGoal', action: 'input->form-validation#validateMileageGoal' } %>
         <span class="hidden my-1 error-message" data-form-validation-target="milageGoalError">Long run goal must be a positive number</span>
-        <p class="my-1 help-text">Set a personal goal for how many long runs you want to run during this team's season.</p>
+        <p class="my-1 help-text">Set a personal goal for how many long runs you want to run during the team&#8217;s season.</p>
       </div>
 
       <div class="flex flex-wrap items-center gap-4 pt-6 border-t border-slate-200 dark:border-slate-700">
