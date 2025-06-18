@@ -143,10 +143,10 @@
               <% updated_team = Team.find(audit.team_id) %>
 
               <%= link_to team_path(updated_team), data: { turbo: false }, class: 'group card flex flex-col' do %>
-                <div class="flex items-center gap-3 mb-4">
+                <div class="flex items-start gap-3 mb-4">
                   <%= render 'shared/team_photo', team: updated_team, size: :xs, icon_background: :darker, image_classes: 'shrink-0' %>
 
-                  <div class="grow">
+                  <div class="self-center grow space-y-1">
                     <p class="text-light leading-tight"><span class="font-semibold transition duration-200 ease-in-out group-hover:text-indigo-600 dark:group-hover:text-indigo-500"><%= updated_team.name %></span> has been updated.</p>
                     <div class="text-soft text-xs font-semibold flex items-center gap-1">
                       <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-3.5 shrink-0' %>
@@ -173,7 +173,7 @@
                     </div>
                   <% else %>
                     <p class="text-light"><%= audit.attribute_name.humanize %> changed:</p>
-                    <div class="mx-6 mt-2">
+                    <div class="mx-6 mt-1">
                       <% if audit.attr_is_date? %>
                         <p><span class="text-light">from:</span> <span class="font-bold"><%= pretty_date(audit.old_value, month_format: :short, date_style: :absolute) %></span></p>
                         <p><span class="text-light">to:</span> <span class="font-bold"><%= pretty_date(audit.new_value, month_format: :short, date_style: :absolute) %></span></p>
