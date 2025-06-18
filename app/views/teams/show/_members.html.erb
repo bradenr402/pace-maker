@@ -4,9 +4,11 @@
       <h1 class="heading">Team Members</h1>
       <p class="text-soft">View all members of this team, or search to find a member by their name.</p>
     </div>
-    <%= link_to edit_members_team_path(team), class: 'mt-2 btn btn-sm btn-white btn-muted gap-1.5', data: { turbo: false } do %>
-      <%= inline_svg_tag 'icons/user-group.svg', class: 'size-3.5' %>
-      Manage members
+    <% if current_user.owns?(team) %>
+      <%= link_to edit_members_team_path(team), class: 'mt-2 btn btn-sm btn-white btn-muted gap-1.5', data: { turbo: false } do %>
+        <%= inline_svg_tag 'icons/user-group.svg', class: 'size-3.5' %>
+        Manage members
+      <% end %>
     <% end %>
   </div>
 </div>
