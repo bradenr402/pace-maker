@@ -64,17 +64,25 @@
       </div>
 
       <% team_membership = TeamMembership.find_by(team:, user:) %>
-      <div class="mt-2 flex flex-wrap items-center gap-x-6">
-        <div class="text-sm flex items-center gap-1.5">
-          <%= inline_svg_tag 'icons/ruler-filled.svg', class: 'size-[13px] text-soft shrink-0' %>
-          <span class="whitespace-nowrap"><span class="text-soft">Personal mileage goal:</span> <span class="text-light font-semibold"><%= team_membership.mileage_goal %> mi</span></span>
-        </div>
+      <% mileage_goal = team_membership.mileage_goal %>
+      <% long_run_goal = team_membership.long_run_goal %>
+      <% if mileage_goal || long_run_goal %>
+        <div class="mt-2 flex flex-wrap items-center gap-x-6">
+          <% if mileage_goal %>
+            <div class="text-sm flex items-center gap-1.5">
+              <%= inline_svg_tag 'icons/ruler-filled.svg', class: 'size-[13px] text-soft shrink-0' %>
+              <span class="whitespace-nowrap"><span class="text-soft">Personal mileage goal:</span> <span class="text-light font-semibold"><%= mileage_goal %> mi</span></span>
+            </div>
+          <% end %>
 
-        <div class="text-sm flex items-center gap-1.5">
-          <%= inline_svg_tag 'icons/runner.svg', class: 'size-[13px] text-soft shrink-0' %>
-          <span class="whitespace-nowrap"><span class="text-soft">Personal long run goal:</span> <span class="text-light font-semibold"><%= team_membership.long_run_goal %> mi</span></span>
+          <% if long_run_goal %>
+            <div class="text-sm flex items-center gap-1.5">
+              <%= inline_svg_tag 'icons/runner.svg', class: 'size-[13px] text-soft shrink-0' %>
+              <span class="whitespace-nowrap"><span class="text-soft">Personal long run goal:</span> <span class="text-light font-semibold"><%= long_run_goal %> mi</span></span>
+            </div>
+          <% end %>
         </div>
-      </div>
+      <% end %>
       <% if user_is_current && (user.owns?(team) || user.allowed_to_edit_goals?(team)) %>
         <%= link_to edit_team_team_membership_path(team, user), class: 'mt-4 btn btn-sm btn-primary btn-muted gap-1.5' do %>
           <%= inline_svg_tag 'icons/pencil.svg', class: 'size-3.5' %>
