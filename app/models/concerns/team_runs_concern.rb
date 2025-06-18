@@ -18,20 +18,20 @@ module TeamRunsConcern
   end
 
   def recent_runs
-    Rails.cache.fetch(filtered_members.cache_key_with_version) do
+    Rails.cache.fetch(members.cache_key_with_version) do
       Run
         .includes(:user)
-        .where(users: { id: filtered_members.pluck(:id) })
+        .where(users: { id: members.pluck(:id) })
         .order(date: :desc)
         .first(15)
     end
   end
 
   def recent_long_runs
-    Rails.cache.fetch([filtered_members.cache_key_with_version, 'long_runs', Date.current]) do
+    Rails.cache.fetch([members.cache_key_with_version, 'long_runs', Date.current]) do
       Run
         .includes(:user)
-        .where(users: { id: filtered_members.pluck(:id) })
+        .where(users: { id: members.pluck(:id) })
         .where(
           'CAST(distance AS numeric) >= CAST(CASE
           WHEN users.gender = ? THEN ?
@@ -49,10 +49,10 @@ module TeamRunsConcern
   end
 
   def streak_runs
-    Rails.cache.fetch([filtered_members.cache_key_with_version, 'streak_runs', Date.current]) do
+    Rails.cache.fetch([members.cache_key_with_version, 'streak_runs', Date.current]) do
       Run
         .includes(:user)
-        .where(users: { id: filtered_members.pluck(:id) })
+        .where(users: { id: members.pluck(:id) })
         .where('date >= ?', Date.current.yesterday)
         .where(
           'CAST(distance AS numeric) >= CAST(CASE
@@ -69,7 +69,9 @@ module TeamRunsConcern
     end
   end
 
-  def featured_runs = (recent_long_runs | streak_runs).sort_by(&:date).reverse
+  def featured_runs
+    (recent_long_runs | streak_runs).sort_by(&:date).reverse
+  end
 
   def long_runs_in_date_range(range)
     Rails.cache.fetch([filtered_members.cache_key_with_version, 'long_runs_range', range.hash]) do

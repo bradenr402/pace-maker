@@ -1,6 +1,14 @@
 <div class="mt-10 pb-6">
-  <h1 class="heading">Team Members</h1>
-  <p class="text-soft">Find team members by name.</p>
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div>
+      <h1 class="heading">Team Members</h1>
+      <p class="text-soft">View all members of this team, or search to find a member by their name.</p>
+    </div>
+    <%= link_to edit_members_team_path(team), class: 'mt-2 btn btn-sm btn-white btn-muted gap-1.5', data: { turbo: false } do %>
+      <%= inline_svg_tag 'icons/user-group.svg', class: 'size-3.5' %>
+      Manage members
+    <% end %>
+  </div>
 </div>
 
 <%= form_with url: team, method: :get, html: { novalidate: true }, data: { turbo_stream: true, controller: 'search-form' } do |form| %>

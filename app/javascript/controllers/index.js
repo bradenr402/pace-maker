@@ -115,6 +115,9 @@ application.register("toggle-checkbox", ToggleCheckboxController)
 import ToggleRepliesController from "./toggle_replies_controller"
 application.register("toggle-replies", ToggleRepliesController)
 
+import ToggleSectionController from "./toggle_section_controller"
+application.register("toggle-section", ToggleSectionController)
+
 import TooltipController from "./tooltip_controller"
 application.register("tooltip", TooltipController)
 

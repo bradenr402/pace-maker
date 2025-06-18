@@ -1,214 +1,69 @@
 <% content_for :title, "#{@team.name} Settings" %>
 
-<div class="max-w-4xl mx-auto my-16 mb-24 space-y-4 sm:space-y-6">
-  <div class="pb-6 mt-10 mb-6 border-b dark:border-slate-700">
-    <h1 class="heading"><%= @team.name %> Settings</h1>
-    <div class="flex flex-wrap items-center justify-between gap-2">
-      <p class="text-soft">View this team&#8217;s settings and preferences.</p>
-      <%= link_to 'Edit settings', edit_team_path(@team, tab: 'settingsTab'), data: { turbo: false }, class: 'btn-link text-sm' if current_user.owns?(@team) %>
-    </div>
-  </div>
+<div class="max-w-4xl mx-auto my-16 mb-24">
+  <%= link_to team_path(@team), class: 'group flex items-center gap-3 py-4 pr-2 btn-link-soft w-max', aria: { label: "Back to #{@team.name}" } do %>
+    <%= inline_svg_tag 'icons/chevron-left-bold.svg', class: 'size-4 transition ease-in-out duration-200' %>
 
-  <div class="card">
-    <div class="mb-6">
-      <div class="flex items-center gap-3 mb-3">
-        <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-[10px] grid place-items-center shrink-0">
-          <%= inline_svg_tag 'icons/settings-filled.svg', class: 'size-6 text-light dark:text-normal' %>
-        </div>
-        <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 leading-none">General</h2>
-      </div>
-      <p class="text-sm text-light">Miscellaneous settings.</p>
+    <span class="text-sm transition ease-in-out duration-200">Back to <%= @team.name %></span>
+  <% end %>
+
+  <div class="pb-6 mb-6 border-b border-slate-200 dark:border-slate-700 flex items-start gap-4">
+    <div class="shrink-0">
+      <%= render 'shared/team_photo', team: @team, size: :md %>
     </div>
 
-    <div class="divide-y dark:divide-slate-700">
-      <div class="flex flex-wrap items-center justify-between gap-4 py-2">
-        <p>Week Start:</p>
-        <div class="ml-auto flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-2 pr-3 py-1.5 w-max">
-          <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-4.5 text-soft dark:text-light shrink-0' %>
-          <span class="text-light text-sm whitespace-nowrap"><%= @team.settings(:general).week_start.to_s.titleize %></span>
-        </div>
-      </div>
+    <div class="self-center">
+      <h1 class="heading"><%= @team.name %> Settings</h1>
+      <p class="text-soft text-sm text-pretty">View this team&#8217;s settings and preferences.</p>
 
-      <div class="flex flex-wrap items-center justify-between gap-4 py-2">
-        <div>
-          <p>Coach Included?</p>
-          <p class="text-xs text-soft mt-1 leading-tight">This setting determines whether the coach&#8217;s runs are included when calculating the team&#8217;s progress toward mileage and long run goals, and whether their runs are displayed in the team&#8217;s &#8220;Recent Activity&#8221; and &#8220;Featured&#8221; tabs.</p>
-        </div>
-        <% if @team.include_coach? %>
-          <div class="ml-auto flex items-center gap-2 bg-emerald-100/80 dark:bg-emerald-900/60 text-emerald-500 dark:text-emerald-400 rounded-full pl-2 pr-3 py-1.5 w-max">
-            <%= inline_svg_tag 'icons/check-circle.svg', class: 'size-4.5 shrink-0' %>
-            <span class="text-sm font-bold">Yes</span>
-          </div>
-        <% else %>
-          <div class="ml-auto flex items-center gap-2 bg-rose-100/90 dark:bg-rose-900/50 text-rose-500 dark:text-rose-400 rounded-full pl-2 pr-3 py-1.5 w-max">
-            <%= inline_svg_tag 'icons/x-circle.svg', class: 'size-4.5 shrink-0' %>
-            <span class="text-sm font-bold">No</span>
-          </div>
+      <% if current_user.owns?(@team) %>
+        <%= link_to edit_team_path(@team, tab: 'settingsTab'), class: 'btn btn-sm btn-white btn-muted gap-1.5 mt-1.5' do %>
+          <%= inline_svg_tag 'icons/pencil.svg', class: 'size-3.5' %>
+          <span>Edit settings</span>
         <% end %>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="mb-6">
-      <div class="flex items-center gap-3 mb-3">
-        <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-[10px] grid place-items-center shrink-0">
-          <%= inline_svg_tag 'icons/user-group-filled.svg', class: 'size-6 text-light dark:text-normal' %>
-        </div>
-        <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 leading-none">Join Requirements</h2>
-      </div>
-      <p class="text-sm text-light">These settings determine the requirements for a user to join this team.</p>
-    </div>
-    <div class="flex flex-wrap items-center justify-between gap-4">
-      <div>
-        <p>Gender Required?</p>
-        <p class="text-xs text-soft mt-1 leading-tight">This setting determines whether a user must specify their gender to request to join this team.</p>
-      </div>
-      <% if @team.require_gender? %>
-        <div class="ml-auto flex items-center gap-2 bg-emerald-100/80 dark:bg-emerald-900/60 text-emerald-500 dark:text-emerald-400 rounded-full pl-2 pr-3 py-1.5 w-max">
-          <%= inline_svg_tag 'icons/check-circle.svg', class: 'size-4.5 shrink-0' %>
-          <span class="text-sm font-bold">Yes</span>
-        </div>
-      <% else %>
-        <div class="ml-auto flex items-center gap-2 bg-rose-100/90 dark:bg-rose-900/50 text-rose-500 dark:text-rose-400 rounded-full pl-2 pr-3 py-1.5 w-max">
-          <%= inline_svg_tag 'icons/x-circle.svg', class: 'size-4.5 shrink-0' %>
-          <span class="text-sm font-bold">No</span>
-        </div>
       <% end %>
     </div>
   </div>
 
-  <div class="card">
-    <div class="mb-6">
-      <div class="flex items-center gap-3 mb-3">
-        <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-[10px] grid place-items-center shrink-0">
-          <%= inline_svg_tag 'icons/runner.svg', class: 'size-5.5 text-light dark:text-normal' %>
+  <div class="space-y-4 sm:space-y-6">
+    <div class="card">
+      <div class="mb-6">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-[10px] grid place-items-center shrink-0">
+            <%= inline_svg_tag 'icons/settings-filled.svg', class: 'size-6 text-light dark:text-normal' %>
+          </div>
+          <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 leading-none">General</h2>
         </div>
-        <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 leading-none">Long Runs</h2>
+        <p class="text-sm text-light">Miscellaneous settings.</p>
       </div>
-      <p class="text-sm text-light"><%= @team.require_gender? ? 'These settings determine' : 'This setting determines' %> the minimum mileage for a run to count as a long run for members of this team.</p>
-    </div>
-    <% if @team.require_gender? %>
+
       <div class="divide-y dark:divide-slate-700">
-        <div class="ml-auto flex flex-wrap items-center justify-between gap-4 py-2">
-          <p>Male Long Run Distance:</p>
-          <div class="flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-2 pr-3 py-1.5 w-max">
-            <%= inline_svg_tag 'icons/ruler-filled.svg', class: 'size-4.5 text-soft dark:text-light shrink-0' %>
-            <span class="text-light text-sm whitespace-nowrap"><%= @team.long_run_distance_male %> miles</span>
-          </div>
-        </div>
-        <div class="ml-auto flex flex-wrap items-center justify-between gap-4 py-2">
-          <p>Female Long Run Distance:</p>
-          <div class="flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-2 pr-3 py-1.5 w-max">
-            <%= inline_svg_tag 'icons/ruler-filled.svg', class: 'size-4.5 text-soft dark:text-light shrink-0' %>
-            <span class="text-light text-sm whitespace-nowrap"><%= @team.long_run_distance_female %> miles</span>
-          </div>
-        </div>
-      </div>
-    <% else %>
-      <div class="flex flex-wrap items-center justify-between gap-4">
-        <p>Long Run Distance:</p>
-        <div class="ml-auto flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-2 pr-3 py-1.5 w-max">
-          <%= inline_svg_tag 'icons/ruler-filled.svg', class: 'size-4.5 text-soft dark:text-light shrink-0' %>
-          <span class="text-light text-sm whitespace-nowrap"><%= @team.long_run_distance_neutral %> miles</span>
-        </div>
-      </div>
-    <% end %>
-  </div>
-
-  <div class="card">
-    <div class="mb-6">
-      <div class="flex items-center gap-3 mb-3">
-        <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-[10px] grid place-items-center shrink-0">
-          <%= inline_svg_tag 'icons/lightning-filled.svg', class: 'size-6 text-light dark:text-normal' %>
-        </div>
-        <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 leading-none">Streaks</h2>
-      </div>
-      <p class="text-sm text-light"><%= @team.require_gender? ? 'These settings determine' : 'This setting determines' %> the mileage for a run to count towards a member&#8217;s run streak on this team.</p>
-    </div>
-    <% if @team.require_gender? %>
-      <div class="divide-y dark:divide-slate-700">
-        <div class="flex flex-wrap items-center justify-between gap-4 py-2">
-          <p>Male Streak Distance:</p>
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <p>Week Start:</p>
           <div class="ml-auto flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-2 pr-3 py-1.5 w-max">
-            <%= inline_svg_tag 'icons/lightning-filled.svg', class: 'size-4.5 text-soft dark:text-light shrink-0' %>
-            <span class="text-light text-sm whitespace-nowrap"><%= @team.streak_distance_male %> miles</span>
-          </div>
-        </div>
-        <div class="flex flex-wrap items-center justify-between gap-4 py-2">
-          <p>Female Streak Distance:</p>
-          <div class="ml-auto flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-2 pr-3 py-1.5 w-max">
-            <%= inline_svg_tag 'icons/lightning-filled.svg', class: 'size-4.5 text-soft dark:text-light shrink-0' %>
-            <span class="text-light text-sm whitespace-nowrap"><%= @team.streak_distance_female %> miles</span>
+            <%= inline_svg_tag 'icons/calendar-filled.svg', class: 'size-4.5 text-soft dark:text-light shrink-0' %>
+            <span class="text-light text-sm whitespace-nowrap"><%= @team.settings(:general).week_start.to_s.titleize %></span>
           </div>
         </div>
       </div>
-    <% else %>
+    </div>
+
+    <div class="card">
+      <div class="mb-6">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-[10px] grid place-items-center shrink-0">
+            <%= inline_svg_tag 'icons/user-group-filled.svg', class: 'size-6 text-light dark:text-normal' %>
+          </div>
+          <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 leading-none">Join Requirements</h2>
+        </div>
+        <p class="text-sm text-light">These settings determine the requirements for a user to join this team.</p>
+      </div>
       <div class="flex flex-wrap items-center justify-between gap-4">
-        <p>Streak Distance:</p>
-        <div class="ml-auto flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-2 pr-3 py-1.5 w-max">
-          <%= inline_svg_tag 'icons/lightning-filled.svg', class: 'size-4.5 text-soft dark:text-light shrink-0' %>
-          <span class="text-light text-sm whitespace-nowrap"><%= @team.streak_distance_neutral %> miles</span>
+        <div>
+          <p>Gender Required?</p>
+          <p class="text-xs text-soft mt-1 leading-tight">This setting determines whether a user must specify their gender to request to join this team.</p>
         </div>
-      </div>
-    <% end %>
-  </div>
-
-  <!-- Milestone Increments -->
-  <% streaks_increment = @team.streaks_increment %>
-  <% mileage_increment = @team.mileage_increment %>
-  <% long_runs_increment = @team.long_runs_increment %>
-
-  <div class="card">
-    <div class="mb-6">
-      <div class="flex items-center gap-3 mb-3">
-        <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-[10px] grid place-items-center shrink-0">
-          <%= inline_svg_tag 'icons/medal-filled.svg', class: 'size-6 text-light dark:text-normal' %>
-        </div>
-        <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 leading-none">Milestones</h2>
-        <%= link_to 'View your badges', team_member_path(@team, current_user, tab: 'badges'), class: 'ml-auto text-sm btn-link' %>
-      </div>
-      <p class="text-sm text-light">These settings define the increments for earning milestone badges. Team members will receive a new badge on their profile page each time they achieve one of these milestone increments.</p>
-    </div>
-    <div class="divide-y dark:divide-slate-700">
-      <div class="flex flex-wrap items-center justify-between gap-4 py-2">
-        <p>Streak Milestone Badge Earned:</p>
-        <div class="ml-auto flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-2 pr-3 py-1.5 w-max">
-          <%= inline_svg_tag 'icons/lightning-filled.svg', class: 'size-4.5 text-soft dark:text-light shrink-0' %>
-          <span class="text-light text-sm whitespace-nowrap">Every <%= @team.streaks_increment %> days</span>
-        </div>
-      </div>
-      <div class="flex flex-wrap items-center justify-between gap-4 py-2">
-        <p>Mileage Milestone Badge Earned:</p>
-        <div class="ml-auto flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-2 pr-3 py-1.5 w-max">
-          <%= inline_svg_tag 'icons/ruler-filled.svg', class: 'size-4.5 text-soft dark:text-light shrink-0' %>
-          <span class="text-light text-sm whitespace-nowrap">Every <%= @team.mileage_increment %> miles</span>
-        </div>
-      </div>
-      <div class="flex flex-wrap items-center justify-between gap-4 py-2">
-        <p>Long Run Milestone Badge Earned:</p>
-        <div class="ml-auto flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-2 pr-3 py-1.5 w-max">
-          <%= inline_svg_tag 'icons/runner.svg', class: 'size-4.5 text-soft dark:text-light shrink-0' %>
-          <span class="text-light text-sm whitespace-nowrap">Every <%= @team.long_runs_increment %> long runs</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="mb-6">
-      <div class="flex items-center gap-3 mb-3">
-        <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-[10px] grid place-items-center shrink-0">
-          <%= inline_svg_tag 'icons/reload.svg', class: 'size-6 text-light dark:text-normal' %>
-        </div>
-        <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 leading-none">Streak Resets</h2>
-      </div>
-      <p class="text-sm text-light">These settings determine whether or not missing weekend runs will reset team member&#8217;s run streaks.</p>
-    </div>
-    <div class="divide-y dark:divide-slate-700">
-      <div class="flex flex-wrap items-center justify-between gap-4 py-2">
-        <p>Saturdays Reset Streaks?</p>
-        <% if @team.include_saturday_in_streak? %>
+        <% if @team.require_gender? %>
           <div class="ml-auto flex items-center gap-2 bg-emerald-100/80 dark:bg-emerald-900/60 text-emerald-500 dark:text-emerald-400 rounded-full pl-2 pr-3 py-1.5 w-max">
             <%= inline_svg_tag 'icons/check-circle.svg', class: 'size-4.5 shrink-0' %>
             <span class="text-sm font-bold">Yes</span>
@@ -220,19 +75,164 @@
           </div>
         <% end %>
       </div>
-      <div class="flex flex-wrap items-center justify-between gap-4 py-2">
-        <p>Sundays Reset Streaks?</p>
-        <% if @team.include_sunday_in_streak? %>
-          <div class="ml-auto flex items-center gap-2 bg-emerald-100/80 dark:bg-emerald-900/60 text-emerald-500 dark:text-emerald-400 rounded-full pl-2 pr-3 py-1.5 w-max">
-            <%= inline_svg_tag 'icons/check-circle.svg', class: 'size-4.5 shrink-0' %>
-            <span class="text-sm font-bold">Yes</span>
+    </div>
+
+    <div class="card">
+      <div class="mb-6">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-[10px] grid place-items-center shrink-0">
+            <%= inline_svg_tag 'icons/runner.svg', class: 'size-5.5 text-light dark:text-normal' %>
           </div>
-        <% else %>
-          <div class="ml-auto flex items-center gap-2 bg-rose-100/90 dark:bg-rose-900/50 text-rose-500 dark:text-rose-400 rounded-full pl-2 pr-3 py-1.5 w-max">
-            <%= inline_svg_tag 'icons/x-circle.svg', class: 'size-4.5 shrink-0' %>
-            <span class="text-sm font-bold">No</span>
+          <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 leading-none">Long Runs</h2>
+        </div>
+        <p class="text-sm text-light"><%= @team.require_gender? ? 'These settings determine' : 'This setting determines' %> the minimum mileage for a run to count as a long run for members of this team.</p>
+      </div>
+      <% if @team.require_gender? %>
+        <div class="divide-y dark:divide-slate-700">
+          <div class="ml-auto flex flex-wrap items-center justify-between gap-4 py-2">
+            <p>Male Long Run Distance:</p>
+            <div class="flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-2 pr-3 py-1.5 w-max">
+              <%= inline_svg_tag 'icons/ruler-filled.svg', class: 'size-4.5 text-soft dark:text-light shrink-0' %>
+              <span class="text-light text-sm whitespace-nowrap"><%= @team.long_run_distance_male %> miles</span>
+            </div>
           </div>
-        <% end %>
+          <div class="ml-auto flex flex-wrap items-center justify-between gap-4 py-2">
+            <p>Female Long Run Distance:</p>
+            <div class="flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-2 pr-3 py-1.5 w-max">
+              <%= inline_svg_tag 'icons/ruler-filled.svg', class: 'size-4.5 text-soft dark:text-light shrink-0' %>
+              <span class="text-light text-sm whitespace-nowrap"><%= @team.long_run_distance_female %> miles</span>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <p>Long Run Distance:</p>
+          <div class="ml-auto flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-2 pr-3 py-1.5 w-max">
+            <%= inline_svg_tag 'icons/ruler-filled.svg', class: 'size-4.5 text-soft dark:text-light shrink-0' %>
+            <span class="text-light text-sm whitespace-nowrap"><%= @team.long_run_distance_neutral %> miles</span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="card">
+      <div class="mb-6">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-[10px] grid place-items-center shrink-0">
+            <%= inline_svg_tag 'icons/lightning-filled.svg', class: 'size-6 text-light dark:text-normal' %>
+          </div>
+          <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 leading-none">Streaks</h2>
+        </div>
+        <p class="text-sm text-light"><%= @team.require_gender? ? 'These settings determine' : 'This setting determines' %> the mileage for a run to count towards a member&#8217;s run streak on this team.</p>
+      </div>
+      <% if @team.require_gender? %>
+        <div class="divide-y dark:divide-slate-700">
+          <div class="flex flex-wrap items-center justify-between gap-4 py-2">
+            <p>Male Streak Distance:</p>
+            <div class="ml-auto flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-2 pr-3 py-1.5 w-max">
+              <%= inline_svg_tag 'icons/lightning-filled.svg', class: 'size-4.5 text-soft dark:text-light shrink-0' %>
+              <span class="text-light text-sm whitespace-nowrap"><%= @team.streak_distance_male %> miles</span>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center justify-between gap-4 py-2">
+            <p>Female Streak Distance:</p>
+            <div class="ml-auto flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-2 pr-3 py-1.5 w-max">
+              <%= inline_svg_tag 'icons/lightning-filled.svg', class: 'size-4.5 text-soft dark:text-light shrink-0' %>
+              <span class="text-light text-sm whitespace-nowrap"><%= @team.streak_distance_female %> miles</span>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <p>Streak Distance:</p>
+          <div class="ml-auto flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-2 pr-3 py-1.5 w-max">
+            <%= inline_svg_tag 'icons/lightning-filled.svg', class: 'size-4.5 text-soft dark:text-light shrink-0' %>
+            <span class="text-light text-sm whitespace-nowrap"><%= @team.streak_distance_neutral %> miles</span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Milestone Increments -->
+    <% streaks_increment = @team.streaks_increment %>
+    <% mileage_increment = @team.mileage_increment %>
+    <% long_runs_increment = @team.long_runs_increment %>
+
+    <div class="card">
+      <div class="mb-6">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-[10px] grid place-items-center shrink-0">
+            <%= inline_svg_tag 'icons/medal-filled.svg', class: 'size-6 text-light dark:text-normal' %>
+          </div>
+          <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 leading-none">Milestones</h2>
+          <%= link_to 'View your badges', team_member_path(@team, current_user, tab: 'badges'), class: 'ml-auto text-sm btn-link' %>
+        </div>
+        <p class="text-sm text-light">These settings define the increments for earning milestone badges. Team members will receive a new badge on their profile page each time they achieve one of these milestone increments.</p>
+      </div>
+      <div class="divide-y dark:divide-slate-700">
+        <div class="flex flex-wrap items-center justify-between gap-4 py-2">
+          <p>Streak Milestone Badge Earned:</p>
+          <div class="ml-auto flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-2 pr-3 py-1.5 w-max">
+            <%= inline_svg_tag 'icons/lightning-filled.svg', class: 'size-4.5 text-soft dark:text-light shrink-0' %>
+            <span class="text-light text-sm whitespace-nowrap">Every <%= @team.streaks_increment %> days</span>
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-4 py-2">
+          <p>Mileage Milestone Badge Earned:</p>
+          <div class="ml-auto flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-2 pr-3 py-1.5 w-max">
+            <%= inline_svg_tag 'icons/ruler-filled.svg', class: 'size-4.5 text-soft dark:text-light shrink-0' %>
+            <span class="text-light text-sm whitespace-nowrap">Every <%= @team.mileage_increment %> miles</span>
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-4 py-2">
+          <p>Long Run Milestone Badge Earned:</p>
+          <div class="ml-auto flex items-center gap-2 rounded-full bg-slate-200/50 dark:bg-slate-700/50 pl-2 pr-3 py-1.5 w-max">
+            <%= inline_svg_tag 'icons/runner.svg', class: 'size-4.5 text-soft dark:text-light shrink-0' %>
+            <span class="text-light text-sm whitespace-nowrap">Every <%= @team.long_runs_increment %> long runs</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="mb-6">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="size-10 bg-slate-200 dark:bg-slate-700 rounded-[10px] grid place-items-center shrink-0">
+            <%= inline_svg_tag 'icons/reload.svg', class: 'size-6 text-light dark:text-normal' %>
+          </div>
+          <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-300 leading-none">Streak Resets</h2>
+        </div>
+        <p class="text-sm text-light">These settings determine whether or not missing weekend runs will reset team member&#8217;s run streaks.</p>
+      </div>
+      <div class="divide-y dark:divide-slate-700">
+        <div class="flex flex-wrap items-center justify-between gap-4 py-2">
+          <p>Saturdays Reset Streaks?</p>
+          <% if @team.include_saturday_in_streak? %>
+            <div class="ml-auto flex items-center gap-2 bg-emerald-100/80 dark:bg-emerald-900/60 text-emerald-500 dark:text-emerald-400 rounded-full pl-2 pr-3 py-1.5 w-max">
+              <%= inline_svg_tag 'icons/check-circle.svg', class: 'size-4.5 shrink-0' %>
+              <span class="text-sm font-bold">Yes</span>
+            </div>
+          <% else %>
+            <div class="ml-auto flex items-center gap-2 bg-rose-100/90 dark:bg-rose-900/50 text-rose-500 dark:text-rose-400 rounded-full pl-2 pr-3 py-1.5 w-max">
+              <%= inline_svg_tag 'icons/x-circle.svg', class: 'size-4.5 shrink-0' %>
+              <span class="text-sm font-bold">No</span>
+            </div>
+          <% end %>
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-4 py-2">
+          <p>Sundays Reset Streaks?</p>
+          <% if @team.include_sunday_in_streak? %>
+            <div class="ml-auto flex items-center gap-2 bg-emerald-100/80 dark:bg-emerald-900/60 text-emerald-500 dark:text-emerald-400 rounded-full pl-2 pr-3 py-1.5 w-max">
+              <%= inline_svg_tag 'icons/check-circle.svg', class: 'size-4.5 shrink-0' %>
+              <span class="text-sm font-bold">Yes</span>
+            </div>
+          <% else %>
+            <div class="ml-auto flex items-center gap-2 bg-rose-100/90 dark:bg-rose-900/50 text-rose-500 dark:text-rose-400 rounded-full pl-2 pr-3 py-1.5 w-max">
+              <%= inline_svg_tag 'icons/x-circle.svg', class: 'size-4.5 shrink-0' %>
+              <span class="text-sm font-bold">No</span>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

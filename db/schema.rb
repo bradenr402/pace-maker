@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_28_222354) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_18_191528) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -169,6 +169,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_28_222354) do
     t.datetime "updated_at", null: false
     t.integer "mileage_goal"
     t.integer "long_run_goal"
+    t.boolean "included_in_stats", default: true, null: false
+    t.boolean "allowed_to_edit_goals", default: true, null: false
     t.index ["team_id"], name: "index_team_memberships_on_team_id"
     t.index ["user_id"], name: "index_team_memberships_on_user_id"
   end

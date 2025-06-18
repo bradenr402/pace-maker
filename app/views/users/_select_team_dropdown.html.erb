@@ -75,8 +75,8 @@
           <span class="whitespace-nowrap"><span class="text-soft">Personal long run goal:</span> <span class="text-light font-semibold"><%= team_membership.long_run_goal %> mi</span></span>
         </div>
       </div>
-      <% if user_is_current %>
-        <%= link_to edit_team_team_membership_path(team, current_user), class: 'mt-4 btn btn-sm btn-primary btn-muted gap-1.5' do %>
+      <% if user_is_current && (user.owns?(team) || user.allowed_to_edit_goals?(team)) %>
+        <%= link_to edit_team_team_membership_path(team, user), class: 'mt-4 btn btn-sm btn-primary btn-muted gap-1.5' do %>
           <%= inline_svg_tag 'icons/pencil.svg', class: 'size-3.5' %>
           <span>Edit goals</span>
         <% end %>

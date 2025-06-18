@@ -4,6 +4,8 @@
 </div>
 
 <div class="mb-10 space-y-4 sm:space-y-6">
+  <%= render 'teams/show/excluded_from_stats_notice', team: team if current_user.member_of?(team) && current_user.excluded_from_stats?(team) %>
+
   <% if @recent_runs.present? %>
     <% @recent_runs.each do |run| %>
       <%= render run, team: team %>

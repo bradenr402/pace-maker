@@ -32,7 +32,7 @@ class TeamMembershipsController < ApplicationController
     params.require(:team_membership).permit(:mileage_goal, :long_run_goal)
 
   def authorize_member!
-    return if @member == current_user
+    return if @member == current_user && @member.allowed_to_edit_goals?(@team)
 
     redirect_to team_member_path(@team, @member),
                 alert: 'You are not authorized to perform this action.'

@@ -10,11 +10,18 @@
     <%= inline_svg_tag 'icons/settings.svg', class: 'size-5' %>
     Edit settings
   <% end %>
+
+  <%= link_to edit_members_team_path(team), class: 'dropdown-option', data: { turbo: false } do %>
+    <%= inline_svg_tag 'icons/user-group.svg', class: 'size-5' %>
+    Manage members
+  <% end %>
 <% end %>
 
-<%= link_to edit_team_team_membership_path(team, current_user), class: @current_user_owns_team ? 'dropdown-option' : 'dropdown-option-primary' do %>
-  <%= inline_svg_tag 'icons/user-pencil.svg', class: 'size-5' %>
-  Edit personal goals
+<% if current_user.owns?(team) || current_user.allowed_to_edit_goals?(team) %>
+  <%= link_to edit_team_team_membership_path(team, current_user), class: @current_user_owns_team ? 'dropdown-option' : 'dropdown-option-primary' do %>
+    <%= inline_svg_tag 'icons/user-pencil.svg', class: 'size-5' %>
+    Edit personal goals
+  <% end %>
 <% end %>
 
 <% if @current_user_owns_team %>

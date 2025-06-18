@@ -26,6 +26,18 @@ module UserTeamsConcern
   def other_teams =
     Team.not_included_in(teams.pluck(:id) + owned_teams.pluck(:id))
 
+  def included_in_stats?(team)
+    membership = team.team_memberships.find_by(user_id: id)
+    membership.included_in_stats?
+  end
+
+  def excluded_from_stats?(team) = !included_in_stats?(team)
+
+  def allowed_to_edit_goals?(team)
+    membership = team.team_memberships.find_by(user_id: id)
+    membership.allowed_to_edit_goals?
+  end
+
   def search_teams(query)
     Team
       .joins(:owner)

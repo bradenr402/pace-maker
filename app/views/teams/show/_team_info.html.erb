@@ -4,6 +4,8 @@
 </div>
 
 <div class="space-y-4 sm:space-y-6">
+  <%= render 'teams/show/excluded_from_stats_notice', team: team if current_user.member_of?(team) && current_user.excluded_from_stats?(team) %>
+
   <!-- Season Dates Card -->
   <div class="card">
     <div class="flex flex-wrap items-center justify-between gap-1.5 mb-6">

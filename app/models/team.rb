@@ -66,9 +66,8 @@ class Team < ApplicationRecord
   def event_on_date?(date) = events_on_date(date).exists?
 
   def filtered_members
-    team_members = members
-    team_members = team_members.where.not(id: owner.id) unless include_coach?
-    team_members
+    member_ids = team_memberships.where(included_in_stats: true).map(&:user_id)
+    User.where(id: member_ids)
   end
 
   def main_chat_topic = topics.find_by(main: true)

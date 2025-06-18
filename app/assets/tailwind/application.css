@@ -37,6 +37,10 @@
   ::file-selector-button {
     border-color: var(--color-slate-200, currentcolor);
   }
+
+  :root {
+    interpolate-size: allow-keywords;
+  }
 }
 
 @utility row-numbers {

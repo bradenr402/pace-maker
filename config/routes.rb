@@ -79,6 +79,14 @@ Rails.application.routes.draw do
 
   # Teams & Memberships
   resources :teams do
+    member do
+      post :join
+      post :leave
+      get :edit_members
+      patch :update_members
+    end
+    post 'remove_member/:user_id', to: 'teams#remove_member', as: :remove_member
+
     resource :team_settings,
              only: %i[update show],
              path: 'settings',
@@ -86,12 +94,6 @@ Rails.application.routes.draw do
              controller: 'team_settings' do
       post :reset
     end
-
-    member do
-      post :join
-      post :leave
-    end
-    post 'remove_member/:user_id', to: 'teams#remove_member', as: :remove_member
 
     get :tab, to: 'teams#tab', as: :tab
     get :calendar, to: 'teams#calendar', as: :calendar

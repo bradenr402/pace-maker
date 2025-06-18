@@ -41,7 +41,7 @@ class TeamSettingsController < ApplicationController
            )
          ) &&
          @team.settings(:general).update(
-           settings_params.slice(:week_start, :include_self)
+           settings_params.slice(:week_start)
          ) &&
          @team.settings(:streaks).update(
            settings_params.slice(
@@ -104,7 +104,6 @@ class TeamSettingsController < ApplicationController
         :long_run_distance_female,
         :long_run_distance_neutral,
         :week_start,
-        :include_self,
         :include_saturday,
         :include_sunday,
         :streak_distance_male,

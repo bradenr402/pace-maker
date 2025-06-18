@@ -1,0 +1,91 @@
+<% member = membership.user %>
+<% member_is_current = member == current_user %>
+
+<!-- Hidden fields to ensure that unchecked checkboxes submit 'false' -->
+<%= hidden_field_tag "team_memberships[#{membership.id}][included_in_stats]", 'false' %>
+<%= hidden_field_tag "team_memberships[#{membership.id}][allowed_to_edit_goals]", 'false' %>
+
+<%= fields_for "team_memberships[#{membership.id}]", membership do |member_form| %>
+  <div class="not-first-of-type:mt-4 sm:not-first-of-type:mt-6 not-last-of-type:pb-4 sm:not-last-of-type:pb-6 not-last-of-type:border-b not-last-of-type:border-slate-200 dark:not-last-of-type:border-slate-700">
+    <% unless member_is_current %>
+      <div class="form-group">
+        <div class="flex items-start gap-3 grow">
+          <%= render 'shared/user_photo', user: member, size: :md, icon_background: :darker %>
+
+          <div class="self-center flex-1 leading-tight">
+            <p class="text-xl font-bold">
+              <%= member.default_name %>
+              <%= content_tag(:span, '(You)', class: 'font-normal text-soft text-xs') if member == current_user %>
+            </p>
+            <%= content_tag(:p, member.username, class: 'text-soft text-sm') if member.display_name.present? %>
+          </div>
+
+          <button aria-hidden="true" type="button" class="btn btn-sm btn-white btn-muted gap-1.5" data-collapsible-id="<%= membership.id %>" data-action="mousedown->toggle-section#toggle">
+            <%= inline_svg_tag 'icons/chevron-down.svg', class: 'size-3.5 text-soft transition-transform duration-200 ease-in-out', id: "arrow_#{membership.id}", data: { toggle_section_target: 'arrowIcon' } %>
+            <span id="btnText_<%= membership.id %>" data-toggle-section-target="btnText">Collapse</span>
+          </button>
+        </div>
+      </div>
+    <% end %>
+
+    <div id="collapsible_<%= membership.id %>" class="overflow-hidden [transition:height_350ms,margin_500ms,opacity_250ms] ease-in-out" data-toggle-section-target="collapsible">
+      <div class="form-group">
+        <div class="flex gap-x-2.5">
+          <div class="form-input-toggle shrink-0" data-controller="toggle-checkbox" data-action="mousedown->toggle-checkbox#toggle">
+            <span class="form-input-toggle-switch"></span>
+            <%= member_form.check_box :included_in_stats, { checked: membership.included_in_stats?, class: 'sr-only', id: "included_in_stats_membership_#{membership.id}_checkbox", data: { toggle_checkbox_target: 'checkbox' } }, true, false %>
+          </div>
+          <%= member_form.label :included_in_stats, class: 'block', for: "included_in_stats_membership_#{membership.id}_checkbox" do %>
+            <p class="select-none text-slate-700 dark:text-slate-300">Include <%= 'self' if member_is_current %> in team stats?</p>
+            <p class="help-text leading-tight">Include <%= member_is_current ? 'your own' : "this member’s" %> runs when calculating the team&#8217;s progress toward mileage and long run goals.</p>
+          <% end %>
+        </div>
+      </div>
+
+      <% unless member_is_current %>
+        <div class="form-group">
+          <div class="flex gap-x-2.5">
+            <div class="form-input-toggle shrink-0" data-controller="toggle-checkbox" data-action="mousedown->toggle-checkbox#toggle">
+              <span class="form-input-toggle-switch"></span>
+              <%= member_form.check_box :allowed_to_edit_goals, { checked: membership.allowed_to_edit_goals?, class: 'sr-only', id: "allowed_to_edit_goals_membership_#{membership.id}_checkbox", data: { toggle_checkbox_target: 'checkbox' } }, true, false %>
+            </div>
+            <%= member_form.label :allowed_to_edit_goals, class: 'block', for: "allowed_to_edit_goals_membership_#{membership.id}_checkbox" do %>
+              <p class="select-none text-slate-700 dark:text-slate-300">Allow to edit goals?</p>
+              <p class="help-text leading-tight">Choose whether this member is able to set their own personal goals.</p>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= member_form.label :mileage_goal, class: 'form-label' do %>
+          <p> Personal mileage goal
+            <span class="help-text">(optional)</span>
+          </p>
+        <% end %>
+        <%= member_form.number_field :mileage_goal, step: 1, min: 0, placeholder: 'e.g., 100', class: 'form-input', data: { form_validation_target: 'mileageGoal', action: 'input->form-validation#validateMileageGoal' } %>
+        <span class="hidden my-1 error-message" data-form-validation-target="milageGoalError">Personal mileage goal must be a positive number</span>
+        <p class="my-1 help-text">Set a <%= 'personal' if member_is_current %> goal for how many miles you want <%= 'this member' unless member_is_current %> to run during the team&#8217;s season.</p>
+      </div>
+
+      <div class="">
+        <%= member_form.label :long_run_goal, class: 'form-label' do %>
+          <p> Personal long run goal
+            <span class="help-text">(optional)</span>
+          </p>
+        <% end %>
+        <%= member_form.number_field :long_run_goal, step: 1, min: 0, placeholder: 'e.g., 20', class: 'form-input', data: { form_validation_target: 'mileageGoal', action: 'input->form-validation#validateMileageGoal' } %>
+        <span class="hidden my-1 error-message" data-form-validation-target="milageGoalError">Long run goal must be a positive number</span>
+        <p class="my-1 help-text">Set a personal goal for how many long runs you want <%= 'this member' unless member_is_current %> to run during the team&#8217;s season.</p>
+      </div>
+
+      <% if current_user.owns?(team) && !member_is_current %>
+        <div class="mt-6 flex justify-end">
+          <button data-action="mousedown->modal#open" data-modal-id="removeMember_<%= membership.id %>" class="btn btn-sm btn-destructive btn-muted whitespace-nowrap shrink-0">
+            Remove from team
+          </button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

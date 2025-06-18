@@ -2,8 +2,8 @@ class TeamsController < ApplicationController
   include DateHelper
 
   before_action :authenticate_user!
-  before_action :set_team, only: %i[show edit update destroy join leave]
-  before_action :authorize_owner!, only: %i[remove_member]
+  before_action :set_team, only: %i[show edit update destroy join leave edit_members update_members]
+  before_action :authorize_owner!, only: %i[remove_member edit_members update_members]
   before_action :authorize_member!, only: %i[calendar member_calendar]
 
   def index
@@ -46,7 +46,7 @@ class TeamsController < ApplicationController
       @rankings_date_range, @rankings_date_range_description = get_rankings_data
       @rankings_date_range_param = params[:rankings_date_range] || @team.season_dates? ? 'all_season' : 'this_week'
 
-      @all_members = @team.members.map do |member|
+      @all_members = @team.filtered_members.map do |member|
         {
           member: member,
           total_miles: member.miles_in_date_range(@rankings_date_range),
@@ -55,6 +55,8 @@ class TeamsController < ApplicationController
           record_streak: member.record_streak(@team)[:streak]
         }
       end
+
+      @all_members.sort_by! { |data| [-data[:total_miles], data[:member].default_name] }
     when 'trends'
       @trends_date_range, @trends_date_range_description = get_trends_data
       @trends_date_range_param = params[:trends_date_range] || @team.season_dates? ? 'all_season' : 'this_week'
@@ -116,7 +118,7 @@ class TeamsController < ApplicationController
       @rankings_date_range, @rankings_date_range_description = get_rankings_data
       @rankings_date_range_param = params[:rankings_date_range] || @team.season_dates? ? 'all_season' : 'this_week'
 
-      @all_members = @team.members.map do |member|
+      @all_members = @team.filtered_members.map do |member|
         {
           member: member,
           total_miles: member.miles_in_date_range(@rankings_date_range),
@@ -125,6 +127,8 @@ class TeamsController < ApplicationController
           record_streak: member.record_streak(@team)[:streak]
         }
       end
+
+      @all_members.sort_by! { |data| [-data[:total_miles], data[:member].default_name] }
     when 'trends'
       @trends_date_range, @trends_date_range_description = get_trends_data
       @trends_date_range_param = params[:trends_date_range] || @team.season_dates? ? 'all_season' : 'this_week'
@@ -302,6 +306,39 @@ class TeamsController < ApplicationController
     end
   end
 
+  def edit_members
+    @memberships = @team.team_memberships.includes(:user).sort_by { it.user.default_name.downcase }
+  end
+
+  def update_members
+    @memberships = @team.team_memberships.includes(:user)
+
+    TeamMembership.transaction do
+      params[:team_memberships].each do |id, membership_params|
+        membership = @memberships.find { it.id == id.to_i }
+
+        membership_params =
+          membership_params.transform_values do |value|
+            %w[true false].include?(value) ? value == 'true' : value
+          end
+
+        membership.update!(
+          membership_params.permit(
+            :included_in_stats,
+            :allowed_to_edit_goals,
+            :mileage_goal,
+            :long_run_goal
+          )
+        )
+      end
+    end
+
+    # redirect_to @team, success: 'Team members updated successfully.'
+    redirect_back fallback_location: @team, success: 'Team members updated successfully.'
+  rescue ActiveRecord::RecordInvalid
+    redirect_to edit_team_path(@team, tab: 'membersTab'), error: 'There was an error updating team members.'
+  end
+
   def member
     @team =
       Team
@@ -469,7 +506,7 @@ class TeamsController < ApplicationController
     )
 
   def authorize_owner!
-    team = Team.find(params[:team_id])
+    team = Team.find(params[:team_id] || params[:id])
     return if current_user.owns?(team)
 
     redirect_to team, alert: 'You are not authorized to perform this action.'

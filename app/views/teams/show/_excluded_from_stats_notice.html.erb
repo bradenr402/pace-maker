@@ -1,0 +1,4 @@
+<div class="flex items-start gap-2 md:gap-3 p-2 md:p-3 mt-4 rounded-lg text-light bg-slate-100 dark:bg-slate-700/30 border border-slate-200 dark:border-slate-700">
+  <%= inline_svg_tag 'icons/info.svg', class: 'size-4 shrink-0' %>
+  <p class="text-xs text-pretty">The owner of this team, <%= team.owner.default_name %>, has excluded your runs from being included in the team stats for <span class="font-semibold italic"><%= team.name %></span>. Your runs will not be included when calculating the team&#8217;s progress toward mileage and long run goals.</p>
+</div>
