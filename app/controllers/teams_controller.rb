@@ -362,14 +362,18 @@ class TeamsController < ApplicationController
 
     @tab = params[:tab]
 
-    return unless @tab == 'trends' # the below data is only needed for the trends tab
+    case @tab
+    when 'runs'
+      @runs, @runs_date_range = get_runs_and_date_range
+      @runs_date_range_param = params[:run_date_range] || 'this_week'
+    when 'trends'
+      @trends_date_range_param = params[:trends_date_range] || @team.season_dates? ? 'all_season' : 'this_week'
+      @group_by_param = params[:group_by] || 'day'
+      @trends_date_range, @trends_date_range_description = get_trends_data
 
-    @trends_date_range_param = params[:trends_date_range] || @team.season_dates? ? 'all_season' : 'this_week'
-    @group_by_param = params[:group_by] || 'day'
-    @trends_date_range, @trends_date_range_description = get_trends_data
-
-    @miles_data = get_member_miles_data
-    @long_runs_data = get_member_long_runs_data
+      @miles_data = get_member_miles_data
+      @long_runs_data = get_member_long_runs_data
+    end
   end
 
   def member_tab
@@ -384,8 +388,8 @@ class TeamsController < ApplicationController
 
     case @tab
     when 'user_info'
-      @current_streak_data = @user.current_streak(@team)
-      @record_streak_data = @user.record_streak(@team)
+      @current_streak_data = @member.current_streak(@team)
+      @record_streak_data = @member.record_streak(@team)
     when 'teams'
       @owned_teams = @member.owned_teams.with_attached_photo.includes(:owner)
       @membered_teams = @member.membered_teams.with_attached_photo.includes(:owner)
