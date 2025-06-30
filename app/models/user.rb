@@ -215,7 +215,7 @@ class User < ApplicationRecord
   end
 
   def delete_strava_data!(delete_runs: false)
-    current_user.strava_runs.destroy_all if delete_runs
+    strava_runs.destroy_all if delete_runs
 
     update!(
       strava_uid: nil,
