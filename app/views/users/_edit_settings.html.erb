@@ -107,7 +107,7 @@
       @user.teams.to_h do |team|
         ["Topics for #{team.name}", team.topics.map { |topic| [topic.title, team_topic_messages_path(team, topic)] }]
       end
-    ) %>
+    ).reject { |_, value| value.blank? } %>
 
     <% default_selection = @user.default_page.presence || UserSettings.defaults[:navigation][:default_page] %>
     <% select_options = options_for_select(standalone_options, default_selection) + grouped_options_for_select(grouped_options, default_selection) %>
