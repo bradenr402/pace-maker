@@ -162,7 +162,7 @@ git push origin feature/your-feature
 
 ## 📄 License
 
-This project is licensed under the [MIT License](https://opensource.org/license/mit/). Feel free to use, modify, and distribute the code.
+This project is licensed under the [MIT License](LICENSE). Feel free to use, modify, and distribute the code.
 
 ## 📧 Contact
 
