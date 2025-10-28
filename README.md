@@ -38,7 +38,7 @@ You can find the deployed application at the following link: [pace-maker.onrende
 - **Deployment**:
   - **URL**: [pace-maker.onrender.com](https://pace-maker.onrender.com)
   - **Hosting Provider**: [Render](https://render.com)
-  - **Status**: Available
+  - **Status**: Temporarily suspended
 
 ## 🚀 Getting Started
 
